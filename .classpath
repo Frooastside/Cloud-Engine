@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Libraries/joml-1.9.19.jar" sourcepath="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Source/joml-1.9.19-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Simon/Documents/LWJGL%203.2.3/jars/Eclipse%20Jars%20Javadoc/joml-1.9.19-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Libraries/lwjgl-opengl.jar" sourcepath="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Source/lwjgl-opengl-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Simon/Documents/LWJGL%203.2.3/jars/Eclipse%20Jars%20Javadoc/lwjgl-opengl-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Libraries/lwjgl-stb.jar" sourcepath="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Source/lwjgl-stb-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Simon/Documents/LWJGL%203.2.3/jars/Eclipse%20Jars%20Javadoc/lwjgl-stb-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Libraries/lwjgl.jar" sourcepath="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Source/lwjgl-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Simon/Documents/LWJGL%203.2.3/jars/Eclipse%20Jars%20Javadoc/lwjgl-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
