@@ -1,4 +1,4 @@
-package de.frooastside.engine.gui;
+package de.frooastside.engine.model;
 
 public class VaoData {
 	

@@ -13,6 +13,8 @@ import de.frooastside.engine.gui.guielements.GuiRenderElement;
 import de.frooastside.engine.gui.guielements.GuiText;
 import de.frooastside.engine.gui.meshcreator.FontType;
 import de.frooastside.engine.gui.meshcreator.TextMeshData;
+import de.frooastside.engine.model.VaoData;
+import de.frooastside.engine.model.VertexArrayObjectLoader;
 
 public abstract class GuiScreen {
 	
@@ -67,7 +69,7 @@ public abstract class GuiScreen {
 	public void addText(GuiText text) {
 		FontType font = text.getFont();
 		TextMeshData data = font.loadText(text);
-		VaoData vao = VaoLoader.loadToVao(data.getVertexPositions(), data.getTextureCoords());
+		VaoData vao = VertexArrayObjectLoader.loadToVao(data.getVertexPositions(), data.getTextureCoords());
 		text.setMeshInfo(vao.getID(), data.getVertexCount());
 		List<GuiText> textBatch = texts.get(font);
 		if(textBatch == null) {

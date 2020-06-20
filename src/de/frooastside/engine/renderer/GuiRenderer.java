@@ -1,4 +1,4 @@
-package de.frooastside.engine.gui.renderer;
+package de.frooastside.engine.renderer;
 
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
@@ -7,20 +7,21 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import de.frooastside.engine.gui.GuiScreen;
-import de.frooastside.engine.gui.VaoData;
-import de.frooastside.engine.gui.VaoLoader;
 import de.frooastside.engine.gui.guielements.GuiRenderElement;
+import de.frooastside.engine.model.VaoData;
+import de.frooastside.engine.model.VertexArrayObjectLoader;
 import de.frooastside.engine.shader.guishader.GuiShader;
 
-public class GuiRenderer {
+public class GuiRenderer extends Renderer {
 	
 	private GuiShader guiShader;
 	private VaoData guiQuad;
 	
 	public GuiRenderer() {
 		guiShader = new GuiShader();
+		super.shader = guiShader;
 		float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1};
-		guiQuad = VaoLoader.loadToVao(positions);
+		guiQuad = VertexArrayObjectLoader.loadToVao(positions);
 	}
 	
 	public void render(GuiScreen guiScreen) {

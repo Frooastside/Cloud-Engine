@@ -1,5 +1,7 @@
 package de.frooastside.engine.gui;
 
+import de.frooastside.engine.Engine;
+
 public abstract class Constraint {
 	
 	public ElementConstraints constraints;
@@ -10,11 +12,11 @@ public abstract class Constraint {
 	public abstract float getRawHeight();
 	
 	public float getPixelWidth() {
-		return 1f / GuiScreen.getWidth();
+		return 1f / Engine.getEngine().getGlfwManager().getCurrentWindowWidth();
 	}
 	
 	public float getPixelHeight() {
-		return 1f / GuiScreen.getHeight();
+		return 1f / Engine.getEngine().getGlfwManager().getCurrentWindowHeight();
 	}
 
 }

@@ -1,10 +1,10 @@
 package de.frooastside.engine.gui.guielements;
 
 import de.frooastside.engine.gui.GuiElement;
-import de.frooastside.engine.gui.VaoData;
-import de.frooastside.engine.gui.VaoLoader;
 import de.frooastside.engine.gui.meshcreator.FontType;
 import de.frooastside.engine.gui.meshcreator.TextMeshData;
+import de.frooastside.engine.model.VaoData;
+import de.frooastside.engine.model.VertexArrayObjectLoader;
 
 public class GuiText extends GuiElement {
 	
@@ -28,7 +28,7 @@ public class GuiText extends GuiElement {
 
 	public void reload() {
 		TextMeshData data = font.loadText(this);
-		VaoLoader.loadToExistingVao(data.getVertexPositions(), data.getTextureCoords(), getMesh());
+		VertexArrayObjectLoader.loadToExistingVao(data.getVertexPositions(), data.getTextureCoords(), getMesh());
 		resetMeshInfo(data.getVertexCount());
 	}
 	

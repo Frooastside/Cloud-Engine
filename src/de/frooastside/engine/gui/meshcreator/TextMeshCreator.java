@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.frooastside.engine.gui.GuiScreen;
+import de.frooastside.engine.Engine;
+import de.frooastside.engine.GLFWManager;
 import de.frooastside.engine.gui.guielements.GuiText;
 
 public class TextMeshCreator {
@@ -13,9 +14,12 @@ public class TextMeshCreator {
 	protected static final int SPACE_ASCII = 32;
 
 	private MetaFile metaData;
+	
+	private GLFWManager glfwManager;
 
 	protected TextMeshCreator(File metaFile) {
-		metaData = new MetaFile(metaFile, (float) GuiScreen.getWidth() / (float) GuiScreen.getHeight());
+		glfwManager = Engine.getEngine().getGlfwManager();
+		metaData = new MetaFile(metaFile, (float) glfwManager.getCurrentWindowWidth() / (float) glfwManager.getCurrentWindowHeight());
 	}
 
 	protected TextMeshData createTextMesh(GuiText text) {
@@ -144,7 +148,7 @@ public class TextMeshCreator {
 	}
 
 	public void reload(File fontFile) {
-		metaData = new MetaFile(fontFile, (float) GuiScreen.getWidth() / (float) GuiScreen.getHeight());
+		metaData = new MetaFile(fontFile, (float) glfwManager.getCurrentWindowWidth() / (float) glfwManager.getCurrentWindowHeight());
 	}
 
 }

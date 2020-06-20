@@ -1,4 +1,4 @@
-package de.frooastside.engine.gui.renderer;
+package de.frooastside.engine.renderer;
 
 import java.util.List;
 import java.util.Map;
@@ -12,12 +12,13 @@ import de.frooastside.engine.gui.guielements.GuiText;
 import de.frooastside.engine.gui.meshcreator.FontType;
 import de.frooastside.engine.shader.fontshader.FontShader;
 
-public class FontRenderer {
+public class FontRenderer extends Renderer {
 
 	private FontShader fontShader;
 
 	public FontRenderer() {
 		fontShader = new FontShader();
+		super.shader = fontShader;
 	}
 	
 	public void render(Map<FontType, List<GuiText>> texts) {

@@ -47,4 +47,8 @@ public class LanguageManager {
 		return targetLanguage;
 	}
 
+	public List<Language> getLanguages() {
+		return languages;
+	}
+
 }
