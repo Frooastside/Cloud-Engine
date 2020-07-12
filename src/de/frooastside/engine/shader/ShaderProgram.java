@@ -66,11 +66,11 @@ public class ShaderProgram {
 	private int loadShader(String file, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 		try {
-			InputStream inputStream = this.getClass().getResourceAsStream("/de/frooastside/engine/shader/" + file);
+			InputStream inputStream = this.getClass().getResourceAsStream(file);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			String line;
 			while ((line = reader.readLine()) != null) {
-				shaderSource.append(line).append("//\n");
+				shaderSource.append(line).append("//\\r\n");
 			}
 			reader.close();
 		} catch (Exception e) {

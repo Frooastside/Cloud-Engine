@@ -25,16 +25,16 @@ public abstract class LoadingScreen extends GuiScreen {
 		if(loadingScreenText != null) {
 			if(modelQueueSize != 0) {
 				loadingScreenText.setText("Models " + (startModelsLength - modelQueueSize) + " / " + startModelsLength);
-				reloadText(loadingScreenText);
+				loadingScreenText.reload();
 				progress = 1f - (float) modelQueueSize / (float) startModelsLength;
 			}else if(textureQueueSize != 0) {
 				loadingScreenText.setText("Textures " + (startTexturesLength - textureQueueSize) + " / " + startTexturesLength);
-				reloadText(loadingScreenText);
+				loadingScreenText.reload();
 				progress = 1f - (float) textureQueueSize / (float) startTexturesLength;
 			}else {
 				if(!loadingScreenText.getText().equalsIgnoreCase(I18n.get("lq.done"))) {
 					loadingScreenText.setText(I18n.get("lq.done"));
-					reloadText(loadingScreenText);
+					loadingScreenText.reload();
 				}
 				if(timer < 0.5f) {
 					timer += delta;

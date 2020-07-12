@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCursorPosCallback;
-import org.lwjgl.glfw.GLFWDropCallback;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWGamepadState;
-import org.lwjgl.glfw.GLFWJoystickCallback;
-import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 import de.frooastside.engine.Engine;
 
@@ -18,21 +12,17 @@ public class InputManager {
 	
 	private long mainWindowID;
 	
-	private GLFWKeyCallback keyCallback;
-	private GLFWCursorPosCallback cursorPosCallback;
-	private GLFWMouseButtonCallback mouseButtonCallback;
-	private GLFWFramebufferSizeCallback framebufferSizeCallback;
-	private GLFWDropCallback fileDropCallback;
-	private GLFWJoystickCallback joystickCallback;
-	
 	private List<ICameraMovementCallback> cameraMovementCallbacks = new ArrayList<ICameraMovementCallback>();
 	private List<IMovementCallback> movementCallbacks = new ArrayList<IMovementCallback>();
 	private List<ICursorPositionCallback> cursorPositionCallbacks = new ArrayList<ICursorPositionCallback>();
 	private List<IButtonCallback> buttonCallbacks = new ArrayList<IButtonCallback>();
+	private List<ITextCallback> textCallbacks = new ArrayList<ITextCallback>();
+	private List<IMouseButtonCallback> mouseButtonCallbacks = new ArrayList<IMouseButtonCallback>();
 	
 	private GLFWGamepadState gamePadState;
 	private List<Integer> gamePadButtonList = new ArrayList<Integer>();
 	private List<Integer> keyboardButtonList = new ArrayList<Integer>();
+	private List<Integer> mouseButtonList = new ArrayList<Integer>();
 
 	private boolean cursorDisabled;
 	private boolean useControllerInput;
@@ -60,11 +50,96 @@ public class InputManager {
 		for (int i = 0; i <= GLFW.GLFW_JOYSTICK_LAST; i++) {
 			if(GLFW.glfwJoystickIsGamepad(i)) {
 				gamePadID = i;
-				System.out.println(gamePadID);
-				System.out.println(GLFW.glfwGetGamepadName(i));
 			}
 		}
 		gamePadState = GLFWGamepadState.create();
+	}
+	
+	private void setCallbacks() {
+		GLFW.glfwSetFramebufferSizeCallback(mainWindowID, Engine.getEngine()::recalculateWindowSize);
+		GLFW.glfwSetMouseButtonCallback(mainWindowID, this::invokeMouseButtonPress);
+		GLFW.glfwSetCursorPosCallback(mainWindowID, this::invokeCursorPosition);
+		GLFW.glfwSetDropCallback(mainWindowID, this::invokeFileDrop);
+		GLFW.glfwSetCharCallback(mainWindowID, this::invokeText);
+		GLFW.glfwSetKeyCallback(mainWindowID, this::invokeKeyPress);
+		GLFW.glfwSetJoystickCallback(this::invokeJoystick);
+	}
+
+	public void invokeMouseButtonPress(long window, int button, int action, int mods) {
+		switch (action) {
+		case GLFW.GLFW_PRESS:
+			mouseButtonList.add(button);
+			break;
+		case GLFW.GLFW_REPEAT:
+			
+			break;
+		case GLFW.GLFW_RELEASE:
+			mouseButtonList.remove((Object) button);
+			break;
+		default:
+			break;
+		}
+		for (IMouseButtonCallback callback : mouseButtonCallbacks) {
+			callback.invokeMouseButtonPress(button, action, mods);
+		}
+	}
+
+	public void invokeKeyPress(long window, int key, int scancode, int action, int mods) {
+		if(action == GLFW.GLFW_PRESS) {
+			if(key == GLFW.GLFW_KEY_ESCAPE) {
+				if(isCursorDisabled()) {
+					showCursor();
+				}else {
+					disableCursor();
+				}
+			}else if(key == GLFW.GLFW_KEY_6) {
+				System.gc();
+			}else if(key == GLFW.GLFW_KEY_7) {
+				System.out.println(1);
+				Engine.getEngine().getCurrentGuiScreen().recalculateElementPosition();
+			}
+		}
+		switch (action) {
+			case GLFW.GLFW_PRESS:
+				keyboardButtonList.add(key);
+				break;
+			case GLFW.GLFW_REPEAT:
+				
+				break;
+			case GLFW.GLFW_RELEASE:
+				keyboardButtonList.remove((Object) key);
+				break;
+			default:
+				break;
+		}
+		for (IButtonCallback callback : buttonCallbacks) {
+			callback.invokeButtonPress(key, scancode, action, mods);
+		}
+	}
+	
+	public void invokeText(long window, int codepoint) {
+		for (ITextCallback callback : textCallbacks) {
+			callback.invokeText(window, codepoint);
+		}
+	}
+	
+	private void invokeFileDrop(long window, int count, long names) {
+		
+	}
+	
+	private void invokeJoystick(int jid, int event) {
+		if(event == GLFW.GLFW_CONNECTED) {
+			if(GLFW.glfwJoystickIsGamepad(jid)) {
+				gamePadID = jid;
+			}
+		}else {
+			gamePadID = -1;
+		}
+	}
+	
+	private void invokeCursorPosition(long window, double xpos, double ypos) {
+		mouseX = (float) xpos;
+		mouseY = (float) ypos;
 	}
 
 	public void updateInputs() {
@@ -177,29 +252,6 @@ public class InputManager {
 			}
 		}
 	}
-
-	public void invokeMouseButtonPress(long window, int button, int action, int mods) {
-		
-	}
-
-	public void invokeKeyPress(long window, int key, int scancode, int action, int mods) {
-		switch (action) {
-			case GLFW.GLFW_PRESS:
-				keyboardButtonList.add(key);
-				break;
-			case GLFW.GLFW_REPEAT:
-				
-				break;
-			case GLFW.GLFW_RELEASE:
-				keyboardButtonList.remove((Object) key);
-				break;
-			default:
-				break;
-		}
-		for (IButtonCallback callback : buttonCallbacks) {
-			callback.invokeButtonPress(key);
-		}
-	}
 	
 	public String getClipboard() {
 		String clipboard = GLFW.glfwGetClipboardString(mainWindowID);
@@ -232,85 +284,6 @@ public class InputManager {
 		GLFW.glfwGetFramebufferSize(mainWindowID, width, height);
 		GLFW.glfwSetCursorPos(mainWindowID, width[0] / 2f, height[0] / 2f);
 	}
-	
-	private void setCallbacks() {
-		keyCallback = new GLFWKeyCallback() {
-			
-			@Override
-			public void invoke(long window, int key, int scancode, int action, int mods) {
-				if(action == GLFW.GLFW_PRESS) {
-					if(key == GLFW.GLFW_KEY_ESCAPE) {
-						if(isCursorDisabled()) {
-							showCursor();
-						}else {
-							disableCursor();
-						}
-					}else if(key == GLFW.GLFW_KEY_6) {
-						System.gc();
-					}
-				}
-				invokeKeyPress(window, key, scancode, action, mods);
-			}
-			
-		};
-		cursorPosCallback = new GLFWCursorPosCallback() {
-			
-			@Override
-			public void invoke(long window, double xpos, double ypos) {
-				mouseX = (float) xpos;
-				mouseY = (float) ypos;
-			}
-			
-		};
-		mouseButtonCallback = new GLFWMouseButtonCallback() {
-			
-			@Override
-			public void invoke(long window, int button, int action, int mods) {
-				invokeMouseButtonPress(window, button, action, mods);
-			}
-			
-		};
-		framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
-			
-			@Override
-			public void invoke(long window, int width, int height) {
-				Engine.getEngine().recalculateWindowSize(width, height);
-			}
-			
-		};
-		fileDropCallback = new GLFWDropCallback() {
-			
-			@Override
-			public void invoke(long window, int count, long names) {
-				
-			}
-			
-		};
-		joystickCallback = new GLFWJoystickCallback() {
-			
-			@Override
-			public void invoke(int jid, int event) {
-				System.out.println(jid);
-				System.out.println(event);
-				System.out.println(GLFW.glfwJoystickIsGamepad(jid));
-				if(event == GLFW.GLFW_CONNECTED) {
-					if(GLFW.glfwJoystickIsGamepad(jid)) {
-						gamePadID = jid;
-					}
-				}else {
-					gamePadID = -1;
-				}
-			}
-			
-		};
-		
-		GLFW.glfwSetKeyCallback(mainWindowID, keyCallback);
-		GLFW.glfwSetCursorPosCallback(mainWindowID, cursorPosCallback);
-		GLFW.glfwSetMouseButtonCallback(mainWindowID, mouseButtonCallback);
-		GLFW.glfwSetFramebufferSizeCallback(mainWindowID, framebufferSizeCallback);
-		GLFW.glfwSetDropCallback(mainWindowID, fileDropCallback);
-		GLFW.glfwSetJoystickCallback(joystickCallback);
-	}
 
 	public List<ICameraMovementCallback> getCameraMovementCallbacks() {
 		return cameraMovementCallbacks;
@@ -318,6 +291,22 @@ public class InputManager {
 
 	public List<IMovementCallback> getButtonMovementCallbacks() {
 		return movementCallbacks;
+	}
+
+	public List<ICursorPositionCallback> getCursorPositionCallbacks() {
+		return cursorPositionCallbacks;
+	}
+
+	public List<IButtonCallback> getButtonCallbacks() {
+		return buttonCallbacks;
+	}
+
+	public List<IMouseButtonCallback> getMouseButtonCallbacks() {
+		return mouseButtonCallbacks;
+	}
+
+	public List<ITextCallback> getTextCallbacks() {
+		return textCallbacks;
 	}
 
 	public boolean isCursorDisabled() {
@@ -334,6 +323,18 @@ public class InputManager {
 
 	public List<Integer> getKeyboardButtonList() {
 		return keyboardButtonList;
+	}
+
+	public List<Integer> getMouseButtonList() {
+		return mouseButtonList;
+	}
+
+	public float getMouseX() {
+		return mouseX;
+	}
+
+	public float getMouseY() {
+		return mouseY;
 	}
 
 }

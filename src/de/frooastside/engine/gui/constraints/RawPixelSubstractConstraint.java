@@ -14,12 +14,12 @@ public class RawPixelSubstractConstraint extends Constraint {
 
 	@Override
 	public float getRawXPosition() {
-		return (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getX().getRawXPosition() : 0) : 0) + (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getWidth().getRawWidth() : 1) : 1) - (getPixelWidth() * pixel);
+		return (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getX().getRawXPosition() : 0) : 0) + rawValue * (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getWidth().getRawWidth() : 1) : 1) - (getPixelWidth() * pixel);
 	}
 
 	@Override
 	public float getRawYPosition() {
-		return (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getY().getRawYPosition() : 0) : 0) + (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getHeight().getRawHeight() : 1) : 1) - (getPixelHeight() * pixel);
+		return (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getY().getRawYPosition() : 0) : 0) + rawValue * (constraints != null ? (constraints.getParent() != null ? constraints.getParent().getHeight().getRawHeight() : 1) : 1) - (getPixelHeight() * pixel);
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.joml.Vector4f;
 
-import de.frooastside.engine.gui.ElementConstraints;
 import de.frooastside.engine.gui.GuiElement;
 import de.frooastside.engine.gui.constraints.PixelConstraint;
 import de.frooastside.engine.gui.constraints.RawConstraint;
@@ -20,19 +19,18 @@ public class GuiLoadingBar extends GuiElement {
 	private Vector4f standardColor;
 	private Vector4f highlightedColor;
 	
-	public GuiLoadingBar(ElementConstraints constraints, int size, int space, int count, float speed, Vector4f standardColor, Vector4f highlightedColor) {
-		this.constraints = constraints;
+	public GuiLoadingBar(int size, int space, int count, float speed, Vector4f standardColor, Vector4f highlightedColor) {
 		this.speed = speed;
 		this.standardColor = standardColor;
 		this.highlightedColor = highlightedColor;
 		this.elements = new ArrayList<GuiRenderElement>();
 		for(int i = 0; i < count; i++) {
 			GuiRenderElement element = new GuiRenderElement(standardColor);
-			element.getConstraints().setParent(constraints);
-			element.getConstraints().setX(new PixelConstraint((size + space) * i));
-			element.getConstraints().setY(new RawConstraint(0));
-			element.getConstraints().setWidth(new PixelConstraint(size));
-			element.getConstraints().setHeight(new PixelConstraint(size));
+			element.setParent(this);
+			element.setX(new PixelConstraint((size + space) * i));
+			element.setY(new RawConstraint(0));
+			element.setWidth(new PixelConstraint(size));
+			element.setHeight(new PixelConstraint(size));
 			elements.add(element);
 		}
 		listLength = elements.size();

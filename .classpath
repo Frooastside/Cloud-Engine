@@ -32,5 +32,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/Authentication-System"/>
+	<classpathentry kind="lib" path="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Libraries/lwjgl-assimp.jar" sourcepath="C:/Users/Simon/Documents/LWJGL 3.2.3/jars/Eclipse Jars Source/lwjgl-assimp-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Simon/Documents/LWJGL%203.2.3/jars/Eclipse%20Jars%20Javadoc/lwjgl-assimp-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

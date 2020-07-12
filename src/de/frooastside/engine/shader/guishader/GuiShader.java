@@ -10,8 +10,8 @@ import de.frooastside.engine.shader.UniformVec4;
 
 public class GuiShader extends ShaderProgram {
 	
-	private static final String VERTEX_FILE = "guishader/vertexshader.glsl";
-	private static final String FRAGMENT_FILE = "guishader/fragmentshader.glsl";
+	private static final String VERTEX_FILE = "/de/frooastside/engine/shader/guishader/vertexshader.glsl";
+	private static final String FRAGMENT_FILE = "/de/frooastside/engine/shader/guishader/fragmentshader.glsl";
 	
 	private UniformSampler guiTexture = new UniformSampler("guiTexture");
 	private UniformBoolean useColor = new UniformBoolean("useColor");

@@ -1,6 +1,6 @@
 package de.frooastside.engine;
 
-import de.frooastside.UserAuthentication;
+import de.frooastside.authentication.UserAuthentication;
 import de.frooastside.engine.language.I18n;
 
 public class Session {
@@ -18,7 +18,7 @@ public class Session {
 		userAuthentication.setUsername(username);
 		userAuthentication.setPassword(password);
 		userAuthentication.authenticate();
-		if(userAuthentication.isSuccessfull()) {
+		if(userAuthentication.isSuccessful()) {
 			if(userAuthentication.isActivated()) {
 				UUID = userAuthentication.getUUID();
 				displayName = userAuthentication.getDisplayname();

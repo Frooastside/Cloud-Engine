@@ -100,6 +100,7 @@ public class LoadingQueue {
 						e.printStackTrace();
 					}
 				}
+				loadingScreen.open();
 				while(!done) {
 					glfwManager.clearBuffers();
 					guiRenderer.render(loadingScreen);
@@ -126,6 +127,10 @@ public class LoadingQueue {
 
 	public GuiScreen getLoadingScreen() {
 		return loadingScreen;
+	}
+	
+	public boolean isEmpty() {
+		return models.isEmpty() && textures.isEmpty();
 	}
 
 	public boolean isDone() {

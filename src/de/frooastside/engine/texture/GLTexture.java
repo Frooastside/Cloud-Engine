@@ -1,5 +1,6 @@
 package de.frooastside.engine.texture;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.imageio.ImageIO;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTDirectStateAccess;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
@@ -25,6 +28,10 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL42;
 import org.lwjgl.stb.STBImage;
+import org.lwjgl.stb.STBTTBakedChar;
+import org.lwjgl.stb.STBTTFontinfo;
+import org.lwjgl.stb.STBTruetype;
+import org.lwjgl.system.MemoryUtil;
 
 import de.frooastside.engine.Engine;
 import de.frooastside.engine.language.I18n;
@@ -77,6 +84,35 @@ public class GLTexture implements ILoadingQueueElement {
 		}
 	}
 	
+	public ImageMetaData loadFont(String file) {
+		int imageSize = 8192;
+		ByteBuffer fontBuffer;
+		try {
+			fontBuffer = ioResourceToByteBuffer(file, 0);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		STBTTFontinfo fontInfo = new STBTTFontinfo(MemoryUtil.memAlloc(160));
+		System.out.println(STBTruetype.stbtt_InitFont(fontInfo, fontBuffer));
+		
+		ByteBuffer imageBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
+		STBTTBakedChar.Buffer buffer = STBTTBakedChar.malloc(8196 * 6);
+		STBTruetype.stbtt_BakeFontBitmap(fontBuffer, 64, imageBuffer, imageSize, imageSize, 'A', buffer);
+		try {
+			byte[] imageArray = new byte[imageSize * imageSize];
+			imageBuffer.get(imageArray);
+			BufferedImage image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
+			for (int i = 0; i < imageArray.length; i++) {
+				byte b = imageArray[i];
+				image.setRGB(i % imageSize, i / imageSize, b);
+			}
+			ImageIO.write(image, "png", new File("C:/Users/Simon/Documents/consola.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	private ImageMetaData loadImage(String file, int handle) {
 		ByteBuffer imageBuffer;
 		try {
@@ -119,7 +155,7 @@ public class GLTexture implements ILoadingQueueElement {
 		return metaData;
 	}
 	
-	private ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
+	private static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
 		ByteBuffer buffer;
 		
 		Path path = Paths.get(resource);
@@ -129,6 +165,7 @@ public class GLTexture implements ILoadingQueueElement {
 				while (seekableByteChannel.read(buffer) != -1) {}
 			}
 		}else {
+			System.out.println(1);
 			try(InputStream source = new FileInputStream(new File(resource)); ReadableByteChannel readableByteChannel = Channels.newChannel(source)) {
 				buffer = BufferUtils.createByteBuffer(bufferSize);
 				while (true) {
@@ -146,7 +183,7 @@ public class GLTexture implements ILoadingQueueElement {
 		return buffer;
 	}
 
-	private ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
+	private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
 		ByteBuffer newBuffer = BufferUtils.createByteBuffer(newCapacity);
 		buffer.flip();
 		newBuffer.put(buffer);

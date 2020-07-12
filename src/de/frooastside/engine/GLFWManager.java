@@ -40,8 +40,8 @@ public class GLFWManager {
 			GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, GLFW.GLFW_TRUE);
 			GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
 			GLFWVidMode videoMode = GLFW.glfwGetVideoMode(primary);
-			int width = (int) (videoMode.width() / 1.2f);
-			int height = (int) (videoMode.height() / 1.2f);
+			int width = (int) (videoMode.width() / 1.8f);
+			int height = (int) (videoMode.height() / 1.8f);
 			mainWindowWidth = width;
 			mainWindowHeight = height;
 			mainWindowID = GLFW.glfwCreateWindow(width, height, title, 0, 0);
@@ -74,7 +74,7 @@ public class GLFWManager {
 	
 	private void initOpenGL() {
 		GL.createCapabilities();
-		GL11.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		GL11.glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 		GL11.glEnable(GL13.GL_MULTISAMPLE);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
