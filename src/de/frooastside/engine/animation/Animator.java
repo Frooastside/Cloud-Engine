@@ -12,6 +12,7 @@ public class Animator {
 	
 	private Animation currentAnimation;
 	private KeyFrame lastAnimationPose;
+	
 	private float animationTime = 0;
 	
 	private Map<String, JointTransform> pose = new HashMap<String, JointTransform>();

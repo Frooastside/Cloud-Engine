@@ -13,27 +13,27 @@ public class Animation implements Serializable {
 	private final float length;
 	private final KeyFrame[] keyFrames;
 	
-	public Animation(String name, float lengthInSeconds, KeyFrame[] keyFrames) {
+	public Animation(String name, float length, KeyFrame[] keyFrames) {
 		this.name = name;
 		this.keyFrames = keyFrames;
-		this.length = lengthInSeconds;
+		this.length = length;
 	}
 	
 	@Override
 	public String toString() {
 		return name;
 	}
-	
-	public float getLength() {
-		return length;
-	}
-	
-	public KeyFrame[] getKeyFrames() {
-		return keyFrames;
-	}
 
 	public String getName() {
 		return name;
+	}
+
+	public float getLength() {
+		return length;
+	}
+
+	public KeyFrame[] getKeyFrames() {
+		return keyFrames;
 	}
 
 }

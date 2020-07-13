@@ -30,8 +30,8 @@ import org.lwjgl.assimp.Assimp;
 public class AnimationLoader {
 	
 	@SuppressWarnings("unchecked")
-	public static Map<String, Animation> loadAnimationLibrary(String filePath) throws ClassNotFoundException, IOException {
-		File libraryFile = new File(filePath);
+	public static Map<String, Animation> loadAnimationLibrary(String libraryFilePath) throws ClassNotFoundException, IOException {
+		File libraryFile = new File(libraryFilePath);
 		if(libraryFile.exists()) {
 			Map<String, Animation> animationMap = new HashMap<String, Animation>();
 			ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(libraryFile)));
@@ -43,8 +43,8 @@ public class AnimationLoader {
 		}
 	}
 	
-	public void exportAnimationLibrary(String filePath, List<Animation> animations) {
-		File libraryFile = new File(filePath);
+	public void exportAnimationLibrary(String libraryFilePath, List<Animation> animations) {
+		File libraryFile = new File(libraryFilePath);
 		if(!libraryFile.exists()) {
 			try {
 				libraryFile.createNewFile();
