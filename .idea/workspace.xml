@@ -22,11 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ecc5080-a6c9-48ce-99ac-bbbd4055b9f9" name="Default Changelist" comment="Added Shaders and enum classes for opengl int enums">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Forest Adventure.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Cloud-Engine.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="1ecc5080-a6c9-48ce-99ac-bbbd4055b9f9" name="Default Changelist" comment="Added Shaders and enum classes for opengl int enums" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -97,11 +93,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main (1)" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -223,9 +214,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="664" y="411" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1595879769685" />
-    <state x="342" y="181" key="new project wizard" timestamp="1596965732426">
+    <state x="342" y="181" key="new project wizard" timestamp="1597928898180">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="342" y="181" key="new project wizard/0.0.1920.1040/-1280.49.1280.984/1920.0.1920.1040@0.0.1920.1040" timestamp="1597928898180" />
     <state x="342" y="181" key="new project wizard/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596965732426" />
     <state x="755" y="267" key="refactoring.ChangeSignatureDialog" timestamp="1596559292677">
       <screen x="0" y="0" width="1920" height="1040" />
