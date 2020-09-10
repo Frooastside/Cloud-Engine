@@ -20,6 +20,9 @@ public abstract class ShaderProgram {
     deleteShaders();
     storeUniformLocations();
     validate();
+    start();
+    setDefaults();
+    stop();
   }
 
   protected abstract void addShaders();
@@ -39,6 +42,8 @@ public abstract class ShaderProgram {
   protected void storeUniformLocation(Uniform uniform) {
     uniform.storeUniformLocation(identifier);
   }
+
+  protected void setDefaults() {}
 
   protected void attachShaders() {
     shaders.forEach(shader -> shader.attach(identifier));

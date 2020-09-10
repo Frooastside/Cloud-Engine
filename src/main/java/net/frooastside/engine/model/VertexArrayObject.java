@@ -84,6 +84,19 @@ public class VertexArrayObject {
     return vertexArrayObject;
   }
 
+  public static VertexArrayObject create2DTFor(float[] positions, float[] textureCoordinates) {
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(generateIdentifier(), positions.length / 2);
+    vertexArrayObject.bind();
+    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+    positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
+    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
+    VertexBufferObject textureCoordinateBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+    textureCoordinateBuffer.storeFloatData(VertexBufferUtils.store(textureCoordinates));
+    vertexArrayObject.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
+    vertexArrayObject.unbind();
+    return vertexArrayObject;
+  }
+
   public static VertexArrayObject create2DIFor(float[] positions, short[] indices) {
     VertexArrayObject vertexArrayObject = new VertexArrayObject(generateIdentifier(), indices.length);
     vertexArrayObject.bind();

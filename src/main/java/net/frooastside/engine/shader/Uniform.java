@@ -1,5 +1,6 @@
 package net.frooastside.engine.shader;
 
+import net.frooastside.engine.language.I18n;
 import org.lwjgl.opengl.GL20;
 
 public abstract class Uniform {
@@ -15,8 +16,11 @@ public abstract class Uniform {
 
   public void storeUniformLocation(int programId) {
     location = GL20.glGetUniformLocation(programId, name);
-    if (location == NOT_FOUND)
-      System.err.printf("Didnt find the Uniform Location for %s in the program with the id %d", name, programId);
+    if (location == NOT_FOUND) {
+      //TODO Language
+      //System.err.println(I18n.get("error.shader.uniformLocation", name, programId));
+      System.err.println("error.shader.uniformLocation, " + name + ", " + programId);
+    }
   }
 
   public int location() {

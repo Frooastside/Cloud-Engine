@@ -1,6 +1,5 @@
 package net.frooastside.engine.model;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import java.nio.ByteBuffer;

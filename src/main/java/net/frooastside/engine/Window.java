@@ -90,6 +90,10 @@ public class Window {
     GLFW.glfwDestroyWindow(windowId);
   }
 
+  public double delta() {
+    return delta;
+  }
+
   public static Window createWindow(String title, boolean fullscreen, int windowWidth, int windowHeight) {
     long monitorPointer = GLFW.glfwGetPrimaryMonitor();
     GLFWVidMode videoMode = GLFW.glfwGetVideoMode(monitorPointer);
