@@ -14,7 +14,7 @@ public class I18n {
 
   public static String get(String key, Object... args) {
     String result = key;
-    if(instance.currentLanguage.contains(key)) {
+    if (instance.currentLanguage.contains(key)) {
       result = String.format(instance.currentLanguage.get(key), args);
     }
     return result;
@@ -26,7 +26,7 @@ public class I18n {
 
   public static void loadFromDirectory(File directory) {
     File[] languageFiles = directory.listFiles(file -> file.exists() && file.isFile() && file.getName().endsWith(".lang"));
-    if(languageFiles != null) {
+    if (languageFiles != null) {
       Language[] languages = new Language[languageFiles.length];
       for (int i = 0, languageFilesLength = languageFiles.length; i < languageFilesLength; i++) {
         languages[i] = Language.createFromFile(languageFiles[i]);

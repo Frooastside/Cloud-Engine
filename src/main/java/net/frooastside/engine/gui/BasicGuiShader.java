@@ -1,9 +1,9 @@
-package net.frooastside.engine.shader.guishader;
+package net.frooastside.engine.gui;
 
-import net.frooastside.engine.resource.texture.Texture;
+import net.frooastside.engine.resource.Texture;
 import net.frooastside.engine.shader.*;
 
-public class GuiShader extends ShaderProgram {
+public class BasicGuiShader extends ShaderProgram {
 
   private final UniformBoolean uniformUseTexture = new UniformBoolean("useTexture");
   private final UniformFloat uniformVisibility = new UniformFloat("visibility");

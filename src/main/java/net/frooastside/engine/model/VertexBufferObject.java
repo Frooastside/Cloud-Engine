@@ -34,12 +34,6 @@ public class VertexBufferObject {
     unbind();
   }
 
-  public void store4xCompressedIntData(IntBuffer data) {
-    bind();
-    GL15.glBufferData(target, data, usage);
-    unbind();
-  }
-
   public void storeShortData(ShortBuffer data) {
     bind();
     GL15.glBufferData(target, data, usage);
@@ -49,6 +43,30 @@ public class VertexBufferObject {
   public void storeByteData(ByteBuffer data) {
     bind();
     GL15.glBufferData(target, data, usage);
+    unbind();
+  }
+
+  public void storeFloatSubData(FloatBuffer data, long offset) {
+    bind();
+    GL15.glBufferSubData(target, offset, data);
+    unbind();
+  }
+
+  public void storeIntSubData(IntBuffer data, long offset) {
+    bind();
+    GL15.glBufferSubData(target, offset, data);
+    unbind();
+  }
+
+  public void storeShortSubData(ShortBuffer data, long offset) {
+    bind();
+    GL15.glBufferSubData(target, offset, data);
+    unbind();
+  }
+
+  public void storeByteSubData(ByteBuffer data, long offset) {
+    bind();
+    GL15.glBufferSubData(target, offset, data);
     unbind();
   }
 

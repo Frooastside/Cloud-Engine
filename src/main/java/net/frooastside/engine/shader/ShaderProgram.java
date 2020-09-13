@@ -43,7 +43,8 @@ public abstract class ShaderProgram {
     uniform.storeUniformLocation(identifier);
   }
 
-  protected void setDefaults() {}
+  protected void setDefaults() {
+  }
 
   protected void attachShaders() {
     shaders.forEach(shader -> shader.attach(identifier));

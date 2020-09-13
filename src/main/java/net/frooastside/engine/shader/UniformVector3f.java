@@ -16,7 +16,7 @@ public class UniformVector3f extends Uniform {
   }
 
   public void loadVector3f(float x, float y, float z) {
-    if(currentX != x || currentY != y || currentZ != z) {
+    if (currentX != x || currentY != y || currentZ != z) {
       this.currentX = x;
       this.currentY = y;
       this.currentZ = z;

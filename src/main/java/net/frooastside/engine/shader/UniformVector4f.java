@@ -16,7 +16,7 @@ public class UniformVector4f extends Uniform {
   }
 
   public void loadVector4f(float x, float y, float z, float w) {
-    if(currentX != x || currentY != y || currentZ != z || currentW != w) {
+    if (currentX != x || currentY != y || currentZ != z || currentW != w) {
       this.currentX = x;
       this.currentY = y;
       this.currentZ = z;

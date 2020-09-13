@@ -32,7 +32,6 @@ public class Shader {
   }
 
   public static Shader createShader(String sourceFilePath, boolean isInClassPath, int shaderType) {
-    System.out.println(Shader.class.getResource("/"));
     int shaderId = GL20.glCreateShader(shaderType);
     String shaderSource = fileToShaderSource(sourceFilePath, isInClassPath);
     Objects.requireNonNull(shaderSource);

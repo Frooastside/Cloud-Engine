@@ -10,7 +10,7 @@ import java.util.Objects;
 public class VertexArrayObject {
 
   private final int identifier;
-  private final int length;
+  private int length;
 
   private final VertexBufferObject[] vertexBufferObjects = new VertexBufferObject[16];
   private VertexBufferObject indexBufferObject;
@@ -70,8 +70,20 @@ public class VertexArrayObject {
     Arrays.stream(vertexBufferObjects).filter(Objects::nonNull).forEach(VertexBufferObject::delete);
   }
 
-  private static int generateIdentifier() {
+  public static int generateIdentifier() {
     return GL30.glGenVertexArrays();
+  }
+
+  public VertexBufferObject getVertexBufferObject(int index) {
+    return vertexBufferObjects[index];
+  }
+
+  public void setLength(int length) {
+    this.length = length;
+  }
+
+  public int length() {
+    return length;
   }
 
   public static VertexArrayObject create2DFor(float[] positions) {
@@ -80,19 +92,6 @@ public class VertexArrayObject {
     VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
     positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
     vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-    vertexArrayObject.unbind();
-    return vertexArrayObject;
-  }
-
-  public static VertexArrayObject create2DTFor(float[] positions, float[] textureCoordinates) {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(generateIdentifier(), positions.length / 2);
-    vertexArrayObject.bind();
-    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
-    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-    VertexBufferObject textureCoordinateBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    textureCoordinateBuffer.storeFloatData(VertexBufferUtils.store(textureCoordinates));
-    vertexArrayObject.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
     vertexArrayObject.unbind();
     return vertexArrayObject;
   }
@@ -126,11 +125,10 @@ public class VertexArrayObject {
     vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
 
     VertexBufferObject colorBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.UNSIGNED_BYTE, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    colorBuffer.store4xCompressedIntData(VertexBufferUtils.store4fAs1i(colors));
+    colorBuffer.storeIntData(VertexBufferUtils.store4fAs1i(colors));
     vertexArrayObject.appendVertexBufferObject(colorBuffer, 1, 4, true, 0, 0);
 
     vertexArrayObject.unbind();
     return vertexArrayObject;
   }
-
 }

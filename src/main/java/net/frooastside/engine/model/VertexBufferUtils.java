@@ -40,7 +40,7 @@ public class VertexBufferUtils {
   }
 
   public static int convert4fTo1i(float f1, float f2, float f3, float f4) {
-    int compressedInt =             ((int) (f4 * 255) << 24);
+    int compressedInt = ((int) (f4 * 255) << 24);
     compressedInt = compressedInt | ((int) (f3 * 255) << 16);
     compressedInt = compressedInt | ((int) (f2 * 255) << 8);
     compressedInt = compressedInt | ((int) (f1 * 255));

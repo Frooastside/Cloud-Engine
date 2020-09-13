@@ -25,21 +25,22 @@ public class Language {
     String languageName = "Invalid Language";
     try {
       BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-      while(bufferedReader.ready()) {
+      while (bufferedReader.ready()) {
         String line = bufferedReader.readLine();
-        if(line.contains("=")) {
+        if (line.contains("=")) {
           String key = line.substring(0, line.indexOf("="));
           String value = line.substring(line.indexOf("="));
-          if(key.equals("language.code")) {
+          if (key.equals("language.code")) {
             languageCode = value;
-          }else if(key.equals("language.name")) {
+          } else if (key.equals("language.name")) {
             languageName = value;
-          }else {
+          } else {
             translatedStrings.put(key, value);
           }
         }
       }
-    }catch (IOException ignored) {}
+    } catch (IOException ignored) {
+    }
     return new Language(languageCode, languageName, translatedStrings);
   }
 

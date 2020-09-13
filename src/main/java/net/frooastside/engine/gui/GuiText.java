@@ -1,120 +1,126 @@
 package net.frooastside.engine.gui;
 
-import net.frooastside.engine.gui.font.Character;
-import net.frooastside.engine.gui.font.Font;
-import net.frooastside.engine.gui.font.Line;
-import net.frooastside.engine.gui.font.Word;
-import net.frooastside.engine.model.VertexArrayObject;
+import net.frooastside.engine.resource.Font;
+import net.frooastside.engine.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
+public class GuiText extends GuiElement {
 
-public class GuiText {
+  public static final double LINE_HEIGHT = 0.025f;
 
-  private static final float HEIGHT = 5.0f;
+  private static final float TEXT_SIZE = 5.0f;
   private static final float MAX_LENGTH = 1.0f;
-  private static final boolean CENTERED = false;
+  private static final boolean CENTERED = true;
+  private static final String TEXT = "AAAA nøkk ist voll aua lululul.";
 
   private final Font font;
+  private String text;
+  private float textSize;
+  private boolean centered;
 
-  private VertexArrayObject model;
-  private float[] positions;
-  private float[] textureCoordinates;
+  private final VertexArrayObject model = createVertexArrayObject();
 
   public GuiText(Font font) {
     this.font = font;
   }
 
-  public void createMesh() {
-    List<Line> lines = createStructure();
-    createQuadVertices(lines);
-    model = VertexArrayObject.create2DTFor(positions, textureCoordinates);
+  @Override
+  public void recalculate(float aspectRatio) {
+    updateModel(aspectRatio);
   }
 
-  private List<Line> createStructure() {
-    List<Line> lines = new ArrayList<>();
-    Line currentLine = new Line(font.spaceWidth(), HEIGHT, MAX_LENGTH); //TODO SPACE WIDTH
-    Word currentWord = new Word(HEIGHT);
-    for(char asciiCharacter : "AAAA Samuel ist nicht voll gemein lululul.".toCharArray()) {
-      if(asciiCharacter != Font.SPACE_ASCII) {
-        Character character = font.getCharacter(asciiCharacter);
-        currentWord.addCharacter(character);
-      }else {
-        if(!currentLine.attemptToAddWord(currentWord)) {
-          lines.add(currentLine);
-          currentLine = new Line(font.spaceWidth(), HEIGHT, MAX_LENGTH); //TODO SPACE WIDTH
-          currentLine.attemptToAddWord(currentWord);
-        }
-        currentWord = new Word(HEIGHT);
-      }
+  private void updateModel(double aspectRatio) {
+    double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
+    double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
+    double lineLength = 0;
+    int characterCount = 0;
+    for (char asciiCharacter : TEXT.toCharArray()) {
+      Font.Character character = font.getCharacter(asciiCharacter);
+      lineLength += (character.xAdvance() * horizontalPerPixelSize) * TEXT_SIZE;
+      characterCount += asciiCharacter != Font.SPACE_ASCII ? 1 : 0;
     }
-    if(!currentLine.attemptToAddWord(currentWord)) {
-      lines.add(currentLine);
-      currentLine = new Line(font.spaceWidth(), HEIGHT, MAX_LENGTH); //TODO SPACE WIDTH
-      currentLine.attemptToAddWord(currentWord);
-    }
-    lines.add(currentLine);
-    return lines;
-  }
-
-  private void createQuadVertices(List<Line> lines) {
-    double cursorX = 0.0;
-    double cursorY = Font.LINE_HEIGHT * HEIGHT / 2;
-    List<Float> positions = new ArrayList<>();
-    List<Float> textureCoordinates = new ArrayList<>();
-    for(Line line : lines) {
-      if(CENTERED) {
-        cursorX = (line.maxLength() - line.lineLength()) / 2;
+    double cursorX = CENTERED ? (MAX_LENGTH - lineLength) / 2 : 0.0;
+    double yLineOffset = (LINE_HEIGHT / 2) * TEXT_SIZE;
+    float[] positions = new float[characterCount * 12];
+    float[] textureCoordinates = new float[characterCount * 12];
+    int index = 0;
+    for (char asciiCharacter : TEXT.toCharArray()) {
+      Font.Character character = font.getCharacter(asciiCharacter);
+      if (asciiCharacter != Font.SPACE_ASCII) {
+        addVerticesFor(positions, textureCoordinates, character, index, verticalPerPixelSize, horizontalPerPixelSize, cursorX, yLineOffset);
+        index++;
       }
-      for(Word word : line.words()) {
-        for(Character character : word.characters()) {
-          addVerticesFor(positions, character, cursorX, cursorY, HEIGHT);
-          addPoints(textureCoordinates,
-            character.xTextureCoordinate(),
-            character.yTextureCoordinate(),
-            character.xMaxTextureCoordinate(),
-            character.yMaxTextureCoordinate());
-          cursorX += character.xAdvance() * HEIGHT; //TODO ADVANCE
-        }
-        cursorX += font.spaceWidth() * HEIGHT; //TODO SPACE WIDTH
-      }
-      cursorX = 0;
-      cursorY += Font.LINE_HEIGHT * HEIGHT;
+      cursorX += (character.xAdvance() * horizontalPerPixelSize) * TEXT_SIZE;
     }
-    this.positions = toArray(positions);
-    this.textureCoordinates = toArray(textureCoordinates);
+    if (positions.length / 2 == model.length()) {
+      bufferSubData(positions, textureCoordinates);
+    } else {
+      bufferData(positions, textureCoordinates);
+    }
   }
 
-  public float[] toArray(List<Float> list) {
-    float[] array = new float[list.size()];
-    IntStream.range(0, array.length).forEach(i -> array[i] = list.get(i));
-    return array;
+  private void addVerticesFor(float[] positions, float[] textureCoordinates, Font.Character character, int characterIndex, double verticalPerPixelSize, double horizontalPerPixelSize, double cursorX, double cursorY) {
+    double x = cursorX + ((character.xOffset() * horizontalPerPixelSize) * TEXT_SIZE);
+    double y = cursorY + ((character.yOffset() * verticalPerPixelSize) * TEXT_SIZE);
+    double xMax = x + ((character.xSize() * horizontalPerPixelSize) * TEXT_SIZE);
+    double yMax = y + ((character.ySize() * verticalPerPixelSize) * TEXT_SIZE);
+    addPoints(positions,
+      characterIndex,
+      x * 2 - 1,
+      y * -2 + 1,
+      xMax * 2 - 1,
+      yMax * -2 + 1);
+    addPoints(textureCoordinates,
+      characterIndex,
+      character.xTextureCoordinate(),
+      character.yTextureCoordinate(),
+      character.xMaxTextureCoordinate(),
+      character.yMaxTextureCoordinate());
   }
 
-  private void addVerticesFor(List<Float> vertices, Character character, double cursorX, double cursorY, float fontSize) {
-    double x = (cursorX + (character.xOffset() * fontSize)); //TODO OFFSET
-    double y = (cursorY + (character.yOffset() * fontSize)); //TODO OFFSET
-    double xMax = (x + (character.xSize() * fontSize)); //TODO SIZE
-    double yMax = (y + (character.ySize() * fontSize)); //TODO SIZE
-    //addPoints(vertices, x, y, xMax, yMax);
-    addPoints(vertices, x * 2 - 1, y * -2 + 1, xMax * 2 - 1, yMax * -2 + 1);
+  private void addPoints(float[] array, int characterIndex, double x, double y, double xMax, double yMax) {
+    array[characterIndex * 12] = (float) x;
+    array[characterIndex * 12 + 1] = (float) y;
+    array[characterIndex * 12 + 2] = (float) x;
+    array[characterIndex * 12 + 3] = (float) yMax;
+    array[characterIndex * 12 + 4] = (float) xMax;
+    array[characterIndex * 12 + 5] = (float) yMax;
+
+    array[characterIndex * 12 + 6] = (float) x;
+    array[characterIndex * 12 + 7] = (float) y;
+    array[characterIndex * 12 + 8] = (float) xMax;
+    array[characterIndex * 12 + 9] = (float) yMax;
+    array[characterIndex * 12 + 10] = (float) xMax;
+    array[characterIndex * 12 + 11] = (float) y;
   }
 
-  public void addPoints(List<Float> points, double x, double y, double xMax, double yMax) {
-    points.add((float) x);
-    points.add((float) y);
-    points.add((float) x);
-    points.add((float) yMax);
-    points.add((float) xMax);
-    points.add((float) yMax);
+  private VertexArrayObject createVertexArrayObject() {
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(VertexArrayObject.generateIdentifier(), 0);
+    vertexArrayObject.bind();
+    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
+    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
+    VertexBufferObject textureCoordinateBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
+    vertexArrayObject.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
+    vertexArrayObject.unbind();
+    return vertexArrayObject;
+  }
 
-    points.add((float) x);
-    points.add((float) y);
-    points.add((float) xMax);
-    points.add((float) yMax);
-    points.add((float) xMax);
-    points.add((float) y);
+  private void bufferData(float[] positions, float[] textureCoordinates) {
+    model.bind();
+    model.setLength(positions.length / 2);
+    VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
+    positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
+    VertexBufferObject textureCoordinateBuffer = model.getVertexBufferObject(1);
+    textureCoordinateBuffer.storeFloatData(VertexBufferUtils.store(textureCoordinates));
+    model.unbind();
+  }
+
+  private void bufferSubData(float[] positions, float[] textureCoordinates) {
+    model.bind();
+    VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
+    positionBuffer.storeFloatSubData(VertexBufferUtils.store(positions), 0);
+    VertexBufferObject textureCoordinateBuffer = model.getVertexBufferObject(1);
+    textureCoordinateBuffer.storeFloatSubData(VertexBufferUtils.store(textureCoordinates), 0);
+    model.unbind();
   }
 
   public VertexArrayObject model() {
