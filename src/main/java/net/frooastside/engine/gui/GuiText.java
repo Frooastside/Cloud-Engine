@@ -7,43 +7,54 @@ public class GuiText extends GuiElement {
 
   public static final double LINE_HEIGHT = 0.025f;
 
-  private static final float TEXT_SIZE = 5.0f;
+  private static final float TEXT_SIZE = 2.5f;
   private static final float MAX_LENGTH = 1.0f;
-  private static final boolean CENTERED = true;
-  private static final String TEXT = "AAAA nøkk ist voll aua lululul.";
 
   private final Font font;
   private String text;
   private float textSize;
   private boolean centered;
 
+  //TODO
+  private float aspectRatio;
+
   private final VertexArrayObject model = createVertexArrayObject();
 
-  public GuiText(Font font) {
+  public GuiText(Font font, String text, boolean centered) {
     this.font = font;
+    this.text = text;
+    this.centered = centered;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+    //TODO
+    recalculate(aspectRatio);
   }
 
   @Override
   public void recalculate(float aspectRatio) {
-    updateModel(aspectRatio);
+    //TODO
+    this.aspectRatio = aspectRatio;
+    updateModel();
   }
 
-  private void updateModel(double aspectRatio) {
+  private void updateModel() {
     double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
     double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
     double lineLength = 0;
     int characterCount = 0;
-    for (char asciiCharacter : TEXT.toCharArray()) {
+    for (char asciiCharacter : text.toCharArray()) {
       Font.Character character = font.getCharacter(asciiCharacter);
       lineLength += (character.xAdvance() * horizontalPerPixelSize) * TEXT_SIZE;
       characterCount += asciiCharacter != Font.SPACE_ASCII ? 1 : 0;
     }
-    double cursorX = CENTERED ? (MAX_LENGTH - lineLength) / 2 : 0.0;
+    double cursorX = centered ? (MAX_LENGTH - lineLength) / 2 : 0.0;
     double yLineOffset = (LINE_HEIGHT / 2) * TEXT_SIZE;
     float[] positions = new float[characterCount * 12];
     float[] textureCoordinates = new float[characterCount * 12];
     int index = 0;
-    for (char asciiCharacter : TEXT.toCharArray()) {
+    for (char asciiCharacter : text.toCharArray()) {
       Font.Character character = font.getCharacter(asciiCharacter);
       if (asciiCharacter != Font.SPACE_ASCII) {
         addVerticesFor(positions, textureCoordinates, character, index, verticalPerPixelSize, horizontalPerPixelSize, cursorX, yLineOffset);
@@ -125,5 +136,9 @@ public class GuiText extends GuiElement {
 
   public VertexArrayObject model() {
     return model;
+  }
+
+  public String text() {
+    return text;
   }
 }

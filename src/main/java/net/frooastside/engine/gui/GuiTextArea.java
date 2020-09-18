@@ -3,8 +3,8 @@ package net.frooastside.engine.gui;
 import net.frooastside.engine.resource.Font;
 
 public class GuiTextArea extends GuiText {
-  public GuiTextArea(Font font) {
-    super(font);
+  public GuiTextArea(Font font, String text, boolean centered) {
+    super(font, text, centered);
   }
 
   /*private static final float HEIGHT = 5.0f;

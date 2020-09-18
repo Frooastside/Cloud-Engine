@@ -2,6 +2,8 @@ package net.frooastside.engine.gui;
 
 import net.frooastside.engine.resource.Texture;
 import net.frooastside.engine.shader.*;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class BasicGuiShader extends ShaderProgram {
 
@@ -50,10 +52,23 @@ public class BasicGuiShader extends ShaderProgram {
     texture.bind();
   }
 
-  public void loadColor(float x, float y, float z, float w) {
+  public void loadColor(Vector3f color) {
+    loadColor(color.x, color.y, color.z);
+  }
+
+  public void loadColor(float r, float g, float b) {
     loadUseTexture(false);
-    uniformColor.loadVector3f(x, y, z);
-    loadVisibility(w);
+    uniformColor.loadVector3f(r, g, b);
+  }
+
+  public void loadColor(Vector4f color) {
+    loadColor(color.x, color.y, color.z, color.w);
+  }
+
+  public void loadColor(float r, float g, float b, float a) {
+    loadUseTexture(false);
+    uniformColor.loadVector3f(r, g, b);
+    loadVisibility(a);
   }
 
 }

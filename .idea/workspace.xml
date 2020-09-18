@@ -23,28 +23,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ecc5080-a6c9-48ce-99ac-bbbd4055b9f9" name="Default Changelist" comment="Added Shaders and enum classes for opengl int enums">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/GuiTextArea.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/BasicFontShader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/net/frooastside/engine/shader/basicfontshader/fragmentshader.glsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/net/frooastside/engine/shader/basicfontshader/vertexshader.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/GuiElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/GuiElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/BasicGuiShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/BasicGuiShader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/GuiText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/GuiText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/font/Character.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/font/Font.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/Font.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/font/Line.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/font/Word.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/language/I18n.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/language/I18n.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/language/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/language/Language.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/model/VertexArrayObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/model/VertexArrayObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/model/VertexBufferObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/model/VertexBufferObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/model/VertexBufferUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/model/VertexBufferUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceContainer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/texture/Texture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/Texture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/Shader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/Shader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/ShaderProgram.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/ShaderProgram.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/UniformVector3f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/UniformVector3f.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/UniformVector4f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/UniformVector4f.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/guishader/GuiShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/BasicGuiShader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/GuiTextArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/gui/GuiTextArea.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/Font.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/Font.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,13 +78,16 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/net/frooastside/engine/shader/basicfontshader" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Simon\Documents\Engine\Cloud-Engine\src\main\resources\net\frooastside\engine\shader\basicfontshader" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="net.frooastside.engine.gui" />
       <recent name="net.frooastside.engine.shader" />
@@ -109,7 +99,7 @@
       <recent name="C:\Users\Simon\Documents\Forest-Adventure\src\test\java\net\frooastside\forestadventure" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ResourceManager">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.Main" />
       <module name="Cloud-Engine" />
@@ -151,8 +141,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ResourceManager" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.ResourceManager" />
       </list>
     </recent_temporary>
   </component>
@@ -258,32 +248,32 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="784" y="440" key="Github.CreateGistDialog/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596555158183" />
-    <state width="1877" height="181" key="GridCell.Tab.0.bottom" timestamp="1600006480550">
+    <state width="1877" height="181" key="GridCell.Tab.0.bottom" timestamp="1600105590922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="181" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599813074198" />
-    <state width="1877" height="181" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600006480550" />
+    <state width="1877" height="181" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600105590922" />
     <state width="1877" height="195" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
     <state width="1237" height="235" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
-    <state width="1877" height="181" key="GridCell.Tab.0.center" timestamp="1600006480550">
+    <state width="1877" height="181" key="GridCell.Tab.0.center" timestamp="1600105590922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="181" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599813074198" />
-    <state width="1877" height="181" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600006480550" />
+    <state width="1877" height="181" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600105590922" />
     <state width="1877" height="195" key="GridCell.Tab.0.center/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
     <state width="1237" height="235" key="GridCell.Tab.0.center/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
-    <state width="1877" height="181" key="GridCell.Tab.0.left" timestamp="1600006480550">
+    <state width="1877" height="181" key="GridCell.Tab.0.left" timestamp="1600105590922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="181" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599813074198" />
-    <state width="1877" height="181" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600006480550" />
+    <state width="1877" height="181" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600105590922" />
     <state width="1877" height="195" key="GridCell.Tab.0.left/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
     <state width="1237" height="235" key="GridCell.Tab.0.left/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
-    <state width="1877" height="181" key="GridCell.Tab.0.right" timestamp="1600006480550">
+    <state width="1877" height="181" key="GridCell.Tab.0.right" timestamp="1600105590922">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="181" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599813074198" />
-    <state width="1877" height="181" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600006480550" />
+    <state width="1877" height="181" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600105590922" />
     <state width="1877" height="195" key="GridCell.Tab.0.right/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
     <state width="1237" height="235" key="GridCell.Tab.0.right/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
     <state width="1877" height="440" key="GridCell.Tab.1.bottom" timestamp="1599867191703">

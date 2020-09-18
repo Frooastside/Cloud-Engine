@@ -4,6 +4,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
 
 public class Window {
 
@@ -28,6 +30,7 @@ public class Window {
     GLFW.glfwMakeContextCurrent(windowId);
     GLFW.glfwSwapInterval(vSync ? 1 : 0);
     GL.createCapabilities();
+    GL11.glEnable(GL13.GL_MULTISAMPLE);
     GL11.glClearColor(0.5f, 0.5f, 0.5f, 1);
   }
 
@@ -99,6 +102,7 @@ public class Window {
     GLFWVidMode videoMode = GLFW.glfwGetVideoMode(monitorPointer);
     if (videoMode == null)
       throw new IllegalStateException(new NullPointerException());
+    GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
     long windowId = GLFW.glfwCreateWindow(fullscreen ? videoMode.width() : windowWidth, fullscreen ? videoMode.height() : windowHeight, title, fullscreen ? monitorPointer : 0, 0);
     int xPosition = videoMode.width() / 2 - windowWidth / 2;
     int yPosition = videoMode.height() / 2 - windowHeight / 2;

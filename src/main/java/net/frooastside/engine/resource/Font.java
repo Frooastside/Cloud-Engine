@@ -96,6 +96,9 @@ public class Font extends ResourceItem {
         addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
         characterBuffer.free();
       }
+      if(texture != null) {
+        texture.getThreadUnspecificLoader().run();
+      }
     };
   }
 
