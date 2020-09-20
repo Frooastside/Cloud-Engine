@@ -33,7 +33,7 @@ public class Main {
     BasicGuiShader triangleShaderProgram = new BasicGuiShader();
     triangleShaderProgram.createShaderProgram();
     while (!window.shouldWindowClose()) {
-      window.clearBuffers();
+      Window.clearBuffers();
       GL11.glDisable(GL11.GL_CULL_FACE);
       triangleShaderProgram.start();
       triangleShaderProgram.loadTexture(font.texture());

@@ -1,6 +1,6 @@
 package net.frooastside.engine.gui;
 
-import net.frooastside.engine.model.VertexArrayObject;
+import net.frooastside.engine.datatypes.vertexarray.VertexArrayObject;
 
 public abstract class GuiElement {
 

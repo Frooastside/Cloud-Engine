@@ -1,19 +1,17 @@
 package net.frooastside.engine.resource;
 
+import net.frooastside.engine.datatypes.texture.Texture;
 import org.lwjgl.stb.STBTTBakedChar;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.stb.STBTruetype;
 import org.lwjgl.system.MemoryUtil;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Font extends ResourceItem {
+public class Font implements ResourceItem {
 
   public static final Character UNSUPPORTED_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
   public static final int SPACE_ASCII = 32;
@@ -26,10 +24,7 @@ public class Font extends ResourceItem {
   private int firstCharacter;
   private int characterCount;
 
-  public Font(Texture texture, int characterHeight) {
-    this.characterHeight = characterHeight;
-    this.texture = texture;
-  }
+  private ByteBuffer rawFile;
 
   public Font(ByteBuffer fontFile) {
     this(fontFile, 4096, 32, 224, 512);
@@ -81,13 +76,18 @@ public class Font extends ResourceItem {
 
   @Override
   public Runnable getThreadSpecificLoader() {
-    return () -> texture.getThreadSpecificLoader().run();
+    return () -> {
+      texture.generateIdentifier();
+      texture.bind();
+      texture.store();
+      texture.unbind();
+    };
   }
 
   @Override
   public Runnable getThreadUnspecificLoader() {
     return () -> {
-      if(rawFile != null && rawFile.hasRemaining()) {
+      if (rawFile != null && rawFile.hasRemaining()) {
         initFont(rawFile);
         ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
         STBTTBakedChar.Buffer characterBuffer = STBTTBakedChar.malloc(characterCount);
@@ -95,9 +95,6 @@ public class Font extends ResourceItem {
         texture = new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1);
         addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
         characterBuffer.free();
-      }
-      if(texture != null) {
-        texture.getThreadUnspecificLoader().run();
       }
     };
   }

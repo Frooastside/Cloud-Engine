@@ -34,14 +34,14 @@ public class Window {
     GL11.glClearColor(0.5f, 0.5f, 0.5f, 1);
   }
 
-  public void clearBuffers() {
-    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-  }
-
   public void updateWindow() {
     GLFW.glfwSwapBuffers(windowId);
     GLFW.glfwPollEvents();
     calculateDelta();
+  }
+
+  public void resetViewport() {
+    GL11.glViewport(0, 0, windowWidth, windowHeight);
   }
 
   private void calculateDelta() {
@@ -93,8 +93,8 @@ public class Window {
     GLFW.glfwDestroyWindow(windowId);
   }
 
-  public double delta() {
-    return delta;
+  public static void clearBuffers() {
+    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
   }
 
   public static Window createWindow(String title, boolean fullscreen, int windowWidth, int windowHeight) {
@@ -111,4 +111,7 @@ public class Window {
     return new Window(title, fullscreen, windowId, fullscreen ? videoMode.width() : windowWidth, fullscreen ? videoMode.height() : windowHeight);
   }
 
+  public double delta() {
+    return delta;
+  }
 }

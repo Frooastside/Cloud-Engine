@@ -1,5 +1,7 @@
-package net.frooastside.engine.model;
+package net.frooastside.engine.datatypes.vertexarray;
 
+import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.VertexBufferObject;
+import net.frooastside.engine.datatypes.GLObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -7,17 +9,14 @@ import org.lwjgl.opengl.GL30;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class VertexArrayObject {
+public class VertexArrayObject extends GLObject {
 
-  private final int identifier;
   private int length;
 
   private final VertexBufferObject[] vertexBufferObjects = new VertexBufferObject[16];
   private VertexBufferObject indexBufferObject;
 
-
-  public VertexArrayObject(int identifier, int length) {
-    this.identifier = identifier;
+  public VertexArrayObject(int length) {
     this.length = length;
   }
 
@@ -57,21 +56,25 @@ public class VertexArrayObject {
     }
   }
 
+  @Override
+  public void generateIdentifier() {
+    identifier = GL30.glGenVertexArrays();
+  }
+
+  @Override
   public void bind() {
     GL30.glBindVertexArray(identifier);
   }
 
+  @Override
   public void unbind() {
     GL30.glBindVertexArray(0);
   }
 
+  @Override
   public void delete() {
     GL30.glDeleteVertexArrays(identifier);
     Arrays.stream(vertexBufferObjects).filter(Objects::nonNull).forEach(VertexBufferObject::delete);
-  }
-
-  public static int generateIdentifier() {
-    return GL30.glGenVertexArrays();
   }
 
   public VertexBufferObject getVertexBufferObject(int index) {
@@ -86,8 +89,8 @@ public class VertexArrayObject {
     return length;
   }
 
-  public static VertexArrayObject create2DFor(float[] positions) {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(generateIdentifier(), positions.length / 2);
+  /*public static VertexArrayObject create2DFor(float[] positions) {
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(positions.length / 2);
     vertexArrayObject.bind();
     VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
     positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
@@ -130,5 +133,5 @@ public class VertexArrayObject {
 
     vertexArrayObject.unbind();
     return vertexArrayObject;
-  }
+  }*/
 }

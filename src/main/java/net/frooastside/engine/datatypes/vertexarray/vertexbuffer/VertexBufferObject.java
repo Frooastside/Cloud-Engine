@@ -1,5 +1,6 @@
-package net.frooastside.engine.model;
+package net.frooastside.engine.datatypes.vertexarray.vertexbuffer;
 
+import net.frooastside.engine.datatypes.GLObject;
 import org.lwjgl.opengl.GL15;
 
 import java.nio.ByteBuffer;
@@ -7,16 +8,13 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
-public class VertexBufferObject {
-
-  private final int identifier;
+public class VertexBufferObject extends GLObject {
 
   private final int dataType;
   private final int target;
   private final int usage;
 
-  public VertexBufferObject(int identifier, int dataType, int target, int usage) {
-    this.identifier = identifier;
+  private VertexBufferObject(int dataType, int target, int usage) {
     this.dataType = dataType;
     this.target = target;
     this.usage = usage;
@@ -70,20 +68,28 @@ public class VertexBufferObject {
     unbind();
   }
 
+  @Override
+  public void generateIdentifier() {
+    identifier = GL15.glGenBuffers();
+  }
+
+  @Override
   public void bind() {
     GL15.glBindBuffer(target, identifier);
   }
 
+  @Override
   public void unbind() {
     GL15.glBindBuffer(target, 0);
   }
 
+  @Override
   public void delete() {
     GL15.glDeleteBuffers(identifier);
   }
 
   public static VertexBufferObject createVertexBufferObject(BufferDataType dataType, BufferTarget target, BufferUsage usage) {
-    return new VertexBufferObject(GL15.glGenBuffers(), dataType.value(), target.value(), usage.value());
+    return new VertexBufferObject(dataType.value(), target.value(), usage.value());
   }
 
   public int dataType() {

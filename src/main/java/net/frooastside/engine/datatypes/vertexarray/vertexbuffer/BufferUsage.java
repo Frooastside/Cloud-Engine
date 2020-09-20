@@ -1,4 +1,4 @@
-package net.frooastside.engine.model;
+package net.frooastside.engine.datatypes.vertexarray.vertexbuffer;
 
 import org.lwjgl.opengl.GL15;
 

@@ -1,5 +1,10 @@
 package net.frooastside.engine.gui;
 
+import net.frooastside.engine.datatypes.vertexarray.VertexArrayObject;
+import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.BufferDataType;
+import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.BufferTarget;
+import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.BufferUsage;
+import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.Font;
 import net.frooastside.engine.model.*;
 
@@ -105,7 +110,8 @@ public class GuiText extends GuiElement {
   }
 
   private VertexArrayObject createVertexArrayObject() {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(VertexArrayObject.generateIdentifier(), 0);
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(0);
+    vertexArrayObject.generateIdentifier();
     vertexArrayObject.bind();
     VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
     vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
