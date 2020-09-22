@@ -1,6 +1,6 @@
 package net.frooastside.engine.resource;
 
-import net.frooastside.engine.datatypes.texture.Texture;
+import net.frooastside.engine.graphicobjects.texture.Texture;
 import org.lwjgl.stb.STBTTBakedChar;
 import org.lwjgl.stb.STBTTFontinfo;
 import org.lwjgl.stb.STBTruetype;
@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Font implements ResourceItem {
+public class ResourceFont implements ResourceItem {
 
   public static final Character UNSUPPORTED_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
   public static final int SPACE_ASCII = 32;
@@ -26,11 +26,11 @@ public class Font implements ResourceItem {
 
   private ByteBuffer rawFile;
 
-  public Font(ByteBuffer fontFile) {
+  public ResourceFont(ByteBuffer fontFile) {
     this(fontFile, 4096, 32, 224, 512);
   }
 
-  public Font(ByteBuffer fontFile, int imageSize, int firstCharacter, int characterCount, int characterHeight) {
+  public ResourceFont(ByteBuffer fontFile, int imageSize, int firstCharacter, int characterCount, int characterHeight) {
     this.rawFile = fontFile;
     this.imageSize = imageSize;
     this.firstCharacter = firstCharacter;
@@ -38,7 +38,7 @@ public class Font implements ResourceItem {
     this.characterHeight = characterHeight;
   }
 
-  public Font() {
+  public ResourceFont() {
   }
 
   private void initFont(ByteBuffer fontFile) {

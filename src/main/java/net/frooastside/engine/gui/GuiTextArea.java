@@ -1,9 +1,9 @@
 package net.frooastside.engine.gui;
 
-import net.frooastside.engine.resource.Font;
+import net.frooastside.engine.resource.ResourceFont;
 
 public class GuiTextArea extends GuiText {
-  public GuiTextArea(Font font, String text, boolean centered) {
+  public GuiTextArea(ResourceFont font, String text, boolean centered) {
     super(font, text, centered);
   }
 

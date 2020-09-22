@@ -1,7 +1,7 @@
-package net.frooastside.engine.datatypes.vertexarray;
+package net.frooastside.engine.graphicobjects.vertexarray;
 
-import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.VertexBufferObject;
-import net.frooastside.engine.datatypes.GLObject;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
+import net.frooastside.engine.graphicobjects.GraphicObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL30;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class VertexArrayObject extends GLObject {
+public class VertexArrayObject extends GraphicObject {
 
   private int length;
 

@@ -2,7 +2,7 @@ package test;
 
 import net.frooastside.engine.Window;
 import net.frooastside.engine.gui.GuiText;
-import net.frooastside.engine.resource.Font;
+import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.gui.BasicGuiShader;
 import net.frooastside.engine.resource.ResourceContainer;
 import org.lwjgl.glfw.GLFW;
@@ -24,7 +24,7 @@ public class Main {
 
     ResourceContainer container = new ResourceContainer();
     container.load(new File("C:/Users/Simon/Documents/Font.pak"));
-    Font font = (Font) container.get("JetBrainsMonoNL-Regular.ttf");
+    ResourceFont font = (ResourceFont) container.get("JetBrainsMonoNL-Regular.ttf");
     font.getThreadUnspecificLoader().run();
     font.getThreadSpecificLoader().run();
 

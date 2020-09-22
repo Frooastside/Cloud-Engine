@@ -1,6 +1,6 @@
-package net.frooastside.engine.datatypes.vertexarray.vertexbuffer;
+package net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer;
 
-import net.frooastside.engine.datatypes.GLObject;
+import net.frooastside.engine.graphicobjects.GraphicObject;
 import org.lwjgl.opengl.GL15;
 
 import java.nio.ByteBuffer;
@@ -8,7 +8,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
-public class VertexBufferObject extends GLObject {
+public class VertexBufferObject extends GraphicObject {
 
   private final int dataType;
   private final int target;

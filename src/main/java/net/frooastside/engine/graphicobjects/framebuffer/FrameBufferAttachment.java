@@ -1,8 +1,8 @@
-package net.frooastside.engine.datatypes.framebuffer;
+package net.frooastside.engine.graphicobjects.framebuffer;
 
-import net.frooastside.engine.datatypes.GLObject;
+import net.frooastside.engine.graphicobjects.GraphicObject;
 
-public abstract class FrameBufferAttachment extends GLObject {
+public abstract class FrameBufferAttachment extends GraphicObject {
 
   protected int internalFormat;
   protected int attachment;

@@ -1,7 +1,7 @@
 package net.frooastside.engine.resource;
 
 import net.frooastside.engine.language.I18n;
-import net.frooastside.engine.datatypes.texture.Texture;
+import net.frooastside.engine.graphicobjects.texture.Texture;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.stb.STBImageWrite;
 
@@ -54,7 +54,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
         if (pixelBuffer == null) {
           throw new IllegalStateException(I18n.get("error.texture.content"));
         }
-        this.pixelBuffer = ResourceManager.copyDirect(pixelBuffer);
+        this.pixelBuffer = BufferUtils.copyDirect(pixelBuffer);
         STBImage.stbi_image_free(pixelBuffer);
         this.internalFormat = internalFormatFor(channel);
         this.inputFormat = inputFormatFor(channel);
@@ -68,7 +68,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
       File tempFile = File.createTempFile("generated_texture", ".png");
       tempFile.deleteOnExit();
       saveToFile(tempFile);
-      this.rawFile = ResourceManager.readFile(tempFile);
+      this.rawFile = BufferUtils.readFile(tempFile);
     }
     if (rawFile != null) {
       byte[] rawFileArray = new byte[rawFile.remaining()];
@@ -82,7 +82,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
 
   @Override
   public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-    this.rawFile = ResourceManager.wrapDirect((byte[]) in.readObject());
+    this.rawFile = BufferUtils.wrapDirect((byte[]) in.readObject());
     this.filter = in.readInt();
   }
 

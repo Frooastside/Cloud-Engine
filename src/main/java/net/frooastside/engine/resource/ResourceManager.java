@@ -12,14 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.lwjgl.BufferUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SeekableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -176,7 +171,7 @@ public class ResourceManager extends Application {
 
   private void addTexture(File file) {
     try {
-      addItem(file.getName(), new ResourceTexture(readFile(file)));
+      addItem(file.getName(), new ResourceTexture(BufferUtils.readFile(file)));
     } catch (IOException exception) {
       showErrorAlert("An error occurred while reading the texture file: " + exception.getLocalizedMessage());
     }
@@ -184,7 +179,7 @@ public class ResourceManager extends Application {
 
   private void addFont(File file) {
     try {
-      addItem(file.getName(), new Font(readFile(file)));
+      addItem(file.getName(), new ResourceFont(BufferUtils.readFile(file)));
     } catch (IOException exception) {
       showErrorAlert("An error occurred while reading the font file: " + exception.getLocalizedMessage());
     }
@@ -317,35 +312,6 @@ public class ResourceManager extends Application {
       new FileChooser.ExtensionFilter("True Type Font",
         "*.ttf"));
     return fileChooser;
-  }
-
-  public static ByteBuffer readFile(File file) throws IOException {
-    Path path = file.toPath();
-    if (Files.isReadable(path)) {
-      try (SeekableByteChannel seekableByteChannel = Files.newByteChannel(path)) {
-        ByteBuffer buffer = BufferUtils.createByteBuffer((int) seekableByteChannel.size());
-        while (true) {
-          int bytesRead = seekableByteChannel.read(buffer);
-          if (bytesRead == -1 || bytesRead == 0) break;
-        }
-        buffer.flip();
-        return buffer;
-      }
-    }
-    return null;
-  }
-
-  public static ByteBuffer wrapDirect(byte[] bytes) {
-    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(bytes.length);
-    byteBuffer.put(bytes);
-    byteBuffer.flip();
-    return byteBuffer;
-  }
-
-  public static ByteBuffer copyDirect(ByteBuffer originalByteBuffer) {
-    byte[] bytes = new byte[originalByteBuffer.remaining()];
-    originalByteBuffer.asReadOnlyBuffer().get(bytes);
-    return wrapDirect(bytes);
   }
 
 }

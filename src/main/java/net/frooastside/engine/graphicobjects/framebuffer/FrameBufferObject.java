@@ -1,7 +1,7 @@
-package net.frooastside.engine.datatypes.framebuffer;
+package net.frooastside.engine.graphicobjects.framebuffer;
 
-import net.frooastside.engine.datatypes.GLObject;
-import net.frooastside.engine.datatypes.texture.Texture;
+import net.frooastside.engine.graphicobjects.GraphicObject;
+import net.frooastside.engine.graphicobjects.texture.Texture;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL30;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrameBufferObject extends GLObject {
+public class FrameBufferObject extends GraphicObject {
 
   private int width;
   private int height;

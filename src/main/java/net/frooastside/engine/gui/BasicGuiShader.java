@@ -1,6 +1,6 @@
 package net.frooastside.engine.gui;
 
-import net.frooastside.engine.datatypes.texture.Texture;
+import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.shader.*;
 import org.joml.Vector3f;
 import org.joml.Vector4f;

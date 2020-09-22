@@ -1,6 +1,6 @@
-package net.frooastside.engine.datatypes;
+package net.frooastside.engine.graphicobjects;
 
-public abstract class GLObject {
+public abstract class GraphicObject {
 
   protected int identifier;
 

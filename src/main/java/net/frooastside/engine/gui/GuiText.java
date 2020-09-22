@@ -1,12 +1,12 @@
 package net.frooastside.engine.gui;
 
-import net.frooastside.engine.datatypes.vertexarray.VertexArrayObject;
-import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.BufferDataType;
-import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.BufferTarget;
-import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.BufferUsage;
-import net.frooastside.engine.datatypes.vertexarray.vertexbuffer.VertexBufferObject;
-import net.frooastside.engine.resource.Font;
-import net.frooastside.engine.model.*;
+import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarget;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsage;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
+import net.frooastside.engine.resource.BufferUtils;
+import net.frooastside.engine.resource.ResourceFont;
 
 public class GuiText extends GuiElement {
 
@@ -15,7 +15,7 @@ public class GuiText extends GuiElement {
   private static final float TEXT_SIZE = 2.5f;
   private static final float MAX_LENGTH = 1.0f;
 
-  private final Font font;
+  private final ResourceFont font;
   private String text;
   private float textSize;
   private boolean centered;
@@ -25,7 +25,7 @@ public class GuiText extends GuiElement {
 
   private final VertexArrayObject model = createVertexArrayObject();
 
-  public GuiText(Font font, String text, boolean centered) {
+  public GuiText(ResourceFont font, String text, boolean centered) {
     this.font = font;
     this.text = text;
     this.centered = centered;
@@ -50,9 +50,9 @@ public class GuiText extends GuiElement {
     double lineLength = 0;
     int characterCount = 0;
     for (char asciiCharacter : text.toCharArray()) {
-      Font.Character character = font.getCharacter(asciiCharacter);
+      ResourceFont.Character character = font.getCharacter(asciiCharacter);
       lineLength += (character.xAdvance() * horizontalPerPixelSize) * TEXT_SIZE;
-      characterCount += asciiCharacter != Font.SPACE_ASCII ? 1 : 0;
+      characterCount += asciiCharacter != ResourceFont.SPACE_ASCII ? 1 : 0;
     }
     double cursorX = centered ? (MAX_LENGTH - lineLength) / 2 : 0.0;
     double yLineOffset = (LINE_HEIGHT / 2) * TEXT_SIZE;
@@ -60,8 +60,8 @@ public class GuiText extends GuiElement {
     float[] textureCoordinates = new float[characterCount * 12];
     int index = 0;
     for (char asciiCharacter : text.toCharArray()) {
-      Font.Character character = font.getCharacter(asciiCharacter);
-      if (asciiCharacter != Font.SPACE_ASCII) {
+      ResourceFont.Character character = font.getCharacter(asciiCharacter);
+      if (asciiCharacter != ResourceFont.SPACE_ASCII) {
         addVerticesFor(positions, textureCoordinates, character, index, verticalPerPixelSize, horizontalPerPixelSize, cursorX, yLineOffset);
         index++;
       }
@@ -74,7 +74,7 @@ public class GuiText extends GuiElement {
     }
   }
 
-  private void addVerticesFor(float[] positions, float[] textureCoordinates, Font.Character character, int characterIndex, double verticalPerPixelSize, double horizontalPerPixelSize, double cursorX, double cursorY) {
+  private void addVerticesFor(float[] positions, float[] textureCoordinates, ResourceFont.Character character, int characterIndex, double verticalPerPixelSize, double horizontalPerPixelSize, double cursorX, double cursorY) {
     double x = cursorX + ((character.xOffset() * horizontalPerPixelSize) * TEXT_SIZE);
     double y = cursorY + ((character.yOffset() * verticalPerPixelSize) * TEXT_SIZE);
     double xMax = x + ((character.xSize() * horizontalPerPixelSize) * TEXT_SIZE);
@@ -125,18 +125,18 @@ public class GuiText extends GuiElement {
     model.bind();
     model.setLength(positions.length / 2);
     VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
-    positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
+    positionBuffer.storeFloatData(BufferUtils.store(positions));
     VertexBufferObject textureCoordinateBuffer = model.getVertexBufferObject(1);
-    textureCoordinateBuffer.storeFloatData(VertexBufferUtils.store(textureCoordinates));
+    textureCoordinateBuffer.storeFloatData(BufferUtils.store(textureCoordinates));
     model.unbind();
   }
 
   private void bufferSubData(float[] positions, float[] textureCoordinates) {
     model.bind();
     VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
-    positionBuffer.storeFloatSubData(VertexBufferUtils.store(positions), 0);
+    positionBuffer.storeFloatSubData(BufferUtils.store(positions), 0);
     VertexBufferObject textureCoordinateBuffer = model.getVertexBufferObject(1);
-    textureCoordinateBuffer.storeFloatSubData(VertexBufferUtils.store(textureCoordinates), 0);
+    textureCoordinateBuffer.storeFloatSubData(BufferUtils.store(textureCoordinates), 0);
     model.unbind();
   }
 

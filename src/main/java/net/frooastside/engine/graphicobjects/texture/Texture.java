@@ -1,6 +1,6 @@
-package net.frooastside.engine.datatypes.texture;
+package net.frooastside.engine.graphicobjects.texture;
 
-import net.frooastside.engine.datatypes.framebuffer.FrameBufferAttachment;
+import net.frooastside.engine.graphicobjects.framebuffer.FrameBufferAttachment;
 import net.frooastside.engine.language.I18n;
 import org.lwjgl.opengl.*;
 

@@ -1,4 +1,4 @@
-package net.frooastside.engine.datatypes.framebuffer;
+package net.frooastside.engine.graphicobjects.framebuffer;
 
 import org.lwjgl.opengl.GL30;
 

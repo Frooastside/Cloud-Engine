@@ -7,7 +7,7 @@ import java.util.List;
 
 public class I18n {
 
-  private static I18n instance = new I18n();
+  private static final I18n instance = new I18n();
 
   private final List<Language> languages = new ArrayList<>();
   private Language currentLanguage;
