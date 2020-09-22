@@ -113,6 +113,76 @@ public class Texture extends FrameBufferAttachment {
     }
   }
 
+  protected static int channelCountFor(int internalFormat) {
+    if(internalFormat == GL11.GL_RGBA ||
+      internalFormat == GL11.GL_RGB5_A1 ||
+      internalFormat == GL11.GL_RGBA8 ||
+      internalFormat == GL31.GL_RGBA8_SNORM ||
+      internalFormat == GL11.GL_RGB10_A2 ||
+      internalFormat == GL33.GL_RGB10_A2UI ||
+      internalFormat == GL11.GL_RGBA12 ||
+      internalFormat == GL11.GL_RGBA16 ||
+      internalFormat == GL21.GL_SRGB8_ALPHA8 ||
+      internalFormat == GL30.GL_RGBA16F ||
+      internalFormat == GL30.GL_RGBA32F ||
+      internalFormat == GL30.GL_RGBA8I ||
+      internalFormat == GL30.GL_RGBA8UI ||
+      internalFormat == GL30.GL_RGBA16I ||
+      internalFormat == GL30.GL_RGBA16UI ||
+      internalFormat == GL30.GL_RGBA32I ||
+      internalFormat == GL30.GL_RGBA32UI ||
+      internalFormat == GL13.GL_COMPRESSED_RGBA ||
+      internalFormat == GL21.GL_COMPRESSED_SRGB_ALPHA ||
+      internalFormat == GL42.GL_COMPRESSED_RGBA_BPTC_UNORM ||
+      internalFormat == GL42.GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM) {
+      return 4;
+    }else if(internalFormat == GL11.GL_RGB ||
+      internalFormat == GL11.GL_R3_G3_B2 ||
+      internalFormat == GL11.GL_RGB4 ||
+      internalFormat == GL11.GL_RGB5 ||
+      internalFormat == GL11.GL_RGB8 ||
+      internalFormat == GL31.GL_RGB8_SNORM ||
+      internalFormat == GL11.GL_RGB10 ||
+      internalFormat == GL11.GL_RGB12 ||
+      internalFormat == GL31.GL_RGB16_SNORM ||
+      internalFormat == GL21.GL_SRGB8 ||
+      internalFormat == GL30.GL_RGB16F ||
+      internalFormat == GL30.GL_RGB32F ||
+      internalFormat == GL30.GL_R11F_G11F_B10F ||
+      internalFormat == GL30.GL_RGB9_E5 ||
+      internalFormat == GL30.GL_RGB8I ||
+      internalFormat == GL30.GL_RGB8UI ||
+      internalFormat == GL30.GL_RGB16I ||
+      internalFormat == GL30.GL_RGB16UI ||
+      internalFormat == GL30.GL_RGB32I ||
+      internalFormat == GL30.GL_RGB32UI ||
+      internalFormat == GL13.GL_COMPRESSED_RGB ||
+      internalFormat == GL21.GL_COMPRESSED_SRGB ||
+      internalFormat == GL42.GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT ||
+      internalFormat == GL42.GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT) {
+      return 3;
+    }else if(internalFormat == 1 ||
+      internalFormat == GL11.GL_RED ||
+      internalFormat == GL30.GL_R8 ||
+      internalFormat == GL31.GL_R8_SNORM ||
+      internalFormat == GL30.GL_R16 ||
+      internalFormat == GL31.GL_R16_SNORM ||
+      internalFormat == GL30.GL_R16F ||
+      internalFormat == GL30.GL_R8I ||
+      internalFormat == GL30.GL_R8UI ||
+      internalFormat == GL30.GL_R16I ||
+      internalFormat == GL30.GL_R16UI ||
+      internalFormat == GL30.GL_R32I ||
+      internalFormat == GL30.GL_R32UI ||
+      internalFormat == GL30.GL_COMPRESSED_RED ||
+      internalFormat == GL30.GL_COMPRESSED_RED_RGTC1 ||
+      internalFormat == GL30.GL_COMPRESSED_SIGNED_RED_RGTC1) {
+      return 1;
+    }else {
+      return -1;
+    }
+  }
+
   protected static int internalFormatFor(int channel) {
     if (channel == 4) {
       return GL11.GL_RGBA;

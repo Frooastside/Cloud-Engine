@@ -2,6 +2,7 @@ package net.frooastside.engine.resource;
 
 import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.graphicobjects.texture.Texture;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.stb.STBImageWrite;
 
@@ -17,11 +18,26 @@ public class ResourceTexture extends Texture implements ResourceItem {
     this.rawFile = textureFile;
   }
 
+  public ResourceTexture(ByteBuffer pixelBuffer, int filter, int width, int height, int channels) {
+    this(pixelBuffer, filter, width, height, internalFormatFor(channels), inputFormatFor(channels));
+  }
+
+  public ResourceTexture(ByteBuffer pixelBuffer, int filter, int width, int height, int internalFormat, int inputFormat) {
+    this(pixelBuffer, filter, width, height, internalFormat, inputFormat, GL11.GL_UNSIGNED_BYTE);
+  }
+
+  public ResourceTexture(ByteBuffer pixelBuffer, int filter, int width, int height, int internalFormat, int inputFormat, int dataType) {
+    super(pixelBuffer, filter, width, height, internalFormat, inputFormat, dataType);
+  }
+
   public ResourceTexture() {
   }
 
   public void saveToFile(File file) {
     if (pixelBuffer != null && pixelBuffer.hasRemaining()) {
+      if(channel == 0 || channel == -1) {
+        channel = channelCountFor(internalFormat);
+      }
       STBImageWrite.stbi_write_png(file.getAbsolutePath(), width, height, channel, pixelBuffer, 0);
     }
   }

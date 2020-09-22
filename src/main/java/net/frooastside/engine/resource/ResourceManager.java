@@ -241,6 +241,7 @@ public class ResourceManager extends Application {
       unsavedChanges = false;
     } catch (IOException exception) {
       showErrorAlert("An error occurred while saving the file: " + exception.getLocalizedMessage());
+      exception.printStackTrace();
     }
   }
 
