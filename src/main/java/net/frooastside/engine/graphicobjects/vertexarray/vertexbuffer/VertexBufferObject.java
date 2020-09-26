@@ -89,7 +89,9 @@ public class VertexBufferObject extends GraphicObject {
   }
 
   public static VertexBufferObject createVertexBufferObject(BufferDataType dataType, BufferTarget target, BufferUsage usage) {
-    return new VertexBufferObject(dataType.value(), target.value(), usage.value());
+    VertexBufferObject vertexBufferObject = new VertexBufferObject(dataType.value(), target.value(), usage.value());
+    vertexBufferObject.generateIdentifier();
+    return vertexBufferObject;
   }
 
   public int dataType() {

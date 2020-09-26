@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 
 public class Window {
@@ -111,7 +110,19 @@ public class Window {
     return new Window(title, fullscreen, windowId, fullscreen ? videoMode.width() : windowWidth, fullscreen ? videoMode.height() : windowHeight);
   }
 
+  public long windowId() {
+    return windowId;
+  }
+
   public double delta() {
     return delta;
+  }
+
+  public int windowWidth() {
+    return windowWidth;
+  }
+
+  public int windowHeight() {
+    return windowHeight;
   }
 }

@@ -1,5 +1,6 @@
 package net.frooastside.engine.shader;
 
+import net.frooastside.engine.shader.uniforms.Uniform;
 import org.lwjgl.opengl.GL20;
 
 import java.util.ArrayList;

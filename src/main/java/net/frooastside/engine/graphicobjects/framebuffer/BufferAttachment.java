@@ -33,7 +33,11 @@ public class BufferAttachment extends FrameBufferAttachment {
 
   @Override
   public void store() {
-    GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, samples, internalFormat, width, height);
+    if(samples == 0) {
+      GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, internalFormat, width, height);
+    }else {
+      GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, samples, internalFormat, width, height);
+    }
   }
 
   @Override

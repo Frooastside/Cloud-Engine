@@ -2,6 +2,9 @@ package net.frooastside.engine.gui;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.shader.*;
+import net.frooastside.engine.shader.uniforms.UniformFloat;
+import net.frooastside.engine.shader.uniforms.UniformTexture;
+import net.frooastside.engine.shader.uniforms.UniformVector3f;
 import org.joml.Vector3f;
 
 public class BasicFontShader extends ShaderProgram {
@@ -26,9 +29,9 @@ public class BasicFontShader extends ShaderProgram {
 
   @Override
   protected void storeUniformLocations() {
-    storeUniformLocation(uniformVisibility);
     storeUniformLocation(uniformTexture);
     storeUniformLocation(uniformColor);
+    storeUniformLocation(uniformVisibility);
     storeUniformLocation(uniformWidth);
     storeUniformLocation(uniformEdge);
   }

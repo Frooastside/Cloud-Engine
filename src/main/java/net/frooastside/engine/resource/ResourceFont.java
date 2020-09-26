@@ -18,7 +18,7 @@ public class ResourceFont implements ResourceItem {
 
   private final Map<Integer, Character> supportedCharacters = new HashMap<>();
   private int characterHeight;
-  private Texture texture;
+  private ResourceTexture texture;
 
   private int imageSize;
   private int firstCharacter;
@@ -27,7 +27,7 @@ public class ResourceFont implements ResourceItem {
   private ByteBuffer rawFile;
 
   public ResourceFont(ByteBuffer fontFile) {
-    this(fontFile, 4096, 32, 224, 512);
+    this(fontFile, 2048, 32, 224, 192);
   }
 
   public ResourceFont(ByteBuffer fontFile, int imageSize, int firstCharacter, int characterCount, int characterHeight) {
@@ -76,25 +76,24 @@ public class ResourceFont implements ResourceItem {
 
   @Override
   public Runnable getThreadSpecificLoader() {
-    return () -> {
-      texture.generateIdentifier();
-      texture.bind();
-      texture.store();
-      texture.unbind();
-    };
+    return texture.getThreadSpecificLoader();
   }
 
   @Override
   public Runnable getThreadUnspecificLoader() {
     return () -> {
-      if (rawFile != null && rawFile.hasRemaining()) {
-        initFont(rawFile);
-        ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
-        STBTTBakedChar.Buffer characterBuffer = STBTTBakedChar.malloc(characterCount);
-        STBTruetype.stbtt_BakeFontBitmap(rawFile, characterHeight, pixelBuffer, imageSize, imageSize, firstCharacter, characterBuffer);
-        texture = new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1);
-        addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
-        characterBuffer.free();
+      if(texture != null) {
+        texture.getThreadUnspecificLoader().run();
+      }else {
+        if (rawFile != null && rawFile.hasRemaining()) {
+          initFont(rawFile);
+          ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
+          STBTTBakedChar.Buffer characterBuffer = STBTTBakedChar.malloc(characterCount);
+          STBTruetype.stbtt_BakeFontBitmap(rawFile, characterHeight, pixelBuffer, imageSize, imageSize, firstCharacter, characterBuffer);
+          texture = new ResourceTexture(pixelBuffer, Texture.NO_FILTER, imageSize, imageSize, 1);
+          addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
+          characterBuffer.free();
+        }
       }
     };
   }
@@ -114,7 +113,7 @@ public class ResourceFont implements ResourceItem {
       }
     }
     characterHeight = in.readShort();
-    texture = (Texture) in.readObject();
+    texture = (ResourceTexture) in.readObject();
   }
 
   public Character getCharacter(int asciiCharacter) {

@@ -2,9 +2,7 @@ package net.frooastside.engine.graphicobjects.framebuffer;
 
 import net.frooastside.engine.graphicobjects.GraphicObject;
 import net.frooastside.engine.graphicobjects.texture.Texture;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +34,15 @@ public class FrameBufferObject extends GraphicObject {
     attachments.forEach(attachment -> attachment.resize(width, height));
   }
 
-  public void resizeViewport() {
+  public void resetViewport() {
     GL11.glViewport(0, 0, width, height);
   }
 
-  public void selectDrawOutput(int... attachments) {
+  public void selectDrawOutput(int attachment) {
+    GL11.glDrawBuffer(attachment);
+  }
+
+  public void selectDrawOutputs(int... attachments) {
     GL30.glDrawBuffers(attachments);
   }
 
@@ -91,22 +93,25 @@ public class FrameBufferObject extends GraphicObject {
     frameBufferObject.generateIdentifier();
     frameBufferObject.bind();
 
-    if (samples == 0) {
-      Texture colorTexture = new Texture(null, Texture.BILINEAR_FILTER, width, height, GL11.GL_RGBA8, GL11.GL_RGBA);
+    //if (samples == 0) {
+      Texture colorTexture = new Texture(null, Texture.BILINEAR_FILTER, width, height, GL11.GL_RGBA, GL11.GL_RGBA);
       colorTexture.setAttachment(GL30.GL_COLOR_ATTACHMENT0);
       frameBufferObject.appendFrameBufferAttachment(colorTexture);
-    } else {
-      BufferAttachment colorBuffer = new BufferAttachment(samples, GL11.GL_RGBA8);
-      colorBuffer.setAttachment(GL30.GL_COLOR_ATTACHMENT0);
-      frameBufferObject.appendFrameBufferAttachment(colorBuffer);
-    }
-    BufferAttachment depthBuffer = new BufferAttachment(samples, GL14.GL_DEPTH_COMPONENT24);
-    depthBuffer.setAttachment(GL30.GL_DEPTH_ATTACHMENT);
-    frameBufferObject.appendFrameBufferAttachment(depthBuffer);
-
-    frameBufferObject.selectDrawOutput(GL30.GL_COLOR_ATTACHMENT0);
+      frameBufferObject.selectDrawOutput(GL30.GL_COLOR_ATTACHMENT0);
+    //} else {
+    //  BufferAttachment colorBuffer = new BufferAttachment(samples, GL11.GL_RGBA8);
+    //  colorBuffer.setAttachment(GL30.GL_COLOR_ATTACHMENT0);
+    //  frameBufferObject.appendFrameBufferAttachment(colorBuffer);
+    //}
+    //BufferAttachment depthBuffer = new BufferAttachment(samples, GL14.GL_DEPTH_COMPONENT24);
+    //depthBuffer.setAttachment(GL30.GL_DEPTH_ATTACHMENT);
+    //frameBufferObject.appendFrameBufferAttachment(depthBuffer);
 
     frameBufferObject.unbind();
     return frameBufferObject;
+  }
+
+  public List<FrameBufferAttachment> attachments() {
+    return attachments;
   }
 }

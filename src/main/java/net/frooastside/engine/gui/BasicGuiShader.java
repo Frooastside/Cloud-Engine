@@ -2,6 +2,10 @@ package net.frooastside.engine.gui;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.shader.*;
+import net.frooastside.engine.shader.uniforms.UniformBoolean;
+import net.frooastside.engine.shader.uniforms.UniformFloat;
+import net.frooastside.engine.shader.uniforms.UniformTexture;
+import net.frooastside.engine.shader.uniforms.UniformVector3f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 

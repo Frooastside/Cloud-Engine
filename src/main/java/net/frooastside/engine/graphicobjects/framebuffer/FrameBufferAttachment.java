@@ -30,4 +30,12 @@ public abstract class FrameBufferAttachment extends GraphicObject {
   public void setAttachment(int attachment) {
     this.attachment = attachment;
   }
+
+  public int width() {
+    return width;
+  }
+
+  public int height() {
+    return height;
+  }
 }

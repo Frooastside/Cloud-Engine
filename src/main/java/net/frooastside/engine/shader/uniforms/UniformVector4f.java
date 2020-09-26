@@ -1,4 +1,4 @@
-package net.frooastside.engine.shader;
+package net.frooastside.engine.shader.uniforms;
 
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL20;
