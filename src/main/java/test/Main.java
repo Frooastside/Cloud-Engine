@@ -1,11 +1,13 @@
 package test;
 
 import net.frooastside.engine.Window;
-import net.frooastside.engine.graphicobjects.texture.Texture;
+import net.frooastside.engine.gui.BasicFontShader;
+import net.frooastside.engine.gui.GuiText;
 import net.frooastside.engine.postprocessing.DistanceFieldEffect;
 import net.frooastside.engine.postprocessing.FullscreenQuadRenderer;
 import net.frooastside.engine.resource.BufferUtils;
 import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.resource.ResourceTexture;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
@@ -15,9 +17,9 @@ import java.io.IOException;
 
 public class Main {
 
-  private static final String TEXT = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+  private static final String TEXT = "LMM%orem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
 
-  public static void main(String[] args) throws IOException, ClassNotFoundException {
+  public static void main(String[] args) throws IOException {
     GLFWErrorCallback.createPrint(System.err).set();
     GLFW.glfwInit();
     Window window = Window.createWindow("Game Window", false, (int) (960 * 1.8f), (int) (540 * 1.8f));
@@ -29,25 +31,25 @@ public class Main {
     ResourceFont font = new ResourceFont(BufferUtils.readFile(new File("C:\\Users\\Simon\\Documents\\JetBrainsMonoNL-Regular.ttf")));
     font.getThreadUnspecificLoader().run();
     font.getThreadSpecificLoader().run();
+    font.texture().saveToFile(new File("C:\\Users\\Simon\\Documents\\JetBrainsMonoNL-ExtraBold.png"));
 
-    //GuiText text = new GuiText(font, TEXT, false);
-    //text.recalculate(1.7f);
-    //BasicFontShader fontShader = new BasicFontShader();
-    //fontShader.createShaderProgram();
+    ResourceTexture texture1 = new ResourceTexture(BufferUtils.readFile(new File("C:\\Users\\Simon\\Documents\\Engine\\resources\\textures\\font\\consolas.png")));
+    texture1.getThreadUnspecificLoader().run();
+    texture1.getThreadSpecificLoader().run();
+
+    GuiText text = new GuiText(font, TEXT, false);
+    text.recalculate(1.7f);
+    BasicFontShader fontShader = new BasicFontShader();
+    fontShader.createShaderProgram();
     //FrameBufferObject frameBufferObject = FrameBufferObject.createDefaultFrameBuffer(window.windowWidth(), window.windowHeight(), 0);
     FullscreenQuadRenderer.init();
     DistanceFieldEffect.init();
 
-    Texture texture = DistanceFieldEffect.generateDistanceField(font.texture(), 16);
+    //Texture texture = DistanceFieldEffect.generateDistanceField(font.texture(), 32, 1);
     while (!window.shouldWindowClose()) {
       GL11.glDisable(GL11.GL_CULL_FACE);
       Window.clearBuffers();
-
-      if(GLFW.glfwGetKey(window.windowId(), GLFW.GLFW_KEY_0) == GLFW.GLFW_PRESS) {
-        FullscreenQuadRenderer.drawTexture(texture);
-      }else {
-        FullscreenQuadRenderer.drawTexture(font.texture());
-      }
+      FullscreenQuadRenderer.drawTexture(font.texture());
 
 
       //frameBufferObject.bind();
@@ -61,15 +63,23 @@ public class Main {
       //frameBufferObject.blitFrameBuffer(0, 0, window.windowWidth(), window.windowHeight(), GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
       //frameBufferObject.unbind();
 
-      //fontShader.start();
-      //fontShader.loadTexture((Texture) frameBufferObject.attachments().get(0));
+      GL11.glEnable(GL11.GL_BLEND);
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GL11.glDisable(GL11.GL_DEPTH_TEST);
+      fontShader.start();
+      fontShader.loadTexture(font.texture());
+      fontShader.loadColor(1, 1, 1);
+      fontShader.loadWidth(0.5f);
+      fontShader.loadEdge(0.325f);
       //fontShader.loadTexture(font.texture());
-      //text.model().bind();
-      //text.model().enableVertexAttributes();
-      //text.model().draw();
-      //text.model().disableVertexAttributes();
-      //text.model().unbind();
-      //fontShader.stop();
+      text.model().bind();
+      text.model().enableVertexAttributes();
+      text.model().draw();
+      text.model().disableVertexAttributes();
+      text.model().unbind();
+      fontShader.stop();
+      GL11.glEnable(GL11.GL_DEPTH_TEST);
+      GL11.glDisable(GL11.GL_BLEND);
 
       window.updateWindow();
     }

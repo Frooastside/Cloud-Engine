@@ -12,7 +12,7 @@ public class GuiText extends GuiElement {
 
   public static final double LINE_HEIGHT = 0.025f;
 
-  private static final float TEXT_SIZE = 2.5f;
+  private static final float TEXT_SIZE = 1.0f;
   private static final float MAX_LENGTH = 1.0f;
 
   private final ResourceFont font;

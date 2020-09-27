@@ -18,7 +18,7 @@ public class DistanceFieldEffect extends PostProcessingEffect {
     distanceFieldShader.createShaderProgram();
   }
 
-  public static Texture generateDistanceField(Texture input, int passes) {
+  public static Texture generateDistanceField(Texture input, int passes, int distance) {
     int[] viewportDimensions = new int[4];
     GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewportDimensions);
 
@@ -35,7 +35,7 @@ public class DistanceFieldEffect extends PostProcessingEffect {
 
     distanceFieldShader.loadOffset(1f / input.width(), 0);
     for (int verticalBeta = 0; verticalBeta < passes; verticalBeta++) {
-      beta = (verticalBeta * 4) + 1;
+      beta = (verticalBeta * distance * 2) + 1;
       distanceFieldShader.loadBeta(beta);
       aBuffer.bind();
       Window.clearBuffers();
@@ -43,7 +43,7 @@ public class DistanceFieldEffect extends PostProcessingEffect {
       aBuffer.unbind();
       distanceFieldShader.loadTexture((Texture) aBuffer.attachments().get(0));
 
-      beta = (verticalBeta * 4) + 3;
+      beta = (verticalBeta * distance * 2) + distance + 1;
       distanceFieldShader.loadBeta(beta);
       bBuffer.bind();
       Window.clearBuffers();
@@ -54,7 +54,7 @@ public class DistanceFieldEffect extends PostProcessingEffect {
 
     distanceFieldShader.loadOffset(0, 1f / input.height());
     for (int horizontalBeta = 0; horizontalBeta < passes; horizontalBeta++) {
-      beta = (horizontalBeta * 4) + 1;
+      beta = (horizontalBeta * distance * 2) + 1;
       distanceFieldShader.loadBeta(beta);
       aBuffer.bind();
       Window.clearBuffers();
@@ -62,7 +62,7 @@ public class DistanceFieldEffect extends PostProcessingEffect {
       aBuffer.unbind();
       distanceFieldShader.loadTexture((Texture) aBuffer.attachments().get(0));
 
-      beta = (horizontalBeta * 4) + 3;
+      beta = (horizontalBeta * distance * 2) + distance + 1;
       distanceFieldShader.loadBeta(beta);
       bBuffer.bind();
       Window.clearBuffers();

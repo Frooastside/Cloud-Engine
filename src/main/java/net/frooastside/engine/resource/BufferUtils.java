@@ -35,10 +35,14 @@ public class BufferUtils {
     return byteBuffer;
   }
 
-  public static ByteBuffer copyDirect(ByteBuffer originalByteBuffer) {
+  public static byte[] copyToArray(ByteBuffer originalByteBuffer) {
     byte[] bytes = new byte[originalByteBuffer.remaining()];
     originalByteBuffer.asReadOnlyBuffer().get(bytes);
-    return wrapDirect(bytes);
+    return bytes;
+  }
+
+  public static ByteBuffer copyDirect(ByteBuffer originalByteBuffer) {
+    return wrapDirect(copyToArray(originalByteBuffer));
   }
 
   public static IntBuffer store3fAsGL_2_10_10_10_REV(float[] floats) {

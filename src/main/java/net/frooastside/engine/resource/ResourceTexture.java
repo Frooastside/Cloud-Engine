@@ -49,7 +49,6 @@ public class ResourceTexture extends Texture implements ResourceItem {
       bind();
       store();
       unbind();
-      pixelBuffer = null;
     };
   }
 

@@ -1,15 +1,18 @@
 package net.frooastside.engine.resource;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
-import org.lwjgl.stb.STBTTBakedChar;
-import org.lwjgl.stb.STBTTFontinfo;
-import org.lwjgl.stb.STBTruetype;
+import org.joml.Vector2f;
+import org.lwjgl.stb.*;
 import org.lwjgl.system.MemoryUtil;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ResourceFont implements ResourceItem {
 
@@ -21,13 +24,14 @@ public class ResourceFont implements ResourceItem {
   private ResourceTexture texture;
 
   private int imageSize;
+  private final int padding = 64;
   private int firstCharacter;
   private int characterCount;
 
   private ByteBuffer rawFile;
 
   public ResourceFont(ByteBuffer fontFile) {
-    this(fontFile, 2048, 32, 224, 192);
+    this(fontFile, 16384, 32, 352, (int) (1024.0f * 1.5f));
   }
 
   public ResourceFont(ByteBuffer fontFile, int imageSize, int firstCharacter, int characterCount, int characterHeight) {
@@ -47,19 +51,19 @@ public class ResourceFont implements ResourceItem {
     fontInfo.free();
   }
 
-  private void addCharacters(STBTTBakedChar.Buffer characterBuffer, int characterCount, int firstCharacter, int imageSize) {
+  private void addCharacters(STBTTPackedchar.Buffer characterBuffer, int characterCount, int firstCharacter, int imageSize) {
     for (int i = 0; i < characterCount; i++) {
-      STBTTBakedChar character = characterBuffer.get(i);
+      STBTTPackedchar character = characterBuffer.get(i);
       int asciiCharacter = i + firstCharacter;
       addCharacter(character, asciiCharacter, imageSize);
     }
   }
 
-  private void addCharacter(STBTTBakedChar character, int asciiCharacter, int imageSize) {
-    double x = character.x0();
-    double y = character.y0();
-    double width = character.x1() - x;
-    double height = character.y1() - y;
+  private void addCharacter(STBTTPackedchar character, int asciiCharacter, int imageSize) {
+    double x = character.x0() - padding;
+    double y = character.y0() - padding;
+    double width = (character.x1() + padding) - x;
+    double height = (character.y1() + padding) - y;
     double xTextureCoordinate = x / imageSize;
     double yTextureCoordinate = y / imageSize;
     supportedCharacters.put(asciiCharacter, new Character(
@@ -88,9 +92,81 @@ public class ResourceFont implements ResourceItem {
         if (rawFile != null && rawFile.hasRemaining()) {
           initFont(rawFile);
           ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
-          STBTTBakedChar.Buffer characterBuffer = STBTTBakedChar.malloc(characterCount);
-          STBTruetype.stbtt_BakeFontBitmap(rawFile, characterHeight, pixelBuffer, imageSize, imageSize, firstCharacter, characterBuffer);
-          texture = new ResourceTexture(pixelBuffer, Texture.NO_FILTER, imageSize, imageSize, 1);
+
+          STBTTPackContext packContext = STBTTPackContext.malloc();
+          STBTTPackedchar.Buffer characterBuffer = STBTTPackedchar.malloc(characterCount);
+          STBTruetype.stbtt_PackBegin(packContext, pixelBuffer, imageSize, imageSize, 0, padding * 2);
+          STBTruetype.stbtt_PackSetSkipMissingCodepoints(packContext, false);
+          STBTruetype.stbtt_PackFontRange(packContext, rawFile, 0, characterHeight, firstCharacter, characterBuffer);
+          STBTruetype.stbtt_PackEnd(packContext);
+
+          /*byte[] pixelArray = BufferUtils.copyToArray(pixelBuffer);
+          boolean[][] bitmap = new boolean[imageSize][imageSize];
+          BufferedImage bufferedImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
+          for (int y = 0; y < imageSize; y++) {
+            for (int x = 0; x < imageSize; x++) {
+              byte rgb = pixelArray[y * imageSize + x];
+              //System.out.println(rgb);
+              bitmap[x][y] = rgb == (byte) 255;
+              bufferedImage.setRGB(x, y, rgb);
+            }
+          }
+          int downscale = 4;
+          float spread = 32;
+          int downscaledImageSize = imageSize / downscale;
+          final ByteBuffer distanceFieldBuffer = ByteBuffer.allocateDirect(downscaledImageSize * downscaledImageSize);
+          ExecutorService executorService = Executors.newFixedThreadPool(6);
+          for (int y = 0; y < downscaledImageSize; y++) {
+            for (int x = 0; x < downscaledImageSize; x++) {
+              final int centerX = x * downscale + downscale / 2;
+              final int centerY = y * downscale + downscale / 2;
+              final boolean base = bitmap[centerX][centerY];
+              final int delta = (int) Math.ceil(spread);
+              final int startX = Math.max(0, centerX - delta);
+              final int startY = Math.max(0, centerY - delta);
+              final int endX = Math.min(imageSize - 1, centerX + delta);
+              final int endY = Math.min(imageSize - 1, centerY + delta);
+              int finalY = y;
+              int finalX = x;
+              executorService.execute(() -> {
+                int closestSquareDistance = delta * delta;
+                for (int j = startY; j < endY; j++) {
+                  for (int i = startX; i < endX; i++) {
+                    if(base != bitmap[i][j]) {
+                      int squareDistance = (int) Vector2f.distanceSquared(centerX, centerY, i, j);
+                      if(squareDistance < closestSquareDistance) {
+                        closestSquareDistance = squareDistance;
+                      }
+                    }
+                  }
+                }
+                float closestDistance = (float) Math.sqrt(closestSquareDistance);
+                float distance = (base ? 1 : -1) * Math.min(closestDistance, spread);
+                float alpha = 0.5f + 0.5f * distance / spread;
+                int alphaByte = (int) (Math.min(1.0f, Math.max(0.0f, alpha)) * 255.0f);
+                synchronized (distanceFieldBuffer) {
+                  distanceFieldBuffer.put(finalY * downscaledImageSize + finalX, (byte) alphaByte);
+                }
+              });
+            }
+          }
+
+          executorService.shutdown();
+          try {
+            if(!executorService.awaitTermination(200, TimeUnit.SECONDS)) {
+              System.out.println("HREYHYHYHHYHYHYHYHAAAAAAA");
+            }
+
+          } catch (InterruptedException exception) {
+            System.out.println("HEYYAYA");
+          }
+
+          distanceFieldBuffer.flip();*/
+
+          //STBTTBakedChar.Buffer characterBuffer = STBTTBakedChar.malloc(characterCount);
+          //STBTruetype.stbtt_BakeFontBitmap(rawFile, characterHeight, pixelBuffer, imageSize, imageSize, firstCharacter, characterBuffer);
+          //texture = new ResourceTexture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1);
+          texture = new ResourceTexture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1);
           addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
           characterBuffer.free();
         }
@@ -124,7 +200,7 @@ public class ResourceFont implements ResourceItem {
     return characterHeight;
   }
 
-  public Texture texture() {
+  public ResourceTexture texture() {
     return texture;
   }
 
