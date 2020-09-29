@@ -1,12 +1,12 @@
 package net.frooastside.engine.graphicobjects.texture;
 
-import net.frooastside.engine.graphicobjects.framebuffer.FrameBufferAttachment;
+import net.frooastside.engine.graphicobjects.SizedGraphicObject;
 import net.frooastside.engine.language.I18n;
 import org.lwjgl.opengl.*;
 
 import java.nio.ByteBuffer;
 
-public class Texture extends FrameBufferAttachment {
+public class Texture extends SizedGraphicObject {
 
   public static final int NO_FILTER = 0x1;
   public static final int BILINEAR_FILTER = 0x2;
@@ -14,9 +14,13 @@ public class Texture extends FrameBufferAttachment {
   public static final int ANISOTROPIC_FILTER = 0x8;
 
   protected ByteBuffer pixelBuffer;
-  protected int filter;
-  protected int dataType;
+  protected int filter = NO_FILTER;
+  protected int dataType = GL11.GL_UNSIGNED_BYTE;
+  protected int internalFormat;
   protected int inputFormat;
+
+  public Texture() {
+  }
 
   public Texture(ByteBuffer pixelBuffer, int filter, int width, int height, int channels) {
     this(pixelBuffer, filter, width, height, internalFormatFor(channels), inputFormatFor(channels));
@@ -36,24 +40,15 @@ public class Texture extends FrameBufferAttachment {
     this.dataType = dataType;
   }
 
-  public Texture() {
-    this.filter = NO_FILTER;
-    this.dataType = GL11.GL_UNSIGNED_BYTE;
-  }
-
-  public void applyFilters() {
-    if ((filter & NO_FILTER) == NO_FILTER) {
-      noFilter();
-    }
-    if ((filter & BILINEAR_FILTER) == BILINEAR_FILTER) {
-      bilinearFilter();
-    }
-    if ((filter & TRILINEAR_FILTER) == TRILINEAR_FILTER) {
-      trilinearFilter();
-    }
-    if ((filter & ANISOTROPIC_FILTER) == ANISOTROPIC_FILTER) {
-      anisotropicFilter();
-    }
+  protected void copyFrom(Texture target) {
+    this.identifier = target.identifier;
+    this.width = target.width;
+    this.height = target.height;
+    this.pixelBuffer = target.pixelBuffer;
+    this.filter = target.filter;
+    this.dataType = target.dataType;
+    this.internalFormat = target.internalFormat;
+    this.inputFormat = target.inputFormat;
   }
 
   @Override
@@ -76,15 +71,28 @@ public class Texture extends FrameBufferAttachment {
     GL11.glDeleteTextures(identifier);
   }
 
-  @Override
   public void store() {
     GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, internalFormat, width, height, 0, inputFormat, dataType, pixelBuffer);
     applyFilters();
   }
 
-  @Override
-  public void appendToFrameBuffer() {
-    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment, GL11.GL_TEXTURE_2D, identifier, 0);
+  public void read() {
+    GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, inputFormat, dataType, pixelBuffer);
+  }
+
+  public void applyFilters() {
+    if ((filter & NO_FILTER) == NO_FILTER) {
+      noFilter();
+    }
+    if ((filter & BILINEAR_FILTER) == BILINEAR_FILTER) {
+      bilinearFilter();
+    }
+    if ((filter & TRILINEAR_FILTER) == TRILINEAR_FILTER) {
+      trilinearFilter();
+    }
+    if ((filter & ANISOTROPIC_FILTER) == ANISOTROPIC_FILTER) {
+      anisotropicFilter();
+    }
   }
 
   private void noFilter() {
@@ -188,10 +196,9 @@ public class Texture extends FrameBufferAttachment {
       return GL11.GL_RGBA;
     } else if (channel == 3) {
       return GL11.GL_RGB;
-    } else if (channel == 1) {
-      return 1;
+    } else {
+      return channel;
     }
-    return -1;
   }
 
   protected static int inputFormatFor(int channel) {

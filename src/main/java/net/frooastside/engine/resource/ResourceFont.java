@@ -1,6 +1,7 @@
 package net.frooastside.engine.resource;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
+import net.frooastside.engine.language.I18n;
 import org.joml.Vector2f;
 import org.lwjgl.stb.*;
 import org.lwjgl.system.MemoryUtil;
@@ -100,14 +101,13 @@ public class ResourceFont implements ResourceItem {
           STBTruetype.stbtt_PackFontRange(packContext, rawFile, 0, characterHeight, firstCharacter, characterBuffer);
           STBTruetype.stbtt_PackEnd(packContext);
 
-          /*byte[] pixelArray = BufferUtils.copyToArray(pixelBuffer);
+          byte[] pixelArray = BufferUtils.copyToArray(pixelBuffer);
           boolean[][] bitmap = new boolean[imageSize][imageSize];
           BufferedImage bufferedImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
           for (int y = 0; y < imageSize; y++) {
             for (int x = 0; x < imageSize; x++) {
               byte rgb = pixelArray[y * imageSize + x];
-              //System.out.println(rgb);
-              bitmap[x][y] = rgb == (byte) 255;
+              bitmap[x][y] = rgb < 0;
               bufferedImage.setRGB(x, y, rgb);
             }
           }
@@ -115,7 +115,7 @@ public class ResourceFont implements ResourceItem {
           float spread = 32;
           int downscaledImageSize = imageSize / downscale;
           final ByteBuffer distanceFieldBuffer = ByteBuffer.allocateDirect(downscaledImageSize * downscaledImageSize);
-          ExecutorService executorService = Executors.newFixedThreadPool(6);
+          ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
           for (int y = 0; y < downscaledImageSize; y++) {
             for (int x = 0; x < downscaledImageSize; x++) {
               final int centerX = x * downscale + downscale / 2;
@@ -150,23 +150,19 @@ public class ResourceFont implements ResourceItem {
               });
             }
           }
-
           executorService.shutdown();
+
           try {
-            if(!executorService.awaitTermination(200, TimeUnit.SECONDS)) {
-              System.out.println("HREYHYHYHHYHYHYHYHAAAAAAA");
+            if (executorService.awaitTermination(200, TimeUnit.SECONDS)) {
+              texture = new ResourceTexture(new Texture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1));
+            } else {
+              System.err.println(I18n.get("error.font.distancefield"));
+              texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
             }
-
           } catch (InterruptedException exception) {
-            System.out.println("HEYYAYA");
+            System.err.println("error.font.distancefield");
+            texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
           }
-
-          distanceFieldBuffer.flip();*/
-
-          //STBTTBakedChar.Buffer characterBuffer = STBTTBakedChar.malloc(characterCount);
-          //STBTruetype.stbtt_BakeFontBitmap(rawFile, characterHeight, pixelBuffer, imageSize, imageSize, firstCharacter, characterBuffer);
-          //texture = new ResourceTexture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1);
-          texture = new ResourceTexture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1);
           addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
           characterBuffer.free();
         }
