@@ -38,7 +38,8 @@ public class FullscreenQuadRenderer extends PostProcessingEffect {
     }
 
     @Override
-    protected void storeUniformLocations() {}
+    protected void storeUniformLocations() {
+    }
 
     @Override
     protected void setDefaults() {

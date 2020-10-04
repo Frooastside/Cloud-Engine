@@ -5,6 +5,8 @@ in vec2 textureCoordinates;
 
 out vec2 _textureCoordinates;
 
+uniform vec4 translation;
+
 void main() {
     gl_Position = vec4(position, 0, 1.0);
     _textureCoordinates = textureCoordinates;

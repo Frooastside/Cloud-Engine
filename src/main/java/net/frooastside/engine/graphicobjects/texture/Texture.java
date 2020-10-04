@@ -40,15 +40,15 @@ public class Texture extends SizedGraphicObject {
     this.dataType = dataType;
   }
 
-  protected void copyFrom(Texture target) {
-    this.identifier = target.identifier;
-    this.width = target.width;
-    this.height = target.height;
-    this.pixelBuffer = target.pixelBuffer;
-    this.filter = target.filter;
-    this.dataType = target.dataType;
-    this.internalFormat = target.internalFormat;
-    this.inputFormat = target.inputFormat;
+  protected void copyFrom(Texture source) {
+    this.identifier = source.identifier;
+    this.width = source.width;
+    this.height = source.height;
+    this.pixelBuffer = source.pixelBuffer;
+    this.filter = source.filter;
+    this.dataType = source.dataType;
+    this.internalFormat = source.internalFormat;
+    this.inputFormat = source.inputFormat;
   }
 
   @Override
@@ -122,7 +122,7 @@ public class Texture extends SizedGraphicObject {
   }
 
   protected static int channelCountFor(int internalFormat) {
-    if(internalFormat == GL11.GL_RGBA ||
+    if (internalFormat == GL11.GL_RGBA ||
       internalFormat == GL11.GL_RGB5_A1 ||
       internalFormat == GL11.GL_RGBA8 ||
       internalFormat == GL31.GL_RGBA8_SNORM ||
@@ -144,7 +144,7 @@ public class Texture extends SizedGraphicObject {
       internalFormat == GL42.GL_COMPRESSED_RGBA_BPTC_UNORM ||
       internalFormat == GL42.GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM) {
       return 4;
-    }else if(internalFormat == GL11.GL_RGB ||
+    } else if (internalFormat == GL11.GL_RGB ||
       internalFormat == GL11.GL_R3_G3_B2 ||
       internalFormat == GL11.GL_RGB4 ||
       internalFormat == GL11.GL_RGB5 ||
@@ -169,7 +169,7 @@ public class Texture extends SizedGraphicObject {
       internalFormat == GL42.GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT ||
       internalFormat == GL42.GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT) {
       return 3;
-    }else if(internalFormat == 1 ||
+    } else if (internalFormat == 1 ||
       internalFormat == GL11.GL_RED ||
       internalFormat == GL30.GL_R8 ||
       internalFormat == GL31.GL_R8_SNORM ||
@@ -186,7 +186,7 @@ public class Texture extends SizedGraphicObject {
       internalFormat == GL30.GL_COMPRESSED_RED_RGTC1 ||
       internalFormat == GL30.GL_COMPRESSED_SIGNED_RED_RGTC1) {
       return 1;
-    }else {
+    } else {
       return -1;
     }
   }

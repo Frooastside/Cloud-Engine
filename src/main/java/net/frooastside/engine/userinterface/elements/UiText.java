@@ -1,4 +1,4 @@
-package net.frooastside.engine.gui;
+package net.frooastside.engine.userinterface.elements;
 
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
@@ -7,41 +7,34 @@ import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsag
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.BufferUtils;
 import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.userinterface.UiColor;
+import net.frooastside.engine.userinterface.UiRenderElement;
+import org.joml.Vector2f;
 
-public class GuiText extends GuiElement {
+public class UiText extends UiRenderElement {
 
   public static final double LINE_HEIGHT = 0.025f;
 
-  private static final float TEXT_SIZE = 1.0f;
-  private static final float MAX_LENGTH = 1.0f;
-
+  private final VertexArrayObject model = createVertexArrayObject();
   private final ResourceFont font;
-  private String text;
-  private float textSize;
-  private boolean centered;
+  private final boolean centered;
 
-  //TODO
+  private String text;
+
   private float aspectRatio;
 
-  private final VertexArrayObject model = createVertexArrayObject();
-
-  public GuiText(ResourceFont font, String text, boolean centered) {
+  public UiText(ResourceFont font, String text, UiColor color, boolean centered) {
+    super.setColor(color);
     this.font = font;
     this.text = text;
     this.centered = centered;
   }
 
-  public void setText(String text) {
-    this.text = text;
-    //TODO
-    recalculate(aspectRatio);
-  }
-
   @Override
-  public void recalculate(float aspectRatio) {
-    //TODO
-    this.aspectRatio = aspectRatio;
+  public void recalculate(Vector2f pixelSize) {
+    this.aspectRatio = pixelSize.y / pixelSize.x;
     updateModel();
+    super.recalculate(pixelSize);
   }
 
   private void updateModel() {
@@ -49,13 +42,14 @@ public class GuiText extends GuiElement {
     double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
     double lineLength = 0;
     int characterCount = 0;
+    float rawHeight = constraints().height().rawValue();
     for (char asciiCharacter : text.toCharArray()) {
       ResourceFont.Character character = font.getCharacter(asciiCharacter);
-      lineLength += (character.xAdvance() * horizontalPerPixelSize) * TEXT_SIZE;
+      lineLength += (character.xAdvance() * horizontalPerPixelSize) * rawHeight;
       characterCount += asciiCharacter != ResourceFont.SPACE_ASCII ? 1 : 0;
     }
-    double cursorX = centered ? (MAX_LENGTH - lineLength) / 2 : 0.0;
-    double yLineOffset = (LINE_HEIGHT / 2) * TEXT_SIZE;
+    double cursorX = centered ? (constraints().width().rawValue() - lineLength) / 2 : 0.0;
+    double yLineOffset = (LINE_HEIGHT / 2) * rawHeight;
     float[] positions = new float[characterCount * 12];
     float[] textureCoordinates = new float[characterCount * 12];
     int index = 0;
@@ -65,7 +59,7 @@ public class GuiText extends GuiElement {
         addVerticesFor(positions, textureCoordinates, character, index, verticalPerPixelSize, horizontalPerPixelSize, cursorX, yLineOffset);
         index++;
       }
-      cursorX += (character.xAdvance() * horizontalPerPixelSize) * TEXT_SIZE;
+      cursorX += (character.xAdvance() * horizontalPerPixelSize) * rawHeight;
     }
     if (positions.length / 2 == model.length()) {
       bufferSubData(positions, textureCoordinates);
@@ -74,11 +68,12 @@ public class GuiText extends GuiElement {
     }
   }
 
-  private void addVerticesFor(float[] positions, float[] textureCoordinates, ResourceFont.Character character, int characterIndex, double verticalPerPixelSize, double horizontalPerPixelSize, double cursorX, double cursorY) {
-    double x = cursorX + ((character.xOffset() * horizontalPerPixelSize) * TEXT_SIZE);
-    double y = cursorY + ((character.yOffset() * verticalPerPixelSize) * TEXT_SIZE);
-    double xMax = x + ((character.xSize() * horizontalPerPixelSize) * TEXT_SIZE);
-    double yMax = y + ((character.ySize() * verticalPerPixelSize) * TEXT_SIZE);
+  protected void addVerticesFor(float[] positions, float[] textureCoordinates, ResourceFont.Character character, int characterIndex, double verticalPerPixelSize, double horizontalPerPixelSize, double cursorX, double cursorY) {
+    float rawHeight = constraints().height().rawValue();
+    double x = cursorX + ((character.xOffset() * horizontalPerPixelSize) * rawHeight);
+    double y = cursorY + ((character.yOffset() * verticalPerPixelSize) * rawHeight);
+    double xMax = x + ((character.xSize() * horizontalPerPixelSize) * rawHeight);
+    double yMax = y + ((character.ySize() * verticalPerPixelSize) * rawHeight);
     addPoints(positions,
       characterIndex,
       x * 2 - 1,
@@ -109,7 +104,7 @@ public class GuiText extends GuiElement {
     array[characterIndex * 12 + 11] = (float) y;
   }
 
-  private VertexArrayObject createVertexArrayObject() {
+  private static VertexArrayObject createVertexArrayObject() {
     VertexArrayObject vertexArrayObject = new VertexArrayObject(0);
     vertexArrayObject.generateIdentifier();
     vertexArrayObject.bind();
@@ -140,11 +135,26 @@ public class GuiText extends GuiElement {
     model.unbind();
   }
 
+  @Override
+  public RenderType renderType() {
+    return RenderType.TEXT;
+  }
+
+  @Override
   public VertexArrayObject model() {
     return model;
   }
 
+  public ResourceFont font() {
+    return font;
+  }
+
   public String text() {
     return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+    updateModel();
   }
 }

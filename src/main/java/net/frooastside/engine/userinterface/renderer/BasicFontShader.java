@@ -1,14 +1,17 @@
-package net.frooastside.engine.gui;
+package net.frooastside.engine.userinterface.renderer;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.shader.*;
 import net.frooastside.engine.shader.uniforms.UniformFloat;
 import net.frooastside.engine.shader.uniforms.UniformTexture;
+import net.frooastside.engine.shader.uniforms.UniformVector2f;
 import net.frooastside.engine.shader.uniforms.UniformVector3f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class BasicFontShader extends ShaderProgram {
 
+  private final UniformVector2f uniformOffset = new UniformVector2f("offset");
   private final UniformTexture uniformTexture = new UniformTexture("fontAtlas");
   private final UniformVector3f uniformColor = new UniformVector3f("color");
   private final UniformFloat uniformVisibility = new UniformFloat("visibility");
@@ -17,8 +20,8 @@ public class BasicFontShader extends ShaderProgram {
 
   @Override
   protected void addShaders() {
-    addShader(Shader.createShader("/net/frooastside/engine/shader/basicfontshader/vertexshader.glsl", true, Shader.VERTEX_SHADER));
-    addShader(Shader.createShader("/net/frooastside/engine/shader/basicfontshader/fragmentshader.glsl", true, Shader.FRAGMENT_SHADER));
+    addShader(Shader.createShader("/net/frooastside/engine/userinterface/renderer/basicfontshader/vertexshader.glsl", true, Shader.VERTEX_SHADER));
+    addShader(Shader.createShader("/net/frooastside/engine/userinterface/renderer/basicfontshader/fragmentshader.glsl", true, Shader.FRAGMENT_SHADER));
   }
 
   @Override
@@ -39,7 +42,17 @@ public class BasicFontShader extends ShaderProgram {
   @Override
   protected void setDefaults() {
     uniformTexture.loadTextureUnit(0);
+    loadWidth(0.5f);
     loadVisibility(1);
+  }
+
+  public void loadOffset(Vector2f offset) {
+    loadOffset(offset.x, offset.y);
+  }
+
+  public void loadOffset(float x, float y) {
+    System.out.println(x + ", " + y);
+    uniformOffset.loadVector2f(x, y);
   }
 
   public void loadTexture(Texture texture) {

@@ -37,9 +37,9 @@ public class BufferAttachment extends SizedGraphicObject implements FrameBufferA
   }
 
   public void store() {
-    if(samples == 0) {
+    if (samples == 0) {
       GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, internalFormat, width, height);
-    }else {
+    } else {
       GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, samples, internalFormat, width, height);
     }
   }

@@ -87,9 +87,9 @@ public class ResourceFont implements ResourceItem {
   @Override
   public Runnable getThreadUnspecificLoader() {
     return () -> {
-      if(texture != null) {
+      if (texture != null) {
         texture.getThreadUnspecificLoader().run();
-      }else {
+      } else {
         if (rawFile != null && rawFile.hasRemaining()) {
           initFont(rawFile);
           ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
@@ -101,59 +101,15 @@ public class ResourceFont implements ResourceItem {
           STBTruetype.stbtt_PackFontRange(packContext, rawFile, 0, characterHeight, firstCharacter, characterBuffer);
           STBTruetype.stbtt_PackEnd(packContext);
 
-          byte[] pixelArray = BufferUtils.copyToArray(pixelBuffer);
-          boolean[][] bitmap = new boolean[imageSize][imageSize];
-          BufferedImage bufferedImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
-          for (int y = 0; y < imageSize; y++) {
-            for (int x = 0; x < imageSize; x++) {
-              byte rgb = pixelArray[y * imageSize + x];
-              bitmap[x][y] = rgb < 0;
-              bufferedImage.setRGB(x, y, rgb);
-            }
-          }
+          ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
           int downscale = 4;
           float spread = 32;
-          int downscaledImageSize = imageSize / downscale;
-          final ByteBuffer distanceFieldBuffer = ByteBuffer.allocateDirect(downscaledImageSize * downscaledImageSize);
-          ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-          for (int y = 0; y < downscaledImageSize; y++) {
-            for (int x = 0; x < downscaledImageSize; x++) {
-              final int centerX = x * downscale + downscale / 2;
-              final int centerY = y * downscale + downscale / 2;
-              final boolean base = bitmap[centerX][centerY];
-              final int delta = (int) Math.ceil(spread);
-              final int startX = Math.max(0, centerX - delta);
-              final int startY = Math.max(0, centerY - delta);
-              final int endX = Math.min(imageSize - 1, centerX + delta);
-              final int endY = Math.min(imageSize - 1, centerY + delta);
-              int finalY = y;
-              int finalX = x;
-              executorService.execute(() -> {
-                int closestSquareDistance = delta * delta;
-                for (int j = startY; j < endY; j++) {
-                  for (int i = startX; i < endX; i++) {
-                    if(base != bitmap[i][j]) {
-                      int squareDistance = (int) Vector2f.distanceSquared(centerX, centerY, i, j);
-                      if(squareDistance < closestSquareDistance) {
-                        closestSquareDistance = squareDistance;
-                      }
-                    }
-                  }
-                }
-                float closestDistance = (float) Math.sqrt(closestSquareDistance);
-                float distance = (base ? 1 : -1) * Math.min(closestDistance, spread);
-                float alpha = 0.5f + 0.5f * distance / spread;
-                int alphaByte = (int) (Math.min(1.0f, Math.max(0.0f, alpha)) * 255.0f);
-                synchronized (distanceFieldBuffer) {
-                  distanceFieldBuffer.put(finalY * downscaledImageSize + finalX, (byte) alphaByte);
-                }
-              });
-            }
-          }
+          ByteBuffer distanceFieldBuffer = createDistanceField(executorService, pixelBuffer, imageSize, downscale, spread);
           executorService.shutdown();
 
           try {
-            if (executorService.awaitTermination(200, TimeUnit.SECONDS)) {
+            if (executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+              int downscaledImageSize = imageSize / downscale;
               texture = new ResourceTexture(new Texture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1));
             } else {
               System.err.println(I18n.get("error.font.distancefield"));
@@ -168,6 +124,56 @@ public class ResourceFont implements ResourceItem {
         }
       }
     };
+  }
+
+  private static ByteBuffer createDistanceField(ExecutorService executorService, ByteBuffer pixelBuffer, int imageSize, int downscale, float spread) {
+    byte[] pixelArray = BufferUtils.copyToArray(pixelBuffer);
+    boolean[][] bitmap = new boolean[imageSize][imageSize];
+    BufferedImage bufferedImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
+    for (int y = 0; y < imageSize; y++) {
+      for (int x = 0; x < imageSize; x++) {
+        byte rgb = pixelArray[y * imageSize + x];
+        bitmap[x][y] = rgb < 0;
+        bufferedImage.setRGB(x, y, rgb);
+      }
+    }
+    int downscaledImageSize = imageSize / downscale;
+    final ByteBuffer distanceFieldBuffer = ByteBuffer.allocateDirect(downscaledImageSize * downscaledImageSize);
+    for (int y = 0; y < downscaledImageSize; y++) {
+      for (int x = 0; x < downscaledImageSize; x++) {
+        final int centerX = x * downscale + downscale / 2;
+        final int centerY = y * downscale + downscale / 2;
+        final boolean base = bitmap[centerX][centerY];
+        final int delta = (int) Math.ceil(spread);
+        final int startX = Math.max(0, centerX - delta);
+        final int startY = Math.max(0, centerY - delta);
+        final int endX = Math.min(imageSize - 1, centerX + delta);
+        final int endY = Math.min(imageSize - 1, centerY + delta);
+        int finalY = y;
+        int finalX = x;
+        executorService.execute(() -> {
+          int closestSquareDistance = delta * delta;
+          for (int j = startY; j < endY; j++) {
+            for (int i = startX; i < endX; i++) {
+              if (base != bitmap[i][j]) {
+                int squareDistance = (int) Vector2f.distanceSquared(centerX, centerY, i, j);
+                if (squareDistance < closestSquareDistance) {
+                  closestSquareDistance = squareDistance;
+                }
+              }
+            }
+          }
+          float closestDistance = (float) Math.sqrt(closestSquareDistance);
+          float distance = (base ? 1 : -1) * Math.min(closestDistance, spread);
+          float alpha = 0.5f + 0.5f * distance / spread;
+          int alphaByte = (int) (Math.min(1.0f, Math.max(0.0f, alpha)) * 255.0f);
+          synchronized (distanceFieldBuffer) {
+            distanceFieldBuffer.put(finalY * downscaledImageSize + finalX, (byte) alphaByte);
+          }
+        });
+      }
+    }
+    return distanceFieldBuffer;
   }
 
   @Override

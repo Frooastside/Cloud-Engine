@@ -29,7 +29,7 @@ public class BufferUtils {
   }
 
   public static ByteBuffer wrapDirect(byte[] bytes) {
-    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(bytes.length);
+    ByteBuffer byteBuffer = org.lwjgl.BufferUtils.createByteBuffer(bytes.length);
     byteBuffer.put(bytes);
     byteBuffer.flip();
     return byteBuffer;

@@ -14,8 +14,8 @@ public class I18n {
 
   public static String get(String key, Object... args) {
     String result = key;
-    if (instance.currentLanguage.contains(key)) {
-      result = String.format(instance.currentLanguage.get(key), args);
+    if (instance.currentLanguage.contains(key.toLowerCase())) {
+      result = String.format(instance.currentLanguage.get(key.toLowerCase()), args);
     }
     return result;
   }
@@ -43,7 +43,7 @@ public class I18n {
 
   public static void selectByName(String languageName) {
     instance.languages.stream()
-      .filter(language -> language.languageName().equals(languageName))
+      .filter(language -> language.languageName().equalsIgnoreCase(languageName))
       .forEach(language -> instance.currentLanguage = language);
   }
 

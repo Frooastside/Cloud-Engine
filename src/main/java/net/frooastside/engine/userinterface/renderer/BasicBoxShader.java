@@ -1,16 +1,14 @@
-package net.frooastside.engine.gui;
+package net.frooastside.engine.userinterface.renderer;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.shader.*;
-import net.frooastside.engine.shader.uniforms.UniformBoolean;
-import net.frooastside.engine.shader.uniforms.UniformFloat;
-import net.frooastside.engine.shader.uniforms.UniformTexture;
-import net.frooastside.engine.shader.uniforms.UniformVector3f;
+import net.frooastside.engine.shader.uniforms.*;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class BasicGuiShader extends ShaderProgram {
+public class BasicBoxShader extends ShaderProgram {
 
+  private final UniformVector4f uniformTranslation = new UniformVector4f("translation");
   private final UniformBoolean uniformUseTexture = new UniformBoolean("useTexture");
   private final UniformFloat uniformVisibility = new UniformFloat("visibility");
   private final UniformTexture uniformTexture = new UniformTexture("guiTexture");
@@ -18,8 +16,8 @@ public class BasicGuiShader extends ShaderProgram {
 
   @Override
   protected void addShaders() {
-    addShader(Shader.createShader("/net/frooastside/engine/shader/basicguishader/vertexshader.glsl", true, Shader.VERTEX_SHADER));
-    addShader(Shader.createShader("/net/frooastside/engine/shader/basicguishader/fragmentshader.glsl", true, Shader.FRAGMENT_SHADER));
+    addShader(Shader.createShader("/net/frooastside/engine/userinterface/renderer/basicboxshader/vertexshader.glsl", true, Shader.VERTEX_SHADER));
+    addShader(Shader.createShader("/net/frooastside/engine/userinterface/renderer/basicboxshader/fragmentshader.glsl", true, Shader.FRAGMENT_SHADER));
   }
 
   @Override
@@ -40,6 +38,14 @@ public class BasicGuiShader extends ShaderProgram {
   protected void setDefaults() {
     uniformTexture.loadTextureUnit(0);
     loadVisibility(1);
+  }
+
+  public void loadTranslation(Vector4f translation) {
+    loadTranslation(translation.x, translation.y, translation.z, translation.w);
+  }
+
+  public void loadTranslation(float x, float y, float z, float w) {
+    uniformTranslation.loadVector4f(x, y, z, w);
   }
 
   private void loadUseTexture(boolean useTexture) {

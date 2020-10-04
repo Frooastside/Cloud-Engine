@@ -1,6 +1,5 @@
 package net.frooastside.engine.shader.uniforms;
 
-import net.frooastside.engine.language.I18n;
 import org.lwjgl.opengl.GL20;
 
 public abstract class Uniform {

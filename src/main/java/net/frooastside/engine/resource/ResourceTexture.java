@@ -25,19 +25,19 @@ public class ResourceTexture extends Texture implements ResourceItem {
   }
 
   public void saveToFile(File file) {
-    if(isPixelBufferEmpty()) {
+    if (isPixelBufferEmpty()) {
       bind();
       read();
       unbind();
     }
-    if(channel == 0 || channel == -1) {
+    if (channel == 0 || channel == -1) {
       channel = channelCountFor(internalFormat);
     }
     STBImageWrite.stbi_write_png(file.getAbsolutePath(), width, height, channel, pixelBuffer, 0);
   }
 
   public void readFromFile() {
-    if(!isRawFileEmpty() && isPixelBufferEmpty()) {
+    if (!isRawFileEmpty() && isPixelBufferEmpty()) {
       int[] width = new int[1];
       int[] height = new int[1];
       int[] channels = new int[1];
@@ -76,7 +76,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
   @Override
   public void writeExternal(ObjectOutput out) throws IOException {
     if (isRawFileEmpty()) {
-      if(isPixelBufferEmpty()) {
+      if (isPixelBufferEmpty()) {
         bind();
         read();
         unbind();
@@ -105,7 +105,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
   }
 
   private boolean isRawFileEmpty() {
-    return pixelBuffer == null || !pixelBuffer.hasRemaining();
+    return rawFile == null || !rawFile.hasRemaining();
   }
 
 }
