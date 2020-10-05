@@ -7,19 +7,25 @@ import net.frooastside.engine.shader.uniforms.UniformTexture;
 
 public class FullscreenQuadRenderer extends PostProcessingEffect {
 
-  private static final FullscreenQuadShader fullscreenQuadShader = new FullscreenQuadShader();
+  private final FullscreenQuadShader fullscreenQuadShader = new FullscreenQuadShader();
 
-  public static void init() {
+  public void initialize() {
     fullscreenQuadShader.initialize();
   }
 
-  public static void drawTexture(Texture texture) {
+  public void drawTexture(Texture texture) {
     fullscreenQuadShader.start();
     prepare();
     fullscreenQuadShader.loadTexture(texture);
     draw();
     stop();
     fullscreenQuadShader.stop();
+  }
+
+  @Override
+  public void delete() {
+    fullscreenQuadShader.delete();
+    fullscreenQuad().delete();
   }
 
   public static class FullscreenQuadShader extends ShaderProgram {

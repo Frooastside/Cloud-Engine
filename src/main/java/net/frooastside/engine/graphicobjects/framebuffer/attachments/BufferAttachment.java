@@ -18,12 +18,12 @@ public class BufferAttachment extends SizedGraphicObject implements FrameBufferA
 
   @Override
   public void generateIdentifier() {
-    identifier = GL30.glGenRenderbuffers();
+    setIdentifier(GL30.glGenRenderbuffers());
   }
 
   @Override
   public void bind() {
-    GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, identifier);
+    GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, identifier());
   }
 
   @Override
@@ -33,14 +33,14 @@ public class BufferAttachment extends SizedGraphicObject implements FrameBufferA
 
   @Override
   public void delete() {
-    GL30.glDeleteRenderbuffers(identifier);
+    GL30.glDeleteRenderbuffers(identifier());
   }
 
   public void store() {
     if (samples == 0) {
-      GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, internalFormat, width, height);
+      GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, internalFormat, width(), height());
     } else {
-      GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, samples, internalFormat, width, height);
+      GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, samples, internalFormat, width(), height());
     }
   }
 
@@ -57,7 +57,7 @@ public class BufferAttachment extends SizedGraphicObject implements FrameBufferA
     generateIdentifier();
     bind();
     store();
-    GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER, identifier);
+    GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER, identifier());
     unbind();
   }
 

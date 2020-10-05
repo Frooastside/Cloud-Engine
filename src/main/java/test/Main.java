@@ -3,7 +3,6 @@ package test;
 import net.frooastside.engine.Window;
 import net.frooastside.engine.userinterface.renderer.BasicBoxShader;
 import net.frooastside.engine.userinterface.renderer.BasicFontShader;
-import net.frooastside.engine.userinterface.elements.UiText;
 import net.frooastside.engine.postprocessing.FullscreenQuadRenderer;
 import net.frooastside.engine.resource.ResourceContainer;
 import net.frooastside.engine.resource.ResourceFont;
@@ -11,7 +10,6 @@ import net.frooastside.engine.userinterface.UiScreen;
 import net.frooastside.engine.userinterface.renderer.UiRenderer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL11;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,8 +28,8 @@ public class Main {
     container.load(new File("C:/Users/Simon/Documents/Font.pak"));
     ResourceFont font = (ResourceFont) container.get("JetBrainsMonoNL-Regular.ttf");
     //ResourceFont font = new ResourceFont(BufferUtils.readFile(new File("C:\\Users\\Simon\\Documents\\JetBrainsMonoNL-Regular.ttf")));
-    font.getThreadUnspecificLoader().run();
-    font.getThreadSpecificLoader().run();
+    font.unspecificLoader().run();
+    font.contextSpecificLoader().run();
     //font.texture().saveToFile(new File("C:\\Users\\Simon\\Documents\\JetBrainsMonoNL-ExtraBold.png"));
 
     //ResourceTexture texture1 = new ResourceTexture(BufferUtils.readFile(new File("C:\\Users\\Simon\\Documents\\Engine\\resources\\textures\\font\\consolas.png")));
@@ -47,12 +45,12 @@ public class Main {
     UiRenderer renderer = new UiRenderer(new BasicBoxShader(), new BasicFontShader());
     renderer.initialize();
     //FrameBufferObject frameBufferObject = FrameBufferObject.createDefaultFrameBuffer(window.windowWidth(), window.windowHeight(), 0);
-    FullscreenQuadRenderer.init();
+    FullscreenQuadRenderer fullscreenQuadRenderer = new FullscreenQuadRenderer();
+    fullscreenQuadRenderer.initialize();
 
     while (!window.shouldWindowClose()) {
-      GL11.glDisable(GL11.GL_CULL_FACE);
       Window.clearBuffers();
-      FullscreenQuadRenderer.drawTexture(font.texture());
+      fullscreenQuadRenderer.drawTexture(font.texture());
 
       renderer.render(uiScreen);
 
@@ -76,9 +74,6 @@ public class Main {
 
       window.updateWindow();
     }
-    //frameBufferObject.delete();
-    //text.model().delete();
-    //fontShader.delete();
 
     window.closeWindow();
     GLFW.glfwTerminate();

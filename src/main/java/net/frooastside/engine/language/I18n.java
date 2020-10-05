@@ -50,4 +50,8 @@ public class I18n {
   public static List<Language> languages() {
     return instance.languages;
   }
+
+  public Language currentLanguage() {
+    return currentLanguage;
+  }
 }

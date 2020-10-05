@@ -26,7 +26,7 @@ public class TextureAttachment extends Texture implements FrameBufferAttachment 
     generateIdentifier();
     bind();
     store();
-    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment, GL11.GL_TEXTURE_2D, identifier, 0);
+    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment, GL11.GL_TEXTURE_2D, identifier(), 0);
     unbind();
   }
 

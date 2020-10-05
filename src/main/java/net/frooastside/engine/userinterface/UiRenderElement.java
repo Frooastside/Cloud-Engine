@@ -1,7 +1,5 @@
 package net.frooastside.engine.userinterface;
 
-import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
-
 public abstract class UiRenderElement extends UiElement {
 
   private UiColor color;
@@ -13,8 +11,6 @@ public abstract class UiRenderElement extends UiElement {
   }
 
   public abstract RenderType renderType();
-
-  public abstract VertexArrayObject model();
 
   public UiColor color() {
     return color;

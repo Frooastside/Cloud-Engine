@@ -58,12 +58,12 @@ public class VertexArrayObject extends GraphicObject {
 
   @Override
   public void generateIdentifier() {
-    identifier = GL30.glGenVertexArrays();
+    setIdentifier(GL30.glGenVertexArrays());
   }
 
   @Override
   public void bind() {
-    GL30.glBindVertexArray(identifier);
+    GL30.glBindVertexArray(identifier());
   }
 
   @Override
@@ -73,7 +73,7 @@ public class VertexArrayObject extends GraphicObject {
 
   @Override
   public void delete() {
-    GL30.glDeleteVertexArrays(identifier);
+    GL30.glDeleteVertexArrays(identifier());
     Arrays.stream(vertexBufferObjects).filter(Objects::nonNull).forEach(VertexBufferObject::delete);
   }
 
@@ -81,12 +81,12 @@ public class VertexArrayObject extends GraphicObject {
     return vertexBufferObjects[index];
   }
 
-  public void setLength(int length) {
-    this.length = length;
-  }
-
   public int length() {
     return length;
+  }
+
+  public void setLength(int length) {
+    this.length = length;
   }
 
   /*public static VertexArrayObject create2DFor(float[] positions) {

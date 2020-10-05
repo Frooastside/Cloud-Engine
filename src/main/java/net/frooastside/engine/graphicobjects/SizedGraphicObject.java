@@ -2,8 +2,8 @@ package net.frooastside.engine.graphicobjects;
 
 public abstract class SizedGraphicObject extends GraphicObject {
 
-  protected int width;
-  protected int height;
+  private int width;
+  private int height;
 
   public void setSize(int width, int height) {
     this.width = width;
@@ -14,12 +14,12 @@ public abstract class SizedGraphicObject extends GraphicObject {
     return width;
   }
 
-  public int height() {
-    return height;
-  }
-
   public void setWidth(int width) {
     this.width = width;
+  }
+
+  public int height() {
+    return height;
   }
 
   public void setHeight(int height) {

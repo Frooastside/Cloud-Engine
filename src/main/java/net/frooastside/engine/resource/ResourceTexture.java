@@ -31,9 +31,9 @@ public class ResourceTexture extends Texture implements ResourceItem {
       unbind();
     }
     if (channel == 0 || channel == -1) {
-      channel = channelCountFor(internalFormat);
+      channel = channelCountFor(internalFormat());
     }
-    STBImageWrite.stbi_write_png(file.getAbsolutePath(), width, height, channel, pixelBuffer, 0);
+    STBImageWrite.stbi_write_png(file.getAbsolutePath(), width(), height(), channel, pixelBuffer(), 0);
   }
 
   public void readFromFile() {
@@ -44,22 +44,22 @@ public class ResourceTexture extends Texture implements ResourceItem {
       if (!STBImage.stbi_info_from_memory(rawFile, width, height, channels)) {
         throw new IllegalStateException(I18n.get("error.texture.information"));
       }
-      this.width = width[0];
-      this.height = height[0];
+      this.setWidth(width[0]);
+      this.setHeight(height[0]);
       this.channel = channels[0];
       ByteBuffer pixelBuffer = STBImage.stbi_load_from_memory(rawFile, width, height, channels, 0);
       if (pixelBuffer == null) {
         throw new IllegalStateException(I18n.get("error.texture.content"));
       }
-      this.pixelBuffer = BufferUtils.copyDirect(pixelBuffer);
+      this.setPixelBuffer(BufferUtils.copyDirect(pixelBuffer));
       STBImage.stbi_image_free(pixelBuffer);
-      this.internalFormat = internalFormatFor(channel);
-      this.inputFormat = inputFormatFor(channel);
+      this.setInternalFormat(internalFormatFor(channel));
+      this.setInputFormat(inputFormatFor(channel));
     }
   }
 
   @Override
-  public Runnable getThreadSpecificLoader() {
+  public Runnable contextSpecificLoader() {
     return () -> {
       generateIdentifier();
       bind();
@@ -69,7 +69,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
   }
 
   @Override
-  public Runnable getThreadUnspecificLoader() {
+  public Runnable unspecificLoader() {
     return this::readFromFile;
   }
 
@@ -91,21 +91,36 @@ public class ResourceTexture extends Texture implements ResourceItem {
     } else {
       out.writeObject(null);
     }
-    out.writeInt(filter);
+    out.writeInt(filter());
   }
 
   @Override
   public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
     this.rawFile = BufferUtils.wrapDirect((byte[]) in.readObject());
-    this.filter = in.readInt();
+    this.setFilter(in.readInt());
   }
 
   private boolean isPixelBufferEmpty() {
-    return pixelBuffer == null || !pixelBuffer.hasRemaining();
+    return pixelBuffer() == null || !pixelBuffer().hasRemaining();
   }
 
   private boolean isRawFileEmpty() {
     return rawFile == null || !rawFile.hasRemaining();
   }
 
+  public ByteBuffer rawFile() {
+    return rawFile;
+  }
+
+  public void setRawFile(ByteBuffer rawFile) {
+    this.rawFile = rawFile;
+  }
+
+  public int channel() {
+    return channel;
+  }
+
+  public void setChannel(int channel) {
+    this.channel = channel;
+  }
 }

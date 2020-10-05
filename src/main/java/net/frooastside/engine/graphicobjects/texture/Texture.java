@@ -13,11 +13,12 @@ public class Texture extends SizedGraphicObject {
   public static final int TRILINEAR_FILTER = 0x4;
   public static final int ANISOTROPIC_FILTER = 0x8;
 
-  protected ByteBuffer pixelBuffer;
-  protected int filter = NO_FILTER;
-  protected int dataType = GL11.GL_UNSIGNED_BYTE;
-  protected int internalFormat;
-  protected int inputFormat;
+  private ByteBuffer pixelBuffer;
+
+  private int filter = NO_FILTER;
+  private int dataType = GL11.GL_UNSIGNED_BYTE;
+  private int internalFormat;
+  private int inputFormat;
 
   public Texture() {
   }
@@ -31,19 +32,19 @@ public class Texture extends SizedGraphicObject {
   }
 
   public Texture(ByteBuffer pixelBuffer, int filter, int width, int height, int internalFormat, int inputFormat, int dataType) {
+    this.setWidth(width);
+    this.setHeight(height);
     this.pixelBuffer = pixelBuffer;
     this.filter = filter;
-    this.width = width;
-    this.height = height;
     this.internalFormat = internalFormat;
     this.inputFormat = inputFormat;
     this.dataType = dataType;
   }
 
   protected void copyFrom(Texture source) {
-    this.identifier = source.identifier;
-    this.width = source.width;
-    this.height = source.height;
+    this.setIdentifier(source.identifier());
+    this.setWidth(source.width());
+    this.setHeight(source.height());
     this.pixelBuffer = source.pixelBuffer;
     this.filter = source.filter;
     this.dataType = source.dataType;
@@ -53,12 +54,12 @@ public class Texture extends SizedGraphicObject {
 
   @Override
   public void generateIdentifier() {
-    identifier = GL11.glGenTextures();
+    setIdentifier(GL11.glGenTextures());
   }
 
   @Override
   public void bind() {
-    GL11.glBindTexture(GL11.GL_TEXTURE_2D, identifier);
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D, identifier());
   }
 
   @Override
@@ -68,11 +69,11 @@ public class Texture extends SizedGraphicObject {
 
   @Override
   public void delete() {
-    GL11.glDeleteTextures(identifier);
+    GL11.glDeleteTextures(identifier());
   }
 
   public void store() {
-    GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, internalFormat, width, height, 0, inputFormat, dataType, pixelBuffer);
+    GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, internalFormat, width(), height(), 0, inputFormat, dataType, pixelBuffer);
     applyFilters();
   }
 
@@ -210,5 +211,45 @@ public class Texture extends SizedGraphicObject {
       return GL11.GL_RED;
     }
     return -1;
+  }
+
+  public ByteBuffer pixelBuffer() {
+    return pixelBuffer;
+  }
+
+  public void setPixelBuffer(ByteBuffer pixelBuffer) {
+    this.pixelBuffer = pixelBuffer;
+  }
+
+  public int filter() {
+    return filter;
+  }
+
+  public void setFilter(int filter) {
+    this.filter = filter;
+  }
+
+  public int dataType() {
+    return dataType;
+  }
+
+  public void setDataType(int dataType) {
+    this.dataType = dataType;
+  }
+
+  public int internalFormat() {
+    return internalFormat;
+  }
+
+  public void setInternalFormat(int internalFormat) {
+    this.internalFormat = internalFormat;
+  }
+
+  public int inputFormat() {
+    return inputFormat;
+  }
+
+  public void setInputFormat(int inputFormat) {
+    this.inputFormat = inputFormat;
   }
 }

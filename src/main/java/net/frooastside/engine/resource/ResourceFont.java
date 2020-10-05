@@ -17,19 +17,18 @@ import java.util.concurrent.TimeUnit;
 
 public class ResourceFont implements ResourceItem {
 
-  public static final Character UNSUPPORTED_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
-  public static final int SPACE_ASCII = 32;
+  public static final Character DEFAULT_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
+  public static final int SPACE_CODEPOINT = 32;
 
   private final Map<Integer, Character> supportedCharacters = new HashMap<>();
   private int characterHeight;
   private ResourceTexture texture;
 
+  private ByteBuffer rawFile;
   private int imageSize;
   private final int padding = 64;
   private int firstCharacter;
   private int characterCount;
-
-  private ByteBuffer rawFile;
 
   public ResourceFont(ByteBuffer fontFile) {
     this(fontFile, 16384, 32, 352, (int) (1024.0f * 1.5f));
@@ -55,19 +54,19 @@ public class ResourceFont implements ResourceItem {
   private void addCharacters(STBTTPackedchar.Buffer characterBuffer, int characterCount, int firstCharacter, int imageSize) {
     for (int i = 0; i < characterCount; i++) {
       STBTTPackedchar character = characterBuffer.get(i);
-      int asciiCharacter = i + firstCharacter;
-      addCharacter(character, asciiCharacter, imageSize);
+      int codepoint = i + firstCharacter;
+      addCharacter(character, codepoint, imageSize);
     }
   }
 
-  private void addCharacter(STBTTPackedchar character, int asciiCharacter, int imageSize) {
+  private void addCharacter(STBTTPackedchar character, int codepoint, int imageSize) {
     double x = character.x0() - padding;
     double y = character.y0() - padding;
     double width = (character.x1() + padding) - x;
     double height = (character.y1() + padding) - y;
     double xTextureCoordinate = x / imageSize;
     double yTextureCoordinate = y / imageSize;
-    supportedCharacters.put(asciiCharacter, new Character(
+    supportedCharacters.put(codepoint, new Character(
       xTextureCoordinate,
       yTextureCoordinate,
       xTextureCoordinate + width / imageSize,
@@ -80,15 +79,15 @@ public class ResourceFont implements ResourceItem {
   }
 
   @Override
-  public Runnable getThreadSpecificLoader() {
-    return texture.getThreadSpecificLoader();
+  public Runnable contextSpecificLoader() {
+    return texture.contextSpecificLoader();
   }
 
   @Override
-  public Runnable getThreadUnspecificLoader() {
+  public Runnable unspecificLoader() {
     return () -> {
       if (texture != null) {
-        texture.getThreadUnspecificLoader().run();
+        texture.unspecificLoader().run();
       } else {
         if (rawFile != null && rawFile.hasRemaining()) {
           initFont(rawFile);
@@ -194,8 +193,8 @@ public class ResourceFont implements ResourceItem {
     texture = (ResourceTexture) in.readObject();
   }
 
-  public Character getCharacter(int asciiCharacter) {
-    return supportedCharacters.getOrDefault(asciiCharacter, UNSUPPORTED_CHARACTER);
+  public Character getCharacter(int codepoint) {
+    return supportedCharacters.getOrDefault(codepoint, DEFAULT_CHARACTER);
   }
 
   public int characterHeight() {

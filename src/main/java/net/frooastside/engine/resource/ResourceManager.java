@@ -186,7 +186,7 @@ public class ResourceManager extends Application {
   }
 
   private void addItem(String key, ResourceItem item) {
-    executorService.execute(item.getThreadUnspecificLoader());
+    executorService.execute(item.unspecificLoader());
     currentResourceContainer.put(key, item);
     reload();
     unsavedChanges = true;
@@ -224,7 +224,7 @@ public class ResourceManager extends Application {
       currentResourceContainer.clear();
       currentResourceContainer.load(file);
       for (Map.Entry<String, ResourceItem> entry : currentResourceContainer.content().entrySet()) {
-        executorService.execute(entry.getValue().getThreadUnspecificLoader());
+        executorService.execute(entry.getValue().unspecificLoader());
       }
       reload();
       currentFile = file;

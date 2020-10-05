@@ -22,7 +22,7 @@ public class FrameBufferObject extends SizedGraphicObject {
   }
 
   public void resetViewport() {
-    GL11.glViewport(0, 0, width, height);
+    GL11.glViewport(0, 0, width(), height());
   }
 
   public void selectDrawOutput(int attachment) {
@@ -36,11 +36,11 @@ public class FrameBufferObject extends SizedGraphicObject {
   public void copyToFBO(FrameBufferObject output) {
     output.bind(GL30.GL_DRAW_FRAMEBUFFER);
     bind(GL30.GL_READ_FRAMEBUFFER);
-    blitFrameBuffer(0, 0, output.width, output.height, GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
+    blitFrameBuffer(0, 0, output.width(), output.height(), GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
   }
 
   public void blitFrameBuffer(int outputX, int outputY, int outputWidth, int outputHeight, int mask, int filter) {
-    blitFrameBuffer(0, 0, width, height, outputX, outputY, outputWidth, outputHeight, mask, filter);
+    blitFrameBuffer(0, 0, width(), height(), outputX, outputY, outputWidth, outputHeight, mask, filter);
   }
 
   public void blitFrameBuffer(int x, int y, int width, int height, int outputX, int outputY, int outputWidth, int outputHeight, int mask, int filter) {
@@ -49,7 +49,7 @@ public class FrameBufferObject extends SizedGraphicObject {
 
   @Override
   public void generateIdentifier() {
-    identifier = GL30.glGenFramebuffers();
+    setIdentifier(GL30.glGenFramebuffers());
   }
 
   @Override
@@ -58,7 +58,7 @@ public class FrameBufferObject extends SizedGraphicObject {
   }
 
   public void bind(int target) {
-    GL30.glBindFramebuffer(target, identifier);
+    GL30.glBindFramebuffer(target, identifier());
   }
 
   @Override
@@ -72,7 +72,7 @@ public class FrameBufferObject extends SizedGraphicObject {
 
   @Override
   public void delete() {
-    GL30.glDeleteFramebuffers(identifier);
+    GL30.glDeleteFramebuffers(identifier());
   }
 
   public static FrameBufferObject createDefaultFrameBuffer(int width, int height) {

@@ -24,15 +24,26 @@
   <component name="ChangeListManager">
     <list default="true" id="1ecc5080-a6c9-48ce-99ac-bbbd4055b9f9" name="Default Changelist" comment="Added Shaders and enum classes for opengl int enums">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/GraphicObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/GraphicObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/SizedGraphicObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/SizedGraphicObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/framebuffer/FrameBufferObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/framebuffer/FrameBufferObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/framebuffer/attachments/BufferAttachment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/framebuffer/attachments/BufferAttachment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/framebuffer/attachments/TextureAttachment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/framebuffer/attachments/TextureAttachment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/texture/Texture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/texture/Texture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/vertexarray/VertexArrayObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/vertexarray/VertexArrayObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/vertexarray/vertexbuffer/VertexBufferObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/graphicobjects/vertexarray/vertexbuffer/VertexBufferObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/language/I18n.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/language/I18n.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/postprocessing/FullscreenQuadRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/postprocessing/FullscreenQuadRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/Shader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/Shader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/ShaderProgram.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/shader/ShaderProgram.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/postprocessing/PostProcessingEffect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/postprocessing/PostProcessingEffect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceFont.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceFont.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceTexture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiRenderElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiRenderElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiBox.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/BasicBoxShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/BasicBoxShader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/BasicFontShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/BasicFontShader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UiRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UiRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test/UiScreenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/UiScreenTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/net/frooastside/engine/userinterface/renderer/basicfontshader/vertexshader.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/net/frooastside/engine/userinterface/renderer/basicfontshader/vertexshader.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +93,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -229,10 +240,10 @@
     </state>
     <state x="692" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601795529799" />
     <state x="692" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596011320233" />
-    <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser" timestamp="1601806475284">
+    <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser" timestamp="1601893547146">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601806475284" />
+    <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601893547146" />
     <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596011677723" />
     <state x="743" y="389" width="540" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1601796040599">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -307,10 +318,10 @@
     </state>
     <state width="1237" height="316" key="GridCell.Tab.1.right/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599341846080" />
     <state width="1877" height="440" key="GridCell.Tab.1.right/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1600885253046" />
-    <state x="440" y="94" key="SettingsEditor" timestamp="1601836728914">
+    <state x="440" y="94" width="1202" height="710" key="SettingsEditor" timestamp="1601892798268">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="440" y="94" key="SettingsEditor/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601836728914" />
+    <state x="440" y="94" width="1202" height="710" key="SettingsEditor/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601892798268" />
     <state x="440" y="94" key="SettingsEditor/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596011263293" />
     <state width="498" height="446" key="SwitcherDM" timestamp="1599833376644">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -328,6 +339,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601396782997" />
+    <state x="667" y="253" width="585" height="534" key="find.popup" timestamp="1601893947853">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="667" y="253" width="585" height="534" key="find.popup/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601893947853" />
     <state x="342" y="181" key="new project wizard" timestamp="1597928898180">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -342,10 +357,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601748730832" />
-    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup" timestamp="1601806604757">
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup" timestamp="1601893910977">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601806604757" />
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601893910977" />
     <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596541707463" />
   </component>
 </project>

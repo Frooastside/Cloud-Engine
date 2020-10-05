@@ -2,7 +2,7 @@ package net.frooastside.engine.graphicobjects;
 
 public abstract class GraphicObject {
 
-  protected int identifier;
+  private int identifier;
 
   public abstract void generateIdentifier();
 
@@ -14,6 +14,10 @@ public abstract class GraphicObject {
 
   public int identifier() {
     return identifier;
+  }
+
+  protected void setIdentifier(int identifier) {
+    this.identifier = identifier;
   }
 
 }

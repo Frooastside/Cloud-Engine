@@ -4,7 +4,7 @@ import java.io.Externalizable;
 
 public interface ResourceItem extends Externalizable {
 
-  Runnable getThreadSpecificLoader();
+  Runnable contextSpecificLoader();
 
-  Runnable getThreadUnspecificLoader();
+  Runnable unspecificLoader();
 }

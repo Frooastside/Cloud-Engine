@@ -70,12 +70,12 @@ public class VertexBufferObject extends GraphicObject {
 
   @Override
   public void generateIdentifier() {
-    identifier = GL15.glGenBuffers();
+    setIdentifier(GL15.glGenBuffers());
   }
 
   @Override
   public void bind() {
-    GL15.glBindBuffer(target, identifier);
+    GL15.glBindBuffer(target, identifier());
   }
 
   @Override
@@ -85,7 +85,7 @@ public class VertexBufferObject extends GraphicObject {
 
   @Override
   public void delete() {
-    GL15.glDeleteBuffers(identifier);
+    GL15.glDeleteBuffers(identifier());
   }
 
   public static VertexBufferObject createVertexBufferObject(BufferDataType dataType, BufferTarget target, BufferUsage usage) {
@@ -98,4 +98,11 @@ public class VertexBufferObject extends GraphicObject {
     return dataType;
   }
 
+  public int target() {
+    return target;
+  }
+
+  public int usage() {
+    return usage;
+  }
 }

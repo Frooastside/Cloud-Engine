@@ -15,7 +15,7 @@ public class UiText extends UiRenderElement {
 
   public static final float LINE_HEIGHT = 0.025f;
 
-  private final VertexArrayObject model = createVertexArrayObject();
+  private final VertexArrayObject model = generateEmptyModel();
   private final ResourceFont font;
   private final boolean centered;
 
@@ -43,19 +43,19 @@ public class UiText extends UiRenderElement {
     double lineLength = 0;
     int characterCount = 0;
     float rawHeight = constraints().height().rawValue();
-    for (char asciiCharacter : text.toCharArray()) {
-      ResourceFont.Character character = font.getCharacter(asciiCharacter);
+    for (char codepoint : text.toCharArray()) {
+      ResourceFont.Character character = font.getCharacter(codepoint);
       lineLength += (character.xAdvance() * horizontalPerPixelSize) * rawHeight;
-      characterCount += asciiCharacter != ResourceFont.SPACE_ASCII ? 1 : 0;
+      characterCount += codepoint != ResourceFont.SPACE_CODEPOINT ? 1 : 0;
     }
     double cursorX = centered ? (constraints().width().rawValue() - lineLength) / 2 : 0.0;
     double yLineOffset = LINE_HEIGHT * (rawHeight / 5f);
     float[] positions = new float[characterCount * 12];
     float[] textureCoordinates = new float[characterCount * 12];
     int index = 0;
-    for (char asciiCharacter : text.toCharArray()) {
-      ResourceFont.Character character = font.getCharacter(asciiCharacter);
-      if (asciiCharacter != ResourceFont.SPACE_ASCII) {
+    for (char codepoint : text.toCharArray()) {
+      ResourceFont.Character character = font.getCharacter(codepoint);
+      if (codepoint != ResourceFont.SPACE_CODEPOINT) {
         addVerticesFor(positions, textureCoordinates, character, index, verticalPerPixelSize, horizontalPerPixelSize, cursorX, yLineOffset);
         index++;
       }
@@ -104,7 +104,7 @@ public class UiText extends UiRenderElement {
     array[characterIndex * 12 + 11] = (float) y;
   }
 
-  private static VertexArrayObject createVertexArrayObject() {
+  private static VertexArrayObject generateEmptyModel() {
     VertexArrayObject vertexArrayObject = new VertexArrayObject(0);
     vertexArrayObject.generateIdentifier();
     vertexArrayObject.bind();
@@ -140,7 +140,6 @@ public class UiText extends UiRenderElement {
     return RenderType.TEXT;
   }
 
-  @Override
   public VertexArrayObject model() {
     return model;
   }

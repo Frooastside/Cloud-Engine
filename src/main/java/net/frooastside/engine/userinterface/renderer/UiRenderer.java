@@ -1,6 +1,11 @@
 package net.frooastside.engine.userinterface.renderer;
 
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarget;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsage;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
+import net.frooastside.engine.resource.BufferUtils;
 import net.frooastside.engine.userinterface.UiRenderElement;
 import net.frooastside.engine.userinterface.UiScreen;
 import net.frooastside.engine.userinterface.elements.UiBox;
@@ -10,6 +15,11 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 public class UiRenderer {
+
+  private static final float[] DEFAULT_BOX_POSITIONS = new float[]{-1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1};
+  private static final float[] DEFAULT_BOX_TEXTURE_COORDINATES = new float[]{0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1};
+
+  private final VertexArrayObject defaultBox = generateDefaultBox();
 
   private final BasicBoxShader boxShader;
   private final BasicFontShader fontShader;
@@ -41,8 +51,8 @@ public class UiRenderer {
   public void renderBoxes(List<UiRenderElement> boxes) {
     if (boxes != null) {
       boxShader.start();
-      UiBox.DEFAULT_SHAPE.bind();
-      UiBox.DEFAULT_SHAPE.enableVertexAttributes();
+      defaultBox.bind();
+      defaultBox.enableVertexAttributes();
 
       for (UiRenderElement renderElement : boxes) {
         UiBox box = ((UiBox) renderElement);
@@ -53,11 +63,11 @@ public class UiRenderer {
         } else {
           boxShader.loadColor(box.color().rawColor());
         }
-        UiBox.DEFAULT_SHAPE.draw();
+        defaultBox.draw();
       }
 
-      UiBox.DEFAULT_SHAPE.disableVertexAttributes();
-      UiBox.DEFAULT_SHAPE.unbind();
+      defaultBox.disableVertexAttributes();
+      defaultBox.unbind();
       boxShader.stop();
     }
   }
@@ -95,6 +105,24 @@ public class UiRenderer {
   public void delete() {
     boxShader.delete();
     fontShader.delete();
+  }
+
+  private static VertexArrayObject generateDefaultBox() {
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(DEFAULT_BOX_POSITIONS.length / 2);
+    vertexArrayObject.generateIdentifier();
+    vertexArrayObject.bind();
+
+    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+
+    positionBuffer.storeFloatData(BufferUtils.store(DEFAULT_BOX_POSITIONS));
+    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
+
+    VertexBufferObject textureCoordinateBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+    textureCoordinateBuffer.storeFloatData(BufferUtils.store(DEFAULT_BOX_TEXTURE_COORDINATES));
+    vertexArrayObject.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
+
+    vertexArrayObject.unbind();
+    return vertexArrayObject;
   }
 
 }

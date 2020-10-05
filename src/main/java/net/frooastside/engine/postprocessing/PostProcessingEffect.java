@@ -10,33 +10,42 @@ import org.lwjgl.opengl.GL11;
 
 public abstract class PostProcessingEffect {
 
-  private static final VertexArrayObject FULLSCREEN_QUAD = createFullScreenQuad();
+  private static final float[] FULLSCREEN_QUAD_POSITIONS = new float[]{-1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1};
 
-  protected static void prepare() {
-    FULLSCREEN_QUAD.bind();
-    FULLSCREEN_QUAD.enableVertexAttributes();
+  private final VertexArrayObject fullscreenQuad = generateFullscreenQuad();
+
+  protected void prepare() {
+    fullscreenQuad.bind();
+    fullscreenQuad.enableVertexAttributes();
     GL11.glDisable(GL11.GL_DEPTH_TEST);
   }
 
-  protected static void draw() {
-    FULLSCREEN_QUAD.draw();
+  protected void draw() {
+    fullscreenQuad.draw();
   }
 
-  protected static void stop() {
+  protected void stop() {
     GL11.glEnable(GL11.GL_DEPTH_TEST);
-    FULLSCREEN_QUAD.disableVertexAttributes();
-    FULLSCREEN_QUAD.unbind();
+    fullscreenQuad.disableVertexAttributes();
+    fullscreenQuad.unbind();
   }
 
-  private static VertexArrayObject createFullScreenQuad() {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(6);
+  public abstract void delete();
+
+  private static VertexArrayObject generateFullscreenQuad() {
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(FULLSCREEN_QUAD_POSITIONS.length / 2);
     vertexArrayObject.generateIdentifier();
     vertexArrayObject.bind();
-    VertexBufferObject vertexBufferObject = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    vertexBufferObject.storeFloatData(BufferUtils.store(new float[]{-1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1}));
-    vertexArrayObject.appendVertexBufferObject(vertexBufferObject, 0, 2, false, 0, 0);
+
+    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+    positionBuffer.storeFloatData(BufferUtils.store(FULLSCREEN_QUAD_POSITIONS));
+    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
+
     vertexArrayObject.unbind();
     return vertexArrayObject;
   }
 
+  protected VertexArrayObject fullscreenQuad() {
+    return fullscreenQuad;
+  }
 }
