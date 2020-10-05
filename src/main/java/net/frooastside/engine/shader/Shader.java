@@ -37,7 +37,7 @@ public class Shader {
     Objects.requireNonNull(shaderSource);
     GL20.glShaderSource(shaderId, shaderSource);
     GL20.glCompileShader(shaderId);
-    if (GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS) != GL11.GL_FALSE)
+    if (GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
       System.err.println(GL20.glGetShaderInfoLog(shaderId));
     return new Shader(shaderId);
   }

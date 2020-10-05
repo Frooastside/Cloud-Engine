@@ -13,7 +13,7 @@ import org.joml.Vector2f;
 
 public class UiText extends UiRenderElement {
 
-  public static final double LINE_HEIGHT = 0.025f;
+  public static final float LINE_HEIGHT = 0.025f;
 
   private final VertexArrayObject model = createVertexArrayObject();
   private final ResourceFont font;
@@ -49,7 +49,7 @@ public class UiText extends UiRenderElement {
       characterCount += asciiCharacter != ResourceFont.SPACE_ASCII ? 1 : 0;
     }
     double cursorX = centered ? (constraints().width().rawValue() - lineLength) / 2 : 0.0;
-    double yLineOffset = (LINE_HEIGHT / 2) * rawHeight;
+    double yLineOffset = LINE_HEIGHT * (rawHeight / 5f);
     float[] positions = new float[characterCount * 12];
     float[] textureCoordinates = new float[characterCount * 12];
     int index = 0;

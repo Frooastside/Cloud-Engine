@@ -1,7 +1,6 @@
 package net.frooastside.engine.userinterface.renderer;
 
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
-import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.UiRenderElement;
 import net.frooastside.engine.userinterface.UiScreen;
 import net.frooastside.engine.userinterface.elements.UiBox;
@@ -21,8 +20,8 @@ public class UiRenderer {
   }
 
   public void initialize() {
-    boxShader.createShaderProgram();
-    fontShader.createShaderProgram();
+    boxShader.initialize();
+    fontShader.initialize();
   }
 
   public void render(UiScreen screen) {
@@ -36,11 +35,14 @@ public class UiRenderer {
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     GL11.glDisable(GL11.GL_DEPTH_TEST);
+    GL11.glDisable(GL11.GL_CULL_FACE);
   }
 
   public void renderBoxes(List<UiRenderElement> boxes) {
     if (boxes != null) {
       boxShader.start();
+      UiBox.DEFAULT_SHAPE.bind();
+      UiBox.DEFAULT_SHAPE.enableVertexAttributes();
 
       for (UiRenderElement renderElement : boxes) {
         UiBox box = ((UiBox) renderElement);
@@ -51,14 +53,11 @@ public class UiRenderer {
         } else {
           boxShader.loadColor(box.color().rawColor());
         }
-        VertexArrayObject textMesh = box.model();
-        textMesh.bind();
-        textMesh.enableVertexAttributes();
-        textMesh.draw();
-        textMesh.disableVertexAttributes();
-        textMesh.unbind();
+        UiBox.DEFAULT_SHAPE.draw();
       }
 
+      UiBox.DEFAULT_SHAPE.disableVertexAttributes();
+      UiBox.DEFAULT_SHAPE.unbind();
       boxShader.stop();
     }
   }
@@ -88,8 +87,14 @@ public class UiRenderer {
   }
 
   private void end() {
+    GL11.glEnable(GL11.GL_CULL_FACE);
     GL11.glEnable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL11.GL_BLEND);
+  }
+
+  public void delete() {
+    boxShader.delete();
+    fontShader.delete();
   }
 
 }

@@ -17,10 +17,10 @@ public class UiScreenTest extends UiScreen {
   @Override
   public void initialize() {
     ElementConstraints constraints = new ElementConstraints();
-    constraints.setX(new RelativeConstraint(1.5f));
-    constraints.setY(new RelativeConstraint(1.5f));
-    constraints.setWidth(new RelativeConstraint(5));
-    constraints.setHeight(new RelativeConstraint(5));
+    constraints.setX(new RelativeConstraint(0.0f));
+    constraints.setY(new RelativeConstraint(0.0f));
+    constraints.setWidth(new RelativeConstraint(10));
+    constraints.setHeight(new RelativeConstraint(10));
     addElement(new UiText(font(), Main.TEXT, UiColor.GREEN, false), constraints);
     recalculate();
   }

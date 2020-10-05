@@ -12,7 +12,7 @@ public abstract class ShaderProgram {
 
   private final List<Shader> shaders = new ArrayList<>();
 
-  public void createShaderProgram() {
+  public void initialize() {
     this.identifier = GL20.glCreateProgram();
     addShaders();
     attachShaders();

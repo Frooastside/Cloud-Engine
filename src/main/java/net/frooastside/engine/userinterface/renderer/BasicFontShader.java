@@ -32,6 +32,7 @@ public class BasicFontShader extends ShaderProgram {
 
   @Override
   protected void storeUniformLocations() {
+    storeUniformLocation(uniformOffset);
     storeUniformLocation(uniformTexture);
     storeUniformLocation(uniformColor);
     storeUniformLocation(uniformVisibility);
@@ -51,7 +52,6 @@ public class BasicFontShader extends ShaderProgram {
   }
 
   public void loadOffset(float x, float y) {
-    System.out.println(x + ", " + y);
     uniformOffset.loadVector2f(x, y);
   }
 

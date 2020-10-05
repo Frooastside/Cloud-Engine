@@ -10,7 +10,7 @@ public class FullscreenQuadRenderer extends PostProcessingEffect {
   private static final FullscreenQuadShader fullscreenQuadShader = new FullscreenQuadShader();
 
   public static void init() {
-    fullscreenQuadShader.createShaderProgram();
+    fullscreenQuadShader.initialize();
   }
 
   public static void drawTexture(Texture texture) {

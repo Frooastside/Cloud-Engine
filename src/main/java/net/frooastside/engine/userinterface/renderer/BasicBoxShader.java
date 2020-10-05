@@ -28,6 +28,7 @@ public class BasicBoxShader extends ShaderProgram {
 
   @Override
   protected void storeUniformLocations() {
+    storeUniformLocation(uniformTranslation);
     storeUniformLocation(uniformUseTexture);
     storeUniformLocation(uniformVisibility);
     storeUniformLocation(uniformTexture);
