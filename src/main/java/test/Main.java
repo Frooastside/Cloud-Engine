@@ -21,8 +21,8 @@ public class Main {
   public static void main(String[] args) throws IOException, ClassNotFoundException {
     GLFWErrorCallback.createPrint(System.err).set();
     GLFW.glfwInit();
-    Window window = Window.createWindow("Game Window", false, (int) (960f), (int) (540f));
-    window.initGLContext(false);
+    Window window = Window.createWindow("Game Window", false);
+    window.initialize();
 
     ResourceContainer container = new ResourceContainer();
     container.load(new File("C:/Users/Simon/Documents/Font.pak"));

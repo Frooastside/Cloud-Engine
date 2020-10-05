@@ -24,7 +24,7 @@ public abstract class UiScreen extends UiElement {
   public abstract void initialize();
 
   public void recalculate() {
-    pixelSize.set(1f / window.windowWidth(), 1f / window.windowHeight());
+    pixelSize.set(1f / window.resolution().x, 1f / window.resolution().y);
     children().forEach(child -> child.recalculate(pixelSize));
   }
 
