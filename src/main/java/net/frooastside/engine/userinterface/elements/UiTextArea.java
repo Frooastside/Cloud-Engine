@@ -6,7 +6,7 @@ import net.frooastside.engine.userinterface.UiColor;
 public class UiTextArea extends UiText {
 
   public UiTextArea(ResourceFont font, String text, boolean centered) {
-    super(font, text, UiColor.GREEN, centered);
+    super(font, text, UiColor.ACCENT, centered);
   }
 
   /*public void createMesh() {

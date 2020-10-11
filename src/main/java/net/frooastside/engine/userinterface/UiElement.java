@@ -13,8 +13,11 @@ public abstract class UiElement {
   private UiElement parent;
   private final List<UiElement> children = new ArrayList<>();
 
+  public void onUpdate(Vector2f pixelSize) {}
+
   public void recalculate(Vector2f pixelSize) {
     constraints.recalculate(pixelSize);
+    onUpdate(pixelSize);
     children.forEach(child -> child.recalculate(pixelSize));
   }
 

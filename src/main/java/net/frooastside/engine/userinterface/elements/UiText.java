@@ -31,10 +31,9 @@ public class UiText extends UiRenderElement {
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
+  public void onUpdate(Vector2f pixelSize) {
     this.aspectRatio = pixelSize.y / pixelSize.x;
     updateModel();
-    super.recalculate(pixelSize);
   }
 
   private void updateModel() {

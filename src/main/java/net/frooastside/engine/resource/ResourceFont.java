@@ -26,17 +26,22 @@ public class ResourceFont implements ResourceItem {
 
   private ByteBuffer rawFile;
   private int imageSize;
-  private final int padding = 64;
+  private int downscale;
+  private float spread;
+  private int padding;
   private int firstCharacter;
   private int characterCount;
 
   public ResourceFont(ByteBuffer fontFile) {
-    this(fontFile, 16384, 32, 352, (int) (1024.0f * 1.5f));
+    this(fontFile, 16384, 4, 32, 64, 32, 352, (int) (1024.0f * 1.5f));
   }
 
-  public ResourceFont(ByteBuffer fontFile, int imageSize, int firstCharacter, int characterCount, int characterHeight) {
+  public ResourceFont(ByteBuffer fontFile, int imageSize, int downscale, float spread, int padding, int firstCharacter, int characterCount, int characterHeight) {
     this.rawFile = fontFile;
     this.imageSize = imageSize;
+    this.downscale = downscale;
+    this.spread = spread;
+    this.padding = padding;
     this.firstCharacter = firstCharacter;
     this.characterCount = characterCount;
     this.characterHeight = characterHeight;
@@ -45,7 +50,7 @@ public class ResourceFont implements ResourceItem {
   public ResourceFont() {
   }
 
-  private void initFont(ByteBuffer fontFile) {
+  private void initializeFont(ByteBuffer fontFile) {
     STBTTFontinfo fontInfo = new STBTTFontinfo(MemoryUtil.memAlloc(160));
     STBTruetype.stbtt_InitFont(fontInfo, fontFile);
     fontInfo.free();
@@ -90,7 +95,7 @@ public class ResourceFont implements ResourceItem {
         texture.unspecificLoader().run();
       } else {
         if (rawFile != null && rawFile.hasRemaining()) {
-          initFont(rawFile);
+          initializeFont(rawFile);
           ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
 
           STBTTPackContext packContext = STBTTPackContext.malloc();
@@ -101,8 +106,6 @@ public class ResourceFont implements ResourceItem {
           STBTruetype.stbtt_PackEnd(packContext);
 
           ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-          int downscale = 4;
-          float spread = 32;
           ByteBuffer distanceFieldBuffer = createDistanceField(executorService, pixelBuffer, imageSize, downscale, spread);
           executorService.shutdown();
 

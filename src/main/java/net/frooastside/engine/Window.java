@@ -32,27 +32,6 @@ public class Window {
     this.identifier = identifier;
   }
 
-  public void setDefaults() {
-    if(monitor == null) {
-      monitor = Monitor.DEFAULT;
-    }
-    if(!visible) {
-      hideWindow();
-    }
-    Vector4i workArea = monitor.workArea();
-    int workAreaWidth = workArea.z;
-    int workAreaHeight = workArea.w;
-    int x = workAreaWidth / 2;
-    int y = workAreaHeight / 2;
-    setPosition(workAreaWidth / 2 - x / 2, workAreaHeight / 2 - y / 2);
-    if(fullscreen) {
-      setResolution(workAreaWidth, workAreaHeight);
-    }else {
-      setResolution(x, y);
-    }
-    resetWindowMode();
-  }
-
   public void initialize() {
     GLFW.glfwMakeContextCurrent(identifier);
     GL.createCapabilities();
@@ -109,7 +88,7 @@ public class Window {
       GLFW.glfwSetWindowMonitor(identifier, monitor.address(), 0, 0, fullscreenResolution.x, fullscreenResolution.y, refreshRate);
     }else {
       Vector4i workArea = monitor.workArea();
-      if(position.x > workArea.x || position.y > workArea.y) {
+      if(position.x > workArea.z || position.y > workArea.w) {
         position.set(0, 0);
       }
       Vector2i monitorPosition = monitor.virtualPosition();
@@ -118,17 +97,36 @@ public class Window {
   }
 
   public static Window createWindow(String title, boolean fullscreen) {
-    return createWindow(Monitor.DEFAULT, title, fullscreen);
+    return createWindow(Monitor.DEFAULT, title, true, fullscreen, 0.5f);
   }
 
-  public static Window createWindow(Monitor monitor, String title, boolean fullscreen) {
+  public static Window createWindow(Monitor monitor, String title, boolean visible, boolean fullscreen, float nonFullscreenSize) {
+    if(monitor == null) {
+      monitor = Monitor.DEFAULT;
+    }
+    GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
     Vector4i workArea = monitor.workArea();
     int workAreaWidth = workArea.z;
     int workAreaHeight = workArea.w;
-    long windowId = GLFW.glfwCreateWindow(workAreaWidth, workAreaHeight, title, 0, 0);
-    Window window = new Window(windowId);
+    int width = (int) (workAreaWidth * nonFullscreenSize);
+    int height = (int) (workAreaHeight * nonFullscreenSize);
+    Window window;
+    if(fullscreen) {
+      window = new Window(GLFW.glfwCreateWindow(workAreaWidth, workAreaHeight, title, monitor.address, 0));
+
+    }else {
+      window = new Window(GLFW.glfwCreateWindow(width, height, title, 0, 0));
+    }
+    window.monitor = monitor;
     window.fullscreen = fullscreen;
-    window.setDefaults();
+    window.visible = visible;
+    window.fullscreenResolution.set(workAreaWidth, workAreaHeight);
+    window.size.set(width, height);
+    window.setPosition(workAreaWidth / 2 - width / 2, workAreaHeight / 2 - height / 2);
+
+    if(visible) {
+      window.showWindow();
+    }
     return window;
   }
 
@@ -138,7 +136,7 @@ public class Window {
 
   public void setPosition(int x, int y) {
     Vector4i workArea = monitor.workArea();
-    if(x > workArea.x || y > workArea.y) {
+    if(x > workArea.z || y > workArea.w) {
       position.set(0, 0);
     }else {
       position.set(x, y);

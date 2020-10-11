@@ -1,6 +1,7 @@
 package test;
 
 import net.frooastside.engine.Window;
+import net.frooastside.engine.userinterface.elements.UiText;
 import net.frooastside.engine.userinterface.renderer.BasicBoxShader;
 import net.frooastside.engine.userinterface.renderer.BasicFontShader;
 import net.frooastside.engine.postprocessing.FullscreenQuadRenderer;
@@ -40,7 +41,6 @@ public class Main {
     //text.recalculate(new Vector2f(1f / 1920f, 1f / 1080f));
     UiScreen uiScreen = new UiScreenTest(window, font);
     uiScreen.initialize();
-    uiScreen.recalculate();
 
     UiRenderer renderer = new UiRenderer(new BasicBoxShader(), new BasicFontShader());
     renderer.initialize();
