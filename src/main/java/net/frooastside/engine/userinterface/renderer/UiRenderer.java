@@ -75,7 +75,6 @@ public class UiRenderer {
   public void renderTexts(List<UiRenderElement> texts) {
     if (texts != null) {
       fontShader.start();
-
       for (UiRenderElement renderElement : texts) {
         UiText text = ((UiText) renderElement);
         fontShader.loadOffset(text.bounds().x, text.bounds().y);
@@ -91,7 +90,6 @@ public class UiRenderer {
         textMesh.disableVertexAttributes();
         textMesh.unbind();
       }
-
       fontShader.stop();
     }
   }

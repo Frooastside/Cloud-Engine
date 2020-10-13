@@ -13,11 +13,11 @@ public abstract class UiElement {
   private UiElement parent;
   private final List<UiElement> children = new ArrayList<>();
 
-  public void onUpdate(Vector2f pixelSize) {}
+  public void onRecalculation(Vector2f pixelSize) {}
 
   public void recalculate(Vector2f pixelSize) {
     constraints.recalculate(pixelSize);
-    onUpdate(pixelSize);
+    onRecalculation(pixelSize);
     children.forEach(child -> child.recalculate(pixelSize));
   }
 
@@ -25,6 +25,8 @@ public abstract class UiElement {
     child.setConstraints(constraints);
     child.parent = this;
     constraints.setParent(this.constraints);
+    child.recalculate(this.constraints.pixelSize());
+    appendRenderElements(child);
     children.add(child);
   }
 
@@ -48,6 +50,10 @@ public abstract class UiElement {
 
   public UiElement parent() {
     return parent;
+  }
+
+  public void setParent(UiElement parent) {
+    this.parent = parent;
   }
 
   public List<UiElement> children() {

@@ -24,33 +24,46 @@ public class ElementConstraints {
     width.recalculate();
     height.recalculate();
     bounds.set(
-      x.rawValue() + parent.bounds().x,
-      y.rawValue() + parent.bounds().y,
-      width.rawValue(),
-      height.rawValue());
+      (x.relative() ? x.rawValue() * parent.bounds.z : x.rawValue()) + parent.bounds().x,
+      (y.relative() ? y.rawValue() * parent.bounds.w : y.rawValue()) + parent.bounds().y,
+      width.relative() ? (width.rawValue() * parent.bounds().z) : width.rawValue(),
+      height.relative() ? (height.rawValue() * parent.bounds().w) : height.rawValue());
+  }
+
+  public Constraint getConstraint(Constraint.ConstraintType constraintType) {
+    if (constraintType == Constraint.ConstraintType.X) {
+      return x;
+    } else if (constraintType == Constraint.ConstraintType.Y) {
+      return y;
+    } else if (constraintType == Constraint.ConstraintType.WIDTH) {
+      return width;
+    } else if (constraintType == Constraint.ConstraintType.HEIGHT) {
+      return height;
+    }
+    return null;
   }
 
   public Constraint getCounterpart(Constraint constraint) {
-    if (constraint.equals(x)) {
+    if (constraint.type() == Constraint.ConstraintType.X) {
       return y;
-    } else if (constraint.equals(y)) {
+    } else if (constraint.type() == Constraint.ConstraintType.Y) {
       return x;
-    } else if (constraint.equals(width)) {
+    } else if (constraint.type() == Constraint.ConstraintType.WIDTH) {
       return height;
-    } else if (constraint.equals(height)) {
+    } else if (constraint.type() == Constraint.ConstraintType.HEIGHT) {
       return width;
     }
     return null;
   }
 
   public Constraint getOpposite(Constraint constraint) {
-    if (constraint.equals(x)) {
+    if (constraint.type() == Constraint.ConstraintType.X) {
       return width;
-    } else if (constraint.equals(y)) {
+    } else if (constraint.type() == Constraint.ConstraintType.Y) {
       return height;
-    } else if (constraint.equals(width)) {
+    } else if (constraint.type() == Constraint.ConstraintType.WIDTH) {
       return x;
-    } else if (constraint.equals(height)) {
+    } else if (constraint.type() == Constraint.ConstraintType.HEIGHT) {
       return y;
     }
     return null;

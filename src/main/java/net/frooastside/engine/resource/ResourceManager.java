@@ -198,7 +198,7 @@ public class ResourceManager extends Application {
       message,
       ButtonType.OK);
     alert.setTitle("Error!");
-    System.out.println(message);
+    System.err.println(message);
     alert.showAndWait();
   }
 

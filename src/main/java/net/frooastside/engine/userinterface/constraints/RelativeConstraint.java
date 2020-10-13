@@ -12,15 +12,12 @@ public class RelativeConstraint extends Constraint {
 
   @Override
   public void recalculate() {
-    if (type() == ConstraintType.X) {
-      setRawValue(relativeValue);
-    } else if (type() == ConstraintType.Y) {
-      setRawValue(relativeValue);
-    } else if (type() == ConstraintType.WIDTH) {
-      setRawValue(relativeValue * constraints().parent().bounds().z);
-    } else if (type() == ConstraintType.HEIGHT) {
-      setRawValue(relativeValue * constraints().parent().bounds().w);
-    }
+    setRawValue(relativeValue);
+  }
+
+  @Override
+  public boolean relative() {
+    return true;
   }
 
   public float relativeValue() {

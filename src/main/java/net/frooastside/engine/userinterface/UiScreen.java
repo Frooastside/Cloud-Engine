@@ -31,6 +31,7 @@ public abstract class UiScreen extends UiElement {
   @Override
   public void addElement(UiElement child, ElementConstraints constraints) {
     child.setConstraints(constraints);
+    child.setParent(this);
     constraints.setParent(DEFAULT_ELEMENT_CONSTRAINTS);
     pixelSize.set(1f / window.resolution().x, 1f / window.resolution().y);
     child.recalculate(pixelSize);

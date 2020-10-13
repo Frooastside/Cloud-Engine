@@ -21,6 +21,8 @@ public abstract class Constraint {
     this.type = type;
   }
 
+  public abstract boolean relative();
+
   public ConstraintType type() {
     return type;
   }

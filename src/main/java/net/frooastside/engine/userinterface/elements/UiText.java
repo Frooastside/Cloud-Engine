@@ -31,7 +31,7 @@ public class UiText extends UiRenderElement {
   }
 
   @Override
-  public void onUpdate(Vector2f pixelSize) {
+  public void onRecalculation(Vector2f pixelSize) {
     this.aspectRatio = pixelSize.y / pixelSize.x;
     updateModel();
   }
@@ -41,14 +41,15 @@ public class UiText extends UiRenderElement {
     double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
     double lineLength = 0;
     int characterCount = 0;
-    float rawHeight = constraints().height().rawValue();
+    float rawHeight = bounds().w;
     for (char codepoint : text.toCharArray()) {
       ResourceFont.Character character = font.getCharacter(codepoint);
       lineLength += (character.xAdvance() * horizontalPerPixelSize) * rawHeight;
       characterCount += codepoint != ResourceFont.SPACE_CODEPOINT ? 1 : 0;
     }
-    double cursorX = centered ? (constraints().width().rawValue() - lineLength) / 2 : 0.0;
-    double yLineOffset = LINE_HEIGHT * (rawHeight / 5f);
+    float maxLineLength = bounds().z;
+    double cursorX = centered ? (maxLineLength - lineLength) / 2 : 0.0;
+    double yLineOffset = LINE_HEIGHT * (rawHeight / 4.35f);
     float[] positions = new float[characterCount * 12];
     float[] textureCoordinates = new float[characterCount * 12];
     int index = 0;
@@ -68,7 +69,7 @@ public class UiText extends UiRenderElement {
   }
 
   protected void addVerticesFor(float[] positions, float[] textureCoordinates, ResourceFont.Character character, int characterIndex, double verticalPerPixelSize, double horizontalPerPixelSize, double cursorX, double cursorY) {
-    float rawHeight = constraints().height().rawValue();
+    float rawHeight = bounds().w;
     double x = cursorX + ((character.xOffset() * horizontalPerPixelSize) * rawHeight);
     double y = cursorY + ((character.yOffset() * verticalPerPixelSize) * rawHeight);
     double xMax = x + ((character.xSize() * horizontalPerPixelSize) * rawHeight);
