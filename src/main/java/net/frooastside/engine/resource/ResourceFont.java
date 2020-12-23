@@ -1,7 +1,12 @@
 package net.frooastside.engine.resource;
 
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.language.I18n;
+import net.frooastside.engine.resource.settings.*;
 import org.joml.Vector2f;
 import org.lwjgl.stb.*;
 import org.lwjgl.system.MemoryUtil;
@@ -9,6 +14,7 @@ import org.lwjgl.system.MemoryUtil;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -19,6 +25,19 @@ public class ResourceFont implements ResourceItem {
 
   public static final Character DEFAULT_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
   public static final int SPACE_CODEPOINT = 32;
+
+  public static final SettingsCreator SETTINGS_LAYOUT = SettingsCreator.createLayout(
+    new ComboBoxSetting<>("imageSize", Arrays.asList(256, 512, 1024, 2048, 4096, 8192, 16384), 16384),
+    new IntegerSpinnerSetting("downscale", 1, 32, 4),
+    new IntegerSpinnerSetting("spread", 1, 128, 32),
+    new ComboBoxSetting<>("padding", Arrays.asList(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512), 64),
+    new ComboBoxSetting<>("firstCharacter", Arrays.asList(0, 32), 32),
+    new ComboBoxSetting<>("characterCount", Arrays.asList(224, 352, 560, 255, 383, 591), 352),
+    new IntegerTextField("characterHeight", 1536));
+
+  private Map<String, Node> settings;
+  private Node settingsBox;
+  private Node informationBox;
 
   private final Map<Integer, Character> supportedCharacters = new HashMap<>();
   private int characterHeight;
@@ -32,19 +51,12 @@ public class ResourceFont implements ResourceItem {
   private int firstCharacter;
   private int characterCount;
 
-  public ResourceFont(ByteBuffer fontFile) {
-    this(fontFile, 16384, 4, 32, 64, 32, 352, (int) (1024.0f * 1.5f));
-  }
+  //public ResourceFont(ByteBuffer fontFile) {
+  //  this(fontFile, 16384, 4, 32, 64, 32, 352, (int) (1024.0f * 1.5f));
+  //}
 
-  public ResourceFont(ByteBuffer fontFile, int imageSize, int downscale, float spread, int padding, int firstCharacter, int characterCount, int characterHeight) {
+  public ResourceFont(ByteBuffer fontFile) {
     this.rawFile = fontFile;
-    this.imageSize = imageSize;
-    this.downscale = downscale;
-    this.spread = spread;
-    this.padding = padding;
-    this.firstCharacter = firstCharacter;
-    this.characterCount = characterCount;
-    this.characterHeight = characterHeight;
   }
 
   public ResourceFont() {
@@ -194,6 +206,80 @@ public class ResourceFont implements ResourceItem {
     }
     characterHeight = in.readShort();
     texture = (ResourceTexture) in.readObject();
+  }
+
+  @Override
+  public Node settingsBox() {
+    if(settings == null) {
+      settings = SETTINGS_LAYOUT.createSettings();
+      if(imageSize == 0
+        && downscale == 0
+        && spread == 0
+        && padding == 0
+        && firstCharacter == 0
+        && characterCount == 0
+        && characterHeight == 0) {
+        recalculate();
+      }else {
+        setSettings();
+      }
+    }
+    if(settingsBox == null) {
+      settingsBox = SettingsCreator.getBox(settings);
+    }
+    return settingsBox;
+  }
+
+  @Override
+  public Node informationBox() {
+    if(this.informationBox == null) {
+      VBox informationBox = new VBox();
+      informationBox.setAlignment(Pos.CENTER);
+      informationBox.getChildren().addAll(
+        new Label("ImageSize: " + imageSize),
+        new Label("Downscale: " + downscale),
+        new Label("Spread: " + spread),
+        new Label("Padding: " + padding),
+        new Label("FirstCharacter: " + firstCharacter),
+        new Label("CharacterCount: " + characterCount),
+        new Label("CharacterHeight: " + characterHeight)
+      );
+      this.informationBox = informationBox;
+    }
+    return informationBox;
+  }
+
+  public void setSettings() {
+    Setting.setComboBoxItem(settings, "imageSize", imageSize);
+    Setting.setSpinnerValue(settings, "downscale", downscale);
+    Setting.setSpinnerValue(settings, "spread", spread);
+    Setting.setComboBoxItem(settings, "padding", padding);
+    Setting.setComboBoxItem(settings, "firstCharacter", firstCharacter);
+    Setting.setComboBoxItem(settings, "characterCount", characterCount);
+    Setting.setTextFieldInteger(settings, "characterHeight", characterHeight);
+  }
+
+  @Override
+  public void recalculate() {
+    Object imageSize = Setting.getComboBoxItem(settings, "imageSize");
+    if(imageSize != null) {
+      this.imageSize = (int) imageSize;
+    }
+    this.downscale = Setting.getSpinnerInteger(settings, "downscale");
+    this.spread = Setting.getSpinnerInteger(settings, "spread");
+    Object padding = Setting.getComboBoxItem(settings, "padding");
+    if(padding != null) {
+      this.padding = (int) padding;
+    }
+    Object firstCharacter = Setting.getComboBoxItem(settings, "firstCharacter");
+    if(firstCharacter != null) {
+      this.firstCharacter = (int) firstCharacter;
+    }
+    Object characterCount = Setting.getComboBoxItem(settings, "characterCount");
+    if(characterCount != null) {
+      this.characterCount = (int) characterCount;
+    }
+    this.characterHeight = Setting.getTextFieldInteger(settings, "characterHeight");
   }
 
   public Character getCharacter(int codepoint) {

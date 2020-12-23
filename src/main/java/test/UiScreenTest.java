@@ -20,7 +20,7 @@ public class UiScreenTest extends UiScreen {
   @Override
   public void initialize() {
 
-    ElementConstraints boxConstraints = new ElementConstraints();
+    /*ElementConstraints boxConstraints = new ElementConstraints();
     boxConstraints.setX(new PixelConstraint(40));
     boxConstraints.setY(new PixelConstraint(40));
     boxConstraints.setWidth(new CenterConstraint());
@@ -41,13 +41,13 @@ public class UiScreenTest extends UiScreen {
     bigTextConstraints.setY(new RelativeConstraint(0.0f));
     bigTextConstraints.setWidth(new RelativeConstraint(10));
     bigTextConstraints.setHeight(new RelativeConstraint(4));
-    boxxx.addElement(new UiText(font(), Main.TEXT, UiColor.ACCENT, false), bigTextConstraints);
+    boxxx.addElement(new UiText(font(), Main.TEXT, UiColor.ACCENT, false), bigTextConstraints);*/
 
     ElementConstraints constraints = new ElementConstraints();
     constraints.setX(new RelativeConstraint(0.0f));
     constraints.setY(new RelativeConstraint(0.5f));
     constraints.setWidth(new RelativeConstraint(1.0f));
     constraints.setHeight(new RelativeConstraint(20.0f));
-    secondBOX.addElement(new UiText(font(), "HALLO LEUTE !karqwee534", UiColor.WHITE, true), constraints);
+    addElement(new UiText(font(), "Moin Leute Trymacs hier.", UiColor.WHITE, true), constraints);
   }
 }

@@ -36,6 +36,7 @@ public class ResourceManager extends Application {
   private boolean unsavedChanges;
 
   private ListView<String> resourceContainerItems;
+  private BorderPane mainBorderPane;
 
   public static void main(String[] args) {
     launch(args);
@@ -57,7 +58,7 @@ public class ResourceManager extends Application {
   }
 
   public Scene createMainScene() {
-    BorderPane mainBorderPane = new BorderPane();
+    mainBorderPane = new BorderPane();
     mainBorderPane.setTop(createMainMenuBar());
     mainBorderPane.setLeft(createLeftVBox());
     mainBorderPane.setRight(createRightVBox());
@@ -151,21 +152,22 @@ public class ResourceManager extends Application {
     vBox.setPadding(new Insets(20));
 
     resourceContainerItems = new ListView<>();
-    resourceContainerItems.setOnMouseClicked(this::onLeftVBoxClicked);
+    resourceContainerItems.setOnMouseClicked(this::resourceContainerItemsClicked);
 
     vBox.getChildren().addAll(resourceContainerItems);
     return vBox;
   }
 
-  private void onLeftVBoxClicked(MouseEvent mouseEvent) {
-
+  private void resourceContainerItemsClicked(MouseEvent mouseEvent) {
+    if(resourceContainerItems.getSelectionModel().getSelectedItem() != null) {
+      mainBorderPane.setCenter(currentResourceContainer.get(resourceContainerItems.getSelectionModel().getSelectedItem()).informationBox());
+    }
   }
 
   private VBox createRightVBox() {
     VBox vBox = new VBox();
     vBox.setAlignment(Pos.CENTER);
     vBox.setPadding(new Insets(20));
-
     return vBox;
   }
 
@@ -186,10 +188,36 @@ public class ResourceManager extends Application {
   }
 
   private void addItem(String key, ResourceItem item) {
-    executorService.execute(item.unspecificLoader());
-    currentResourceContainer.put(key, item);
-    reload();
-    unsavedChanges = true;
+    createConfigurationStage(key, item).show();
+  }
+
+  private Stage createConfigurationStage(String key, ResourceItem item) {
+    Stage configurationStage = new Stage();
+    configurationStage.initStyle(StageStyle.DECORATED);
+    configurationStage.setResizable(false);
+    configurationStage.setTitle("Settings");
+    TextField nameField = new TextField();
+    nameField.setText(key);
+    Button acceptButton = new Button("Hinzufügen");
+    acceptButton.setOnMouseClicked(event -> {
+      String nameFieldText = nameField.getText();
+      if(!nameFieldText.isEmpty()) {
+        item.recalculate();
+        executorService.execute(item.unspecificLoader());
+        currentResourceContainer.put(nameFieldText, item);
+        reload();
+        unsavedChanges = true;
+        configurationStage.close();
+      }
+    });
+    BorderPane borderPane = new BorderPane();
+    borderPane.setPadding(new Insets(10));
+    borderPane.setTop(nameField);
+    borderPane.setCenter(item.settingsBox());
+    borderPane.setBottom(acceptButton);
+    Scene scene = new Scene(borderPane, 320, 480);
+    configurationStage.setScene(scene);
+    return configurationStage;
   }
 
   private void showErrorAlert(String message) {
@@ -288,6 +316,10 @@ public class ResourceManager extends Application {
 
   private static FileChooser createResourceContainerFileChooser() {
     FileChooser fileChooser = new FileChooser();
+    File engineDirectory = new File(System.getProperty("user.home") + "/Documents/Engine");
+    if(engineDirectory.isDirectory()) {
+      fileChooser.setInitialDirectory(engineDirectory);
+    }
     fileChooser.getExtensionFilters().addAll(
       new FileChooser.ExtensionFilter("Resource Container",
         "*.pak",
@@ -301,6 +333,10 @@ public class ResourceManager extends Application {
 
   private static FileChooser createTextureFileChooser() {
     FileChooser fileChooser = new FileChooser();
+    File engineDirectory = new File(System.getProperty("user.home") + "/Documents/Engine");
+    if(engineDirectory.isDirectory()) {
+      fileChooser.setInitialDirectory(engineDirectory);
+    }
     fileChooser.getExtensionFilters().addAll(
       new FileChooser.ExtensionFilter("PNG",
         "*.png"));
@@ -309,6 +345,10 @@ public class ResourceManager extends Application {
 
   private static FileChooser createFontFileChooser() {
     FileChooser fileChooser = new FileChooser();
+    File engineDirectory = new File(System.getProperty("user.home") + "/Documents/Engine");
+    if(engineDirectory.isDirectory()) {
+      fileChooser.setInitialDirectory(engineDirectory);
+    }
     fileChooser.getExtensionFilters().addAll(
       new FileChooser.ExtensionFilter("True Type Font",
         "*.ttf"));

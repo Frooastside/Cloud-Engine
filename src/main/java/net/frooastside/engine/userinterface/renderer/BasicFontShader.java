@@ -43,7 +43,7 @@ public class BasicFontShader extends ShaderProgram {
   @Override
   protected void setDefaults() {
     uniformTexture.loadTextureUnit(0);
-    loadWidth(0.5f);
+    loadWidth(0.4f);
     loadVisibility(1);
   }
 

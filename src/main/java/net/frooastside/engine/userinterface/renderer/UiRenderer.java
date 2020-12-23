@@ -82,7 +82,7 @@ public class UiRenderer {
         fontShader.loadColor(text.color().rawColor());
         fontShader.loadVisibility(text.visibility());
         //TODO EDGE
-        fontShader.loadEdge(0.3f);
+        fontShader.loadEdge(0.25f);
         VertexArrayObject textMesh = text.model();
         textMesh.bind();
         textMesh.enableVertexAttributes();

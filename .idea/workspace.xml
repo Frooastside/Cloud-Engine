@@ -23,17 +23,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ecc5080-a6c9-48ce-99ac-bbbd4055b9f9" name="Default Changelist" comment="Added Shaders and enum classes for opengl int enums">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/CenterConstraint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/PixelConstraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/settings/CheckBoxSetting.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/settings/ComboBoxSetting.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/settings/DoubleSpinnerSetting.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/settings/IntegerSpinnerSetting.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/settings/IntegerTextField.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/settings/Setting.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/settings/SettingsCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceFont.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceFont.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/ElementConstraints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/ElementConstraints.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RelativeConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RelativeConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiText.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/resource/ResourceTexture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/BasicFontShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/BasicFontShader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UiRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UiRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/test/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/test/UiScreenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/test/UiScreenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,11 +57,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.1.2\plugins\maven\lib\maven3" />
-      </MavenGeneralSettings>
-    </option>
     <option name="enabledProfiles">
       <list>
         <option value="lwjgl-natives-windows-amd64" />
@@ -87,16 +86,8 @@
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="net.frooastside.engine.userinterface" />
-      <recent name="net.frooastside.engine.postprocessing" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Simon\Documents\Engine\Cloud-Engine\src\main\resources\net\frooastside\engine\shader\basicfontshader" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="net.frooastside.engine.shader" />
-      <recent name="net.frooastside.engine.gui" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Simon\Documents\Engine\Cloud-Engine\src\main\resources\net\frooastside\engine\userinterface\renderer" />
@@ -104,6 +95,15 @@
       <recent name="C:\Users\Simon\Documents\Engine\Cloud-Engine\src\main\java\net\frooastside\engine\shader\guishader" />
       <recent name="C:\Users\Simon\Documents\Forest-Adventure\src\main\resources" />
       <recent name="C:\Users\Simon\Documents\Forest-Adventure\src\test\java\net\frooastside\forestadventure" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="net.frooastside.engine.userinterface" />
+      <recent name="net.frooastside.engine.postprocessing" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="net.frooastside.engine.resource.settings" />
+      <recent name="net.frooastside.engine.shader" />
+      <recent name="net.frooastside.engine.gui" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -206,152 +206,5 @@
     <MESSAGE value="Fixed Typo and Errors" />
     <MESSAGE value="Added Shaders and enum classes for opengl int enums" />
     <option name="LAST_COMMIT_MESSAGE" value="Added Shaders and enum classes for opengl int enums" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="550" y="59" key="#Java" timestamp="1596381176941">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="550" y="59" key="#Java/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596381176941" />
-    <state x="657" y="139" key="#Main" timestamp="1595677885751">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="657" y="139" key="#Main/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1595677885751" />
-    <state x="440" y="94" key="#Project_Structure" timestamp="1597924781419">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="440" y="94" key="#Project_Structure/0.0.1920.1040/-1280.49.1280.984/1920.0.1920.1040@0.0.1920.1040" timestamp="1597924781419" />
-    <state x="440" y="94" key="#Project_Structure/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1595532008175" />
-    <state x="414" y="175" width="1092" height="810" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599770498075">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="414" y="175" width="1092" height="738" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1280.49.1280.984/1920.0.1920.1040@0.0.1920.1040" timestamp="1597924946477" />
-    <state x="414" y="175" width="1092" height="810" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1599770498075" />
-    <state x="692" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1601795529799">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="692" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601795529799" />
-    <state x="692" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596011320233" />
-    <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser" timestamp="1602520183562">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602520183562" />
-    <state x="765" y="226" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596011677723" />
-    <state x="743" y="389" width="540" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1601796040599">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="743" y="389" width="540" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601796040599" />
-    <state x="743" y="357" key="#com.intellij.refactoring.move.moveInstanceMethod.MoveInstanceMethodDialog" timestamp="1599828061686">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="743" y="357" key="#com.intellij.refactoring.move.moveInstanceMethod.MoveInstanceMethodDialog/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1599828061686" />
-    <state x="43" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1601927658850">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="43" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601927658850" />
-    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1601397847016">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601397847016" />
-    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596391864812" />
-    <state x="690" y="267" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog" timestamp="1601214349628">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="690" y="267" key="#com.intellij.refactoring.typeMigration.ui.FailedConversionsDialog/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601214349628" />
-    <state x="784" y="440" key="Github.CreateGistDialog" timestamp="1596555158183">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="784" y="440" key="Github.CreateGistDialog/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596555158183" />
-    <state width="1877" height="181" key="GridCell.Tab.0.bottom" timestamp="1602615308894">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="181" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1601224719192" />
-    <state width="1877" height="181" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602615308894" />
-    <state width="1877" height="195" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
-    <state width="1237" height="235" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
-    <state width="1877" height="181" key="GridCell.Tab.0.center" timestamp="1602615308894">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="181" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1601224719192" />
-    <state width="1877" height="181" key="GridCell.Tab.0.center/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602615308894" />
-    <state width="1877" height="195" key="GridCell.Tab.0.center/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
-    <state width="1237" height="235" key="GridCell.Tab.0.center/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
-    <state width="1877" height="181" key="GridCell.Tab.0.left" timestamp="1602615308894">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="181" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1601224719191" />
-    <state width="1877" height="181" key="GridCell.Tab.0.left/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602615308894" />
-    <state width="1877" height="195" key="GridCell.Tab.0.left/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
-    <state width="1237" height="235" key="GridCell.Tab.0.left/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
-    <state width="1877" height="181" key="GridCell.Tab.0.right" timestamp="1602615308894">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="181" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1601224719192" />
-    <state width="1877" height="181" key="GridCell.Tab.0.right/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602615308894" />
-    <state width="1877" height="195" key="GridCell.Tab.0.right/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596624838681" />
-    <state width="1237" height="235" key="GridCell.Tab.0.right/0.0.1920.1040/1920.46.1280.984@1920.46.1280.984" timestamp="1596398094147" />
-    <state width="1877" height="440" key="GridCell.Tab.1.bottom" timestamp="1602529087489">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="316" key="GridCell.Tab.1.bottom/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599341846080" />
-    <state width="1877" height="440" key="GridCell.Tab.1.bottom/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602529087489" />
-    <state width="1877" height="440" key="GridCell.Tab.1.center" timestamp="1602529087489">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="316" key="GridCell.Tab.1.center/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599341846080" />
-    <state width="1877" height="440" key="GridCell.Tab.1.center/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602529087489" />
-    <state width="1877" height="440" key="GridCell.Tab.1.left" timestamp="1602529087488">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="316" key="GridCell.Tab.1.left/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599341846079" />
-    <state width="1877" height="440" key="GridCell.Tab.1.left/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602529087488" />
-    <state width="1877" height="440" key="GridCell.Tab.1.right" timestamp="1602529087489">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1237" height="316" key="GridCell.Tab.1.right/0.0.1920.1040/-1280.54.1280.984@-1280.54.1280.984" timestamp="1599341846080" />
-    <state width="1877" height="440" key="GridCell.Tab.1.right/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602529087489" />
-    <state x="440" y="94" width="1202" height="710" key="SettingsEditor" timestamp="1601892798268">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="440" y="94" width="1202" height="710" key="SettingsEditor/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601892798268" />
-    <state x="440" y="94" key="SettingsEditor/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596011263293" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1599833376644">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1599833376644" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1596621716170">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596621716170" />
-    <state x="664" y="411" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1595879769685">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="664" y="411" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1595879769685" />
-    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602524980396">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602524980396" />
-    <state x="667" y="253" width="585" height="534" key="find.popup" timestamp="1602605163624">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="667" y="253" width="585" height="534" key="find.popup/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602605163624" />
-    <state x="342" y="181" key="new project wizard" timestamp="1597928898180">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="342" y="181" key="new project wizard/0.0.1920.1040/-1280.49.1280.984/1920.0.1920.1040@0.0.1920.1040" timestamp="1597928898180" />
-    <state x="342" y="181" key="new project wizard/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596965732426" />
-    <state x="755" y="267" key="refactoring.ChangeSignatureDialog" timestamp="1601795226061">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="755" y="267" key="refactoring.ChangeSignatureDialog/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1601795226061" />
-    <state x="755" y="267" key="refactoring.ChangeSignatureDialog/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596559292677" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1602526540930">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602526540930" />
-    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup" timestamp="1602426256865">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/-1280.54.1280.984@0.0.1920.1040" timestamp="1602426256865" />
-    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/1920.46.1280.984@0.0.1920.1040" timestamp="1596541707463" />
   </component>
 </project>

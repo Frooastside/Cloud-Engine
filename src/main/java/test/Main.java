@@ -26,8 +26,8 @@ public class Main {
     window.initialize();
 
     ResourceContainer container = new ResourceContainer();
-    container.load(new File("C:/Users/Simon/Documents/Font.pak"));
-    ResourceFont font = (ResourceFont) container.get("JetBrainsMonoNL-Regular.ttf");
+    container.load(new File("C:/Users/Simon/Documents/Engine/Font.pak"));
+    ResourceFont font = (ResourceFont) container.get("CascadiaMonoPL-ExtraLight.ttf");
     //ResourceFont font = new ResourceFont(BufferUtils.readFile(new File("C:\\Users\\Simon\\Documents\\JetBrainsMonoNL-Regular.ttf")));
     font.unspecificLoader().run();
     font.contextSpecificLoader().run();
