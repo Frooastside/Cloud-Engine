@@ -47,7 +47,7 @@ public class UiScreenTest extends UiScreen {
     constraints.setX(new RelativeConstraint(0.0f));
     constraints.setY(new RelativeConstraint(0.5f));
     constraints.setWidth(new RelativeConstraint(1.0f));
-    constraints.setHeight(new RelativeConstraint(20.0f));
-    addElement(new UiText(font(), "Moin Leute Trymacs hier.", UiColor.WHITE, true), constraints);
+    constraints.setHeight(new RelativeConstraint(3.0f));
+    addElement(new UiText(font(), Main.TEXT, UiColor.ACCENT, true), constraints);
   }
 }

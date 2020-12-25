@@ -37,7 +37,6 @@ public class ResourceFont implements ResourceItem {
 
   private Map<String, Node> settings;
   private Node settingsBox;
-  private Node informationBox;
 
   private final Map<Integer, Character> supportedCharacters = new HashMap<>();
   private int characterHeight;
@@ -100,6 +99,8 @@ public class ResourceFont implements ResourceItem {
     return texture.contextSpecificLoader();
   }
 
+  private static int size = 0;
+
   @Override
   public Runnable unspecificLoader() {
     return () -> {
@@ -107,19 +108,25 @@ public class ResourceFont implements ResourceItem {
         texture.unspecificLoader().run();
       } else {
         if (rawFile != null && rawFile.hasRemaining()) {
+          System.out.println(1);
           initializeFont(rawFile);
           ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
+          System.out.println(2);
 
+          System.out.println(characterHeight + ", " + firstCharacter + ", " + characterCount);
           STBTTPackContext packContext = STBTTPackContext.malloc();
           STBTTPackedchar.Buffer characterBuffer = STBTTPackedchar.malloc(characterCount);
           STBTruetype.stbtt_PackBegin(packContext, pixelBuffer, imageSize, imageSize, 0, padding * 2);
           STBTruetype.stbtt_PackSetSkipMissingCodepoints(packContext, false);
           STBTruetype.stbtt_PackFontRange(packContext, rawFile, 0, characterHeight, firstCharacter, characterBuffer);
           STBTruetype.stbtt_PackEnd(packContext);
-
+          System.out.println(3);
+          System.out.println(imageSize + ", " + downscale + ", " + spread);
           ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
           ByteBuffer distanceFieldBuffer = createDistanceField(executorService, pixelBuffer, imageSize, downscale, spread);
+          System.out.println(size);
           executorService.shutdown();
+          System.out.println(4);
 
           try {
             if (executorService.awaitTermination(1, TimeUnit.MINUTES)) {
@@ -127,12 +134,15 @@ public class ResourceFont implements ResourceItem {
               texture = new ResourceTexture(new Texture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1));
             } else {
               System.err.println(I18n.get("error.font.distancefield"));
+              //TODO
+              System.out.println(executorService.shutdownNow().size());
               texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
             }
           } catch (InterruptedException exception) {
             System.err.println("error.font.distancefield");
             texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
           }
+          System.out.println(5);
           addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
           characterBuffer.free();
         }
@@ -165,6 +175,8 @@ public class ResourceFont implements ResourceItem {
         final int endY = Math.min(imageSize - 1, centerY + delta);
         int finalY = y;
         int finalX = x;
+        //TODO
+        size += 1;
         executorService.execute(() -> {
           int closestSquareDistance = delta * delta;
           for (int j = startY; j < endY; j++) {
@@ -211,20 +223,23 @@ public class ResourceFont implements ResourceItem {
   @Override
   public Node settingsBox() {
     if(settings == null) {
+      System.out.println("Null");
       settings = SETTINGS_LAYOUT.createSettings();
       if(imageSize == 0
         && downscale == 0
         && spread == 0
         && padding == 0
         && firstCharacter == 0
-        && characterCount == 0
-        && characterHeight == 0) {
+        && characterCount == 0) {
         recalculate();
+        System.out.println("Null Null");
       }else {
+        System.out.println("Null nicht Null");
         setSettings();
       }
     }
     if(settingsBox == null) {
+      System.out.println("Box Null");
       settingsBox = SettingsCreator.getBox(settings);
     }
     return settingsBox;
@@ -232,27 +247,24 @@ public class ResourceFont implements ResourceItem {
 
   @Override
   public Node informationBox() {
-    if(this.informationBox == null) {
-      VBox informationBox = new VBox();
-      informationBox.setAlignment(Pos.CENTER);
-      informationBox.getChildren().addAll(
-        new Label("ImageSize: " + imageSize),
-        new Label("Downscale: " + downscale),
-        new Label("Spread: " + spread),
-        new Label("Padding: " + padding),
-        new Label("FirstCharacter: " + firstCharacter),
-        new Label("CharacterCount: " + characterCount),
-        new Label("CharacterHeight: " + characterHeight)
-      );
-      this.informationBox = informationBox;
-    }
+    VBox informationBox = new VBox();
+    informationBox.setAlignment(Pos.CENTER);
+    informationBox.getChildren().addAll(
+      new Label("ImageSize: " + imageSize),
+      new Label("Downscale: " + downscale),
+      new Label("Spread: " + spread),
+      new Label("Padding: " + padding),
+      new Label("FirstCharacter: " + firstCharacter),
+      new Label("CharacterCount: " + characterCount),
+      new Label("CharacterHeight: " + characterHeight)
+    );
     return informationBox;
   }
 
   public void setSettings() {
     Setting.setComboBoxItem(settings, "imageSize", imageSize);
     Setting.setSpinnerValue(settings, "downscale", downscale);
-    Setting.setSpinnerValue(settings, "spread", spread);
+    Setting.setSpinnerValue(settings, "spread", (int) spread);
     Setting.setComboBoxItem(settings, "padding", padding);
     Setting.setComboBoxItem(settings, "firstCharacter", firstCharacter);
     Setting.setComboBoxItem(settings, "characterCount", characterCount);
@@ -261,6 +273,7 @@ public class ResourceFont implements ResourceItem {
 
   @Override
   public void recalculate() {
+    System.out.println("Recalculate");
     Object imageSize = Setting.getComboBoxItem(settings, "imageSize");
     if(imageSize != null) {
       this.imageSize = (int) imageSize;
@@ -279,7 +292,9 @@ public class ResourceFont implements ResourceItem {
     if(characterCount != null) {
       this.characterCount = (int) characterCount;
     }
+    System.out.println(characterHeight);
     this.characterHeight = Setting.getTextFieldInteger(settings, "characterHeight");
+    System.out.println(characterHeight);
   }
 
   public Character getCharacter(int codepoint) {

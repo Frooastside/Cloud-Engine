@@ -168,6 +168,23 @@ public class ResourceManager extends Application {
     VBox vBox = new VBox();
     vBox.setAlignment(Pos.CENTER);
     vBox.setPadding(new Insets(20));
+    vBox.setSpacing(20);
+    Button editButton = new Button("Edit");
+    editButton.setOnMouseClicked(event -> {
+      String selectedItem = resourceContainerItems.getSelectionModel().getSelectedItem();
+      if(selectedItem != null) {
+        createConfigurationStage(selectedItem, currentResourceContainer.get(selectedItem)).show();
+      }
+    });
+    Button removeButton = new Button("Remove");
+    removeButton.setOnMouseClicked(event -> {
+      String selectedItem = resourceContainerItems.getSelectionModel().getSelectedItem();
+      if(selectedItem != null) {
+        currentResourceContainer.remove(selectedItem);
+        reload();
+      }
+    });
+    vBox.getChildren().addAll(editButton, removeButton);
     return vBox;
   }
 
@@ -204,6 +221,7 @@ public class ResourceManager extends Application {
       if(!nameFieldText.isEmpty()) {
         item.recalculate();
         executorService.execute(item.unspecificLoader());
+        currentResourceContainer.remove(key);
         currentResourceContainer.put(nameFieldText, item);
         reload();
         unsavedChanges = true;
@@ -232,8 +250,8 @@ public class ResourceManager extends Application {
 
   private void reload() {
     resourceContainerItems.getItems().clear();
-    for (Map.Entry<String, ResourceItem> entry : currentResourceContainer.content().entrySet()) {
-      resourceContainerItems.getItems().add(entry.getKey());
+    for (String key : currentResourceContainer.content().keySet()) {
+      resourceContainerItems.getItems().add(key);
     }
   }
 

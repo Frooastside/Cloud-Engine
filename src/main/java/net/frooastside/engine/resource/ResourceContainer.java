@@ -52,6 +52,10 @@ public class ResourceContainer {
     content.put(key, item);
   }
 
+  public void remove(String key) {
+    content.remove(key);
+  }
+
   public void clear() {
     content.clear();
   }
