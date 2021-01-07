@@ -111,7 +111,6 @@ public class UiRenderer {
     vertexArrayObject.bind();
 
     VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-
     positionBuffer.storeFloatData(BufferUtils.store(DEFAULT_BOX_POSITIONS));
     vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
 
