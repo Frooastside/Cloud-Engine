@@ -1,4 +1,4 @@
-package net.frooastside.engine.world;
+package net.frooastside.engine.world.entity;
 
 import org.joml.Matrix4f;
 
@@ -10,8 +10,6 @@ public abstract class Entity {
   private final Matrix4f transformationMatrix = new Matrix4f();
 
   //TODO TEXTURED MODEL
-
-
 
   public Entity(float x, float y, float z, float pitch, float yaw, float roll) {
     this(x, y, z, pitch, yaw, roll, 1);

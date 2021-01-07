@@ -1,5 +1,7 @@
 package net.frooastside.engine.world;
 
+import net.frooastside.engine.world.entity.Entity;
+
 import java.util.List;
 import java.util.Map;
 
