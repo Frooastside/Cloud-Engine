@@ -38,7 +38,7 @@ public class ResourceManager extends Application {
   private ListView<String> resourceContainerItems;
   private BorderPane mainBorderPane;
 
-  public static void main(String[] args) {
+  public static void launchResourceManager(String[] args) {
     launch(args);
   }
 

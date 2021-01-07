@@ -2,20 +2,19 @@ package net.frooastside.engine.userinterface;
 
 import org.joml.Vector3f;
 
-public enum UiColor {
+public class UiColor {
 
-  BACKGROUND(new Vector3f(0.2f, 0.2f, 0.2f)),
-  WHITE(new Vector3f(1.0f, 1.0f, 1.0f)),
-  ELEMENT(new Vector3f(0.24f, 0.24f, 0.24f)),
-  ACCENT(new Vector3f(0.1215f, 0.5529f, 0.1215f));
+  private Vector3f rawColor;
 
-  private final Vector3f color;
+  public UiColor(Vector3f rawColor) {
+    this.rawColor = rawColor;
+  }
 
-  UiColor(Vector3f color) {
-    this.color = color;
+  public UiColor(float r, float g, float b) {
+    this.rawColor = new Vector3f(r, g, b);
   }
 
   public Vector3f rawColor() {
-    return color;
+    return rawColor;
   }
 }

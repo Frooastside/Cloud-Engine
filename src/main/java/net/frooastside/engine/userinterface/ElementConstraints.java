@@ -17,6 +17,20 @@ public class ElementConstraints {
 
   private final Vector2f pixelSize = new Vector2f();
 
+  public ElementConstraints(Constraint x, Constraint y, Constraint width, Constraint height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.x.setConstraints(this, Constraint.ConstraintType.X);
+    this.y.setConstraints(this, Constraint.ConstraintType.Y);
+    this.width.setConstraints(this, Constraint.ConstraintType.WIDTH);
+    this.height.setConstraints(this, Constraint.ConstraintType.HEIGHT);
+  }
+
+  public ElementConstraints() {
+  }
+
   public void recalculate(Vector2f pixelSize) {
     this.pixelSize.set(pixelSize);
     x.recalculate();

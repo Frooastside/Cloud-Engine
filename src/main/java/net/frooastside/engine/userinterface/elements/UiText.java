@@ -36,31 +36,38 @@ public class UiText extends UiRenderElement {
     updateModel();
   }
 
-  private void updateModel() {
+  public void updateModel() {
+    float maxLineLength = bounds().z;
+    float rawHeight = bounds().w;
+
     double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
     double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
+    double fontWidth = horizontalPerPixelSize * rawHeight;
+    double fontHeight = verticalPerPixelSize * rawHeight;
+
     double lineLength = 0;
     int characterCount = 0;
-    float rawHeight = bounds().w;
     for (char codepoint : text.toCharArray()) {
       ResourceFont.Character character = font.getCharacter(codepoint);
-      lineLength += (character.xAdvance() * horizontalPerPixelSize) * rawHeight;
+      lineLength += character.xAdvance() * fontWidth;
       characterCount += codepoint != ResourceFont.SPACE_CODEPOINT ? 1 : 0;
     }
-    float maxLineLength = bounds().z;
+
     double cursorX = centered ? (maxLineLength - lineLength) / 2 : 0.0;
     double yLineOffset = LINE_HEIGHT * (rawHeight / 4.35f);
     float[] positions = new float[characterCount * 12];
     float[] textureCoordinates = new float[characterCount * 12];
+
     int index = 0;
     for (char codepoint : text.toCharArray()) {
       ResourceFont.Character character = font.getCharacter(codepoint);
       if (codepoint != ResourceFont.SPACE_CODEPOINT) {
-        addVerticesFor(positions, textureCoordinates, character, index, verticalPerPixelSize, horizontalPerPixelSize, cursorX, yLineOffset);
+        addVerticesFor(positions, textureCoordinates, character, index, fontHeight, fontWidth, cursorX, yLineOffset);
         index++;
       }
-      cursorX += (character.xAdvance() * horizontalPerPixelSize) * rawHeight;
+      cursorX += character.xAdvance() * fontWidth;
     }
+
     if (positions.length / 2 == model.length()) {
       bufferSubData(positions, textureCoordinates);
     } else {
@@ -68,12 +75,11 @@ public class UiText extends UiRenderElement {
     }
   }
 
-  protected void addVerticesFor(float[] positions, float[] textureCoordinates, ResourceFont.Character character, int characterIndex, double verticalPerPixelSize, double horizontalPerPixelSize, double cursorX, double cursorY) {
-    float rawHeight = bounds().w;
-    double x = cursorX + ((character.xOffset() * horizontalPerPixelSize) * rawHeight);
-    double y = cursorY + ((character.yOffset() * verticalPerPixelSize) * rawHeight);
-    double xMax = x + ((character.xSize() * horizontalPerPixelSize) * rawHeight);
-    double yMax = y + ((character.ySize() * verticalPerPixelSize) * rawHeight);
+  protected void addVerticesFor(float[] positions, float[] textureCoordinates, ResourceFont.Character character, int characterIndex, double fontHeight, double fontWidth, double cursorX, double cursorY) {
+    double x = cursorX + (character.xOffset() * fontWidth);
+    double y = cursorY + (character.yOffset() * fontHeight);
+    double xMax = x + (character.xSize() * fontWidth);
+    double yMax = y + (character.ySize() * fontHeight);
     addPoints(positions,
       characterIndex,
       x * 2 - 1,
@@ -116,7 +122,7 @@ public class UiText extends UiRenderElement {
     return vertexArrayObject;
   }
 
-  private void bufferData(float[] positions, float[] textureCoordinates) {
+  public void bufferData(float[] positions, float[] textureCoordinates) {
     model.bind();
     model.setLength(positions.length / 2);
     VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
@@ -126,7 +132,7 @@ public class UiText extends UiRenderElement {
     model.unbind();
   }
 
-  private void bufferSubData(float[] positions, float[] textureCoordinates) {
+  public void bufferSubData(float[] positions, float[] textureCoordinates) {
     model.bind();
     VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
     positionBuffer.storeFloatSubData(BufferUtils.store(positions), 0);
@@ -146,6 +152,10 @@ public class UiText extends UiRenderElement {
 
   public ResourceFont font() {
     return font;
+  }
+
+  public float aspectRatio() {
+    return aspectRatio;
   }
 
   public String text() {

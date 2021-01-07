@@ -23,11 +23,14 @@ import java.util.concurrent.TimeUnit;
 
 public class ResourceFont implements ResourceItem {
 
+  @Serial
+  private static final long serialVersionUID = -8857587121382434365L;
+
   public static final Character DEFAULT_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
   public static final int SPACE_CODEPOINT = 32;
 
   public static final SettingsCreator SETTINGS_LAYOUT = SettingsCreator.createLayout(
-    new ComboBoxSetting<>("imageSize", Arrays.asList(256, 512, 1024, 2048, 4096, 8192, 16384), 16384),
+    new ComboBoxSetting<>("imageSize", Arrays.asList(256, 512, 1024, 2048, 4096, 8192, 16384, 32768), 16384),
     new IntegerSpinnerSetting("downscale", 1, 32, 4),
     new IntegerSpinnerSetting("spread", 1, 128, 32),
     new ComboBoxSetting<>("padding", Arrays.asList(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512), 64),
@@ -49,10 +52,6 @@ public class ResourceFont implements ResourceItem {
   private int padding;
   private int firstCharacter;
   private int characterCount;
-
-  //public ResourceFont(ByteBuffer fontFile) {
-  //  this(fontFile, 16384, 4, 32, 64, 32, 352, (int) (1024.0f * 1.5f));
-  //}
 
   public ResourceFont(ByteBuffer fontFile) {
     this.rawFile = fontFile;
@@ -99,8 +98,6 @@ public class ResourceFont implements ResourceItem {
     return texture.contextSpecificLoader();
   }
 
-  private static int size = 0;
-
   @Override
   public Runnable unspecificLoader() {
     return () -> {
@@ -108,41 +105,32 @@ public class ResourceFont implements ResourceItem {
         texture.unspecificLoader().run();
       } else {
         if (rawFile != null && rawFile.hasRemaining()) {
-          System.out.println(1);
           initializeFont(rawFile);
           ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
-          System.out.println(2);
 
-          System.out.println(characterHeight + ", " + firstCharacter + ", " + characterCount);
           STBTTPackContext packContext = STBTTPackContext.malloc();
           STBTTPackedchar.Buffer characterBuffer = STBTTPackedchar.malloc(characterCount);
           STBTruetype.stbtt_PackBegin(packContext, pixelBuffer, imageSize, imageSize, 0, padding * 2);
           STBTruetype.stbtt_PackSetSkipMissingCodepoints(packContext, false);
           STBTruetype.stbtt_PackFontRange(packContext, rawFile, 0, characterHeight, firstCharacter, characterBuffer);
           STBTruetype.stbtt_PackEnd(packContext);
-          System.out.println(3);
-          System.out.println(imageSize + ", " + downscale + ", " + spread);
           ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
           ByteBuffer distanceFieldBuffer = createDistanceField(executorService, pixelBuffer, imageSize, downscale, spread);
-          System.out.println(size);
           executorService.shutdown();
-          System.out.println(4);
 
           try {
-            if (executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+            if (executorService.awaitTermination(10, TimeUnit.MINUTES)) {
               int downscaledImageSize = imageSize / downscale;
               texture = new ResourceTexture(new Texture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1));
             } else {
               System.err.println(I18n.get("error.font.distancefield"));
               //TODO
-              System.out.println(executorService.shutdownNow().size());
               texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
             }
           } catch (InterruptedException exception) {
             System.err.println("error.font.distancefield");
             texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
           }
-          System.out.println(5);
           addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
           characterBuffer.free();
         }
@@ -176,8 +164,7 @@ public class ResourceFont implements ResourceItem {
         int finalY = y;
         int finalX = x;
         //TODO
-        size += 1;
-        executorService.execute(() -> {
+        executorService.submit(() -> {
           int closestSquareDistance = delta * delta;
           for (int j = startY; j < endY; j++) {
             for (int i = startX; i < endX; i++) {
@@ -223,7 +210,6 @@ public class ResourceFont implements ResourceItem {
   @Override
   public Node settingsBox() {
     if(settings == null) {
-      System.out.println("Null");
       settings = SETTINGS_LAYOUT.createSettings();
       if(imageSize == 0
         && downscale == 0
@@ -232,14 +218,11 @@ public class ResourceFont implements ResourceItem {
         && firstCharacter == 0
         && characterCount == 0) {
         recalculate();
-        System.out.println("Null Null");
       }else {
-        System.out.println("Null nicht Null");
         setSettings();
       }
     }
     if(settingsBox == null) {
-      System.out.println("Box Null");
       settingsBox = SettingsCreator.getBox(settings);
     }
     return settingsBox;
@@ -273,7 +256,6 @@ public class ResourceFont implements ResourceItem {
 
   @Override
   public void recalculate() {
-    System.out.println("Recalculate");
     Object imageSize = Setting.getComboBoxItem(settings, "imageSize");
     if(imageSize != null) {
       this.imageSize = (int) imageSize;
@@ -292,9 +274,7 @@ public class ResourceFont implements ResourceItem {
     if(characterCount != null) {
       this.characterCount = (int) characterCount;
     }
-    System.out.println(characterHeight);
     this.characterHeight = Setting.getTextFieldInteger(settings, "characterHeight");
-    System.out.println(characterHeight);
   }
 
   public Character getCharacter(int codepoint) {

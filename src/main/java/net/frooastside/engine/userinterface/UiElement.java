@@ -26,12 +26,12 @@ public abstract class UiElement {
     child.parent = this;
     constraints.setParent(this.constraints);
     child.recalculate(this.constraints.pixelSize());
-    appendRenderElements(child);
+    appendRenderElement(child);
     children.add(child);
   }
 
-  public void appendRenderElements(UiElement element) {
-    parent.appendRenderElements(element);
+  public void appendRenderElement(UiElement element) {
+    parent.appendRenderElement(element);
   }
 
   public abstract UiRenderElement[] renderElements();

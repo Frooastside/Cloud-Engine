@@ -14,6 +14,9 @@ import java.nio.ByteBuffer;
 
 public class ResourceTexture extends Texture implements ResourceItem {
 
+  @Serial
+  private static final long serialVersionUID = 319509656989696754L;
+
   private Node settingsBox;
   private Node informationBox;
 

@@ -1,7 +1,6 @@
 package test;
 
 import net.frooastside.engine.Window;
-import net.frooastside.engine.userinterface.elements.UiText;
 import net.frooastside.engine.userinterface.renderer.BasicBoxShader;
 import net.frooastside.engine.userinterface.renderer.BasicFontShader;
 import net.frooastside.engine.postprocessing.FullscreenQuadRenderer;
@@ -27,7 +26,8 @@ public class Main {
 
     ResourceContainer container = new ResourceContainer();
     container.load(new File("C:/Users/Simon/Documents/Engine/Font.pak"));
-    ResourceFont font = (ResourceFont) container.get("JuraLight");
+    ResourceFont font = (ResourceFont) container.get("JetBrains");
+    //ResourceFont font = (ResourceFont) container.get("Cascadia");
     //ResourceFont font = new ResourceFont(BufferUtils.readFile(new File("C:\\Users\\Simon\\Documents\\JetBrainsMonoNL-Regular.ttf")));
     font.unspecificLoader().run();
     font.contextSpecificLoader().run();

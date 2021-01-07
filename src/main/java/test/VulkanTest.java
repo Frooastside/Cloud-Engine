@@ -19,7 +19,7 @@ public class VulkanTest {
 
   private static void checkStatusCode(int statusCode) {
     if (statusCode != VK10.VK_SUCCESS)
-      throw new AssertionError("An error occured with error code " + statusCode);
+      throw new AssertionError("An error occurred with error code " + statusCode);
   }
 
   private static VkInstance createVkInstance() {
@@ -34,10 +34,10 @@ public class VulkanTest {
       .ppEnabledLayerNames(null);
 
     PointerBuffer instancePointerBuffer = MemoryUtil.memAllocPointer(1);
-    int statucCode = VK10.vkCreateInstance(instanceCreateInfo, null, instancePointerBuffer);
+    int statusCode = VK10.vkCreateInstance(instanceCreateInfo, null, instancePointerBuffer);
     long instanceAddress = instancePointerBuffer.get(0);
     MemoryUtil.memFree(instancePointerBuffer);
-    checkStatusCode(statucCode);
+    checkStatusCode(statusCode);
 
     VkInstance vkInstance = new VkInstance(instanceAddress, instanceCreateInfo);
 
@@ -49,12 +49,12 @@ public class VulkanTest {
 
   private static VkPhysicalDevice getFirstPhysicalDevice(VkInstance vkInstance) {
     IntBuffer physicalDeviceCountPointer = MemoryUtil.memAllocInt(1);
-    int statucCode = VK10.vkEnumeratePhysicalDevices(vkInstance, physicalDeviceCountPointer, null);
-    checkStatusCode(statucCode);
+    int statusCode = VK10.vkEnumeratePhysicalDevices(vkInstance, physicalDeviceCountPointer, null);
+    checkStatusCode(statusCode);
 
     PointerBuffer physicalDevicesPointer = MemoryUtil.memAllocPointer(physicalDeviceCountPointer.get(0));
-    statucCode = VK10.vkEnumeratePhysicalDevices(vkInstance, physicalDeviceCountPointer, physicalDevicesPointer);
-    checkStatusCode(statucCode);
+    statusCode = VK10.vkEnumeratePhysicalDevices(vkInstance, physicalDeviceCountPointer, physicalDevicesPointer);
+    checkStatusCode(statusCode);
 
     long physicalDeviceAddress = physicalDevicesPointer.get(0);
 
@@ -73,15 +73,15 @@ public class VulkanTest {
   }
 
   private static DeviceAndGraphicsQueueFamily createDeviceAndGetGraphicsQueueFamily(VkPhysicalDevice vkPhysicalDevice) {
-    IntBuffer queueFamilyProperyCountPointer = MemoryUtil.memAllocInt(1);
+    IntBuffer queueFamilyPropertyCountPointer = MemoryUtil.memAllocInt(1);
 
-    VK10.vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, queueFamilyProperyCountPointer, null);
-    int queueCount = queueFamilyProperyCountPointer.get(0);
+    VK10.vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, queueFamilyPropertyCountPointer, null);
+    int queueCount = queueFamilyPropertyCountPointer.get(0);
 
     VkQueueFamilyProperties.Buffer queueFamilyProperties = VkQueueFamilyProperties.calloc(queueCount);
-    VK10.vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, queueFamilyProperyCountPointer, queueFamilyProperties);
+    VK10.vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, queueFamilyPropertyCountPointer, queueFamilyProperties);
 
-    MemoryUtil.memFree(queueFamilyProperyCountPointer);
+    MemoryUtil.memFree(queueFamilyPropertyCountPointer);
 
     int graphicsQueueFamilyIndex;
     for (graphicsQueueFamilyIndex = 0; graphicsQueueFamilyIndex < queueCount; graphicsQueueFamilyIndex++) {

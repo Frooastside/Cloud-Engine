@@ -2,6 +2,7 @@ package net.frooastside.engine.userinterface.elements;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.userinterface.UiColor;
+import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.UiRenderElement;
 
 public class UiBox extends UiRenderElement {

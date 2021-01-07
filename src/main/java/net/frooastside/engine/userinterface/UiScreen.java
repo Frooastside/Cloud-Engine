@@ -12,13 +12,15 @@ public abstract class UiScreen extends UiElement {
 
   private final Window window;
   private final ResourceFont font;
+  private final UiColorSet colorSet;
   private final Map<UiRenderElement.RenderType, List<UiRenderElement>> renderElements = new HashMap<>();
 
   private final Vector2f pixelSize = new Vector2f();
 
-  public UiScreen(Window window, ResourceFont font) {
+  public UiScreen(Window window, ResourceFont font, UiColorSet colorSet) {
     this.window = window;
     this.font = font;
+    this.colorSet = colorSet;
   }
 
   public abstract void initialize();
@@ -35,12 +37,12 @@ public abstract class UiScreen extends UiElement {
     constraints.setParent(DEFAULT_ELEMENT_CONSTRAINTS);
     pixelSize.set(1f / window.resolution().x, 1f / window.resolution().y);
     child.recalculate(pixelSize);
-    appendRenderElements(child);
+    appendRenderElement(child);
     children().add(child);
   }
 
   @Override
-  public void appendRenderElements(UiElement element) {
+  public void appendRenderElement(UiElement element) {
     for (int i = 0; i < element.renderElements().length; i++) {
       UiRenderElement renderElement = element.renderElements()[i];
       if (renderElements.containsKey(renderElement.renderType())) {
@@ -60,6 +62,10 @@ public abstract class UiScreen extends UiElement {
 
   public ResourceFont font() {
     return font;
+  }
+
+  public UiColorSet colorSet() {
+    return colorSet;
   }
 
   public List<UiRenderElement> renderElements(UiRenderElement.RenderType renderType) {

@@ -3,51 +3,58 @@ package test;
 import net.frooastside.engine.Window;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.ElementConstraints;
-import net.frooastside.engine.userinterface.UiColor;
+import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.constraints.CenterConstraint;
 import net.frooastside.engine.userinterface.constraints.PixelConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
 import net.frooastside.engine.userinterface.elements.UiBox;
-import net.frooastside.engine.userinterface.elements.UiText;
 import net.frooastside.engine.userinterface.UiScreen;
+import net.frooastside.engine.userinterface.elements.UiText;
+import net.frooastside.engine.userinterface.elements.UiTextArea;
 
 public class UiScreenTest extends UiScreen {
 
   public UiScreenTest(Window window, ResourceFont font) {
-    super(window, font);
+    super(window, font, UiColorSet.DARK_MODE);
   }
 
   @Override
   public void initialize() {
+    ElementConstraints titleConstraints = new ElementConstraints(
+      new RelativeConstraint(0.0f),
+      new RelativeConstraint(0.04f),
+      new RelativeConstraint(1),
+      new RelativeConstraint(3));
+    addElement(new UiText(font(), "Überschrift", colorSet().text(), true), titleConstraints);
 
-    /*ElementConstraints boxConstraints = new ElementConstraints();
-    boxConstraints.setX(new PixelConstraint(40));
-    boxConstraints.setY(new PixelConstraint(40));
-    boxConstraints.setWidth(new CenterConstraint());
-    boxConstraints.setHeight(new CenterConstraint());
-    UiBox boxxx = new UiBox(UiColor.BACKGROUND);
-    addElement(boxxx, boxConstraints);
+    ElementConstraints backgroundConstraints = new ElementConstraints(
+      new PixelConstraint(40),
+      new PixelConstraint(40),
+      new CenterConstraint(),
+      new CenterConstraint());
+    UiBox background = new UiBox(colorSet().background());
+    addElement(background, backgroundConstraints);
 
-    ElementConstraints boxConstraints2 = new ElementConstraints();
-    boxConstraints2.setX(new RelativeConstraint(0.25f));
-    boxConstraints2.setY(new RelativeConstraint(0.25f));
-    boxConstraints2.setWidth(new RelativeConstraint(0.5f));
-    boxConstraints2.setHeight(new RelativeConstraint(0.125f));
-    UiBox secondBOX = new UiBox(UiColor.ELEMENT);
-    boxxx.addElement(secondBOX, boxConstraints2);
+    ElementConstraints buttonConstraints = new ElementConstraints(
+      new CenterConstraint(),
+      new CenterConstraint(),
+      new RelativeConstraint(0.5f),
+      new RelativeConstraint(0.125f));
+    UiBox button = new UiBox(colorSet().element());
+    background.addElement(button, buttonConstraints);
 
-    ElementConstraints bigTextConstraints = new ElementConstraints();
-    bigTextConstraints.setX(new RelativeConstraint(0.0f));
-    bigTextConstraints.setY(new RelativeConstraint(0.0f));
-    bigTextConstraints.setWidth(new RelativeConstraint(10));
-    bigTextConstraints.setHeight(new RelativeConstraint(4));
-    boxxx.addElement(new UiText(font(), Main.TEXT, UiColor.ACCENT, false), bigTextConstraints);*/
+    ElementConstraints labelConstraints = new ElementConstraints(
+      new RelativeConstraint(0.0f),
+      new RelativeConstraint(0.5f),
+      new RelativeConstraint(1),
+      new RelativeConstraint(30));
+    button.addElement(new UiText(font(), "Klick mich", colorSet().text(), true), labelConstraints);
 
-    ElementConstraints constraints = new ElementConstraints();
-    constraints.setX(new RelativeConstraint(0.0f));
-    constraints.setY(new RelativeConstraint(0.5f));
-    constraints.setWidth(new RelativeConstraint(1.0f));
-    constraints.setHeight(new RelativeConstraint(3.0f));
-    addElement(new UiText(font(), Main.TEXT, UiColor.ACCENT, true), constraints);
+    ElementConstraints areaConstraints = new ElementConstraints(
+      new RelativeConstraint(0.0f),
+      new RelativeConstraint(0.0f),
+      new RelativeConstraint(0.6f),
+      new RelativeConstraint(1.7f));
+    background.addElement(new UiTextArea(font(), Main.TEXT, colorSet().text()), areaConstraints);
   }
 }
