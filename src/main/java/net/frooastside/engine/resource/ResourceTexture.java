@@ -11,6 +11,8 @@ import org.lwjgl.stb.STBImageWrite;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.Queue;
+import java.util.concurrent.ExecutorService;
 
 public class ResourceTexture extends Texture implements ResourceItem {
 
@@ -69,18 +71,24 @@ public class ResourceTexture extends Texture implements ResourceItem {
   }
 
   @Override
-  public Runnable contextSpecificLoader() {
-    return () -> {
-      generateIdentifier();
-      bind();
-      store();
-      unbind();
-    };
+  public void loadContextSpecific() {
+    generateIdentifier();
+    bind();
+    store();
+    unbind();
   }
 
   @Override
-  public Runnable unspecificLoader() {
-    return this::readFromFile;
+  public void loadUnspecific(ExecutorService executorService) {
+    readFromFile();
+  }
+
+  @Override
+  public void addQueueTasks(ExecutorService executorService, Queue<Runnable> contextSpecificQueue) {
+    executorService.submit(() -> {
+      loadUnspecific(executorService);
+      contextSpecificQueue.offer(this::loadContextSpecific);
+    });
   }
 
   @Override

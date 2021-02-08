@@ -1,6 +1,6 @@
 package test;
 
-import net.frooastside.engine.Window;
+import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.ElementConstraints;
 import net.frooastside.engine.userinterface.UiColorSet;

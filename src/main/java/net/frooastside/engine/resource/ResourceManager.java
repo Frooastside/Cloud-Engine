@@ -220,7 +220,7 @@ public class ResourceManager extends Application {
       String nameFieldText = nameField.getText();
       if(!nameFieldText.isEmpty()) {
         item.recalculate();
-        executorService.execute(item.unspecificLoader());
+        executorService.execute(() -> item.loadUnspecific(executorService));
         currentResourceContainer.remove(key);
         currentResourceContainer.put(nameFieldText, item);
         reload();
@@ -270,7 +270,7 @@ public class ResourceManager extends Application {
       currentResourceContainer.clear();
       currentResourceContainer.load(file);
       for (Map.Entry<String, ResourceItem> entry : currentResourceContainer.content().entrySet()) {
-        executorService.execute(entry.getValue().unspecificLoader());
+        executorService.execute(() -> entry.getValue().loadUnspecific(executorService));
       }
       reload();
       currentFile = file;

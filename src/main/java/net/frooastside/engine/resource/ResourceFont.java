@@ -5,7 +5,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import net.frooastside.engine.graphicobjects.texture.Texture;
-import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.resource.settings.*;
 import org.joml.Vector2f;
 import org.lwjgl.stb.*;
@@ -14,12 +13,8 @@ import org.lwjgl.system.MemoryUtil;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ResourceFont implements ResourceItem {
 
@@ -94,48 +89,40 @@ public class ResourceFont implements ResourceItem {
   }
 
   @Override
-  public Runnable contextSpecificLoader() {
-    return texture.contextSpecificLoader();
+  public void loadContextSpecific() {
+    texture.loadContextSpecific();
   }
 
   @Override
-  public Runnable unspecificLoader() {
-    return () -> {
-      if (texture != null) {
-        texture.unspecificLoader().run();
-      } else {
-        if (rawFile != null && rawFile.hasRemaining()) {
-          initializeFont(rawFile);
-          ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
+  public void loadUnspecific(ExecutorService executorService) {
+    if (texture != null) {
+      texture.loadUnspecific(executorService);
+    } else {
+      if (rawFile != null && rawFile.hasRemaining()) {
+        initializeFont(rawFile);
+        ByteBuffer pixelBuffer = MemoryUtil.memAlloc(imageSize * imageSize);
 
-          STBTTPackContext packContext = STBTTPackContext.malloc();
-          STBTTPackedchar.Buffer characterBuffer = STBTTPackedchar.malloc(characterCount);
-          STBTruetype.stbtt_PackBegin(packContext, pixelBuffer, imageSize, imageSize, 0, padding * 2);
-          STBTruetype.stbtt_PackSetSkipMissingCodepoints(packContext, false);
-          STBTruetype.stbtt_PackFontRange(packContext, rawFile, 0, characterHeight, firstCharacter, characterBuffer);
-          STBTruetype.stbtt_PackEnd(packContext);
-          ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-          ByteBuffer distanceFieldBuffer = createDistanceField(executorService, pixelBuffer, imageSize, downscale, spread);
-          executorService.shutdown();
-
-          try {
-            if (executorService.awaitTermination(10, TimeUnit.MINUTES)) {
-              int downscaledImageSize = imageSize / downscale;
-              texture = new ResourceTexture(new Texture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1));
-            } else {
-              System.err.println(I18n.get("error.font.distancefield"));
-              //TODO
-              texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
-            }
-          } catch (InterruptedException exception) {
-            System.err.println("error.font.distancefield");
-            texture = new ResourceTexture(new Texture(pixelBuffer, Texture.BILINEAR_FILTER, imageSize, imageSize, 1));
-          }
-          addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
-          characterBuffer.free();
-        }
+        STBTTPackContext packContext = STBTTPackContext.malloc();
+        STBTTPackedchar.Buffer characterBuffer = STBTTPackedchar.malloc(characterCount);
+        STBTruetype.stbtt_PackBegin(packContext, pixelBuffer, imageSize, imageSize, 0, padding * 2);
+        STBTruetype.stbtt_PackSetSkipMissingCodepoints(packContext, false);
+        STBTruetype.stbtt_PackFontRange(packContext, rawFile, 0, characterHeight, firstCharacter, characterBuffer);
+        STBTruetype.stbtt_PackEnd(packContext);
+        ByteBuffer distanceFieldBuffer = createDistanceField(executorService, pixelBuffer, imageSize, downscale, spread);
+        int downscaledImageSize = imageSize / downscale;
+        texture = new ResourceTexture(new Texture(distanceFieldBuffer, Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1));
+        addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
+        characterBuffer.free();
       }
-    };
+    }
+  }
+
+  @Override
+  public void addQueueTasks(ExecutorService executorService, Queue<Runnable> contextSpecificQueue) {
+    executorService.submit(() -> {
+      loadUnspecific(executorService);
+      contextSpecificQueue.offer(this::loadContextSpecific);
+    });
   }
 
   private static ByteBuffer createDistanceField(ExecutorService executorService, ByteBuffer pixelBuffer, int imageSize, int downscale, float spread) {

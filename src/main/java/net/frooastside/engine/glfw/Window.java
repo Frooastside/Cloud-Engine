@@ -1,15 +1,18 @@
-package net.frooastside.engine;
+package net.frooastside.engine.glfw;
 
+import net.frooastside.engine.glfw.callbacks.*;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector4i;
 import org.lwjgl.PointerBuffer;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Window {
 
@@ -25,6 +28,8 @@ public class Window {
 
   private Monitor monitor;
 
+  private final Input input = new Input();
+
   private long lastUpdateTime;
   private double delta;
 
@@ -34,6 +39,7 @@ public class Window {
 
   public void initialize() {
     GLFW.glfwMakeContextCurrent(identifier);
+    input.initialize();
     GL.createCapabilities();
     resetVSync();
     GL11.glClearColor(0.5f, 0.5f, 0.5f, 1);
@@ -220,15 +226,159 @@ public class Window {
     return monitor;
   }
 
+  public Input input() {
+    return input;
+  }
+
   public double delta() {
     return delta;
+  }
+
+  public class Input {
+
+    private final boolean[] keyboardButtons = new boolean[GLFW.GLFW_KEY_LAST + 1];
+    private final boolean[] mouseButtons = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST + 1];
+
+    private final Vector2f mousePosition = new Vector2f();
+
+    private MouseButtonCallback mouseButtonCallback;
+    private KeyCallback keyCallback;
+    private CharCallback charCallback;
+    private FramebufferSizeCallback framebufferSizeCallback;
+    private FileDropCallback fileDropCallback;
+
+    public void initialize() {
+      GLFW.glfwSetFramebufferSizeCallback(identifier, this::handleFramebufferSize);
+      GLFW.glfwSetMouseButtonCallback(identifier, this::handleMouseButton);
+      GLFW.glfwSetCursorPosCallback(identifier, this::handleCursorPosition);
+      GLFW.glfwSetDropCallback(identifier, this::handleFileDrop);
+      GLFW.glfwSetCharCallback(identifier, this::handleChar);
+      GLFW.glfwSetKeyCallback(identifier, this::handleKey);
+    }
+
+    private void handleCursorPosition(long window, double xPos, double yPos) {
+      mousePosition.set((float) xPos, (float) yPos);
+    }
+
+    public void handleMouseButton(long window, int button, int action, int mods) {
+      switch (action) {
+        case GLFW.GLFW_PRESS -> mouseButtons[button] = true;
+        case GLFW.GLFW_RELEASE -> mouseButtons[button] = false;
+      }
+      if(mouseButtonCallback != null) {
+        mouseButtonCallback.invokeMouseButtonCallback(Window.this, button, mouseButtons[button]);
+      }
+    }
+
+    public void handleKey(long window, int key, int scancode, int action, int mods) {
+      switch (action) {
+        case GLFW.GLFW_PRESS -> keyboardButtons[key] = true;
+        case GLFW.GLFW_RELEASE -> keyboardButtons[key] = false;
+      }
+      if(keyCallback != null) {
+        KeyCallback.Modifier modifier =
+          (mods & GLFW.GLFW_MOD_SHIFT) == GLFW.GLFW_MOD_SHIFT ? KeyCallback.Modifier.SHIFT :
+          ((mods & GLFW.GLFW_MOD_CONTROL) == GLFW.GLFW_MOD_CONTROL ? KeyCallback.Modifier.CONTROL :
+          ((mods & GLFW.GLFW_MOD_ALT) == GLFW.GLFW_MOD_ALT ? KeyCallback.Modifier.ALT :
+          ((mods & GLFW.GLFW_MOD_SUPER) == GLFW.GLFW_MOD_SUPER ? KeyCallback.Modifier.SUPER :
+          ((mods & GLFW.GLFW_MOD_CAPS_LOCK) == GLFW.GLFW_MOD_CAPS_LOCK ? KeyCallback.Modifier.CAPS_LOCK :
+          ((mods & GLFW.GLFW_MOD_NUM_LOCK) == GLFW.GLFW_MOD_NUM_LOCK ? KeyCallback.Modifier.NUM_LOCK : null)))));
+        KeyCallback.Action keyAction =
+          (action == GLFW.GLFW_PRESS ? KeyCallback.Action.PRESS :
+          (action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
+          (action == GLFW.GLFW_REPEAT ? KeyCallback.Action.REPEAT : null)));
+        keyCallback.invokeKeyCallback(Window.this, key, scancode, modifier, keyAction);
+      }
+    }
+
+    public void handleChar(long window, int codepoint) {
+      if(charCallback != null) {
+        charCallback.invokeCharCallback(Window.this, (char) codepoint);
+      }
+    }
+
+    private void handleFramebufferSize(long window, int width, int height) {
+      if(framebufferSizeCallback != null) {
+        framebufferSizeCallback.invokeFramebufferSizeCallback(Window.this, width, height);
+      }
+    }
+
+    private void handleFileDrop(long window, int count, long names) {
+      if(fileDropCallback != null) {
+        List<File> files = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+          String filename = GLFWDropCallback.getName(names, i);
+          File file = new File(filename);
+          if(file.exists()) {
+            files.add(file);
+          }
+        }
+        if(files.size() >= 1) {
+          fileDropCallback.invokeFileDropCallback(Window.this, files.toArray(new File[0]));
+        }
+      }
+    }
+
+    public void hideCursor() {
+      GLFW.glfwSetInputMode(identifier, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
+    }
+
+    public void disableCursor() {
+      GLFW.glfwSetInputMode(identifier, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+    }
+
+    public void showCursor() {
+      GLFW.glfwSetInputMode(identifier, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+      GLFW.glfwSetCursorPos(identifier, Window.this.resolution().x / 2f, Window.this.resolution().y / 2f);
+    }
+
+    public String getClipboard() {
+      String clipboard = GLFW.glfwGetClipboardString(identifier);
+      return Objects.requireNonNullElse(clipboard, "");
+    }
+
+    public void setClipboard(String text) {
+      GLFW.glfwSetClipboardString(identifier, text);
+    }
+
+    public void setMouseButtonCallback(MouseButtonCallback mouseButtonCallback) {
+      this.mouseButtonCallback = mouseButtonCallback;
+    }
+
+    public void setKeyCallback(KeyCallback keyCallback) {
+      this.keyCallback = keyCallback;
+    }
+
+    public void setCharCallback(CharCallback charCallback) {
+      this.charCallback = charCallback;
+    }
+
+    public void setFramebufferSizeCallback(FramebufferSizeCallback framebufferSizeCallback) {
+      this.framebufferSizeCallback = framebufferSizeCallback;
+    }
+
+    public void setFileDropCallback(FileDropCallback fileDropCallback) {
+      this.fileDropCallback = fileDropCallback;
+    }
+
+    public Vector2f mousePosition() {
+      return mousePosition;
+    }
+
+    public boolean mouseButtonPressed(int button) {
+      return mouseButtons[button];
+    }
+
+    public boolean keyPressed(int key) {
+      return keyboardButtons[key];
+    }
   }
 
   public static class Monitor {
 
     public static final Monitor DEFAULT = new Monitor(GLFW.glfwGetPrimaryMonitor());
 
-    private static final List<Monitor> availableMonitors = new ArrayList<>();
+    private static final List<Monitor> AVAILABLE_MONITORS = new ArrayList<>();
 
     private long address;
 
@@ -237,16 +387,16 @@ public class Window {
     }
 
     public static List<Monitor> availableMonitors() {
-      availableMonitors.clear();
+      AVAILABLE_MONITORS.clear();
       PointerBuffer monitorPointerBuffer = GLFW.glfwGetMonitors();
       if (monitorPointerBuffer == null)
         throw new IllegalStateException(new NullPointerException());
       long[] monitorPointer = new long[monitorPointerBuffer.remaining()];
       monitorPointerBuffer.get(monitorPointer);
       for (long monitorAddress : monitorPointer) {
-        availableMonitors.add(new Monitor(monitorAddress));
+        AVAILABLE_MONITORS.add(new Monitor(monitorAddress));
       }
-      return availableMonitors;
+      return AVAILABLE_MONITORS;
     }
 
     public String name() {

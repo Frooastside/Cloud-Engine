@@ -1,17 +1,19 @@
 package net.frooastside.engine.shader;
 
+import net.frooastside.engine.graphicobjects.RenderObject;
 import net.frooastside.engine.shader.uniforms.Uniform;
 import org.lwjgl.opengl.GL20;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ShaderProgram {
+public abstract class ShaderProgram extends RenderObject {
 
   private int identifier;
 
   private final List<Shader> shaders = new ArrayList<>();
 
+  @Override
   public void initialize() {
     this.identifier = GL20.glCreateProgram();
     addShaders();
@@ -74,6 +76,7 @@ public abstract class ShaderProgram {
     GL20.glUseProgram(0);
   }
 
+  @Override
   public void delete() {
     GL20.glDeleteProgram(identifier);
   }

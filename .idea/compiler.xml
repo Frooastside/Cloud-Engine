@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Cloud-Engine" />
         <module name="Authentication-System" />
+        <module name="Forest-Adventure" />
         <module name="Authentication-Library" />
       </profile>
     </annotationProcessing>
