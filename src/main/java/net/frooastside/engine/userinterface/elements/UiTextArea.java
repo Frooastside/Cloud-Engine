@@ -13,7 +13,7 @@ public class UiTextArea extends UiText {
   }
 
   @Override
-  public void updateModel() {
+  public void onRecalculation() {
     float maxLineLength = constraints().bounds().z;
     float rawHeight = bounds().w;
 

@@ -1,14 +1,19 @@
 package net.frooastside.engine.userinterface;
 
+import org.joml.Vector2f;
+
 public abstract class UiRenderElement extends UiElement {
 
   private UiColor color;
   private float visibility = 1.0f;
 
   @Override
-  public UiRenderElement[] renderElements() {
-    return new UiRenderElement[]{this};
+  public void recalculate(Vector2f pixelSize) {
+    super.recalculate(pixelSize);
+    onRecalculation();
   }
+
+  public void onRecalculation() {}
 
   public abstract RenderType renderType();
 

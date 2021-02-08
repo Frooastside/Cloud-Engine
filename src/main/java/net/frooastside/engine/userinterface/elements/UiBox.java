@@ -1,9 +1,7 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.userinterface.UiColor;
-import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.UiRenderElement;
 
 public class UiBox extends UiRenderElement {
@@ -22,21 +20,6 @@ public class UiBox extends UiRenderElement {
   }
 
   @Override
-  public void onLoseContact() {
-    //TODO
-  }
-
-  @Override
-  public void update() {
-
-  }
-
-  @Override
-  public void onContact() {
-    //TODO
-  }
-
-  @Override
   public RenderType renderType() {
     return RenderType.BOX;
   }
@@ -47,20 +30,5 @@ public class UiBox extends UiRenderElement {
 
   public Texture texture() {
     return texture;
-  }
-
-  @Override
-  public void invokeCharCallback(Window window, char codepoint) {
-
-  }
-
-  @Override
-  public void invokeKeyCallback(Window window, int key, int scancode, Modifier modifier, Action buttonState) {
-
-  }
-
-  @Override
-  public void invokeMouseButtonCallback(Window window, int key, boolean pressed) {
-
   }
 }

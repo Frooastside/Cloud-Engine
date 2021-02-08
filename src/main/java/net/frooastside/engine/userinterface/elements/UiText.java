@@ -1,6 +1,5 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarget;
@@ -10,8 +9,6 @@ import net.frooastside.engine.resource.BufferUtils;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.UiColor;
 import net.frooastside.engine.userinterface.UiRenderElement;
-import org.joml.Vector2f;
-import org.lwjgl.glfw.GLFW;
 
 public class UiText extends UiRenderElement {
 
@@ -33,46 +30,8 @@ public class UiText extends UiRenderElement {
   }
 
   @Override
-  public void invokeCharCallback(Window window, char codepoint) {
-    if(highlightedElement() == this) {
-      System.out.println(this + ": " + codepoint);
-    }
-  }
-
-  @Override
-  public void invokeKeyCallback(Window window, int key, int scancode, Modifier modifier, Action buttonState) {
-
-  }
-
-  @Override
-  public void onLoseContact() {
-    //TODO
-  }
-
-  @Override
-  public void onContact() {
-    //TODO
-  }
-
-  @Override
-  public void invokeMouseButtonCallback(Window window, int key, boolean pressed) {
-    if(invisibleSelected() && key == GLFW.GLFW_MOUSE_BUTTON_LEFT && pressed) {
-      setHighlighted(this);
-    }
-  }
-
-  @Override
-  public void onRecalculation(Vector2f pixelSize) {
-    this.aspectRatio = pixelSize.y / pixelSize.x;
-    updateModel();
-  }
-
-  @Override
-  public void update() {
-
-  }
-
-  public void updateModel() {
+  public void onRecalculation() {
+    this.aspectRatio = pixelSize().y / pixelSize().x;
     float maxLineLength = bounds().z;
     float rawHeight = bounds().w;
 
@@ -200,6 +159,6 @@ public class UiText extends UiRenderElement {
 
   public void setText(String text) {
     this.text = text;
-    updateModel();
+    recalculate(pixelSize());
   }
 }

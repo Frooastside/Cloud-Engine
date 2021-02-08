@@ -1,4 +1,8 @@
 package net.frooastside.engine.userinterface;
 
-public class UiClickableElement extends UiElement {
+public interface UiClickableElement {
+
+  default void rallih() {
+
+  }
 }
