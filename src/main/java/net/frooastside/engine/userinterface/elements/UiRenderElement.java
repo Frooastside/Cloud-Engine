@@ -1,5 +1,6 @@
-package net.frooastside.engine.userinterface;
+package net.frooastside.engine.userinterface.elements;
 
+import net.frooastside.engine.userinterface.UiColor;
 import org.joml.Vector2f;
 
 public abstract class UiRenderElement extends UiElement {

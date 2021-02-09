@@ -1,8 +1,8 @@
-package net.frooastside.engine.userinterface.elements;
+package net.frooastside.engine.userinterface.elements.render;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.userinterface.UiColor;
-import net.frooastside.engine.userinterface.UiRenderElement;
+import net.frooastside.engine.userinterface.elements.UiRenderElement;
 
 public class UiBox extends UiRenderElement {
 

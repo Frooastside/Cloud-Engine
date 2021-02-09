@@ -6,10 +6,10 @@ import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarg
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsage;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.BufferUtils;
-import net.frooastside.engine.userinterface.UiRenderElement;
+import net.frooastside.engine.userinterface.elements.UiRenderElement;
 import net.frooastside.engine.userinterface.UiScreen;
-import net.frooastside.engine.userinterface.elements.UiBox;
-import net.frooastside.engine.userinterface.elements.UiText;
+import net.frooastside.engine.userinterface.elements.render.UiBox;
+import net.frooastside.engine.userinterface.elements.render.UiText;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;

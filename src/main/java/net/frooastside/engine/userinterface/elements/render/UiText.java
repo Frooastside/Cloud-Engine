@@ -1,4 +1,4 @@
-package net.frooastside.engine.userinterface.elements;
+package net.frooastside.engine.userinterface.elements.render;
 
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
@@ -8,7 +8,7 @@ import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBuff
 import net.frooastside.engine.resource.BufferUtils;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.UiColor;
-import net.frooastside.engine.userinterface.UiRenderElement;
+import net.frooastside.engine.userinterface.elements.UiRenderElement;
 
 public class UiText extends UiRenderElement {
 

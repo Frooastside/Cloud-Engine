@@ -1,5 +1,6 @@
-package net.frooastside.engine.userinterface;
+package net.frooastside.engine.userinterface.elements;
 
+import net.frooastside.engine.userinterface.ElementConstraints;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 

@@ -2,11 +2,12 @@ package net.frooastside.engine.userinterface;
 
 import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.userinterface.elements.*;
 import org.joml.Vector2f;
 
 import java.util.*;
 
-public abstract class UiScreen extends UiElement {
+public class UiScreen extends UiContainerElement implements ClickEvent.Listener, SelectionEvent.Listener {
 
   private static final ElementConstraints DEFAULT_ELEMENT_CONSTRAINTS = ElementConstraints.getDefault();
 
@@ -63,42 +64,6 @@ public abstract class UiScreen extends UiElement {
         List<UiRenderElement> elements = new ArrayList<>();
         elements.add(renderElement);
         renderElements.put(renderElement.renderType(), elements);
-      }
-    }
-  }
-
-  @Override
-  public void invokeMouseButtonCallback(Window window, int key, boolean pressed) {
-    if(highlightedElement != null) {
-      highlightedElement.invokeMouseButtonCallback(window, key, pressed);
-    }
-    if(highlightedElement != invisibleSelectedElement) {
-      if(invisibleSelectedElement != null) {
-        invisibleSelectedElement.invokeMouseButtonCallback(window, key, pressed);
-      }
-    }
-  }
-
-  @Override
-  public void invokeKeyCallback(Window window, int key, int scancode, Modifier modifier, Action buttonState) {
-    if(highlightedElement != null) {
-      highlightedElement.invokeKeyCallback(window, key, scancode, modifier, buttonState);
-    }
-    if(highlightedElement != invisibleSelectedElement) {
-      if(invisibleSelectedElement != null) {
-        invisibleSelectedElement.invokeKeyCallback(window, key, scancode, modifier, buttonState);
-      }
-    }
-  }
-
-  @Override
-  public void invokeCharCallback(Window window, char codepoint) {
-    if(highlightedElement != null) {
-      highlightedElement.invokeCharCallback(window, codepoint);
-    }
-    if(highlightedElement != invisibleSelectedElement) {
-      if(invisibleSelectedElement != null) {
-        invisibleSelectedElement.invokeCharCallback(window, codepoint);
       }
     }
   }

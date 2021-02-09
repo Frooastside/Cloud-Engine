@@ -1,4 +1,4 @@
-package net.frooastside.engine.userinterface.elements;
+package net.frooastside.engine.userinterface.elements.render;
 
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.UiColor;
