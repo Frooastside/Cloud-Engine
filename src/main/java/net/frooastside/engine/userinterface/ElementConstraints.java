@@ -84,12 +84,11 @@ public class ElementConstraints {
   }
 
   public static ElementConstraints getDefault() {
-    ElementConstraints constraints = new ElementConstraints();
-    constraints.setX(new RelativeConstraint(0));
-    constraints.setY(new RelativeConstraint(0));
-    constraints.setWidth(new RelativeConstraint(1));
-    constraints.setHeight(new RelativeConstraint(1));
-    return constraints;
+    return new ElementConstraints(
+      new RelativeConstraint(0),
+      new RelativeConstraint(0),
+      new RelativeConstraint(1),
+      new RelativeConstraint(1));
   }
 
   public ElementConstraints parent() {

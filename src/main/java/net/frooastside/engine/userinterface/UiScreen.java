@@ -1,92 +1,113 @@
 package net.frooastside.engine.userinterface;
 
 import net.frooastside.engine.glfw.Window;
+import net.frooastside.engine.glfw.callbacks.CharCallback;
+import net.frooastside.engine.glfw.callbacks.KeyCallback;
+import net.frooastside.engine.glfw.callbacks.MouseButtonCallback;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.elements.*;
 import org.joml.Vector2f;
 
 import java.util.*;
 
-public class UiScreen extends UiContainerElement implements ClickEvent.Listener, SelectionEvent.Listener {
+public abstract class UiScreen extends UiContainerElement implements UiRootElement, ClickEvent.Listener, MouseButtonCallback, KeyCallback, CharCallback {
 
   private static final ElementConstraints DEFAULT_ELEMENT_CONSTRAINTS = ElementConstraints.getDefault();
 
   private final Window window;
   private final ResourceFont font;
   private final UiColorSet colorSet;
+
   private final Map<UiRenderElement.RenderType, List<UiRenderElement>> renderElements = new HashMap<>();
 
-  private final Vector2f pixelSize = new Vector2f();
-
-  private UiElement invisibleSelectedElement;
-  private UiElement highlightedElement;
+  private UiBasicElement selectedElement;
 
   public UiScreen(Window window, ResourceFont font, UiColorSet colorSet) {
     this.window = window;
     this.font = font;
     this.colorSet = colorSet;
+    setRoot(this);
   }
 
   public abstract void initialize();
 
   public void recalculate() {
-    pixelSize.set(1f / window.resolution().x, 1f / window.resolution().y);
-    children().forEach(child -> child.recalculate(pixelSize));
+    recalculate(pixelSize().set(1f / window.resolution().x, 1f / window.resolution().y));
+  }
+
+  @Override
+  public void recalculate(Vector2f pixelSize) {
+    for(UiElement element : children()) {
+      element.recalculate(pixelSize);
+    }
   }
 
   @Override
   public void update() {
-    Vector2f mousePosition = window.input().mousePosition();
-    UiElement invisibleSelectedElement = checkContact(mousePosition.x * pixelSize.x, mousePosition.y * pixelSize.y);
-    if(invisibleSelectedElement != null) {
-      this.invisibleSelectedElement = invisibleSelectedElement;
+
+  }
+
+  @Override
+  public void invokeCharCallback(Window window, char codepoint) {
+    if(window == this.window && selectedElement != null) {
+      selectedElement.onCharEvent(codepoint);
     }
   }
 
   @Override
-  public void addElement(UiElement child, ElementConstraints constraints) {
-    child.setConstraints(constraints);
-    child.setRoot(this);
-    constraints.setParent(DEFAULT_ELEMENT_CONSTRAINTS);
-    pixelSize.set(1f / window.resolution().x, 1f / window.resolution().y);
-    child.recalculate(pixelSize);
-    addRenderElements(child);
-    children().add(child);
+  public void invokeKeyCallback(Window window, int key, int scancode, Modifier modifier, Action action) {
+    if(window == this.window && selectedElement != null) {
+      selectedElement.onKeyEvent(key, scancode, modifier, action);
+    }
   }
 
   @Override
-  public void addRenderElements(UiElement element) {
-    for (int i = 0; i < element.renderElements().length; i++) {
-      UiRenderElement renderElement = element.renderElements()[i];
-      if (renderElements.containsKey(renderElement.renderType())) {
-        renderElements.get(renderElement.renderType()).add(renderElement);
-      } else {
-        List<UiRenderElement> elements = new ArrayList<>();
-        elements.add(renderElement);
-        renderElements.put(renderElement.renderType(), elements);
+  public void invokeMouseButtonCallback(Window window, int key, boolean pressed) {
+    if(window == this.window) {
+      Vector2f mousePosition = window.input().mousePosition();
+      onClick(new ClickEvent(key, true, pressed, mousePosition.x, mousePosition.y));
+    }
+  }
+
+  public void emulateClick(int key, boolean pressed, float x, float y) {
+    onClick(new ClickEvent(key, true, pressed, x, y));
+  }
+
+  @Override
+  public boolean onClick(ClickEvent event) {
+    UiElement selectedElement = click(event);
+    if(this.selectedElement != selectedElement) {
+      if(this.selectedElement.selectable()) {
+        ((SelectionEvent.Listener) this.selectedElement).onSelection(new SelectionEvent(false));
+      }
+      if(selectedElement instanceof UiBasicElement) {
+        if(((UiBasicElement) selectedElement).selectable()) {
+          ((SelectionEvent.Listener) selectedElement).onSelection(new SelectionEvent(true));
+        }
+        this.selectedElement = (UiBasicElement) selectedElement;
       }
     }
+    return selectedElement != null;
   }
 
   @Override
-  public UiElement checkContact(float x, float y) {
-    recalculate();
-    if(!children().isEmpty()) {
-      for(UiElement child : children()) {
-        UiElement selectedItem = child.checkContact(x, y);
-        if(selectedItem != null) {
-          return selectedItem;
+  public void addLeafElement(UiElement element) {
+    if(element instanceof UiBasicElement) {
+      UiBasicElement basicElement = (UiBasicElement) element;
+      UiRenderElement[] renderElements = basicElement.renderElements();
+      for (UiRenderElement renderElement : renderElements) {
+        if(renderElement != null) {
+          if (this.renderElements.containsKey(renderElement.renderType())) {
+            this.renderElements.get(renderElement.renderType()).add(renderElement);
+          } else {
+            List<UiRenderElement> elements = new ArrayList<>();
+            elements.add(renderElement);
+            this.renderElements.put(renderElement.renderType(), elements);
+          }
         }
       }
     }
-    return null;
   }
-
-  @Override
-  public void onContact() {}
-
-  @Override
-  public void onLoseContact() {}
 
   @Override
   public UiRenderElement[] renderElements() {
@@ -94,13 +115,8 @@ public class UiScreen extends UiContainerElement implements ClickEvent.Listener,
   }
 
   @Override
-  public UiElement highlightedElement() {
-    return highlightedElement;
-  }
-
-  @Override
-  public void setHighlighted(UiElement element) {
-    this.highlightedElement = element;
+  public ElementConstraints constraints() {
+    return DEFAULT_ELEMENT_CONSTRAINTS;
   }
 
   public ResourceFont font() {

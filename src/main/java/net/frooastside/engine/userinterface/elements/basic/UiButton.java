@@ -8,8 +8,10 @@ import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
 import net.frooastside.engine.userinterface.elements.UiBasicElement;
 import net.frooastside.engine.userinterface.elements.UiRenderElement;
+import net.frooastside.engine.userinterface.elements.render.UiBox;
 import net.frooastside.engine.userinterface.elements.render.UiText;
 import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
 
 public class UiButton extends UiBasicElement implements ClickEvent.Listener {
 
@@ -21,6 +23,8 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
   private final boolean constantTextSize;
 
   private String text;
+
+  private boolean wasClicked;
 
   public UiButton(UiColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
     this.font = font;
@@ -41,24 +45,40 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
   }
 
   public void initialize() {
-    ElementConstraints backgroundConstraints = new ElementConstraints();
+    ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
+    backgroundConstraints.setParent(constraints());
+    UiBox background = new UiBox(colorSet.element());
+    background.setConstraints(backgroundConstraints);
+    renderElements[0] = background;
 
-    ElementConstraints elementConstraints = new ElementConstraints();
-    elementConstraints.setParent(constraints());
-    elementConstraints.setX(new RelativeConstraint(0));
-    elementConstraints.setY(new RelativeConstraint(0.5f));
-    elementConstraints.setWidth(new RelativeConstraint(1));
-    elementConstraints.setHeight(constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
-    renderElements[1] = new UiText(font, text, colorSet.text(), true);
+    ElementConstraints textConstraints = new ElementConstraints();
+    textConstraints.setParent(constraints());
+    textConstraints.setX(new RelativeConstraint(0));
+    textConstraints.setY(new RelativeConstraint(0.5f));
+    textConstraints.setWidth(new RelativeConstraint(1));
+    textConstraints.setHeight(constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
+    UiText text = new UiText(font, this.text, colorSet.text(), true);
+    text.setConstraints(textConstraints);
+    renderElements[1] = text;
   }
 
   @Override
-  public void onClick(ClickEvent event) {
-    if(event.inside()) {
-      if(hasClickListener()) {
-        clickListener().onClick(event);
+  public boolean onClick(ClickEvent event) {
+    if(event.inside() && hasClickListener() && event.key() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+      if(event.pressed()) {
+        wasClicked = true;
+      }else {
+        if(wasClicked) {
+          if(hasClickListener()) {
+            clickListener().onClick(event);
+          }
+          wasClicked = false;
+        }
       }
+    }else {
+      wasClicked = false;
     }
+    return false;
   }
 
   @Override

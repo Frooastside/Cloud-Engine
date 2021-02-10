@@ -17,7 +17,7 @@ public class ClickEvent {
 
   public interface Listener {
 
-    void onClick(ClickEvent event);
+    boolean onClick(ClickEvent event);
 
   }
 

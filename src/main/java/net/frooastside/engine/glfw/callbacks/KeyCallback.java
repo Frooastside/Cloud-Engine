@@ -4,7 +4,7 @@ import net.frooastside.engine.glfw.Window;
 
 public interface KeyCallback {
 
-  void invokeKeyCallback(Window window, int key, int scancode, Modifier modifier, Action buttonState);
+  void invokeKeyCallback(Window window, int key, int scancode, Modifier modifier, Action action);
 
   enum Modifier {
 

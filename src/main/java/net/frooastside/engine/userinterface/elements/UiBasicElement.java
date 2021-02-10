@@ -3,13 +3,22 @@ package net.frooastside.engine.userinterface.elements;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.userinterface.ClickEvent;
 import net.frooastside.engine.userinterface.SelectionEvent;
+import org.joml.Vector2f;
 
 public abstract class UiBasicElement extends UiElement {
 
   private ClickEvent.Listener clickListener;
   private SelectionEvent.Listener selectionListener;
 
-  public void onKeyEvent(int key, int scancode, KeyCallback.Modifier modifier, KeyCallback.Action buttonState) {}
+  @Override
+  public void recalculate(Vector2f pixelSize) {
+    super.recalculate(pixelSize);
+    for(UiRenderElement renderElement : renderElements()) {
+      renderElement.recalculate(pixelSize);
+    }
+  }
+
+  public void onKeyEvent(int key, int scancode, KeyCallback.Modifier modifier, KeyCallback.Action action) {}
 
   public void onCharEvent(int codepoint) {}
 

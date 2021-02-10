@@ -15,6 +15,8 @@ public abstract class UiElement {
     constraints.recalculate(this.pixelSize);
   }
 
+  public void update() {}
+
   public boolean isPixelInside(float x, float y) {
     float rawX = x * pixelSize.x;
     float rawY = y * pixelSize.y;
