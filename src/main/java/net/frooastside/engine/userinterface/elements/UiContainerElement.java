@@ -33,6 +33,8 @@ public abstract class UiContainerElement extends UiBasicElement {
                   return element;
                 }
               }
+            }else if(basicElement.selectable()) {
+              return basicElement;
             }
           }
         }else {
@@ -65,9 +67,10 @@ public abstract class UiContainerElement extends UiBasicElement {
   public void addElement(UiElement element) {
     children.add(element);
     element.constraints().setParent(constraints());
+    element.initialize();
     element.recalculate(pixelSize());
-    if(children instanceof UiContainerElement) {
-      ((UiContainerElement) children).setRoot(root);
+    if(element instanceof UiContainerElement) {
+      ((UiContainerElement) element).setRoot(root);
     }
     if(root != null) {
       root.addLeafElement(element);

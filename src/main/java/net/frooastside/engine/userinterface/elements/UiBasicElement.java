@@ -18,7 +18,7 @@ public abstract class UiBasicElement extends UiElement {
     }
   }
 
-  public void onKeyEvent(int key, int scancode, KeyCallback.Modifier modifier, KeyCallback.Action action) {}
+  public void onKeyEvent(int key, int scancode, int modifiers, KeyCallback.Action action) {}
 
   public void onCharEvent(int codepoint) {}
 

@@ -10,7 +10,7 @@ public class SelectionEvent {
 
   public interface Listener {
 
-    boolean onSelection(SelectionEvent event);
+    void onSelection(SelectionEvent event);
 
   }
 

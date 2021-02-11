@@ -55,9 +55,9 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
   }
 
   @Override
-  public void invokeKeyCallback(Window window, int key, int scancode, Modifier modifier, Action action) {
+  public void invokeKeyCallback(Window window, int key, int scancode, int modifiers, Action action) {
     if(window == this.window && selectedElement != null) {
-      selectedElement.onKeyEvent(key, scancode, modifier, action);
+      selectedElement.onKeyEvent(key, scancode, modifiers, action);
     }
   }
 
@@ -77,7 +77,7 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
   public boolean onClick(ClickEvent event) {
     UiElement selectedElement = click(event);
     if(this.selectedElement != selectedElement) {
-      if(this.selectedElement.selectable()) {
+      if(this.selectedElement != null && this.selectedElement.selectable()) {
         ((SelectionEvent.Listener) this.selectedElement).onSelection(new SelectionEvent(false));
       }
       if(selectedElement instanceof UiBasicElement) {

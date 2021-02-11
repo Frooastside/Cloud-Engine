@@ -6,6 +6,9 @@ import net.frooastside.engine.userinterface.ElementConstraints;
 import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.constraints.CenterConstraint;
 import net.frooastside.engine.userinterface.constraints.PixelConstraint;
+import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
+import net.frooastside.engine.userinterface.elements.basic.UiButton;
+import net.frooastside.engine.userinterface.elements.basic.UiTextField;
 import net.frooastside.engine.userinterface.elements.container.UiPanel;
 import net.frooastside.engine.userinterface.UiScreen;
 
@@ -26,8 +29,17 @@ public class UiScreenTest extends UiScreen {
     //ElementConstraints panelConstraints = ElementConstraints.getDefault();
     UiPanel panel = new UiPanel(colorSet());
     panel.setConstraints(panelConstraints);
-    panel.initialize();
     addElement(panel);
+
+    ElementConstraints buttonConstraints = new ElementConstraints(
+      new CenterConstraint(),
+      new CenterConstraint(),
+      new RelativeConstraint(0.5f),
+      new RelativeConstraint(0.125f));
+    UiTextField textField = new UiTextField(colorSet(), font(), "Knöpfe", 20, false);
+    textField.setConstraints(buttonConstraints);
+    panel.addElement(textField);
+
     /*ElementConstraints titleConstraints = new ElementConstraints(
       new RelativeConstraint(0.0f),
       new RelativeConstraint(0.04f),
@@ -45,15 +57,6 @@ public class UiScreenTest extends UiScreen {
     UiBox background = new UiBox(colorSet().background());
     background.setConstraints(backgroundConstraints);
     addElement(background);
-
-    ElementConstraints buttonConstraints = new ElementConstraints(
-      new CenterConstraint(),
-      new CenterConstraint(),
-      new RelativeConstraint(0.5f),
-      new RelativeConstraint(0.125f));
-    UiBox button = new UiBox(colorSet().element());
-    button.setConstraints(buttonConstraints);
-    background.addElement(button);
 
     ElementConstraints labelConstraints = new ElementConstraints(
       new RelativeConstraint(0.0f),

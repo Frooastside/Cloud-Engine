@@ -27,10 +27,10 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
   private boolean wasClicked;
 
   public UiButton(UiColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
+    this.colorSet = colorSet;
     this.font = font;
     this.text = text;
     this.textSize = textSize;
-    this.colorSet = colorSet;
     this.constantTextSize = constantTextSize;
   }
 
@@ -44,6 +44,7 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
     }
   }
 
+  @Override
   public void initialize() {
     ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
     backgroundConstraints.setParent(constraints());

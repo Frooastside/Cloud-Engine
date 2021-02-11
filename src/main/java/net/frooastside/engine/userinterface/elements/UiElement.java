@@ -17,6 +17,8 @@ public abstract class UiElement {
 
   public void update() {}
 
+  public void initialize() {}
+
   public boolean isPixelInside(float x, float y) {
     float rawX = x * pixelSize.x;
     float rawY = y * pixelSize.y;
