@@ -9,7 +9,8 @@ public class RawConstraint extends Constraint {
   }
 
   @Override
-  public void recalculate() {}
+  public void recalculate() {
+  }
 
   @Override
   public boolean relative() {

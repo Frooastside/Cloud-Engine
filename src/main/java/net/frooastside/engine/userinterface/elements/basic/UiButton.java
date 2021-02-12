@@ -37,7 +37,7 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
   @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
-    for(UiRenderElement renderElement : renderElements) {
+    for (UiRenderElement renderElement : renderElements) {
       if (renderElement != null) {
         renderElement.recalculate(pixelSize);
       }
@@ -65,18 +65,18 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
 
   @Override
   public boolean onClick(ClickEvent event) {
-    if(event.inside() && hasClickListener() && event.key() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-      if(event.pressed()) {
+    if (event.inside() && hasClickListener() && event.key() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+      if (event.pressed()) {
         wasClicked = true;
-      }else {
-        if(wasClicked) {
-          if(hasClickListener()) {
+      } else {
+        if (wasClicked) {
+          if (hasClickListener()) {
             clickListener().onClick(event);
           }
           wasClicked = false;
         }
       }
-    }else {
+    } else {
       wasClicked = false;
     }
     return false;

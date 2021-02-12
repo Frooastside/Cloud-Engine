@@ -39,16 +39,16 @@ public class Controller {
 
   public static void initialize() {
     GLFW.glfwSetJoystickCallback((jid, event) -> {
-      if(event == GLFW.GLFW_CONNECTED) {
-        if(!AVAILABLE_CONTROLLERS.containsKey(jid)) {
+      if (event == GLFW.GLFW_CONNECTED) {
+        if (!AVAILABLE_CONTROLLERS.containsKey(jid)) {
           Controller controller = new Controller(jid);
-          if(controller.isGamePad()) {
+          if (controller.isGamePad()) {
             AVAILABLE_GAME_PADS.put(jid, controller);
           }
           AVAILABLE_CONTROLLERS.put(jid, controller);
           CONNECTION_CALLBACKS.forEach(callback -> callback.invokeConnectionCallback(controller, true));
         }
-      }else {
+      } else {
         Controller controller = AVAILABLE_CONTROLLERS.remove(jid);
         AVAILABLE_GAME_PADS.remove(jid);
         CONNECTION_CALLBACKS.forEach(callback -> callback.invokeConnectionCallback(controller, false));
@@ -56,9 +56,9 @@ public class Controller {
 
     });
     for (int i = 0; i <= GLFW.GLFW_JOYSTICK_LAST; i++) {
-      if(GLFW.glfwJoystickPresent(i)) {
+      if (GLFW.glfwJoystickPresent(i)) {
         Controller controller = new Controller(i);
-        if(controller.isGamePad()) {
+        if (controller.isGamePad()) {
           AVAILABLE_GAME_PADS.put(i, controller);
         }
         AVAILABLE_CONTROLLERS.put(i, controller);
@@ -69,19 +69,19 @@ public class Controller {
   public void update() {
     inputChanged = false;
     boolean state = GLFW.glfwGetGamepadState(identifier, gamePadState);
-    if(state) {
+    if (state) {
       updateButtons();
       updateAxes();
     }
   }
 
   private void updateButtons() {
-    for(int i = 0; i <= GLFW.GLFW_GAMEPAD_BUTTON_LAST; i++) {
+    for (int i = 0; i <= GLFW.GLFW_GAMEPAD_BUTTON_LAST; i++) {
       boolean pressed = gamePadState.buttons(i) == GLFW.GLFW_PRESS;
-      if(gamePadButtons[i] != pressed) {
+      if (gamePadButtons[i] != pressed) {
         gamePadButtons[i] = pressed;
         inputChanged = true;
-        if(joystickButtonCallback != null) {
+        if (joystickButtonCallback != null) {
           joystickButtonCallback.invokeButtonCallback(this, i, pressed);
         }
       }
@@ -96,40 +96,40 @@ public class Controller {
     float leftTrigger = gamePadState.axes(GLFW.GLFW_GAMEPAD_AXIS_LEFT_TRIGGER);
     float rightTrigger = gamePadState.axes(GLFW.GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER);
 
-    if(leftX >= deadZone || leftX <= -deadZone) {
+    if (leftX >= deadZone || leftX <= -deadZone) {
       inputChanged = true;
       leftAxis.x = leftX;
-    }else {
+    } else {
       leftAxis.x = 0;
     }
-    if(leftY >= deadZone || leftY <= -deadZone) {
+    if (leftY >= deadZone || leftY <= -deadZone) {
       inputChanged = true;
       leftAxis.y = leftY;
-    }else {
+    } else {
       leftAxis.y = 0;
     }
-    if(rightX >= deadZone || rightX <= -deadZone) {
+    if (rightX >= deadZone || rightX <= -deadZone) {
       inputChanged = true;
       rightAxis.x = rightX;
-    }else {
+    } else {
       rightAxis.x = 0;
     }
-    if(rightY >= deadZone || rightY <= -deadZone) {
+    if (rightY >= deadZone || rightY <= -deadZone) {
       inputChanged = true;
       rightAxis.y = rightY;
-    }else {
+    } else {
       rightAxis.y = 0;
     }
-    if(leftTrigger >= deadZone) {
+    if (leftTrigger >= deadZone) {
       inputChanged = true;
       this.leftTrigger = leftTrigger;
-    }else {
+    } else {
       this.leftTrigger = 0;
     }
-    if(rightTrigger >= deadZone) {
+    if (rightTrigger >= deadZone) {
       inputChanged = true;
       this.rightTrigger = rightTrigger;
-    }else {
+    } else {
       this.rightTrigger = 0;
     }
   }

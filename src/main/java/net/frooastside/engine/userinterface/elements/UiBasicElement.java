@@ -13,14 +13,16 @@ public abstract class UiBasicElement extends UiElement {
   @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
-    for(UiRenderElement renderElement : renderElements()) {
+    for (UiRenderElement renderElement : renderElements()) {
       renderElement.recalculate(pixelSize);
     }
   }
 
-  public void onKeyEvent(int key, int scancode, int modifiers, KeyCallback.Action action) {}
+  public void onKeyEvent(int key, int scancode, int modifiers, KeyCallback.Action action) {
+  }
 
-  public void onCharEvent(int codepoint) {}
+  public void onCharEvent(int codepoint) {
+  }
 
   public abstract UiRenderElement[] renderElements();
 

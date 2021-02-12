@@ -37,7 +37,7 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
 
   @Override
   public void recalculate(Vector2f pixelSize) {
-    for(UiElement element : children()) {
+    for (UiElement element : children()) {
       element.recalculate(pixelSize);
     }
   }
@@ -49,21 +49,21 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
 
   @Override
   public void invokeCharCallback(Window window, char codepoint) {
-    if(window == this.window && selectedElement != null) {
+    if (window == this.window && selectedElement != null) {
       selectedElement.onCharEvent(codepoint);
     }
   }
 
   @Override
   public void invokeKeyCallback(Window window, int key, int scancode, int modifiers, Action action) {
-    if(window == this.window && selectedElement != null) {
+    if (window == this.window && selectedElement != null) {
       selectedElement.onKeyEvent(key, scancode, modifiers, action);
     }
   }
 
   @Override
   public void invokeMouseButtonCallback(Window window, int key, boolean pressed) {
-    if(window == this.window) {
+    if (window == this.window) {
       Vector2f mousePosition = window.input().mousePosition();
       onClick(new ClickEvent(key, true, pressed, mousePosition.x, mousePosition.y));
     }
@@ -76,12 +76,12 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
   @Override
   public boolean onClick(ClickEvent event) {
     UiElement selectedElement = click(event);
-    if(this.selectedElement != selectedElement) {
-      if(this.selectedElement != null && this.selectedElement.selectable()) {
+    if (this.selectedElement != selectedElement) {
+      if (this.selectedElement != null && this.selectedElement.selectable()) {
         ((SelectionEvent.Listener) this.selectedElement).onSelection(new SelectionEvent(false));
       }
-      if(selectedElement instanceof UiBasicElement) {
-        if(((UiBasicElement) selectedElement).selectable()) {
+      if (selectedElement instanceof UiBasicElement) {
+        if (((UiBasicElement) selectedElement).selectable()) {
           ((SelectionEvent.Listener) selectedElement).onSelection(new SelectionEvent(true));
         }
         this.selectedElement = (UiBasicElement) selectedElement;
@@ -92,11 +92,11 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
 
   @Override
   public void addLeafElement(UiElement element) {
-    if(element instanceof UiBasicElement) {
+    if (element instanceof UiBasicElement) {
       UiBasicElement basicElement = (UiBasicElement) element;
       UiRenderElement[] renderElements = basicElement.renderElements();
       for (UiRenderElement renderElement : renderElements) {
-        if(renderElement != null) {
+        if (renderElement != null) {
           if (this.renderElements.containsKey(renderElement.renderType())) {
             this.renderElements.get(renderElement.renderType()).add(renderElement);
           } else {

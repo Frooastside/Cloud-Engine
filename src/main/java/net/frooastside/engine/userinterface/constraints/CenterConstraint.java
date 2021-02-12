@@ -8,15 +8,15 @@ public class CenterConstraint extends Constraint {
   @Override
   public void recalculate() {
     Constraint oppositeConstraint = getOpposite();
-    if(!(oppositeConstraint instanceof CenterConstraint)) {
+    if (!(oppositeConstraint instanceof CenterConstraint)) {
       oppositeConstraint.recalculate();
-      if(type() == ConstraintType.X || type() == ConstraintType.Y) {
+      if (type() == ConstraintType.X || type() == ConstraintType.Y) {
         setRawValue((type() == ConstraintType.X ? constraints().parent().bounds().z - oppositeConstraint.rawValue() : constraints().parent().bounds().w - oppositeConstraint.rawValue()) / 2);
-      }else if(type() == ConstraintType.WIDTH || type() == ConstraintType.HEIGHT) {
+      } else if (type() == ConstraintType.WIDTH || type() == ConstraintType.HEIGHT) {
         float offset = oppositeConstraint.rawValue() - (type() == ConstraintType.WIDTH ? constraints().parent().bounds().x : constraints().parent().bounds().y);
         setRawValue(((type() == ConstraintType.WIDTH) ? constraints().parent().bounds().z : constraints().parent().bounds().w) - (offset * 2));
       }
-    }else {
+    } else {
       throw new IllegalStateException(I18n.get("error.userinterface.center"));
     }
   }

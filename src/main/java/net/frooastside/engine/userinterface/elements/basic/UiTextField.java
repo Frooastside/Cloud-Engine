@@ -32,100 +32,17 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
     this.colorSet = colorSet;
     this.font = font;
     this.text = text;
-    this.cursorStart = text.length();
-    this.cursorEnd = text.length();
+    this.selectionStart = text.length();
+    this.selectionEnd = text.length();
+    this.cursor = text.length();
     this.textSize = textSize;
     this.constantTextSize = constantTextSize;
   }
 
   @Override
-  public void onKeyEvent(int key, int scancode, int modifiers, KeyCallback.Action action) {
-    System.out.println("onKeyEvent");
-    if(action != KeyCallback.Action.RELEASE) {
-      System.out.println("!RELEASE");
-      if(key == GLFW.GLFW_KEY_BACKSPACE) {
-        System.out.println("GLFW_KEY_BACKSLASH");
-        if(selectionStart == selectionEnd) {
-          System.out.println("==");
-          if(cursor > 0 && text.length() >= cursor) {
-            System.out.println("> 0 && length >= cursorEnd");
-            text = text.substring(0, cursor - 1) + text.substring(cursor);
-            reloadText();
-            cursor--;
-          }
-        }
-      }else if(key == GLFW.GLFW_KEY_DELETE) {
-        System.out.println("GLFW_KEY_DELETE");
-        if(selectionStart == selectionEnd) {
-          System.out.println("==");
-          if(cursor < text.length()) {
-            System.out.println("cursorStart < length");
-            text = text.substring(0, cursor) + text.substring(cursor + 1);
-            reloadText();
-          }
-        }else {
-          text = textWithoutSelection();
-          if(cursor == selectionEnd) {
-            cursor = selectionStart;
-          }
-          reloadText();
-          resetSelection();
-        }
-      }else if(key == GLFW.GLFW_KEY_LEFT) {
-        if(KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
-          if(cursor == selectionStart) {
-            if(cursor > 0 && text.length() >= cursor) {
-              cursor--;
-              resetSelection();
-              reloadText();
-            }
-          }else {
-
-          }
-        }else {
-
-        }
-      }else if(key == GLFW.GLFW_KEY_RIGHT) {
-        if(KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
-
-        }else {
-
-        }
-      }
-    }
-  }
-
-  @Override
-  public void onCharEvent(int codepoint) {
-    if(selectionStart == selectionEnd) {
-      this.text = this.text + (char) codepoint;
-      this.cursor++;
-      this.selectionStart = cursor;
-      this.selectionEnd = cursor;
-    }else {
-      this.text = textWithoutSelection();
-    }
-    reloadText();
-  }
-
-  public void reloadText() {
-    ((UiText) renderElements[1]).setText(this.text);
-  }
-
-  private void resetSelection() {
-    selectionStart = cursor;
-    selectionEnd = cursor;
-  }
-
-  @Override
-  public void onSelection(SelectionEvent event) {
-
-  }
-
-  @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
-    for(UiRenderElement renderElement : renderElements) {
+    for (UiRenderElement renderElement : renderElements) {
       if (renderElement != null) {
         renderElement.recalculate(pixelSize);
       }
@@ -152,8 +69,136 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   }
 
   @Override
+  public void onKeyEvent(int key, int scancode, int modifiers, KeyCallback.Action action) {
+    if (action != KeyCallback.Action.RELEASE) {
+      if (key == GLFW.GLFW_KEY_BACKSPACE) {
+        if (selectionStart == selectionEnd) {
+          if (cursor > 0 && text.length() >= cursor) {
+            text = text.substring(0, cursor - 1) + text.substring(cursor);
+            reloadText();
+            cursor--;
+          }
+        } else {
+          text = textWithoutSelection();
+          if (cursor == selectionEnd) {
+            cursor = selectionStart;
+          }
+          reloadText();
+          resetSelection();
+        }
+      } else if (key == GLFW.GLFW_KEY_DELETE) {
+        if (selectionStart == selectionEnd) {
+          if (cursor < text.length()) {
+            text = text.substring(0, cursor) + text.substring(cursor + 1);
+            reloadText();
+          }
+        } else {
+          text = textWithoutSelection();
+          if (cursor == selectionEnd) {
+            cursor = selectionStart;
+          }
+          reloadText();
+          resetSelection();
+        }
+      } else if (key == GLFW.GLFW_KEY_LEFT) {
+        if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
+          if (cursor == selectionStart) {
+            if (cursor > 0 && text.length() >= cursor) {
+              selectionStart--;
+              cursor = selectionStart;
+              reloadText();
+            }
+          } else if (cursor == selectionEnd) {
+            if (cursor > selectionStart) {
+              selectionEnd--;
+              cursor = selectionEnd;
+              reloadText();
+            }
+          }
+        } else {
+          if (selectionStart == selectionEnd) {
+            if (cursor > 0) {
+              cursor--;
+            }
+          }
+          resetSelection();
+          reloadText();
+        }
+      } else if (key == GLFW.GLFW_KEY_RIGHT) {
+        if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
+          if (cursor == selectionEnd) {
+            if (cursor < text.length()) {
+              selectionEnd++;
+              cursor = selectionEnd;
+              reloadText();
+            }
+          } else if (cursor == selectionStart) {
+            if (selectionStart < selectionEnd) {
+              selectionStart++;
+              cursor = selectionStart;
+              reloadText();
+            }
+          }
+        } else {
+          if (selectionStart == selectionEnd) {
+            if (cursor < text.length()) {
+              cursor++;
+            }
+          }
+          resetSelection();
+          reloadText();
+        }
+      }
+    }
+  }
+
+  @Override
+  public void onCharEvent(int codepoint) {
+    if (selectionStart == selectionEnd) {
+      this.text = textBeforeCursor() + (char) codepoint + textAfterCursor();
+      this.cursor++;
+      this.selectionStart = cursor;
+      this.selectionEnd = cursor;
+    } else {
+      this.text = textWithoutSelection();
+    }
+    reloadText();
+  }
+
+  @Override
+  public void onSelection(SelectionEvent event) {
+
+  }
+
+  public void reloadText() {
+    ((UiText) renderElements[1]).setText(this.text);
+  }
+
+  private void resetSelection() {
+    selectionStart = cursor;
+    selectionEnd = cursor;
+  }
+
+  private void deleteSelection() {
+    text = textWithoutSelection();
+    if (cursor == selectionEnd) {
+      cursor = selectionStart;
+    }
+    reloadText();
+    resetSelection();
+  }
+
+  @Override
   public UiRenderElement[] renderElements() {
     return renderElements;
+  }
+
+  private String textBeforeCursor() {
+    return text.substring(0, cursor);
+  }
+
+  private String textAfterCursor() {
+    return text.substring(cursor);
   }
 
   private String textWithoutSelection() {

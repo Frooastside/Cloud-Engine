@@ -120,7 +120,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
 
   @Override
   public Node settingsBox() {
-    if(settingsBox == null) {
+    if (settingsBox == null) {
       settingsBox = new VBox();
     }
     return settingsBox;
@@ -128,7 +128,7 @@ public class ResourceTexture extends Texture implements ResourceItem {
 
   @Override
   public Node informationBox() {
-    if(this.informationBox == null) {
+    if (this.informationBox == null) {
       VBox informationBox = new VBox();
       informationBox.setAlignment(Pos.CENTER);
       informationBox.getChildren().addAll(

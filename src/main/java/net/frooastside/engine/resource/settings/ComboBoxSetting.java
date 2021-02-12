@@ -20,7 +20,7 @@ public class ComboBoxSetting<T> extends Setting {
   public Node create() {
     ComboBox<T> comboBox = new ComboBox<>();
     comboBox.getItems().addAll(values);
-    if(values.contains(defaultValue)) {
+    if (values.contains(defaultValue)) {
       comboBox.setValue(defaultValue);
     }
     return comboBox;

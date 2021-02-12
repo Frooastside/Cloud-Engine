@@ -64,17 +64,17 @@ public class Window {
   }
 
   public void resetViewport() {
-    if(fullscreen) {
+    if (fullscreen) {
       GL11.glViewport(0, 0, fullscreenResolution.x, fullscreenResolution.y);
-    }else {
+    } else {
       GL11.glViewport(0, 0, size.x, size.y);
     }
   }
 
   public void applySizeChanges() {
-    if(fullscreen) {
+    if (fullscreen) {
       GLFW.glfwSetWindowSize(identifier, fullscreenResolution.x, fullscreenResolution.y);
-    }else {
+    } else {
       GLFW.glfwSetWindowSize(identifier, size.x, size.y);
     }
   }
@@ -84,21 +84,21 @@ public class Window {
   }
 
   public void resetVSync() {
-    if(refreshRate == 0) {
+    if (refreshRate == 0) {
       GLFW.glfwSwapInterval(1);
     }
   }
 
   public void resetWindowMode() {
-    if(fullscreen) {
+    if (fullscreen) {
       GLFW.glfwSetWindowMonitor(identifier, monitor.address(), 0, 0, fullscreenResolution.x, fullscreenResolution.y, refreshRate);
-    }else {
+    } else {
       Vector4i workArea = monitor.workArea();
-      if(position.x > workArea.z || position.y > workArea.w) {
+      if (position.x > workArea.z || position.y > workArea.w) {
         position.set(0, 0);
       }
       Vector2i monitorPosition = monitor.virtualPosition();
-      GLFW.glfwSetWindowMonitor(identifier, 0, monitorPosition.x + position.x, monitorPosition.y +  position.y, size.x, size.y, refreshRate);
+      GLFW.glfwSetWindowMonitor(identifier, 0, monitorPosition.x + position.x, monitorPosition.y + position.y, size.x, size.y, refreshRate);
     }
   }
 
@@ -107,7 +107,7 @@ public class Window {
   }
 
   public static Window createWindow(Monitor monitor, String title, boolean visible, boolean fullscreen, float nonFullscreenSize) {
-    if(monitor == null) {
+    if (monitor == null) {
       monitor = Monitor.DEFAULT;
     }
     GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
@@ -117,10 +117,10 @@ public class Window {
     int width = (int) (workAreaWidth * nonFullscreenSize);
     int height = (int) (workAreaHeight * nonFullscreenSize);
     Window window;
-    if(fullscreen) {
+    if (fullscreen) {
       window = new Window(GLFW.glfwCreateWindow(workAreaWidth, workAreaHeight, title, monitor.address, 0));
 
-    }else {
+    } else {
       window = new Window(GLFW.glfwCreateWindow(width, height, title, 0, 0));
     }
     window.monitor = monitor;
@@ -130,7 +130,7 @@ public class Window {
     window.size.set(width, height);
     window.setPosition(workAreaWidth / 2 - width / 2, workAreaHeight / 2 - height / 2);
 
-    if(visible) {
+    if (visible) {
       window.showWindow();
     }
     return window;
@@ -142,25 +142,25 @@ public class Window {
 
   public void setPosition(int x, int y) {
     Vector4i workArea = monitor.workArea();
-    if(x > workArea.z || y > workArea.w) {
+    if (x > workArea.z || y > workArea.w) {
       position.set(0, 0);
-    }else {
+    } else {
       position.set(x, y);
     }
-    if(!fullscreen) {
+    if (!fullscreen) {
       Vector2i monitorPosition = monitor.virtualPosition();
       GLFW.glfwSetWindowPos(identifier, monitorPosition.x + position.x, monitorPosition.y + position.y);
     }
   }
 
   public void setResolution(int x, int y) {
-    if(fullscreen) {
-      if(x != fullscreenResolution.x || y != fullscreenResolution.y) {
+    if (fullscreen) {
+      if (x != fullscreenResolution.x || y != fullscreenResolution.y) {
         fullscreenResolution.set(x, y);
         applySizeChanges();
       }
-    }else {
-      if(x != size.x || y != size.y) {
+    } else {
+      if (x != size.x || y != size.y) {
         size.set(x, y);
         applySizeChanges();
       }
@@ -178,24 +178,24 @@ public class Window {
   }
 
   public void setFullscreen(boolean fullscreen) {
-    if(this.fullscreen != fullscreen) {
+    if (this.fullscreen != fullscreen) {
       this.fullscreen = fullscreen;
       resetWindowMode();
     }
   }
 
   public void setRefreshRate(int refreshRate) {
-    if(fullscreen) {
-      if(refreshRate == 0) {
+    if (fullscreen) {
+      if (refreshRate == 0) {
         resetVSync();
-      }else {
-        if(this.refreshRate != refreshRate) {
+      } else {
+        if (this.refreshRate != refreshRate) {
           this.refreshRate = refreshRate;
           resetWindowMode();
         }
       }
-    }else {
-      if(this.refreshRate != refreshRate) {
+    } else {
+      if (this.refreshRate != refreshRate) {
         this.refreshRate = refreshRate;
         resetVSync();
       }
@@ -265,7 +265,7 @@ public class Window {
         case GLFW.GLFW_PRESS -> mouseButtons[button] = true;
         case GLFW.GLFW_RELEASE -> mouseButtons[button] = false;
       }
-      if(mouseButtonCallback != null) {
+      if (mouseButtonCallback != null) {
         mouseButtonCallback.invokeMouseButtonCallback(Window.this, button, mouseButtons[button]);
       }
     }
@@ -275,7 +275,7 @@ public class Window {
         case GLFW.GLFW_PRESS -> keyboardButtons[key] = true;
         case GLFW.GLFW_RELEASE -> keyboardButtons[key] = false;
       }
-      if(keyCallback != null) {
+      if (keyCallback != null) {
         /*KeyCallback.Modifier modifier =
           (modifiers & GLFW.GLFW_MOD_SHIFT) == GLFW.GLFW_MOD_SHIFT ? KeyCallback.Modifier.SHIFT :
           ((modifiers & GLFW.GLFW_MOD_CONTROL) == GLFW.GLFW_MOD_CONTROL ? KeyCallback.Modifier.CONTROL :
@@ -285,35 +285,35 @@ public class Window {
           ((modifiers & GLFW.GLFW_MOD_NUM_LOCK) == GLFW.GLFW_MOD_NUM_LOCK ? KeyCallback.Modifier.NUM_LOCK : null)))));*/
         KeyCallback.Action keyAction =
           (action == GLFW.GLFW_PRESS ? KeyCallback.Action.PRESS :
-          (action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
-          (action == GLFW.GLFW_REPEAT ? KeyCallback.Action.REPEAT : null)));
+            (action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
+              (action == GLFW.GLFW_REPEAT ? KeyCallback.Action.REPEAT : null)));
         keyCallback.invokeKeyCallback(Window.this, key, scancode, modifiers, keyAction);
       }
     }
 
     public void handleChar(long window, int codepoint) {
-      if(charCallback != null) {
+      if (charCallback != null) {
         charCallback.invokeCharCallback(Window.this, (char) codepoint);
       }
     }
 
     private void handleFramebufferSize(long window, int width, int height) {
-      if(framebufferSizeCallback != null) {
+      if (framebufferSizeCallback != null) {
         framebufferSizeCallback.invokeFramebufferSizeCallback(Window.this, width, height);
       }
     }
 
     private void handleFileDrop(long window, int count, long names) {
-      if(fileDropCallback != null) {
+      if (fileDropCallback != null) {
         List<File> files = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
           String filename = GLFWDropCallback.getName(names, i);
           File file = new File(filename);
-          if(file.exists()) {
+          if (file.exists()) {
             files.add(file);
           }
         }
-        if(files.size() >= 1) {
+        if (files.size() >= 1) {
           fileDropCallback.invokeFileDropCallback(Window.this, files.toArray(new File[0]));
         }
       }

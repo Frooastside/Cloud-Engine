@@ -159,7 +159,7 @@ public class ResourceManager extends Application {
   }
 
   private void resourceContainerItemsClicked(MouseEvent mouseEvent) {
-    if(resourceContainerItems.getSelectionModel().getSelectedItem() != null) {
+    if (resourceContainerItems.getSelectionModel().getSelectedItem() != null) {
       mainBorderPane.setCenter(currentResourceContainer.get(resourceContainerItems.getSelectionModel().getSelectedItem()).informationBox());
     }
   }
@@ -172,14 +172,14 @@ public class ResourceManager extends Application {
     Button editButton = new Button("Edit");
     editButton.setOnMouseClicked(event -> {
       String selectedItem = resourceContainerItems.getSelectionModel().getSelectedItem();
-      if(selectedItem != null) {
+      if (selectedItem != null) {
         createConfigurationStage(selectedItem, currentResourceContainer.get(selectedItem)).show();
       }
     });
     Button removeButton = new Button("Remove");
     removeButton.setOnMouseClicked(event -> {
       String selectedItem = resourceContainerItems.getSelectionModel().getSelectedItem();
-      if(selectedItem != null) {
+      if (selectedItem != null) {
         currentResourceContainer.remove(selectedItem);
         reload();
       }
@@ -218,7 +218,7 @@ public class ResourceManager extends Application {
     Button acceptButton = new Button("Hinzufügen");
     acceptButton.setOnMouseClicked(event -> {
       String nameFieldText = nameField.getText();
-      if(!nameFieldText.isEmpty()) {
+      if (!nameFieldText.isEmpty()) {
         item.recalculate();
         executorService.execute(() -> item.loadUnspecific(executorService));
         currentResourceContainer.remove(key);
@@ -335,7 +335,7 @@ public class ResourceManager extends Application {
   private static FileChooser createResourceContainerFileChooser() {
     FileChooser fileChooser = new FileChooser();
     File engineDirectory = new File(System.getProperty("user.home") + "/Documents/Engine");
-    if(engineDirectory.isDirectory()) {
+    if (engineDirectory.isDirectory()) {
       fileChooser.setInitialDirectory(engineDirectory);
     }
     fileChooser.getExtensionFilters().addAll(
@@ -352,7 +352,7 @@ public class ResourceManager extends Application {
   private static FileChooser createTextureFileChooser() {
     FileChooser fileChooser = new FileChooser();
     File engineDirectory = new File(System.getProperty("user.home") + "/Documents/Engine");
-    if(engineDirectory.isDirectory()) {
+    if (engineDirectory.isDirectory()) {
       fileChooser.setInitialDirectory(engineDirectory);
     }
     fileChooser.getExtensionFilters().addAll(
@@ -364,7 +364,7 @@ public class ResourceManager extends Application {
   private static FileChooser createFontFileChooser() {
     FileChooser fileChooser = new FileChooser();
     File engineDirectory = new File(System.getProperty("user.home") + "/Documents/Engine");
-    if(engineDirectory.isDirectory()) {
+    if (engineDirectory.isDirectory()) {
       fileChooser.setInitialDirectory(engineDirectory);
     }
     fileChooser.getExtensionFilters().addAll(

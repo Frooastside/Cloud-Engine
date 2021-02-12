@@ -82,28 +82,28 @@ public class Camera {
   }
 
   public void update() {
-    if(progression < 1) {
+    if (progression < 1) {
       progression += window.delta() * speed;
-      if(oldController != null) {
+      if (oldController != null) {
         Vector3f oldControllerPosition = oldController.calculateCameraPosition();
         Vector3f oldControllerRotation = oldController.calculateCameraRotation();
-        if(currentController != null) {
+        if (currentController != null) {
           Vector3f currentControllerPosition = currentController.calculateCameraPosition();
           Vector3f currentControllerRotation = currentController.calculateCameraRotation();
           oldControllerPosition.lerp(currentControllerPosition, progression, this.position);
           oldControllerRotation.lerp(currentControllerRotation, progression, this.rotation);
-        }else {
+        } else {
           this.position.set(oldControllerPosition);
           this.rotation.set(oldControllerRotation);
         }
       }
-    }else {
+    } else {
       progression = 1;
-      if(currentController != null) {
+      if (currentController != null) {
         this.position.set(currentController.calculateCameraPosition());
         this.rotation.set(currentController.calculateCameraRotation());
-      }else {
-        if(oldController != null) {
+      } else {
+        if (oldController != null) {
           this.position.set(oldController.calculateCameraPosition());
           this.rotation.set(oldController.calculateCameraRotation());
         }
@@ -111,10 +111,10 @@ public class Camera {
     }
     if (position.x != oldPosition.x || position.y != oldPosition.y || position.z != oldPosition.z ||
       rotation.x != oldRotation.x || rotation.y != oldRotation.y || rotation.z != oldRotation.z) {
-        moved = true;
-        updateViewMatrix();
-        oldPosition.set(position);
-        oldRotation.set(rotation);
+      moved = true;
+      updateViewMatrix();
+      oldPosition.set(position);
+      oldRotation.set(rotation);
     } else {
       moved = false;
     }
@@ -123,7 +123,7 @@ public class Camera {
   public void setController(float speed, ICameraController controller) {
     this.speed = speed;
     this.progression = 0;
-    if(currentController != null) {
+    if (currentController != null) {
       this.oldController = currentController;
     }
     this.currentController = controller;

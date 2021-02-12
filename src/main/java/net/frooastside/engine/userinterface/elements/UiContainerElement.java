@@ -14,48 +14,48 @@ public abstract class UiContainerElement extends UiBasicElement {
   @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
-    for(UiElement element : children) {
+    for (UiElement element : children) {
       element.recalculate(pixelSize);
     }
   }
 
   public UiElement click(ClickEvent event) {
-    if(event.inside()) {
-      for(UiElement element : children) {
-        if(element.isPixelInside(event.x(), event.y())) {
-          if(element instanceof UiBasicElement) {
+    if (event.inside()) {
+      for (UiElement element : children) {
+        if (element.isPixelInside(event.x(), event.y())) {
+          if (element instanceof UiBasicElement) {
             UiBasicElement basicElement = (UiBasicElement) element;
-            if(basicElement instanceof UiContainerElement) {
+            if (basicElement instanceof UiContainerElement) {
               return ((UiContainerElement) basicElement).click(event);
-            }else if(basicElement.clickable()) {
-              if(((ClickEvent.Listener) basicElement).onClick(event)) {
-                if(basicElement.selectable()) {
+            } else if (basicElement.clickable()) {
+              if (((ClickEvent.Listener) basicElement).onClick(event)) {
+                if (basicElement.selectable()) {
                   return element;
                 }
               }
-            }else if(basicElement.selectable()) {
+            } else if (basicElement.selectable()) {
               return basicElement;
             }
           }
-        }else {
-          if(element instanceof UiBasicElement) {
+        } else {
+          if (element instanceof UiBasicElement) {
             UiBasicElement basicElement = (UiBasicElement) element;
             ClickEvent outsideClickEvent = new ClickEvent(event.key(), false, event.pressed(), event.x(), event.y());
-            if(basicElement instanceof UiContainerElement) {
+            if (basicElement instanceof UiContainerElement) {
               ((UiContainerElement) basicElement).click(outsideClickEvent);
-            }else if(basicElement.clickable()) {
+            } else if (basicElement.clickable()) {
               ((ClickEvent.Listener) basicElement).onClick(outsideClickEvent);
             }
           }
         }
       }
-    }else {
-      for(UiElement element : children) {
-        if(element instanceof UiBasicElement) {
+    } else {
+      for (UiElement element : children) {
+        if (element instanceof UiBasicElement) {
           UiBasicElement basicElement = (UiBasicElement) element;
-          if(basicElement instanceof UiContainerElement) {
+          if (basicElement instanceof UiContainerElement) {
             ((UiContainerElement) basicElement).click(event);
-          }else if(basicElement.clickable()) {
+          } else if (basicElement.clickable()) {
             ((ClickEvent.Listener) basicElement).onClick(event);
           }
         }
@@ -69,10 +69,10 @@ public abstract class UiContainerElement extends UiBasicElement {
     element.constraints().setParent(constraints());
     element.initialize();
     element.recalculate(pixelSize());
-    if(element instanceof UiContainerElement) {
+    if (element instanceof UiContainerElement) {
       ((UiContainerElement) element).setRoot(root);
     }
-    if(root != null) {
+    if (root != null) {
       root.addLeafElement(element);
     }
   }

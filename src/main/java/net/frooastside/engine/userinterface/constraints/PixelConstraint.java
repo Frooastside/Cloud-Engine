@@ -12,9 +12,9 @@ public class PixelConstraint extends Constraint {
 
   @Override
   public void recalculate() {
-    if(type() == ConstraintType.X || type() == ConstraintType.WIDTH) {
+    if (type() == ConstraintType.X || type() == ConstraintType.WIDTH) {
       setRawValue(pixels * constraints().pixelSize().x);
-    }else if(type() == ConstraintType.Y || type() == ConstraintType.HEIGHT) {
+    } else if (type() == ConstraintType.Y || type() == ConstraintType.HEIGHT) {
       setRawValue(pixels * constraints().pixelSize().y);
     }
   }

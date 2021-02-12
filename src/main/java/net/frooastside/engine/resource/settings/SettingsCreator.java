@@ -17,7 +17,7 @@ public class SettingsCreator {
 
   public Map<String, Node> createSettings() {
     Map<String, Node> settings = new HashMap<>();
-    for(Map.Entry<String, Setting> layout : this.layout.entrySet()) {
+    for (Map.Entry<String, Setting> layout : this.layout.entrySet()) {
       settings.put(layout.getKey(), layout.getValue().create());
     }
     return settings;
@@ -25,7 +25,7 @@ public class SettingsCreator {
 
   public static Node getBox(Map<String, Node> settings) {
     VBox vBox = new VBox();
-    for(Map.Entry<String, Node> entry : settings.entrySet()) {
+    for (Map.Entry<String, Node> entry : settings.entrySet()) {
       vBox.getChildren().addAll(new Label(entry.getKey()), entry.getValue());
     }
     return vBox;
@@ -33,7 +33,7 @@ public class SettingsCreator {
 
   public static SettingsCreator createLayout(Setting... settings) {
     Map<String, Setting> settingsMap = new HashMap<>();
-    for(Setting setting : settings) {
+    for (Setting setting : settings) {
       settingsMap.put(setting.name(), setting);
     }
     return new SettingsCreator(settingsMap);

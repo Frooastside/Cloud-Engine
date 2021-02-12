@@ -20,7 +20,7 @@ public class UiPanel extends UiContainerElement {
   @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
-    for(UiRenderElement renderElement : renderElements) {
+    for (UiRenderElement renderElement : renderElements) {
       if (renderElement != null) {
         renderElement.recalculate(pixelSize);
       }

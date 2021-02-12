@@ -196,20 +196,20 @@ public class ResourceFont implements ResourceItem {
 
   @Override
   public Node settingsBox() {
-    if(settings == null) {
+    if (settings == null) {
       settings = SETTINGS_LAYOUT.createSettings();
-      if(imageSize == 0
+      if (imageSize == 0
         && downscale == 0
         && spread == 0
         && padding == 0
         && firstCharacter == 0
         && characterCount == 0) {
         recalculate();
-      }else {
+      } else {
         setSettings();
       }
     }
-    if(settingsBox == null) {
+    if (settingsBox == null) {
       settingsBox = SettingsCreator.getBox(settings);
     }
     return settingsBox;
@@ -244,21 +244,21 @@ public class ResourceFont implements ResourceItem {
   @Override
   public void recalculate() {
     Object imageSize = Setting.getComboBoxItem(settings, "imageSize");
-    if(imageSize != null) {
+    if (imageSize != null) {
       this.imageSize = (int) imageSize;
     }
     this.downscale = Setting.getSpinnerInteger(settings, "downscale");
     this.spread = Setting.getSpinnerInteger(settings, "spread");
     Object padding = Setting.getComboBoxItem(settings, "padding");
-    if(padding != null) {
+    if (padding != null) {
       this.padding = (int) padding;
     }
     Object firstCharacter = Setting.getComboBoxItem(settings, "firstCharacter");
-    if(firstCharacter != null) {
+    if (firstCharacter != null) {
       this.firstCharacter = (int) firstCharacter;
     }
     Object characterCount = Setting.getComboBoxItem(settings, "characterCount");
-    if(characterCount != null) {
+    if (characterCount != null) {
       this.characterCount = (int) characterCount;
     }
     this.characterHeight = Setting.getTextFieldInteger(settings, "characterHeight");

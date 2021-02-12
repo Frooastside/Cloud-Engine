@@ -14,7 +14,8 @@ public abstract class UiRenderElement extends UiElement {
     onRecalculation();
   }
 
-  public void onRecalculation() {}
+  public void onRecalculation() {
+  }
 
   public abstract RenderType renderType();
 
