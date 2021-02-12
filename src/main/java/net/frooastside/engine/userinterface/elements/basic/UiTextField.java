@@ -1,5 +1,6 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
+import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.ElementConstraints;
@@ -69,7 +70,7 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   }
 
   @Override
-  public void onKeyEvent(int key, int scancode, int modifiers, KeyCallback.Action action) {
+  public void onKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action) {
     if (action != KeyCallback.Action.RELEASE) {
       if (key == GLFW.GLFW_KEY_BACKSPACE) {
         if (selectionStart == selectionEnd) {
@@ -148,20 +149,51 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
           resetSelection();
           reloadText();
         }
+      }else if(key == GLFW.GLFW_KEY_A && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+        if(selectionStart == 0 && selectionEnd == text.length()) {
+          cursor = text.length();
+          resetSelection();
+        }else {
+          selectionStart = 0;
+          selectionEnd = text.length();
+          cursor = selectionEnd;
+        }
+        reloadText();
+      }else if(key == GLFW.GLFW_KEY_C && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+        if (selectionStart != selectionEnd) {
+          window.input().setClipboard(selection());
+        }
+      }else if(key == GLFW.GLFW_KEY_V && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+        if (selectionStart != selectionEnd) {
+          this.text = textWithoutSelection();
+          cursor = selectionStart;
+        }
+        String clipboard = window.input().getClipboard();
+        this.text = textBeforeCursor() + clipboard + textAfterCursor();
+        this.cursor += clipboard.length();
+        resetSelection();
+        reloadText();
+      }else if(key == GLFW.GLFW_KEY_X && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+        if (selectionStart != selectionEnd) {
+          window.input().setClipboard(selection());
+          this.text = textWithoutSelection();
+          cursor = selectionStart;
+        }
+        resetSelection();
+        reloadText();
       }
     }
   }
 
   @Override
-  public void onCharEvent(int codepoint) {
-    if (selectionStart == selectionEnd) {
-      this.text = textBeforeCursor() + (char) codepoint + textAfterCursor();
-      this.cursor++;
-      this.selectionStart = cursor;
-      this.selectionEnd = cursor;
-    } else {
+  public void onCharEvent(Window window, int codepoint) {
+    if (selectionStart != selectionEnd) {
       this.text = textWithoutSelection();
+      cursor = selectionStart;
     }
+    this.text = textBeforeCursor() + (char) codepoint + textAfterCursor();
+    this.cursor++;
+    resetSelection();
     reloadText();
   }
 

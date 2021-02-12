@@ -1,5 +1,6 @@
 package net.frooastside.engine.userinterface.elements;
 
+import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.userinterface.ClickEvent;
 import net.frooastside.engine.userinterface.SelectionEvent;
@@ -18,10 +19,10 @@ public abstract class UiBasicElement extends UiElement {
     }
   }
 
-  public void onKeyEvent(int key, int scancode, int modifiers, KeyCallback.Action action) {
+  public void onKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action) {
   }
 
-  public void onCharEvent(int codepoint) {
+  public void onCharEvent(Window window, int codepoint) {
   }
 
   public abstract UiRenderElement[] renderElements();

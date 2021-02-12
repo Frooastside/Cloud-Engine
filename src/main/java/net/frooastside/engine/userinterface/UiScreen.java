@@ -50,14 +50,14 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
   @Override
   public void invokeCharCallback(Window window, char codepoint) {
     if (window == this.window && selectedElement != null) {
-      selectedElement.onCharEvent(codepoint);
+      selectedElement.onCharEvent(window, codepoint);
     }
   }
 
   @Override
   public void invokeKeyCallback(Window window, int key, int scancode, int modifiers, Action action) {
     if (window == this.window && selectedElement != null) {
-      selectedElement.onKeyEvent(key, scancode, modifiers, action);
+      selectedElement.onKeyEvent(window, key, scancode, modifiers, action);
     }
   }
 
