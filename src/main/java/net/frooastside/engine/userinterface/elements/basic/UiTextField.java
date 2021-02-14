@@ -3,9 +3,11 @@ package net.frooastside.engine.userinterface.elements.basic;
 import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.userinterface.Constraint;
 import net.frooastside.engine.userinterface.ElementConstraints;
 import net.frooastside.engine.userinterface.SelectionEvent;
 import net.frooastside.engine.userinterface.UiColorSet;
+import net.frooastside.engine.userinterface.constraints.CenterConstraint;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
 import net.frooastside.engine.userinterface.elements.UiBasicElement;
@@ -17,7 +19,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class UiTextField extends UiBasicElement implements SelectionEvent.Listener {
 
-  private final UiRenderElement[] renderElements = new UiRenderElement[2];
+  private final UiRenderElement[] renderElements = new UiRenderElement[4];
 
   private final UiColorSet colorSet;
   private final ResourceFont font;
@@ -41,16 +43,6 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
-    super.recalculate(pixelSize);
-    for (UiRenderElement renderElement : renderElements) {
-      if (renderElement != null) {
-        renderElement.recalculate(pixelSize);
-      }
-    }
-  }
-
-  @Override
   public void initialize() {
     ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
     backgroundConstraints.setParent(constraints());
@@ -67,6 +59,17 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
     UiText text = new UiText(font, this.text, colorSet.text(), false);
     text.setConstraints(textConstraints);
     renderElements[1] = text;
+
+    ElementConstraints selectionBoxConstraints = new ElementConstraints();
+    selectionBoxConstraints.setParent(constraints());
+    selectionBoxConstraints.setX(new RawConstraint(0));
+    selectionBoxConstraints.setY(new RelativeConstraint(0.1f));
+    selectionBoxConstraints.setWidth(new RawConstraint(1));
+    selectionBoxConstraints.setHeight(new RelativeConstraint(0.8f));
+    UiBox selectionBox = new UiBox(colorSet.accent());
+    selectionBox.setVisibility(0.3f);
+    selectionBox.setConstraints(selectionBoxConstraints);
+    renderElements[2] = selectionBox;
   }
 
   @Override
@@ -76,21 +79,23 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
         if (selectionStart == selectionEnd) {
           if (cursor > 0 && text.length() >= cursor) {
             text = text.substring(0, cursor - 1) + text.substring(cursor);
-            reloadText();
             cursor--;
+            resetSelection();
+            reloadText();
           }
         } else {
           text = textWithoutSelection();
           if (cursor == selectionEnd) {
             cursor = selectionStart;
           }
-          reloadText();
           resetSelection();
+          reloadText();
         }
       } else if (key == GLFW.GLFW_KEY_DELETE) {
         if (selectionStart == selectionEnd) {
           if (cursor < text.length()) {
             text = text.substring(0, cursor) + text.substring(cursor + 1);
+            resetSelection();
             reloadText();
           }
         } else {
@@ -98,8 +103,8 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
           if (cursor == selectionEnd) {
             cursor = selectionStart;
           }
-          reloadText();
           resetSelection();
+          reloadText();
         }
       } else if (key == GLFW.GLFW_KEY_LEFT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
@@ -203,7 +208,14 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   }
 
   public void reloadText() {
-    ((UiText) renderElements[1]).setText(this.text);
+    UiText uiText = ((UiText) renderElements[1]);
+    uiText.setText(this.text);
+    UiBox selectionBox = ((UiBox) renderElements[2]);
+    float selectionStartX = (float) uiText.lineLength(this.text.substring(0, selectionStart));
+    float selectionEndX = (float) uiText.lineLength(this.text.substring(0, selectionEnd));
+    selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(selectionStartX);
+    selectionBox.constraints().getConstraint(Constraint.ConstraintType.WIDTH).setRawValue(selectionEndX - selectionStartX);
+    selectionBox.recalculate(pixelSize());
   }
 
   private void resetSelection() {

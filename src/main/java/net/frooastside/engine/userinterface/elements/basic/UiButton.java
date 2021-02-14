@@ -35,16 +35,6 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
-    super.recalculate(pixelSize);
-    for (UiRenderElement renderElement : renderElements) {
-      if (renderElement != null) {
-        renderElement.recalculate(pixelSize);
-      }
-    }
-  }
-
-  @Override
   public void initialize() {
     ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
     backgroundConstraints.setParent(constraints());

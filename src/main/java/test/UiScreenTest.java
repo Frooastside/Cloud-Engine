@@ -36,7 +36,7 @@ public class UiScreenTest extends UiScreen {
       new CenterConstraint(),
       new RelativeConstraint(0.5f),
       new RelativeConstraint(0.125f));
-    UiTextField textField = new UiTextField(colorSet(), font(), "Knöpfe", 20, false);
+    UiTextField textField = new UiTextField(colorSet(), font(), "Knöpfe", 3, true);
     textField.setConstraints(buttonConstraints);
     panel.addElement(textField);
 

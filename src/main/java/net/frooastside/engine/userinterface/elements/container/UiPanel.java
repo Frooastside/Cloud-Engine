@@ -18,16 +18,6 @@ public class UiPanel extends UiContainerElement {
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
-    super.recalculate(pixelSize);
-    for (UiRenderElement renderElement : renderElements) {
-      if (renderElement != null) {
-        renderElement.recalculate(pixelSize);
-      }
-    }
-  }
-
-  @Override
   public void initialize() {
     UiBox background = new UiBox(colorSet.background());
     ElementConstraints backgroundConstraints = ElementConstraints.getDefault();

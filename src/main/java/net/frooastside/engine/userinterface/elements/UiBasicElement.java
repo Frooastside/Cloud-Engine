@@ -15,7 +15,9 @@ public abstract class UiBasicElement extends UiElement {
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
     for (UiRenderElement renderElement : renderElements()) {
-      renderElement.recalculate(pixelSize);
+      if(renderElement != null) {
+        renderElement.recalculate(pixelSize);
+      }
     }
   }
 
