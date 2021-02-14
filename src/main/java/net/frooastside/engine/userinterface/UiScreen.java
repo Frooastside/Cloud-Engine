@@ -42,9 +42,8 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
     }
   }
 
-  @Override
   public void update() {
-
+    update(window.delta());
   }
 
   @Override

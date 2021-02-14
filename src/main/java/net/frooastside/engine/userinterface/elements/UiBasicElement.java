@@ -12,6 +12,16 @@ public abstract class UiBasicElement extends UiElement {
   private SelectionEvent.Listener selectionListener;
 
   @Override
+  public void update(double delta) {
+    super.update(delta);
+    for (UiRenderElement renderElement : renderElements()) {
+      if(renderElement != null) {
+        renderElement.update(delta);
+      }
+    }
+  }
+
+  @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
     for (UiRenderElement renderElement : renderElements()) {

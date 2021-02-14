@@ -12,6 +12,14 @@ public abstract class UiContainerElement extends UiBasicElement {
   private UiRootElement root;
 
   @Override
+  public void update(double delta) {
+    super.update(delta);
+    for (UiElement element : children) {
+      element.update(delta);
+    }
+  }
+
+  @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
     for (UiElement element : children) {

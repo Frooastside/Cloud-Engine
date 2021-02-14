@@ -60,12 +60,12 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
     text.setConstraints(textConstraints);
     renderElements[1] = text;
 
-    ElementConstraints selectionBoxConstraints = new ElementConstraints();
+    ElementConstraints selectionBoxConstraints = new ElementConstraints(
+      new RawConstraint(0),
+      new RelativeConstraint(0.1f),
+      new RawConstraint(0),
+      new RelativeConstraint(0.8f));
     selectionBoxConstraints.setParent(constraints());
-    selectionBoxConstraints.setX(new RawConstraint(0));
-    selectionBoxConstraints.setY(new RelativeConstraint(0.1f));
-    selectionBoxConstraints.setWidth(new RawConstraint(1));
-    selectionBoxConstraints.setHeight(new RelativeConstraint(0.8f));
     UiBox selectionBox = new UiBox(colorSet.accent());
     selectionBox.setVisibility(0.3f);
     selectionBox.setConstraints(selectionBoxConstraints);

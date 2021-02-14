@@ -15,7 +15,7 @@ public abstract class UiElement {
     constraints.recalculate(this.pixelSize);
   }
 
-  public void update() {
+  public void update(double delta) {
   }
 
   public void initialize() {
