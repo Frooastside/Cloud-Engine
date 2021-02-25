@@ -136,16 +136,20 @@ public class UiText extends UiRenderElement {
     model.unbind();
   }
 
-  public double lineLength(String text) {
+  public double lineLength(int beginIndex, int endIndex) {
     this.aspectRatio = pixelSize().y / pixelSize().x;
     float rawHeight = bounds().w;
     double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
     double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
     double fontWidth = horizontalPerPixelSize * rawHeight;
     double lineLength = 0;
-    for (char codepoint : text.toCharArray()) {
-      ResourceFont.Character character = font.getCharacter(codepoint);
+    char[] chars = text.toCharArray();
+    for (int i = beginIndex; i < endIndex; i++) {
+      ResourceFont.Character character = font.getCharacter(chars[i]);
       lineLength += (character.xAdvance() * fontWidth);
+    }
+    if(endIndex < text.length()) {
+      lineLength += (font.getCharacter(chars[endIndex]).xOffset() * fontWidth) / 2;
     }
     return lineLength;
   }

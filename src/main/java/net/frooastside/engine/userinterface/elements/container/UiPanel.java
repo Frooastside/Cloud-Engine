@@ -5,7 +5,6 @@ import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.elements.UiContainerElement;
 import net.frooastside.engine.userinterface.elements.UiRenderElement;
 import net.frooastside.engine.userinterface.elements.render.UiBox;
-import org.joml.Vector2f;
 
 public class UiPanel extends UiContainerElement {
 

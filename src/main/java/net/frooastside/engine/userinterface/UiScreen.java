@@ -84,6 +84,8 @@ public abstract class UiScreen extends UiContainerElement implements UiRootEleme
           ((SelectionEvent.Listener) selectedElement).onSelection(new SelectionEvent(true));
         }
         this.selectedElement = (UiBasicElement) selectedElement;
+      }else {
+        this.selectedElement = null;
       }
     }
     return selectedElement != null;

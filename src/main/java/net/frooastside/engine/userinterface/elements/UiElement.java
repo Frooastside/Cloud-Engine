@@ -10,6 +10,10 @@ public abstract class UiElement {
 
   private final Vector2f pixelSize = new Vector2f();
 
+  public void recalculate() {
+    recalculate(pixelSize());
+  }
+
   public void recalculate(Vector2f pixelSize) {
     this.pixelSize.set(pixelSize);
     constraints.recalculate(this.pixelSize);

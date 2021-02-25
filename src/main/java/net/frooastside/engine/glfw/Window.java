@@ -57,7 +57,7 @@ public class Window {
 
   private void calculateDelta() {
     long currentTime = System.nanoTime();
-    delta = (currentTime - lastUpdateTime) * 0.0000000001;
+    delta = (currentTime - lastUpdateTime) * 0.000000001;
     if (delta >= 0.25f)
       delta = 0;
     lastUpdateTime = currentTime;
@@ -271,23 +271,18 @@ public class Window {
     }
 
     public void handleKey(long window, int key, int scancode, int action, int modifiers) {
-      switch (action) {
-        case GLFW.GLFW_PRESS -> keyboardButtons[key] = true;
-        case GLFW.GLFW_RELEASE -> keyboardButtons[key] = false;
-      }
-      if (keyCallback != null) {
-        /*KeyCallback.Modifier modifier =
-          (modifiers & GLFW.GLFW_MOD_SHIFT) == GLFW.GLFW_MOD_SHIFT ? KeyCallback.Modifier.SHIFT :
-          ((modifiers & GLFW.GLFW_MOD_CONTROL) == GLFW.GLFW_MOD_CONTROL ? KeyCallback.Modifier.CONTROL :
-          ((modifiers & GLFW.GLFW_MOD_ALT) == GLFW.GLFW_MOD_ALT ? KeyCallback.Modifier.ALT :
-          ((modifiers & GLFW.GLFW_MOD_SUPER) == GLFW.GLFW_MOD_SUPER ? KeyCallback.Modifier.SUPER :
-          ((modifiers & GLFW.GLFW_MOD_CAPS_LOCK) == GLFW.GLFW_MOD_CAPS_LOCK ? KeyCallback.Modifier.CAPS_LOCK :
-          ((modifiers & GLFW.GLFW_MOD_NUM_LOCK) == GLFW.GLFW_MOD_NUM_LOCK ? KeyCallback.Modifier.NUM_LOCK : null)))));*/
-        KeyCallback.Action keyAction =
-          (action == GLFW.GLFW_PRESS ? KeyCallback.Action.PRESS :
-            (action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
-              (action == GLFW.GLFW_REPEAT ? KeyCallback.Action.REPEAT : null)));
-        keyCallback.invokeKeyCallback(Window.this, key, scancode, modifiers, keyAction);
+      if(key != GLFW.GLFW_KEY_UNKNOWN) {
+        switch (action) {
+          case GLFW.GLFW_PRESS -> keyboardButtons[key] = true;
+          case GLFW.GLFW_RELEASE -> keyboardButtons[key] = false;
+        }
+        if (keyCallback != null) {
+          KeyCallback.Action keyAction =
+            (action == GLFW.GLFW_PRESS ? KeyCallback.Action.PRESS :
+              (action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
+                (action == GLFW.GLFW_REPEAT ? KeyCallback.Action.REPEAT : null)));
+          keyCallback.invokeKeyCallback(Window.this, key, scancode, modifiers, keyAction);
+        }
       }
     }
 

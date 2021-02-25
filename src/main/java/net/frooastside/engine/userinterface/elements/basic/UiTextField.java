@@ -7,7 +7,7 @@ import net.frooastside.engine.userinterface.Constraint;
 import net.frooastside.engine.userinterface.ElementConstraints;
 import net.frooastside.engine.userinterface.SelectionEvent;
 import net.frooastside.engine.userinterface.UiColorSet;
-import net.frooastside.engine.userinterface.constraints.CenterConstraint;
+import net.frooastside.engine.userinterface.constraints.PixelConstraint;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
 import net.frooastside.engine.userinterface.elements.UiBasicElement;
@@ -27,9 +27,14 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   private final boolean constantTextSize;
 
   private String text;
-  private int cursor = 0;
-  private int selectionStart = 0;
-  private int selectionEnd = 0;
+  private int cursor;
+  private int selectionStart;
+  private int selectionEnd;
+
+  private boolean selected;
+
+  private boolean increment;
+  private double cursorVisibility;
 
   public UiTextField(UiColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
     this.colorSet = colorSet;
@@ -40,6 +45,43 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
     this.cursor = text.length();
     this.textSize = textSize;
     this.constantTextSize = constantTextSize;
+  }
+
+  @Override
+  public void recalculate(Vector2f pixelSize) {
+    super.recalculate(pixelSize);
+    UiText uiText = ((UiText) renderElements[1]);
+    uiText.setText(this.text);
+
+    UiBox selectionBox = ((UiBox) renderElements[2]);
+    float selectionStartX = (float) uiText.lineLength(0, selectionStart);
+    float selectionEndX = (float) uiText.lineLength(0, selectionEnd);
+    selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(selectionStartX);
+    selectionBox.constraints().getConstraint(Constraint.ConstraintType.WIDTH).setRawValue(selectionEndX - selectionStartX);
+    selectionBox.recalculate(pixelSize());
+
+    UiBox cursorBox = ((UiBox) renderElements[3]);
+    float cursorX = (float) uiText.lineLength(0, cursor);
+    cursorBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(cursorX - (pixelSize().x * 1));
+    cursorBox.recalculate(pixelSize());
+  }
+
+  @Override
+  public void update(double delta) {
+    if(selected) {
+      if(increment) {
+        if(cursorVisibility >= 1) {
+          increment = false;
+        }
+        cursorVisibility += delta * 3;
+      }else {
+        if(cursorVisibility <= 0) {
+          increment = true;
+        }
+        cursorVisibility -= delta * 3;
+      }
+      renderElements[3].setVisibility((float) cursorVisibility);
+    }
   }
 
   @Override
@@ -67,9 +109,20 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
       new RelativeConstraint(0.8f));
     selectionBoxConstraints.setParent(constraints());
     UiBox selectionBox = new UiBox(colorSet.accent());
-    selectionBox.setVisibility(0.3f);
+    selectionBox.setVisibility(0.2f);
     selectionBox.setConstraints(selectionBoxConstraints);
     renderElements[2] = selectionBox;
+
+    ElementConstraints cursorBoxConstraints = new ElementConstraints(
+      new RawConstraint(0),
+      new RelativeConstraint(0.1f),
+      new PixelConstraint(2),
+      new RelativeConstraint(0.8f));
+    cursorBoxConstraints.setParent(constraints());
+    UiBox cursorBox = new UiBox(colorSet.accent());
+    cursorBox.setVisibility(0.0f);
+    cursorBox.setConstraints(cursorBoxConstraints);
+    renderElements[3] = cursorBox;
   }
 
   @Override
@@ -81,30 +134,24 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
             text = text.substring(0, cursor - 1) + text.substring(cursor);
             cursor--;
             resetSelection();
-            reloadText();
+            recalculate();
           }
         } else {
-          text = textWithoutSelection();
-          if (cursor == selectionEnd) {
-            cursor = selectionStart;
-          }
+          deleteSelection();
           resetSelection();
-          reloadText();
+          recalculate();
         }
       } else if (key == GLFW.GLFW_KEY_DELETE) {
         if (selectionStart == selectionEnd) {
           if (cursor < text.length()) {
             text = text.substring(0, cursor) + text.substring(cursor + 1);
             resetSelection();
-            reloadText();
+            recalculate();
           }
         } else {
-          text = textWithoutSelection();
-          if (cursor == selectionEnd) {
-            cursor = selectionStart;
-          }
+          deleteSelection();
           resetSelection();
-          reloadText();
+          recalculate();
         }
       } else if (key == GLFW.GLFW_KEY_LEFT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
@@ -112,13 +159,13 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
             if (cursor > 0 && text.length() >= cursor) {
               selectionStart--;
               cursor = selectionStart;
-              reloadText();
+              recalculate();
             }
           } else if (cursor == selectionEnd) {
             if (cursor > selectionStart) {
               selectionEnd--;
               cursor = selectionEnd;
-              reloadText();
+              recalculate();
             }
           }
         } else {
@@ -128,7 +175,7 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
             }
           }
           resetSelection();
-          reloadText();
+          recalculate();
         }
       } else if (key == GLFW.GLFW_KEY_RIGHT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
@@ -136,13 +183,13 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
             if (cursor < text.length()) {
               selectionEnd++;
               cursor = selectionEnd;
-              reloadText();
+              recalculate();
             }
           } else if (cursor == selectionStart) {
             if (selectionStart < selectionEnd) {
               selectionStart++;
               cursor = selectionStart;
-              reloadText();
+              recalculate();
             }
           }
         } else {
@@ -152,7 +199,7 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
             }
           }
           resetSelection();
-          reloadText();
+          recalculate();
         }
       }else if(key == GLFW.GLFW_KEY_A && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if(selectionStart == 0 && selectionEnd == text.length()) {
@@ -163,29 +210,27 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
           selectionEnd = text.length();
           cursor = selectionEnd;
         }
-        reloadText();
+        recalculate();
       }else if(key == GLFW.GLFW_KEY_C && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
         }
       }else if(key == GLFW.GLFW_KEY_V && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
-          this.text = textWithoutSelection();
-          cursor = selectionStart;
+          deleteSelection();
         }
         String clipboard = window.input().getClipboard();
         this.text = textBeforeCursor() + clipboard + textAfterCursor();
         this.cursor += clipboard.length();
         resetSelection();
-        reloadText();
+        recalculate();
       }else if(key == GLFW.GLFW_KEY_X && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
-          this.text = textWithoutSelection();
-          cursor = selectionStart;
+          deleteSelection();
         }
         resetSelection();
-        reloadText();
+        recalculate();
       }
     }
   }
@@ -193,34 +238,20 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   @Override
   public void onCharEvent(Window window, int codepoint) {
     if (selectionStart != selectionEnd) {
-      this.text = textWithoutSelection();
-      cursor = selectionStart;
+      deleteSelection();
     }
     this.text = textBeforeCursor() + (char) codepoint + textAfterCursor();
     this.cursor++;
     resetSelection();
-    reloadText();
+    recalculate();
   }
 
   @Override
   public void onSelection(SelectionEvent event) {
-
-  }
-
-  public void reloadText() {
-    UiText uiText = ((UiText) renderElements[1]);
-    uiText.setText(this.text);
-    UiBox selectionBox = ((UiBox) renderElements[2]);
-    float selectionStartX = (float) uiText.lineLength(this.text.substring(0, selectionStart));
-    float selectionEndX = (float) uiText.lineLength(this.text.substring(0, selectionEnd));
-    selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(selectionStartX);
-    selectionBox.constraints().getConstraint(Constraint.ConstraintType.WIDTH).setRawValue(selectionEndX - selectionStartX);
-    selectionBox.recalculate(pixelSize());
-  }
-
-  private void resetSelection() {
-    selectionStart = cursor;
-    selectionEnd = cursor;
+    this.selected = event.selected();
+    cursorVisibility = selected ? 0 : 0;
+    increment = true;
+    renderElements[3].setVisibility((float) cursorVisibility);
   }
 
   private void deleteSelection() {
@@ -228,13 +259,13 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
     if (cursor == selectionEnd) {
       cursor = selectionStart;
     }
-    reloadText();
     resetSelection();
+    recalculate();
   }
 
-  @Override
-  public UiRenderElement[] renderElements() {
-    return renderElements;
+  private void resetSelection() {
+    selectionStart = cursor;
+    selectionEnd = cursor;
   }
 
   private String textBeforeCursor() {
@@ -251,6 +282,11 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
 
   private String selection() {
     return text.substring(selectionStart, selectionEnd);
+  }
+
+  @Override
+  public UiRenderElement[] renderElements() {
+    return renderElements;
   }
 
   public void setText(String text) {

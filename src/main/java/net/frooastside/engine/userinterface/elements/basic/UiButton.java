@@ -10,7 +10,6 @@ import net.frooastside.engine.userinterface.elements.UiBasicElement;
 import net.frooastside.engine.userinterface.elements.UiRenderElement;
 import net.frooastside.engine.userinterface.elements.render.UiBox;
 import net.frooastside.engine.userinterface.elements.render.UiText;
-import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
 public class UiButton extends UiBasicElement implements ClickEvent.Listener {
@@ -79,6 +78,6 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
 
   public void setText(String text) {
     this.text = text;
-    recalculate(pixelSize());
+    recalculate();
   }
 }
