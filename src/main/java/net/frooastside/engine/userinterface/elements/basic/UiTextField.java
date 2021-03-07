@@ -5,24 +5,26 @@ import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.Constraint;
 import net.frooastside.engine.userinterface.ElementConstraints;
-import net.frooastside.engine.userinterface.SelectionEvent;
+import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
+import net.frooastside.engine.userinterface.events.SelectionEvent;
 import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.constraints.PixelConstraint;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
-import net.frooastside.engine.userinterface.elements.UiBasicElement;
-import net.frooastside.engine.userinterface.elements.UiRenderElement;
 import net.frooastside.engine.userinterface.elements.render.UiBox;
 import net.frooastside.engine.userinterface.elements.render.UiText;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
-public class UiTextField extends UiBasicElement implements SelectionEvent.Listener {
-
-  private final UiRenderElement[] renderElements = new UiRenderElement[4];
+public class UiTextField extends UiFunctionalElement implements SelectionEvent.Listener {
 
   private final UiColorSet colorSet;
   private final ResourceFont font;
+
+  private UiText uiText;
+  private UiBox selectionBox;
+  private UiBox cursorBox;
+
   private final float textSize;
   private final boolean constantTextSize;
 
@@ -34,7 +36,7 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   private boolean selected;
 
   private boolean increment;
-  private double cursorVisibility;
+  private double cursorAlpha;
 
   public UiTextField(UiColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
     this.colorSet = colorSet;
@@ -50,17 +52,14 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   @Override
   public void recalculate(Vector2f pixelSize) {
     super.recalculate(pixelSize);
-    UiText uiText = ((UiText) renderElements[1]);
     uiText.setText(this.text);
 
-    UiBox selectionBox = ((UiBox) renderElements[2]);
     float selectionStartX = (float) uiText.lineLength(0, selectionStart);
     float selectionEndX = (float) uiText.lineLength(0, selectionEnd);
     selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(selectionStartX);
     selectionBox.constraints().getConstraint(Constraint.ConstraintType.WIDTH).setRawValue(selectionEndX - selectionStartX);
     selectionBox.recalculate(pixelSize());
 
-    UiBox cursorBox = ((UiBox) renderElements[3]);
     float cursorX = (float) uiText.lineLength(0, cursor);
     cursorBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(cursorX - (pixelSize().x * 1));
     cursorBox.recalculate(pixelSize());
@@ -70,17 +69,17 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   public void update(double delta) {
     if(selected) {
       if(increment) {
-        if(cursorVisibility >= 1) {
+        if(cursorAlpha >= 1) {
           increment = false;
         }
-        cursorVisibility += delta * 3;
+        cursorAlpha += delta * 3;
       }else {
-        if(cursorVisibility <= 0) {
+        if(cursorAlpha <= 0) {
           increment = true;
         }
-        cursorVisibility -= delta * 3;
+        cursorAlpha -= delta * 3;
       }
-      renderElements[3].setVisibility((float) cursorVisibility);
+      cursorBox.setAlpha((float) cursorAlpha);
     }
   }
 
@@ -90,7 +89,7 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
     backgroundConstraints.setParent(constraints());
     UiBox background = new UiBox(colorSet.element());
     background.setConstraints(backgroundConstraints);
-    renderElements[0] = background;
+    children().add(background);
 
     ElementConstraints textConstraints = new ElementConstraints();
     textConstraints.setParent(constraints());
@@ -98,9 +97,10 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
     textConstraints.setY(new RelativeConstraint(0.5f));
     textConstraints.setWidth(new RelativeConstraint(1));
     textConstraints.setHeight(constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
-    UiText text = new UiText(font, this.text, colorSet.text(), false);
-    text.setConstraints(textConstraints);
-    renderElements[1] = text;
+    //uiText = new UiText(font, this.text, colorSet.text(), false);
+    uiText = new UiText(font, this.text, colorSet.accent(), false);
+    uiText.setConstraints(textConstraints);
+    children().add(uiText);
 
     ElementConstraints selectionBoxConstraints = new ElementConstraints(
       new RawConstraint(0),
@@ -108,10 +108,10 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
       new RawConstraint(0),
       new RelativeConstraint(0.8f));
     selectionBoxConstraints.setParent(constraints());
-    UiBox selectionBox = new UiBox(colorSet.accent());
-    selectionBox.setVisibility(0.2f);
+    selectionBox = new UiBox(colorSet.accent());
+    selectionBox.setAlpha(0.2f);
     selectionBox.setConstraints(selectionBoxConstraints);
-    renderElements[2] = selectionBox;
+    children().add(selectionBox);
 
     ElementConstraints cursorBoxConstraints = new ElementConstraints(
       new RawConstraint(0),
@@ -119,14 +119,14 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
       new PixelConstraint(2),
       new RelativeConstraint(0.8f));
     cursorBoxConstraints.setParent(constraints());
-    UiBox cursorBox = new UiBox(colorSet.accent());
-    cursorBox.setVisibility(0.0f);
+    cursorBox = new UiBox(colorSet.accent());
+    cursorBox.setAlpha(0.0f);
     cursorBox.setConstraints(cursorBoxConstraints);
-    renderElements[3] = cursorBox;
+    children().add(cursorBox);
   }
 
   @Override
-  public void onKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action) {
+  public void handleKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action) {
     if (action != KeyCallback.Action.RELEASE) {
       if (key == GLFW.GLFW_KEY_BACKSPACE) {
         if (selectionStart == selectionEnd) {
@@ -236,7 +236,7 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   }
 
   @Override
-  public void onCharEvent(Window window, int codepoint) {
+  public void handleCharEvent(Window window, int codepoint) {
     if (selectionStart != selectionEnd) {
       deleteSelection();
     }
@@ -247,11 +247,11 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
   }
 
   @Override
-  public void onSelection(SelectionEvent event) {
+  public void handleSelection(SelectionEvent event) {
     this.selected = event.selected();
-    cursorVisibility = selected ? 0 : 0;
+    cursorAlpha = selected ? 0 : 0;
     increment = true;
-    renderElements[3].setVisibility((float) cursorVisibility);
+    cursorBox.setAlpha((float) cursorAlpha);
   }
 
   private void deleteSelection() {
@@ -282,11 +282,6 @@ public class UiTextField extends UiBasicElement implements SelectionEvent.Listen
 
   private String selection() {
     return text.substring(selectionStart, selectionEnd);
-  }
-
-  @Override
-  public UiRenderElement[] renderElements() {
-    return renderElements;
   }
 
   public void setText(String text) {

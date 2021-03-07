@@ -9,6 +9,7 @@ import net.frooastside.engine.resource.BufferUtils;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.UiColor;
 import net.frooastside.engine.userinterface.elements.UiRenderElement;
+import org.joml.Vector2f;
 
 public class UiText extends UiRenderElement {
 
@@ -30,7 +31,8 @@ public class UiText extends UiRenderElement {
   }
 
   @Override
-  public void onRecalculation() {
+  public void recalculate(Vector2f pixelSize) {
+    super.recalculate(pixelSize);
     this.aspectRatio = pixelSize().y / pixelSize().x;
     float maxLineLength = bounds().z;
     float rawHeight = bounds().w;

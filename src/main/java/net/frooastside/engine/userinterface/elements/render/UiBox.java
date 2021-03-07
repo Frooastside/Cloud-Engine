@@ -6,17 +6,15 @@ import net.frooastside.engine.userinterface.elements.UiRenderElement;
 
 public class UiBox extends UiRenderElement {
 
-  private final boolean useTexture;
+  private boolean useColor;
   private Texture texture;
 
   public UiBox(UiColor color) {
-    super.setColor(color);
-    this.useTexture = false;
+    setColor(color);
   }
 
   public UiBox(Texture texture) {
     this.texture = texture;
-    this.useTexture = true;
   }
 
   @Override
@@ -24,8 +22,18 @@ public class UiBox extends UiRenderElement {
     return RenderType.BOX;
   }
 
+  @Override
+  public void setColor(UiColor color) {
+    super.setColor(color);
+    useColor = true;
+  }
+
+  public boolean useColor() {
+    return useColor;
+  }
+
   public boolean useTexture() {
-    return useTexture;
+    return texture != null;
   }
 
   public Texture texture() {

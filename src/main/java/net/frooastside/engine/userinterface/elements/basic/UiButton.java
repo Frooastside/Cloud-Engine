@@ -1,20 +1,17 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.ClickEvent;
+import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
+import net.frooastside.engine.userinterface.events.ClickEvent;
 import net.frooastside.engine.userinterface.ElementConstraints;
 import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
-import net.frooastside.engine.userinterface.elements.UiBasicElement;
-import net.frooastside.engine.userinterface.elements.UiRenderElement;
 import net.frooastside.engine.userinterface.elements.render.UiBox;
 import net.frooastside.engine.userinterface.elements.render.UiText;
 import org.lwjgl.glfw.GLFW;
 
-public class UiButton extends UiBasicElement implements ClickEvent.Listener {
-
-  private final UiRenderElement[] renderElements = new UiRenderElement[2];
+public class UiButton extends UiFunctionalElement implements ClickEvent.Listener {
 
   private final UiColorSet colorSet;
   private final ResourceFont font;
@@ -39,7 +36,7 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
     backgroundConstraints.setParent(constraints());
     UiBox background = new UiBox(colorSet.element());
     background.setConstraints(backgroundConstraints);
-    renderElements[0] = background;
+    children().add(background);
 
     ElementConstraints textConstraints = new ElementConstraints();
     textConstraints.setParent(constraints());
@@ -49,18 +46,18 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
     textConstraints.setHeight(constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
     UiText text = new UiText(font, this.text, colorSet.text(), true);
     text.setConstraints(textConstraints);
-    renderElements[1] = text;
+    children().add(text);
   }
 
   @Override
-  public boolean onClick(ClickEvent event) {
+  public boolean handleClick(ClickEvent event) {
     if (event.inside() && hasClickListener() && event.key() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
       if (event.pressed()) {
         wasClicked = true;
       } else {
         if (wasClicked) {
           if (hasClickListener()) {
-            clickListener().onClick(event);
+            clickListener().handleClick(event);
           }
           wasClicked = false;
         }
@@ -69,11 +66,6 @@ public class UiButton extends UiBasicElement implements ClickEvent.Listener {
       wasClicked = false;
     }
     return false;
-  }
-
-  @Override
-  public UiRenderElement[] renderElements() {
-    return renderElements;
   }
 
   public void setText(String text) {

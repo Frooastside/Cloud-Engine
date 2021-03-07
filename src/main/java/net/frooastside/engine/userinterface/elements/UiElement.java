@@ -6,9 +6,10 @@ import org.joml.Vector4f;
 
 public abstract class UiElement {
 
-  private ElementConstraints constraints;
-
   private final Vector2f pixelSize = new Vector2f();
+
+  private ElementConstraints constraints;
+  private float alpha = 1.0f;
 
   public void recalculate() {
     recalculate(pixelSize());
@@ -40,6 +41,10 @@ public abstract class UiElement {
     return rawX <= xMax && rawX >= xMin && rawY <= yMax && rawY >= yMin;
   }
 
+  public Vector2f pixelSize() {
+    return pixelSize;
+  }
+
   public Vector4f bounds() {
     return constraints.bounds();
   }
@@ -52,7 +57,11 @@ public abstract class UiElement {
     this.constraints = constraints;
   }
 
-  public Vector2f pixelSize() {
-    return pixelSize;
+  public float alpha() {
+    return alpha;
+  }
+
+  public void setAlpha(float alpha) {
+    this.alpha = alpha;
   }
 }

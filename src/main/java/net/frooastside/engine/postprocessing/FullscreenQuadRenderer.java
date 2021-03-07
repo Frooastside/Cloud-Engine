@@ -48,7 +48,7 @@ public class FullscreenQuadRenderer extends PostProcessingEffect {
     }
 
     @Override
-    protected void setDefaults() {
+    protected void loadTextureUnits() {
       textureSamplerUniform.loadTextureUnit(0);
     }
 

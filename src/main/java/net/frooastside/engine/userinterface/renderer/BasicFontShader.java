@@ -2,19 +2,16 @@ package net.frooastside.engine.userinterface.renderer;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.shader.*;
-import net.frooastside.engine.shader.uniforms.UniformFloat;
-import net.frooastside.engine.shader.uniforms.UniformTexture;
-import net.frooastside.engine.shader.uniforms.UniformVector2f;
-import net.frooastside.engine.shader.uniforms.UniformVector3f;
+import net.frooastside.engine.shader.uniforms.*;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class BasicFontShader extends ShaderProgram {
 
   private final UniformVector2f uniformOffset = new UniformVector2f("offset");
   private final UniformTexture uniformTexture = new UniformTexture("fontAtlas");
-  private final UniformVector3f uniformColor = new UniformVector3f("color");
-  private final UniformFloat uniformVisibility = new UniformFloat("visibility");
+  private final UniformVector4f uniformColor = new UniformVector4f("color");
+  private final UniformFloat uniformAlpha = new UniformFloat("alpha");
   private final UniformFloat uniformWidth = new UniformFloat("width");
   private final UniformFloat uniformEdge = new UniformFloat("edge");
 
@@ -35,16 +32,16 @@ public class BasicFontShader extends ShaderProgram {
     storeUniformLocation(uniformOffset);
     storeUniformLocation(uniformTexture);
     storeUniformLocation(uniformColor);
-    storeUniformLocation(uniformVisibility);
+    storeUniformLocation(uniformAlpha);
     storeUniformLocation(uniformWidth);
     storeUniformLocation(uniformEdge);
   }
 
   @Override
-  protected void setDefaults() {
+  protected void loadTextureUnits() {
     uniformTexture.loadTextureUnit(0);
     loadWidth(0.5f);
-    loadVisibility(1);
+    loadEdge(0.15f);
   }
 
   public void loadOffset(Vector2f offset) {
@@ -60,16 +57,16 @@ public class BasicFontShader extends ShaderProgram {
     texture.bind();
   }
 
-  public void loadColor(Vector3f color) {
-    loadColor(color.x, color.y, color.z);
+  public void loadColor(Vector4f color) {
+    loadColor(color.x, color.y, color.z, color.w);
   }
 
-  public void loadColor(float r, float g, float b) {
-    uniformColor.loadVector3f(r, g, b);
+  public void loadColor(float r, float g, float b, float a) {
+    uniformColor.loadVector4f(r, g, b, a);
   }
 
-  public void loadVisibility(float visibility) {
-    uniformVisibility.loadFloat(visibility);
+  public void loadAlpha(float alpha) {
+    uniformAlpha.loadFloat(alpha);
   }
 
   public void loadWidth(float width) {

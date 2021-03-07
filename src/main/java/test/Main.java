@@ -6,7 +6,7 @@ import net.frooastside.engine.userinterface.renderer.BasicFontShader;
 import net.frooastside.engine.postprocessing.FullscreenQuadRenderer;
 import net.frooastside.engine.resource.ResourceContainer;
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.UiScreen;
+import net.frooastside.engine.userinterface.elements.container.UiScreen;
 import net.frooastside.engine.userinterface.renderer.UiRenderer;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;

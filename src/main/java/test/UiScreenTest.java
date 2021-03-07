@@ -7,10 +7,9 @@ import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.constraints.CenterConstraint;
 import net.frooastside.engine.userinterface.constraints.PixelConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
-import net.frooastside.engine.userinterface.elements.basic.UiButton;
 import net.frooastside.engine.userinterface.elements.basic.UiTextField;
 import net.frooastside.engine.userinterface.elements.container.UiPanel;
-import net.frooastside.engine.userinterface.UiScreen;
+import net.frooastside.engine.userinterface.elements.container.UiScreen;
 
 public class UiScreenTest extends UiScreen {
 

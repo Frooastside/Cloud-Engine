@@ -3,16 +3,16 @@ package net.frooastside.engine.userinterface.renderer;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.shader.*;
 import net.frooastside.engine.shader.uniforms.*;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class BasicBoxShader extends ShaderProgram {
 
   private final UniformVector4f uniformTranslation = new UniformVector4f("translation");
+  private final UniformFloat uniformAlpha = new UniformFloat("alpha");
+  private final UniformBoolean uniformUseColor = new UniformBoolean("useColor");
+  private final UniformVector4f uniformColor = new UniformVector4f("color");
   private final UniformBoolean uniformUseTexture = new UniformBoolean("useTexture");
-  private final UniformFloat uniformVisibility = new UniformFloat("visibility");
   private final UniformTexture uniformTexture = new UniformTexture("guiTexture");
-  private final UniformVector3f uniformColor = new UniformVector3f("color");
 
   @Override
   protected void addShaders() {
@@ -29,16 +29,16 @@ public class BasicBoxShader extends ShaderProgram {
   @Override
   protected void storeUniformLocations() {
     storeUniformLocation(uniformTranslation);
-    storeUniformLocation(uniformUseTexture);
-    storeUniformLocation(uniformVisibility);
-    storeUniformLocation(uniformTexture);
+    storeUniformLocation(uniformAlpha);
+    storeUniformLocation(uniformUseColor);
     storeUniformLocation(uniformColor);
+    storeUniformLocation(uniformUseTexture);
+    storeUniformLocation(uniformTexture);
   }
 
   @Override
-  protected void setDefaults() {
+  protected void loadTextureUnits() {
     uniformTexture.loadTextureUnit(0);
-    loadVisibility(1);
   }
 
   public void loadTranslation(Vector4f translation) {
@@ -49,27 +49,12 @@ public class BasicBoxShader extends ShaderProgram {
     uniformTranslation.loadVector4f(x, y, z, w);
   }
 
-  private void loadUseTexture(boolean useTexture) {
-    uniformUseTexture.loadBoolean(useTexture);
+  public void loadAlpha(float alpha) {
+    uniformAlpha.loadFloat(alpha);
   }
 
-  public void loadVisibility(float visibility) {
-    uniformVisibility.loadFloat(visibility);
-  }
-
-  public void loadTexture(Texture texture) {
-    loadUseTexture(true);
-    uniformTexture.activeTextureUnit();
-    texture.bind();
-  }
-
-  public void loadColor(Vector3f color) {
-    loadColor(color.x, color.y, color.z);
-  }
-
-  public void loadColor(float r, float g, float b) {
-    loadUseTexture(false);
-    uniformColor.loadVector3f(r, g, b);
+  public void loadUseColor(boolean useColor) {
+    uniformUseColor.loadBoolean(useColor);
   }
 
   public void loadColor(Vector4f color) {
@@ -77,9 +62,16 @@ public class BasicBoxShader extends ShaderProgram {
   }
 
   public void loadColor(float r, float g, float b, float a) {
-    loadUseTexture(false);
-    uniformColor.loadVector3f(r, g, b);
-    loadVisibility(a);
+    uniformColor.loadVector4f(r, g, b, a);
+  }
+
+  public void loadUseTexture(boolean useTexture) {
+    uniformUseTexture.loadBoolean(useTexture);
+  }
+
+  public void loadTexture(Texture texture) {
+    uniformTexture.activeTextureUnit();
+    texture.bind();
   }
 
 }

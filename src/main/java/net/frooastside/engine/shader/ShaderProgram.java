@@ -24,7 +24,7 @@ public abstract class ShaderProgram extends RenderObject {
     storeUniformLocations();
     validate();
     start();
-    setDefaults();
+    loadTextureUnits();
     stop();
   }
 
@@ -46,7 +46,7 @@ public abstract class ShaderProgram extends RenderObject {
     uniform.storeUniformLocation(identifier);
   }
 
-  protected void setDefaults() {
+  protected void loadTextureUnits() {
   }
 
   protected void attachShaders() {

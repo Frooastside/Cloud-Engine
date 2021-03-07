@@ -1,4 +1,4 @@
-package net.frooastside.engine.userinterface;
+package net.frooastside.engine.userinterface.events;
 
 public class ClickEvent {
 
@@ -17,7 +17,7 @@ public class ClickEvent {
 
   public interface Listener {
 
-    boolean onClick(ClickEvent event);
+    boolean handleClick(ClickEvent event);
 
   }
 

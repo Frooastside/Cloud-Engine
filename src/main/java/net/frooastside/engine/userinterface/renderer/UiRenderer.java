@@ -6,8 +6,10 @@ import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarg
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsage;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.BufferUtils;
+import net.frooastside.engine.userinterface.elements.UiElement;
+import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
 import net.frooastside.engine.userinterface.elements.UiRenderElement;
-import net.frooastside.engine.userinterface.UiScreen;
+import net.frooastside.engine.userinterface.elements.container.UiScreen;
 import net.frooastside.engine.userinterface.elements.render.UiBox;
 import net.frooastside.engine.userinterface.elements.render.UiText;
 import org.lwjgl.opengl.GL11;
@@ -24,6 +26,8 @@ public class UiRenderer {
   private final BasicBoxShader boxShader;
   private final BasicFontShader fontShader;
 
+  private UiRenderElement.RenderType currentRenderType;
+
   public UiRenderer(BasicBoxShader boxShader, BasicFontShader fontShader) {
     this.boxShader = boxShader;
     this.fontShader = fontShader;
@@ -36,8 +40,9 @@ public class UiRenderer {
 
   public void render(UiScreen screen) {
     prepare();
-    renderBoxes(screen.renderElements(UiRenderElement.RenderType.BOX));
-    renderTexts(screen.renderElements(UiRenderElement.RenderType.TEXT));
+    renderElements(screen, screen.alpha());
+    endShader(currentRenderType);
+    currentRenderType = null;
     end();
   }
 
@@ -48,49 +53,78 @@ public class UiRenderer {
     GL11.glDisable(GL11.GL_CULL_FACE);
   }
 
-  public void renderBoxes(List<UiRenderElement> boxes) {
-    if (boxes != null) {
-      boxShader.start();
-      defaultBox.bind();
-      defaultBox.enableVertexAttributes();
-
-      for (UiRenderElement renderElement : boxes) {
-        UiBox box = ((UiBox) renderElement);
-        boxShader.loadTranslation(box.bounds());
-        boxShader.loadVisibility(box.visibility());
-        if (box.useTexture()) {
-          boxShader.loadTexture(box.texture());
-        } else {
-          boxShader.loadColor(box.color().rawColor());
-        }
-        defaultBox.draw();
-      }
-
-      defaultBox.disableVertexAttributes();
-      defaultBox.unbind();
-      boxShader.stop();
+  private void renderElements(UiElement element, float alpha) {
+    if(element instanceof UiRenderElement) {
+      UiRenderElement renderElement = ((UiRenderElement) element);
+      prepareRendering(renderElement);
+      renderElement(renderElement, alpha);
+    }else if(element instanceof UiFunctionalElement) {
+      UiFunctionalElement functionalElement = ((UiFunctionalElement) element);
+      functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
     }
   }
 
-  public void renderTexts(List<UiRenderElement> texts) {
-    if (texts != null) {
+  public void prepareRendering(UiRenderElement renderElement) {
+    UiRenderElement.RenderType renderType = renderElement.renderType();
+    if (currentRenderType != renderType) {
+      endShader(currentRenderType);
+      prepareShader(renderType);
+      currentRenderType = renderType;
+    }
+  }
+
+  public void prepareShader(UiRenderElement.RenderType renderType) {
+    if(renderType == UiRenderElement.RenderType.BOX) {
+      boxShader.start();
+      defaultBox.bind();
+      defaultBox.enableVertexAttributes();
+      return;
+    }
+    if(renderType == UiRenderElement.RenderType.TEXT) {
       fontShader.start();
-      for (UiRenderElement renderElement : texts) {
-        UiText text = ((UiText) renderElement);
-        fontShader.loadOffset(text.bounds().x, text.bounds().y);
-        fontShader.loadTexture(text.font().texture());
-        fontShader.loadColor(text.color().rawColor());
-        fontShader.loadVisibility(text.visibility());
-        //TODO EDGE
-        fontShader.loadEdge(0.15f);
-        VertexArrayObject textMesh = text.model();
-        textMesh.bind();
-        textMesh.enableVertexAttributes();
-        textMesh.draw();
-        textMesh.disableVertexAttributes();
-        textMesh.unbind();
-      }
+    }
+  }
+
+  public void endShader(UiRenderElement.RenderType renderType) {
+    if(renderType == UiRenderElement.RenderType.BOX) {
+      defaultBox.disableVertexAttributes();
+      defaultBox.unbind();
+      boxShader.stop();
+      return;
+    }
+    if(renderType == UiRenderElement.RenderType.TEXT) {
       fontShader.stop();
+    }
+  }
+
+  public void renderElement(UiRenderElement renderElement, float alpha) {
+    if(renderElement.renderType() == UiRenderElement.RenderType.BOX) {
+      UiBox box = ((UiBox) renderElement);
+      boxShader.loadTranslation(box.bounds());
+      boxShader.loadAlpha(alpha);
+      boxShader.loadUseColor(box.useColor());
+      if(box.useColor()) {
+        boxShader.loadColor(box.color().rawColor());
+      }
+      boxShader.loadUseTexture(box.useTexture());
+      if (box.useTexture()) {
+        boxShader.loadTexture(box.texture());
+      }
+      defaultBox.draw();
+    }else if(renderElement.renderType() == UiRenderElement.RenderType.TEXT) {
+      UiText text = ((UiText) renderElement);
+      fontShader.loadOffset(text.bounds().x, text.bounds().y);
+      fontShader.loadTexture(text.font().texture());
+      fontShader.loadColor(text.color().rawColor());
+      fontShader.loadAlpha(alpha);
+      //TODO EDGE
+      fontShader.loadEdge(0.15f);
+      VertexArrayObject textMesh = text.model();
+      textMesh.bind();
+      textMesh.enableVertexAttributes();
+      textMesh.draw();
+      textMesh.disableVertexAttributes();
+      textMesh.unbind();
     }
   }
 
