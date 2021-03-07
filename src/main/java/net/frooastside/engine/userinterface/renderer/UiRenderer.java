@@ -54,11 +54,11 @@ public class UiRenderer {
   }
 
   private void renderElements(UiElement element, float alpha) {
-    if(element instanceof UiRenderElement) {
+    if (element instanceof UiRenderElement) {
       UiRenderElement renderElement = ((UiRenderElement) element);
       prepareRendering(renderElement);
       renderElement(renderElement, alpha);
-    }else if(element instanceof UiFunctionalElement) {
+    } else if (element instanceof UiFunctionalElement) {
       UiFunctionalElement functionalElement = ((UiFunctionalElement) element);
       functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
     }
@@ -74,36 +74,36 @@ public class UiRenderer {
   }
 
   public void prepareShader(UiRenderElement.RenderType renderType) {
-    if(renderType == UiRenderElement.RenderType.BOX) {
+    if (renderType == UiRenderElement.RenderType.BOX) {
       boxShader.start();
       defaultBox.bind();
       defaultBox.enableVertexAttributes();
       return;
     }
-    if(renderType == UiRenderElement.RenderType.TEXT) {
+    if (renderType == UiRenderElement.RenderType.TEXT) {
       fontShader.start();
     }
   }
 
   public void endShader(UiRenderElement.RenderType renderType) {
-    if(renderType == UiRenderElement.RenderType.BOX) {
+    if (renderType == UiRenderElement.RenderType.BOX) {
       defaultBox.disableVertexAttributes();
       defaultBox.unbind();
       boxShader.stop();
       return;
     }
-    if(renderType == UiRenderElement.RenderType.TEXT) {
+    if (renderType == UiRenderElement.RenderType.TEXT) {
       fontShader.stop();
     }
   }
 
   public void renderElement(UiRenderElement renderElement, float alpha) {
-    if(renderElement.renderType() == UiRenderElement.RenderType.BOX) {
+    if (renderElement.renderType() == UiRenderElement.RenderType.BOX) {
       UiBox box = ((UiBox) renderElement);
       boxShader.loadTranslation(box.bounds());
       boxShader.loadAlpha(alpha);
       boxShader.loadUseColor(box.useColor());
-      if(box.useColor()) {
+      if (box.useColor()) {
         boxShader.loadColor(box.color().rawColor());
       }
       boxShader.loadUseTexture(box.useTexture());
@@ -111,7 +111,7 @@ public class UiRenderer {
         boxShader.loadTexture(box.texture());
       }
       defaultBox.draw();
-    }else if(renderElement.renderType() == UiRenderElement.RenderType.TEXT) {
+    } else if (renderElement.renderType() == UiRenderElement.RenderType.TEXT) {
       UiText text = ((UiText) renderElement);
       fontShader.loadOffset(text.bounds().x, text.bounds().y);
       fontShader.loadTexture(text.font().texture());

@@ -2,7 +2,6 @@ package net.frooastside.engine.userinterface.elements.render;
 
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.UiColor;
-import org.joml.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +13,9 @@ public class UiTextArea extends UiText {
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
-    super.recalculate(pixelSize);
-    float maxLineLength = constraints().bounds().z;
+  public void recalculateElement() {
+    super.recalculateElement();
+    float maxLineLength = bounds().z;
     float rawHeight = bounds().w;
 
     double verticalPerPixelSize = LINE_HEIGHT / (double) font().characterHeight();

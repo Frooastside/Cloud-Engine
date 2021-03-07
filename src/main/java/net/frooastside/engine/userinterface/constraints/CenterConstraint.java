@@ -1,24 +1,31 @@
 package net.frooastside.engine.userinterface.constraints;
 
 import net.frooastside.engine.language.I18n;
-import net.frooastside.engine.userinterface.Constraint;
+import net.frooastside.engine.userinterface.UiConstraint;
+import org.joml.Vector4f;
 
-public class CenterConstraint extends Constraint {
+public class CenterConstraint extends UiConstraint {
 
   @Override
-  public void recalculate() {
-    Constraint oppositeConstraint = getOpposite();
+  public float rawValue() {
+    UiConstraint oppositeConstraint = getOpposite();
     if (!(oppositeConstraint instanceof CenterConstraint)) {
-      oppositeConstraint.recalculate();
+      float oppositeRawValue = oppositeConstraint.rawValue();
+      Vector4f parentBounds = parent().bounds();
       if (type() == ConstraintType.X || type() == ConstraintType.Y) {
-        setRawValue((type() == ConstraintType.X ? constraints().parent().bounds().z - oppositeConstraint.rawValue() : constraints().parent().bounds().w - oppositeConstraint.rawValue()) / 2);
-      } else if (type() == ConstraintType.WIDTH || type() == ConstraintType.HEIGHT) {
-        float offset = oppositeConstraint.rawValue() - (type() == ConstraintType.WIDTH ? constraints().parent().bounds().x : constraints().parent().bounds().y);
-        setRawValue(((type() == ConstraintType.WIDTH) ? constraints().parent().bounds().z : constraints().parent().bounds().w) - (offset * 2));
+        return (type() == ConstraintType.X ? parentBounds.z - oppositeRawValue : parentBounds.w - oppositeRawValue) / 2;
+      } else {
+        float offset = oppositeRawValue - (type() == ConstraintType.WIDTH ? parentBounds.x : parentBounds.y);
+        return ((type() == ConstraintType.WIDTH) ? parentBounds.z : parentBounds.w) - (offset * 2);
       }
     } else {
-      throw new IllegalStateException(I18n.get("error.userinterface.center"));
+      throw new IllegalStateException(I18n.get("error.userinterface.doubleCenter"));
     }
+  }
+
+  @Override
+  public void setValue(float value) {
+    throw new IllegalStateException(I18n.get("error.userinterface.centerValue"));
   }
 
   @Override

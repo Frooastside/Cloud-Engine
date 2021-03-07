@@ -3,8 +3,8 @@ package net.frooastside.engine.userinterface.elements.basic;
 import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.Constraint;
-import net.frooastside.engine.userinterface.ElementConstraints;
+import net.frooastside.engine.userinterface.UiConstraint;
+import net.frooastside.engine.userinterface.UiConstraints;
 import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
 import net.frooastside.engine.userinterface.UiColorSet;
@@ -13,7 +13,6 @@ import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
 import net.frooastside.engine.userinterface.elements.render.UiBox;
 import net.frooastside.engine.userinterface.elements.render.UiText;
-import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
 public class UiTextField extends UiFunctionalElement implements SelectionEvent.Listener {
@@ -50,31 +49,31 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
-    super.recalculate(pixelSize);
-    uiText.setText(this.text);
+  public void recalculateElement() {
+    updateRenderElements();
+    super.recalculateElement();
+  }
 
+  public void updateRenderElements() {
+    uiText.setText(this.text);
     float selectionStartX = (float) uiText.lineLength(0, selectionStart);
     float selectionEndX = (float) uiText.lineLength(0, selectionEnd);
-    selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(selectionStartX);
-    selectionBox.constraints().getConstraint(Constraint.ConstraintType.WIDTH).setRawValue(selectionEndX - selectionStartX);
-    selectionBox.recalculate(pixelSize());
-
+    selectionBox.constraints().getConstraint(UiConstraint.ConstraintType.X).setValue(selectionStartX);
+    selectionBox.constraints().getConstraint(UiConstraint.ConstraintType.WIDTH).setValue(selectionEndX - selectionStartX);
     float cursorX = (float) uiText.lineLength(0, cursor);
-    cursorBox.constraints().getConstraint(Constraint.ConstraintType.X).setRawValue(cursorX - (pixelSize().x * 1));
-    cursorBox.recalculate(pixelSize());
+    cursorBox.constraints().getConstraint(UiConstraint.ConstraintType.X).setValue(cursorX - (pixelSize().x * 1));
   }
 
   @Override
   public void update(double delta) {
-    if(selected) {
-      if(increment) {
-        if(cursorAlpha >= 1) {
+    if (selected) {
+      if (increment) {
+        if (cursorAlpha >= 1) {
           increment = false;
         }
         cursorAlpha += delta * 3;
-      }else {
-        if(cursorAlpha <= 0) {
+      } else {
+        if (cursorAlpha <= 0) {
           increment = true;
         }
         cursorAlpha -= delta * 3;
@@ -85,44 +84,35 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
 
   @Override
   public void initialize() {
-    ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
-    backgroundConstraints.setParent(constraints());
+    UiConstraints backgroundConstraints = UiConstraints.getDefault();
     UiBox background = new UiBox(colorSet.element());
-    background.setConstraints(backgroundConstraints);
-    children().add(background);
+    addElement(background, backgroundConstraints);
 
-    ElementConstraints textConstraints = new ElementConstraints();
-    textConstraints.setParent(constraints());
-    textConstraints.setX(new RelativeConstraint(0));
-    textConstraints.setY(new RelativeConstraint(0.5f));
-    textConstraints.setWidth(new RelativeConstraint(1));
-    textConstraints.setHeight(constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
-    //uiText = new UiText(font, this.text, colorSet.text(), false);
-    uiText = new UiText(font, this.text, colorSet.accent(), false);
-    uiText.setConstraints(textConstraints);
-    children().add(uiText);
+    UiConstraints textConstraints = new UiConstraints(
+      new RelativeConstraint(0),
+      new RelativeConstraint(0.5f),
+      new RelativeConstraint(1),
+      constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
+    uiText = new UiText(font, this.text, colorSet.text(), false);
+    addElement(uiText, textConstraints);
 
-    ElementConstraints selectionBoxConstraints = new ElementConstraints(
+    UiConstraints selectionBoxConstraints = new UiConstraints(
       new RawConstraint(0),
       new RelativeConstraint(0.1f),
       new RawConstraint(0),
       new RelativeConstraint(0.8f));
-    selectionBoxConstraints.setParent(constraints());
     selectionBox = new UiBox(colorSet.accent());
     selectionBox.setAlpha(0.2f);
-    selectionBox.setConstraints(selectionBoxConstraints);
-    children().add(selectionBox);
+    addElement(selectionBox, selectionBoxConstraints);
 
-    ElementConstraints cursorBoxConstraints = new ElementConstraints(
+    UiConstraints cursorBoxConstraints = new UiConstraints(
       new RawConstraint(0),
       new RelativeConstraint(0.1f),
       new PixelConstraint(2),
       new RelativeConstraint(0.8f));
-    cursorBoxConstraints.setParent(constraints());
     cursorBox = new UiBox(colorSet.accent());
     cursorBox.setAlpha(0.0f);
-    cursorBox.setConstraints(cursorBoxConstraints);
-    children().add(cursorBox);
+    addElement(cursorBox, cursorBoxConstraints);
   }
 
   @Override
@@ -134,24 +124,24 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             text = text.substring(0, cursor - 1) + text.substring(cursor);
             cursor--;
             resetSelection();
-            recalculate();
+            recalculateElement();
           }
         } else {
           deleteSelection();
           resetSelection();
-          recalculate();
+          recalculateElement();
         }
       } else if (key == GLFW.GLFW_KEY_DELETE) {
         if (selectionStart == selectionEnd) {
           if (cursor < text.length()) {
             text = text.substring(0, cursor) + text.substring(cursor + 1);
             resetSelection();
-            recalculate();
+            recalculateElement();
           }
         } else {
           deleteSelection();
           resetSelection();
-          recalculate();
+          recalculateElement();
         }
       } else if (key == GLFW.GLFW_KEY_LEFT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
@@ -159,13 +149,13 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             if (cursor > 0 && text.length() >= cursor) {
               selectionStart--;
               cursor = selectionStart;
-              recalculate();
+              recalculateElement();
             }
           } else if (cursor == selectionEnd) {
             if (cursor > selectionStart) {
               selectionEnd--;
               cursor = selectionEnd;
-              recalculate();
+              recalculateElement();
             }
           }
         } else {
@@ -175,7 +165,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             }
           }
           resetSelection();
-          recalculate();
+          recalculateElement();
         }
       } else if (key == GLFW.GLFW_KEY_RIGHT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
@@ -183,13 +173,13 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             if (cursor < text.length()) {
               selectionEnd++;
               cursor = selectionEnd;
-              recalculate();
+              recalculateElement();
             }
           } else if (cursor == selectionStart) {
             if (selectionStart < selectionEnd) {
               selectionStart++;
               cursor = selectionStart;
-              recalculate();
+              recalculateElement();
             }
           }
         } else {
@@ -199,23 +189,23 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             }
           }
           resetSelection();
-          recalculate();
+          recalculateElement();
         }
-      }else if(key == GLFW.GLFW_KEY_A && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
-        if(selectionStart == 0 && selectionEnd == text.length()) {
+      } else if (key == GLFW.GLFW_KEY_A && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+        if (selectionStart == 0 && selectionEnd == text.length()) {
           cursor = text.length();
           resetSelection();
-        }else {
+        } else {
           selectionStart = 0;
           selectionEnd = text.length();
           cursor = selectionEnd;
         }
-        recalculate();
-      }else if(key == GLFW.GLFW_KEY_C && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+        recalculateElement();
+      } else if (key == GLFW.GLFW_KEY_C && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
         }
-      }else if(key == GLFW.GLFW_KEY_V && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+      } else if (key == GLFW.GLFW_KEY_V && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           deleteSelection();
         }
@@ -223,14 +213,14 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
         this.text = textBeforeCursor() + clipboard + textAfterCursor();
         this.cursor += clipboard.length();
         resetSelection();
-        recalculate();
-      }else if(key == GLFW.GLFW_KEY_X && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
+        recalculateElement();
+      } else if (key == GLFW.GLFW_KEY_X && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
           deleteSelection();
         }
         resetSelection();
-        recalculate();
+        recalculateElement();
       }
     }
   }
@@ -243,7 +233,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
     this.text = textBeforeCursor() + (char) codepoint + textAfterCursor();
     this.cursor++;
     resetSelection();
-    recalculate();
+    recalculateElement();
   }
 
   @Override
@@ -260,7 +250,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
       cursor = selectionStart;
     }
     resetSelection();
-    recalculate();
+    recalculateElement();
   }
 
   private void resetSelection() {
@@ -286,6 +276,6 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
 
   public void setText(String text) {
     this.text = text;
-    recalculate(pixelSize());
+    recalculateElement();
   }
 }

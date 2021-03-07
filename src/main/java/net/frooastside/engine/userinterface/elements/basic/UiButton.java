@@ -3,7 +3,7 @@ package net.frooastside.engine.userinterface.elements.basic;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
 import net.frooastside.engine.userinterface.events.ClickEvent;
-import net.frooastside.engine.userinterface.ElementConstraints;
+import net.frooastside.engine.userinterface.UiConstraints;
 import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
@@ -32,21 +32,16 @@ public class UiButton extends UiFunctionalElement implements ClickEvent.Listener
 
   @Override
   public void initialize() {
-    ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
-    backgroundConstraints.setParent(constraints());
     UiBox background = new UiBox(colorSet.element());
-    background.setConstraints(backgroundConstraints);
-    children().add(background);
+    addElement(background);
 
-    ElementConstraints textConstraints = new ElementConstraints();
-    textConstraints.setParent(constraints());
-    textConstraints.setX(new RelativeConstraint(0));
-    textConstraints.setY(new RelativeConstraint(0.5f));
-    textConstraints.setWidth(new RelativeConstraint(1));
-    textConstraints.setHeight(constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
+    UiConstraints textConstraints = new UiConstraints(
+      new RelativeConstraint(0),
+      new RelativeConstraint(0.5f),
+      new RelativeConstraint(1),
+      constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
     UiText text = new UiText(font, this.text, colorSet.text(), true);
-    text.setConstraints(textConstraints);
-    children().add(text);
+    addElement(text, textConstraints);
   }
 
   @Override
@@ -70,6 +65,6 @@ public class UiButton extends UiFunctionalElement implements ClickEvent.Listener
 
   public void setText(String text) {
     this.text = text;
-    recalculate();
+    recalculateElement();
   }
 }

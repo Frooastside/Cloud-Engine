@@ -1,8 +1,8 @@
 package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.Constraint;
+import net.frooastside.engine.userinterface.UiConstraint;
 
-public class RelativeConstraint extends Constraint {
+public class RelativeConstraint extends UiConstraint {
 
   private float relativeValue;
 
@@ -11,20 +11,17 @@ public class RelativeConstraint extends Constraint {
   }
 
   @Override
-  public void recalculate() {
-    setRawValue(relativeValue);
+  public float rawValue() {
+    return relativeValue;
+  }
+
+  @Override
+  public void setValue(float value) {
+    this.relativeValue = value;
   }
 
   @Override
   public boolean relative() {
     return true;
-  }
-
-  public float relativeValue() {
-    return relativeValue;
-  }
-
-  public void setRelativeValue(float relativeValue) {
-    this.relativeValue = relativeValue;
   }
 }

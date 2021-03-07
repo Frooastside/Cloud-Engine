@@ -1,6 +1,6 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.userinterface.ElementConstraints;
+import net.frooastside.engine.userinterface.UiConstraints;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -8,16 +8,31 @@ public abstract class UiElement {
 
   private final Vector2f pixelSize = new Vector2f();
 
-  private ElementConstraints constraints;
+  private UiElement parent;
+  private UiConstraints constraints;
+
+  private final Vector4f bounds = new Vector4f(0, 0, 1, 1);
   private float alpha = 1.0f;
 
-  public void recalculate() {
-    recalculate(pixelSize());
+  public void recalculateElement() {
+    calculateBounds();
   }
 
-  public void recalculate(Vector2f pixelSize) {
+  public void updatePixelSize(Vector2f pixelSize) {
     this.pixelSize.set(pixelSize);
-    constraints.recalculate(this.pixelSize);
+    constraints.setPixelSize(pixelSize);
+  }
+
+  public void calculateBounds() {
+    float x = constraints.x().rawValue();
+    float y = constraints.y().rawValue();
+    float width = constraints.width().rawValue();
+    float height = constraints.height().rawValue();
+    bounds.set(
+      (constraints.x().relative() ? x * parent.bounds().z : x) + parent.bounds().x,
+      (constraints.y().relative() ? y * parent.bounds().w : y) + parent.bounds().y,
+      constraints.width().relative() ? (width * parent.bounds().z) : width,
+      constraints.height().relative() ? (height * parent.bounds().w) : height);
   }
 
   public void update(double delta) {
@@ -46,14 +61,22 @@ public abstract class UiElement {
   }
 
   public Vector4f bounds() {
-    return constraints.bounds();
+    return bounds;
   }
 
-  public ElementConstraints constraints() {
+  public UiElement parent() {
+    return parent;
+  }
+
+  public void setParent(UiElement parent) {
+    this.parent = parent;
+  }
+
+  public UiConstraints constraints() {
     return constraints;
   }
 
-  public void setConstraints(ElementConstraints constraints) {
+  public void setConstraints(UiConstraints constraints) {
     this.constraints = constraints;
   }
 

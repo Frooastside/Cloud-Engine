@@ -15,7 +15,7 @@ uniform sampler2D guiTexture;
 void main() {
     finalColor = vec4(1.0);
 
-    if(useTexture > 0.5) {
+    if (useTexture > 0.5) {
         finalColor = texture(guiTexture, _textureCoordinates);
     }
 

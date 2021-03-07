@@ -1,5 +1,6 @@
 package net.frooastside.engine.userinterface.elements;
 
+import net.frooastside.engine.userinterface.UiConstraints;
 import net.frooastside.engine.userinterface.events.ClickEvent;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
 import org.joml.Vector2f;
@@ -20,45 +21,47 @@ public abstract class UiFunctionalElement extends UiElement {
   public void update(double delta) {
     super.update(delta);
     for (UiElement element : children) {
-      if(element != null) {
+      if (element != null) {
         element.update(delta);
       }
     }
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
-    super.recalculate(pixelSize);
+  public void recalculateElement() {
+    super.recalculateElement();
     for (UiElement element : children) {
       if (element != null) {
-        element.recalculate(pixelSize);
+        element.recalculateElement();
+      }
+    }
+  }
+
+  @Override
+  public void updatePixelSize(Vector2f pixelSize) {
+    super.updatePixelSize(pixelSize);
+    for (UiElement element : children) {
+      if (element != null) {
+        element.updatePixelSize(pixelSize);
       }
     }
   }
 
   public UiElement click(ClickEvent event) {
     if (event.inside()) {
-      System.out.println("inside");
       for (UiElement element : children) {
-        System.out.println("loop: " + element);
         if (element.isPixelInside(event.x(), event.y())) {
-          System.out.println("child inside");
           if (element instanceof UiFunctionalElement) {
-            System.out.println("child functional");
             UiFunctionalElement basicElement = (UiFunctionalElement) element;
             if (basicElement.clickable()) {
-              System.out.println("child clickable");
               if (((ClickEvent.Listener) basicElement).handleClick(event)) {
-                System.out.println("child clicked");
                 if (basicElement.selectable()) {
-                  System.out.println("child selectable");
                   return element;
                 }
               }
-            }else if (basicElement.selectable()) {
-              System.out.println("selectable");
+            } else if (basicElement.selectable()) {
               return basicElement;
-            }else {
+            } else {
               return basicElement.click(event);
             }
           }
@@ -88,13 +91,23 @@ public abstract class UiFunctionalElement extends UiElement {
   }
 
   public void addElement(UiElement element) {
+    addElement(element, UiConstraints.getDefault());
+  }
+
+  public void addElement(UiElement element, UiConstraints constraints) {
     children.add(element);
-    element.constraints().setParent(constraints());
-    element.initialize();
-    element.recalculate(pixelSize());
+
+    element.setParent(this);
     if (element instanceof UiFunctionalElement) {
       ((UiFunctionalElement) element).setRoot(root);
     }
+
+    element.setConstraints(constraints);
+    constraints.initialize(element, this);
+
+    element.initialize();
+    element.updatePixelSize(pixelSize());
+    element.recalculateElement();
   }
 
   public List<UiElement> children() {

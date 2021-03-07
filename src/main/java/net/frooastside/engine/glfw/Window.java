@@ -271,7 +271,7 @@ public class Window {
     }
 
     public void handleKey(long window, int key, int scancode, int action, int modifiers) {
-      if(key != GLFW.GLFW_KEY_UNKNOWN) {
+      if (key != GLFW.GLFW_KEY_UNKNOWN) {
         switch (action) {
           case GLFW.GLFW_PRESS -> keyboardButtons[key] = true;
           case GLFW.GLFW_RELEASE -> keyboardButtons[key] = false;

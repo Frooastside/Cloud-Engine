@@ -1,15 +1,23 @@
 package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.Constraint;
+import net.frooastside.engine.userinterface.UiConstraint;
 
-public class RawConstraint extends Constraint {
+public class RawConstraint extends UiConstraint {
+
+  private float rawValue;
 
   public RawConstraint(float rawValue) {
-    setRawValue(rawValue);
+    this.rawValue = rawValue;
   }
 
   @Override
-  public void recalculate() {
+  public float rawValue() {
+    return rawValue;
+  }
+
+  @Override
+  public void setValue(float value) {
+    this.rawValue = value;
   }
 
   @Override

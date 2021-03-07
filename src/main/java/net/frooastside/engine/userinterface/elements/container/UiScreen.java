@@ -6,7 +6,7 @@ import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.glfw.callbacks.MouseButtonCallback;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.events.ClickEvent;
-import net.frooastside.engine.userinterface.ElementConstraints;
+import net.frooastside.engine.userinterface.UiConstraints;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
 import net.frooastside.engine.userinterface.UiColorSet;
 import net.frooastside.engine.userinterface.elements.*;
@@ -14,7 +14,7 @@ import org.joml.Vector2f;
 
 public abstract class UiScreen extends UiFunctionalElement implements ClickEvent.Listener, MouseButtonCallback, KeyCallback, CharCallback {
 
-  private static final ElementConstraints DEFAULT_ELEMENT_CONSTRAINTS = ElementConstraints.getDefault();
+  private static final UiConstraints DEFAULT_ELEMENT_CONSTRAINTS = UiConstraints.getDefault();
 
   private final Window window;
   private final ResourceFont font;
@@ -31,14 +31,26 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
 
   public abstract void initialize();
 
-  public void recalculate() {
-    recalculate(pixelSize().set(1f / window.resolution().x, 1f / window.resolution().y));
+  public void recalculateScreen() {
+    updatePixelSize(pixelSize().set(1f / window.resolution().x, 1f / window.resolution().y));
+    recalculateElement();
   }
 
   @Override
-  public void recalculate(Vector2f pixelSize) {
+  public void recalculateElement() {
     for (UiElement element : children()) {
-      element.recalculate(pixelSize);
+      if (element != null) {
+        element.recalculateElement();
+      }
+    }
+  }
+
+  @Override
+  public void updatePixelSize(Vector2f pixelSize) {
+    for (UiElement element : children()) {
+      if (element != null) {
+        element.updatePixelSize(pixelSize);
+      }
     }
   }
 
@@ -74,23 +86,17 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
 
   @Override
   public boolean handleClick(ClickEvent event) {
-    System.out.println("click");
     UiElement selectedElement = click(event);
-    System.out.println(selectedElement);
     if (this.selectedElement != selectedElement) {
-      System.out.println("old slctd element not equal to clicked element");
       if (this.selectedElement != null && this.selectedElement.selectable()) {
-        System.out.println("deselect old slctd element");
         ((SelectionEvent.Listener) this.selectedElement).handleSelection(new SelectionEvent(false));
       }
       if (selectedElement instanceof UiFunctionalElement) {
-        System.out.println("look if functional element did get clicked");
         if (((UiFunctionalElement) selectedElement).selectable()) {
-          System.out.println("find slctn listener on new element");
           ((SelectionEvent.Listener) selectedElement).handleSelection(new SelectionEvent(true));
         }
         this.selectedElement = (UiFunctionalElement) selectedElement;
-      }else {
+      } else {
         this.selectedElement = null;
       }
     }
@@ -98,7 +104,7 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
   }
 
   @Override
-  public ElementConstraints constraints() {
+  public UiConstraints constraints() {
     return DEFAULT_ELEMENT_CONSTRAINTS;
   }
 

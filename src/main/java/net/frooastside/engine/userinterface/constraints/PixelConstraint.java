@@ -1,8 +1,8 @@
 package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.Constraint;
+import net.frooastside.engine.userinterface.UiConstraint;
 
-public class PixelConstraint extends Constraint {
+public class PixelConstraint extends UiConstraint {
 
   private int pixels;
 
@@ -11,12 +11,17 @@ public class PixelConstraint extends Constraint {
   }
 
   @Override
-  public void recalculate() {
+  public float rawValue() {
     if (type() == ConstraintType.X || type() == ConstraintType.WIDTH) {
-      setRawValue(pixels * constraints().pixelSize().x);
-    } else if (type() == ConstraintType.Y || type() == ConstraintType.HEIGHT) {
-      setRawValue(pixels * constraints().pixelSize().y);
+      return pixels * constraints().pixelSize().x;
+    } else {
+      return pixels * constraints().pixelSize().y;
     }
+  }
+
+  @Override
+  public void setValue(float value) {
+
   }
 
   @Override
