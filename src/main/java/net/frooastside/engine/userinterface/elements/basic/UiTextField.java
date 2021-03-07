@@ -49,9 +49,9 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
   }
 
   @Override
-  public void recalculateElement() {
+  public void recalculateBounds() {
     updateRenderElements();
-    super.recalculateElement();
+    super.recalculateBounds();
   }
 
   public void updateRenderElements() {
@@ -124,24 +124,24 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             text = text.substring(0, cursor - 1) + text.substring(cursor);
             cursor--;
             resetSelection();
-            recalculateElement();
+            recalculateBounds();
           }
         } else {
           deleteSelection();
           resetSelection();
-          recalculateElement();
+          recalculateBounds();
         }
       } else if (key == GLFW.GLFW_KEY_DELETE) {
         if (selectionStart == selectionEnd) {
           if (cursor < text.length()) {
             text = text.substring(0, cursor) + text.substring(cursor + 1);
             resetSelection();
-            recalculateElement();
+            recalculateBounds();
           }
         } else {
           deleteSelection();
           resetSelection();
-          recalculateElement();
+          recalculateBounds();
         }
       } else if (key == GLFW.GLFW_KEY_LEFT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
@@ -149,13 +149,13 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             if (cursor > 0 && text.length() >= cursor) {
               selectionStart--;
               cursor = selectionStart;
-              recalculateElement();
+              recalculateBounds();
             }
           } else if (cursor == selectionEnd) {
             if (cursor > selectionStart) {
               selectionEnd--;
               cursor = selectionEnd;
-              recalculateElement();
+              recalculateBounds();
             }
           }
         } else {
@@ -165,7 +165,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             }
           }
           resetSelection();
-          recalculateElement();
+          recalculateBounds();
         }
       } else if (key == GLFW.GLFW_KEY_RIGHT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
@@ -173,13 +173,13 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             if (cursor < text.length()) {
               selectionEnd++;
               cursor = selectionEnd;
-              recalculateElement();
+              recalculateBounds();
             }
           } else if (cursor == selectionStart) {
             if (selectionStart < selectionEnd) {
               selectionStart++;
               cursor = selectionStart;
-              recalculateElement();
+              recalculateBounds();
             }
           }
         } else {
@@ -189,7 +189,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
             }
           }
           resetSelection();
-          recalculateElement();
+          recalculateBounds();
         }
       } else if (key == GLFW.GLFW_KEY_A && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart == 0 && selectionEnd == text.length()) {
@@ -200,7 +200,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
           selectionEnd = text.length();
           cursor = selectionEnd;
         }
-        recalculateElement();
+        recalculateBounds();
       } else if (key == GLFW.GLFW_KEY_C && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
@@ -213,14 +213,14 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
         this.text = textBeforeCursor() + clipboard + textAfterCursor();
         this.cursor += clipboard.length();
         resetSelection();
-        recalculateElement();
+        recalculateBounds();
       } else if (key == GLFW.GLFW_KEY_X && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
           deleteSelection();
         }
         resetSelection();
-        recalculateElement();
+        recalculateBounds();
       }
     }
   }
@@ -233,7 +233,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
     this.text = textBeforeCursor() + (char) codepoint + textAfterCursor();
     this.cursor++;
     resetSelection();
-    recalculateElement();
+    recalculateBounds();
   }
 
   @Override
@@ -250,7 +250,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
       cursor = selectionStart;
     }
     resetSelection();
-    recalculateElement();
+    recalculateBounds();
   }
 
   private void resetSelection() {
@@ -276,6 +276,6 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
 
   public void setText(String text) {
     this.text = text;
-    recalculateElement();
+    recalculateBounds();
   }
 }

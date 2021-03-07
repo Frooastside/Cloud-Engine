@@ -33,14 +33,14 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
 
   public void recalculateScreen() {
     updatePixelSize(pixelSize().set(1f / window.resolution().x, 1f / window.resolution().y));
-    recalculateElement();
+    this.recalculateBounds();
   }
 
   @Override
-  public void recalculateElement() {
+  public void recalculateBounds() {
     for (UiElement element : children()) {
       if (element != null) {
-        element.recalculateElement();
+        element.recalculateBounds();
       }
     }
   }

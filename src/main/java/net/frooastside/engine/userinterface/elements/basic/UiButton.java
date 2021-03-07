@@ -65,6 +65,6 @@ public class UiButton extends UiFunctionalElement implements ClickEvent.Listener
 
   public void setText(String text) {
     this.text = text;
-    recalculateElement();
+    recalculateBounds();
   }
 }

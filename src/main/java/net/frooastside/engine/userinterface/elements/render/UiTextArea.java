@@ -13,8 +13,8 @@ public class UiTextArea extends UiText {
   }
 
   @Override
-  public void recalculateElement() {
-    super.recalculateElement();
+  public void recalculateBounds() {
+    super.recalculateBounds();
     float maxLineLength = bounds().z;
     float rawHeight = bounds().w;
 

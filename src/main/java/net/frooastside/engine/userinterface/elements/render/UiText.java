@@ -30,8 +30,8 @@ public class UiText extends UiRenderElement {
   }
 
   @Override
-  public void recalculateElement() {
-    super.recalculateElement();
+  public void recalculateBounds() {
+    super.recalculateBounds();
     this.aspectRatio = pixelSize().y / pixelSize().x;
     float maxLineLength = bounds().z;
     float rawHeight = bounds().w;
@@ -178,6 +178,6 @@ public class UiText extends UiRenderElement {
 
   public void setText(String text) {
     this.text = text;
-    recalculateElement();
+    recalculateBounds();
   }
 }

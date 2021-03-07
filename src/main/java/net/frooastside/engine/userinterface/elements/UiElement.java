@@ -1,6 +1,7 @@
 package net.frooastside.engine.userinterface.elements;
 
 import net.frooastside.engine.userinterface.UiConstraints;
+import net.frooastside.engine.userinterface.animation.UiAnimator;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -8,26 +9,20 @@ public abstract class UiElement {
 
   private final Vector2f pixelSize = new Vector2f();
 
-  private UiElement parent;
   private UiConstraints constraints;
+  private UiAnimator animator = new UiAnimator(this);
+
+  private UiElement parent;
 
   private final Vector4f bounds = new Vector4f(0, 0, 1, 1);
   private float alpha = 1.0f;
 
-  public void recalculateElement() {
-    calculateBounds();
-  }
-
-  public void updatePixelSize(Vector2f pixelSize) {
-    this.pixelSize.set(pixelSize);
-    constraints.setPixelSize(pixelSize);
-  }
-
-  public void calculateBounds() {
-    float x = constraints.x().rawValue();
-    float y = constraints.y().rawValue();
-    float width = constraints.width().rawValue();
-    float height = constraints.height().rawValue();
+  public void recalculateBounds() {
+    System.out.println(animator().offset());
+    float x = constraints.x().rawValue() + animator.offset().x;
+    float y = constraints.y().rawValue() + animator.offset().y;
+    float width = constraints.width().rawValue() * animator.offset().z;
+    float height = constraints.height().rawValue() * animator.offset().w;
     bounds.set(
       (constraints.x().relative() ? x * parent.bounds().z : x) + parent.bounds().x,
       (constraints.y().relative() ? y * parent.bounds().w : y) + parent.bounds().y,
@@ -35,7 +30,13 @@ public abstract class UiElement {
       constraints.height().relative() ? (height * parent.bounds().w) : height);
   }
 
+  public void updatePixelSize(Vector2f pixelSize) {
+    this.pixelSize.set(pixelSize);
+    constraints.setPixelSize(pixelSize);
+  }
+
   public void update(double delta) {
+    animator.update(delta);
   }
 
   public void initialize() {
@@ -60,10 +61,6 @@ public abstract class UiElement {
     return pixelSize;
   }
 
-  public Vector4f bounds() {
-    return bounds;
-  }
-
   public UiElement parent() {
     return parent;
   }
@@ -78,6 +75,14 @@ public abstract class UiElement {
 
   public void setConstraints(UiConstraints constraints) {
     this.constraints = constraints;
+  }
+
+  public UiAnimator animator() {
+    return animator;
+  }
+
+  public Vector4f bounds() {
+    return bounds;
   }
 
   public float alpha() {

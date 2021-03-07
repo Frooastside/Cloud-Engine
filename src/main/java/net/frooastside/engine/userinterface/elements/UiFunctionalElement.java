@@ -28,11 +28,11 @@ public abstract class UiFunctionalElement extends UiElement {
   }
 
   @Override
-  public void recalculateElement() {
-    super.recalculateElement();
+  public void recalculateBounds() {
+    super.recalculateBounds();
     for (UiElement element : children) {
       if (element != null) {
-        element.recalculateElement();
+        element.recalculateBounds();
       }
     }
   }
@@ -107,7 +107,7 @@ public abstract class UiFunctionalElement extends UiElement {
 
     element.initialize();
     element.updatePixelSize(pixelSize());
-    element.recalculateElement();
+    element.recalculateBounds();
   }
 
   public List<UiElement> children() {

@@ -1,6 +1,6 @@
 package net.frooastside.engine.userinterface.animation;
 
-public enum UiAnimationType {
+public enum UiTransitionType {
 
   X(0, UiAnimator::applyX),
   Y(0, UiAnimator::applyY),
@@ -11,7 +11,7 @@ public enum UiAnimationType {
   private final float standardValue;
   private final ValueSetter valueSetter;
 
-  UiAnimationType(float standardValue, ValueSetter valueSetter) {
+  UiTransitionType(float standardValue, ValueSetter valueSetter) {
     this.standardValue = standardValue;
     this.valueSetter = valueSetter;
   }
