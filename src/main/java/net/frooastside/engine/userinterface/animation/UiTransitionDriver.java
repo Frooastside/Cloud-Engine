@@ -22,12 +22,12 @@ public abstract class UiTransitionDriver {
 
   public float update(double delta) {
     this.time += delta;
-    if(time < startTime) {
+    if (time < startTime) {
       this.currentValue = calculateValue(0);
       return currentValue;
     }
     float endTime = startTime + length;
-    if(time >= endTime) {
+    if (time >= endTime) {
       time %= endTime;
       finishedFirstPeriod = true;
     }

@@ -8,19 +8,15 @@ public class CenterConstraint extends UiConstraint {
 
   @Override
   public float rawValue() {
-    UiConstraint oppositeConstraint = getOpposite();
-    if (!(oppositeConstraint instanceof CenterConstraint)) {
-      float oppositeRawValue = oppositeConstraint.rawValue();
-      Vector4f parentBounds = parent().bounds();
-      if (type() == ConstraintType.X || type() == ConstraintType.Y) {
-        return (type() == ConstraintType.X ? parentBounds.z - oppositeRawValue : parentBounds.w - oppositeRawValue) / 2;
-      } else {
-        float offset = oppositeRawValue - (type() == ConstraintType.WIDTH ? parentBounds.x : parentBounds.y);
-        return ((type() == ConstraintType.WIDTH) ? parentBounds.z : parentBounds.w) - (offset * 2);
-      }
+    float oppositeRawValue = current().rawValueOf(getOpposite());
+    Vector4f parentBounds = parent().bounds();
+    if (type() == ConstraintType.X || type() == ConstraintType.Y) {
+      return (type() == ConstraintType.X ? parentBounds.z - oppositeRawValue : parentBounds.w - oppositeRawValue) / 2;
     } else {
-      throw new IllegalStateException(I18n.get("error.userinterface.doubleCenter"));
+      float offset = oppositeRawValue - (type() == ConstraintType.WIDTH ? parentBounds.x : parentBounds.y);
+      return ((type() == ConstraintType.WIDTH) ? parentBounds.z : parentBounds.w) - (offset * 2);
     }
+    //throw new IllegalStateException(I18n.get("error.userinterface.doubleCenter"));
   }
 
   @Override

@@ -45,7 +45,7 @@ public class SlideTransition implements UiTransition {
 
     @Override
     public float calculateValue(float time) {
-      if(super.finishedFirstPeriod()) {
+      if (super.finishedFirstPeriod()) {
         return endValue;
       }
       return cosInterpolate(startValue, endValue, time);

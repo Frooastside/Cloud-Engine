@@ -1,5 +1,6 @@
 package net.frooastside.engine.userinterface.elements;
 
+import net.frooastside.engine.userinterface.UiConstraint;
 import net.frooastside.engine.userinterface.UiConstraints;
 import net.frooastside.engine.userinterface.animation.UiAnimation;
 import net.frooastside.engine.userinterface.animation.UiAnimator;
@@ -22,7 +23,7 @@ public abstract class UiElement {
   private float displayAnimationDelay;
 
   public void update(double delta) {
-    if(animator != null) {
+    if (animator != null) {
       animator.update(delta);
     }
   }
@@ -33,21 +34,46 @@ public abstract class UiElement {
   }
 
   public void recalculateBounds() {
-    float x = constraints.x().rawValue() + (animator != null ? animator.offset().x : 0);
-    float y = constraints.y().rawValue() + (animator != null ? animator.offset().y : 0);
-    float width = constraints.width().rawValue() * (animator != null ? animator.offset().z : 1);
-    float height = constraints.height().rawValue() * (animator != null ? animator.offset().w : 1);
     bounds.set(
-      (constraints.x().relative() ? x * parent.bounds().z : x) + parent.bounds().x,
-      (constraints.y().relative() ? y * parent.bounds().w : y) + parent.bounds().y,
-      constraints.width().relative() ? (width * parent.bounds().z) : width,
-      constraints.height().relative() ? (height * parent.bounds().w) : height);
+      rawValueOf(UiConstraint.ConstraintType.X) + parent.bounds().x,
+      rawValueOf(UiConstraint.ConstraintType.Y) + parent.bounds().y,
+      rawValueOf(UiConstraint.ConstraintType.WIDTH),
+      rawValueOf(UiConstraint.ConstraintType.HEIGHT));
+  }
+
+  public float rawValueOf(UiConstraint.ConstraintType constraintType) {
+    return rawValueOf(constraints.getConstraint(constraintType), constraintType);
+  }
+
+  public float rawValueOf(UiConstraint constraint) {
+    return rawValueOf(constraint, constraint.type());
+  }
+
+  public float rawValueOf(UiConstraint constraint, UiConstraint.ConstraintType constraintType) {
+    float rawValue = constraint.relative() ?
+      constraint.rawValue() *
+        (constraintType == UiConstraint.ConstraintType.X || constraintType == UiConstraint.ConstraintType.WIDTH ?
+          parent().bounds().z
+          : parent().bounds().w)
+      : constraint.rawValue();
+    if(animator != null) {
+      if(constraintType == UiConstraint.ConstraintType.X) {
+        rawValue += animator.offset().x;
+      }else if(constraintType == UiConstraint.ConstraintType.Y) {
+        rawValue += animator.offset().y;
+      }else if(constraintType == UiConstraint.ConstraintType.WIDTH) {
+        rawValue *= animator.offset().z;
+      }else {
+        rawValue *= animator.offset().w;
+      }
+    }
+    return rawValue;
   }
 
   public void display(boolean show, float parentDelay) {
-    if(show != visible) {
+    if (show != visible) {
       this.visible = show;
-      if(displayAnimation != null) {
+      if (displayAnimation != null) {
         animator().applyAnimation(displayAnimation, show, parentDelay + displayAnimationDelay);
       }
     }
@@ -92,7 +118,7 @@ public abstract class UiElement {
   }
 
   public UiAnimator animator() {
-    if(animator == null) {
+    if (animator == null) {
       animator = new UiAnimator(this);
     }
     return animator;

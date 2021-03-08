@@ -51,7 +51,7 @@ public class UiAnimation {
     public void update(UiAnimator animator, double delta) {
       boolean valueChanging = !transitionFinished();
       time += delta;
-      for(Map.Entry<UiTransitionType, UiTransitionDriver> driver : drivers.entrySet()) {
+      for (Map.Entry<UiTransitionType, UiTransitionDriver> driver : drivers.entrySet()) {
         float value = driver.getValue().update(delta);
         driver.getKey().applyValue(animator, value, valueChanging);
       }

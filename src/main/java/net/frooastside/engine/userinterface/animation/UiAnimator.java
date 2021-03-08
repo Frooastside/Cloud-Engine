@@ -36,7 +36,7 @@ public class UiAnimator {
     while (iterator.hasNext()) {
       UiAnimation.Instance animationInstance = iterator.next().getValue();
       animationInstance.update(this, delta);
-      if(animationInstance.isRedundant()) {
+      if (animationInstance.isRedundant()) {
         iterator.remove();
       }
     }
