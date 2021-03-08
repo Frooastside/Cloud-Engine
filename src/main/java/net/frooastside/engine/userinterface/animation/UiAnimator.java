@@ -23,10 +23,10 @@ public class UiAnimator {
     this.element = element;
   }
 
-  public void applyTransition(UiAnimation animation, boolean reverse, float delay) {
+  public void applyAnimation(UiAnimation animation, boolean reverse, float delay) {
     UiAnimation.Instance oldInstance = animations.remove(animation);
-    UiAnimation.Instance newModifier = animation.createInstance(oldInstance, reverse, delay);
-    animations.put(animation, newModifier);
+    UiAnimation.Instance newInstance = animation.createInstance(oldInstance, reverse, delay);
+    animations.put(animation, newInstance);
   }
 
   public void update(double delta) {
@@ -41,7 +41,6 @@ public class UiAnimator {
       }
     }
 
-    element.setAlpha(alpha);
     if (recalculatePosition) {
       element.recalculateBounds();
     }
@@ -65,21 +64,23 @@ public class UiAnimator {
   }
 
   public void applyWidth(float width, boolean recalculate) {
-    this.offset.z += width;
+    this.offset.z *= width;
+    this.recalculatePosition |= recalculate;
     this.recalculateSize |= recalculate;
   }
 
   public void applyHeight(float height, boolean recalculate) {
-    this.offset.w += height;
+    this.offset.w *= height;
+    this.recalculatePosition |= recalculate;
     this.recalculateSize |= recalculate;
-  }
-
-  public void applyAlpha(float alpha) {
-    this.alpha = alpha;
   }
 
   public Vector4f offset() {
     return offset;
+  }
+
+  public void applyAlpha(float alpha) {
+    this.alpha = alpha;
   }
 
   public float alpha() {

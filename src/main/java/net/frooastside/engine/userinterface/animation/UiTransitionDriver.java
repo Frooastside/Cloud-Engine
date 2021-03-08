@@ -11,13 +11,13 @@ public abstract class UiTransitionDriver {
   private boolean finishedFirstPeriod;
 
   public UiTransitionDriver(float length) {
-    this.length = length;
     this.startTime = 0;
+    this.length = length;
   }
 
   public UiTransitionDriver(float startTime, float length) {
-    this.length = length;
     this.startTime = startTime;
+    this.length = length;
   }
 
   public float update(double delta) {

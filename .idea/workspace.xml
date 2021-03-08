@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca4212f5-c842-49de-841c-dd77d5fb7af2" name="Default Changelist" comment="" />
+    <list default="true" id="ca4212f5-c842-49de-841c-dd77d5fb7af2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiTransitionDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiTransitionDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiFunctionalElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiFunctionalElement.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,7 +50,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="com.google.cloudcode.ide_session_index" value="20210307_0011" />
+    <property name="com.google.cloudcode.ide_session_index" value="20210308_0002" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/world" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />

@@ -28,6 +28,16 @@ public abstract class UiFunctionalElement extends UiElement {
   }
 
   @Override
+  public void updatePixelSize(Vector2f pixelSize) {
+    super.updatePixelSize(pixelSize);
+    for (UiElement element : children) {
+      if (element != null) {
+        element.updatePixelSize(pixelSize);
+      }
+    }
+  }
+
+  @Override
   public void recalculateBounds() {
     super.recalculateBounds();
     for (UiElement element : children) {
@@ -38,11 +48,11 @@ public abstract class UiFunctionalElement extends UiElement {
   }
 
   @Override
-  public void updatePixelSize(Vector2f pixelSize) {
-    super.updatePixelSize(pixelSize);
+  public void display(boolean show, float parentDelay) {
+    super.display(show, parentDelay);
     for (UiElement element : children) {
       if (element != null) {
-        element.updatePixelSize(pixelSize);
+        element.display(show, parentDelay + displayAnimationDelay());
       }
     }
   }
