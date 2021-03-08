@@ -6,23 +6,23 @@ import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.glfw.callbacks.MouseButtonCallback;
 import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.events.ClickEvent;
-import net.frooastside.engine.userinterface.UiConstraints;
+import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
-import net.frooastside.engine.userinterface.UiColorSet;
+import net.frooastside.engine.userinterface.ColorSet;
 import net.frooastside.engine.userinterface.elements.*;
 import org.joml.Vector2f;
 
-public abstract class UiScreen extends UiFunctionalElement implements ClickEvent.Listener, MouseButtonCallback, KeyCallback, CharCallback {
+public abstract class Screen extends FunctionalElement implements ClickEvent.Listener, MouseButtonCallback, KeyCallback, CharCallback {
 
-  private static final UiConstraints DEFAULT_ELEMENT_CONSTRAINTS = UiConstraints.getDefault();
+  private static final ElementConstraints DEFAULT_ELEMENT_CONSTRAINTS = ElementConstraints.getDefault();
 
   private final Window window;
   private final ResourceFont font;
-  private final UiColorSet colorSet;
+  private final ColorSet colorSet;
 
-  private UiFunctionalElement selectedElement;
+  private FunctionalElement selectedElement;
 
-  public UiScreen(Window window, ResourceFont font, UiColorSet colorSet) {
+  public Screen(Window window, ResourceFont font, ColorSet colorSet) {
     this.window = window;
     this.font = font;
     this.colorSet = colorSet;
@@ -38,7 +38,7 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
 
   @Override
   public void recalculateBounds() {
-    for (UiElement element : children()) {
+    for (Element element : children()) {
       if (element != null) {
         element.recalculateBounds();
       }
@@ -47,7 +47,7 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
 
   @Override
   public void updatePixelSize(Vector2f pixelSize) {
-    for (UiElement element : children()) {
+    for (Element element : children()) {
       if (element != null) {
         element.updatePixelSize(pixelSize);
       }
@@ -86,16 +86,16 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
 
   @Override
   public boolean handleClick(ClickEvent event) {
-    UiElement selectedElement = click(event);
+    Element selectedElement = click(event);
     if (this.selectedElement != selectedElement) {
       if (this.selectedElement != null && this.selectedElement.selectable()) {
         ((SelectionEvent.Listener) this.selectedElement).handleSelection(new SelectionEvent(false));
       }
-      if (selectedElement instanceof UiFunctionalElement) {
-        if (((UiFunctionalElement) selectedElement).selectable()) {
+      if (selectedElement instanceof FunctionalElement) {
+        if (((FunctionalElement) selectedElement).selectable()) {
           ((SelectionEvent.Listener) selectedElement).handleSelection(new SelectionEvent(true));
         }
-        this.selectedElement = (UiFunctionalElement) selectedElement;
+        this.selectedElement = (FunctionalElement) selectedElement;
       } else {
         this.selectedElement = null;
       }
@@ -104,7 +104,7 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
   }
 
   @Override
-  public UiConstraints constraints() {
+  public ElementConstraints constraints() {
     return DEFAULT_ELEMENT_CONSTRAINTS;
   }
 
@@ -112,7 +112,7 @@ public abstract class UiScreen extends UiFunctionalElement implements ClickEvent
     return font;
   }
 
-  public UiColorSet colorSet() {
+  public ColorSet colorSet() {
     return colorSet;
   }
 }

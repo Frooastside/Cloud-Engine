@@ -1,14 +1,14 @@
 package net.frooastside.engine.userinterface.elements.render;
 
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.UiColor;
+import net.frooastside.engine.userinterface.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UiTextArea extends UiText {
+public class TextArea extends Text {
 
-  public UiTextArea(ResourceFont font, String text, UiColor color) {
+  public TextArea(ResourceFont font, String text, Color color) {
     super(font, text, color, false);
   }
 

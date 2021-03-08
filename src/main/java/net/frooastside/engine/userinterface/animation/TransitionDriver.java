@@ -1,6 +1,6 @@
 package net.frooastside.engine.userinterface.animation;
 
-public abstract class UiTransitionDriver {
+public abstract class TransitionDriver {
 
   private final float startTime;
   private final float length;
@@ -10,12 +10,12 @@ public abstract class UiTransitionDriver {
   private float currentValue;
   private boolean finishedFirstPeriod;
 
-  public UiTransitionDriver(float length) {
+  public TransitionDriver(float length) {
     this.startTime = 0;
     this.length = length;
   }
 
-  public UiTransitionDriver(float startTime, float length) {
+  public TransitionDriver(float startTime, float length) {
     this.startTime = startTime;
     this.length = length;
   }

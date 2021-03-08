@@ -1,9 +1,9 @@
 package net.frooastside.engine.userinterface.animation.transitions;
 
-import net.frooastside.engine.userinterface.animation.UiTransition;
-import net.frooastside.engine.userinterface.animation.UiTransitionDriver;
+import net.frooastside.engine.userinterface.animation.Transition;
+import net.frooastside.engine.userinterface.animation.TransitionDriver;
 
-public class SlideTransition implements UiTransition {
+public class SlideTransition implements Transition {
 
   private final float duration;
   private final float delay;
@@ -16,7 +16,7 @@ public class SlideTransition implements UiTransition {
   }
 
   @Override
-  public UiTransitionDriver createDriver(float standardValue, float currentValue, boolean reverse, float totalDelay, float totalDuration) {
+  public TransitionDriver createDriver(float standardValue, float currentValue, boolean reverse, float totalDelay, float totalDuration) {
     float target = reverse ? standardValue : offset;
     float delay = reverse ? totalDuration - (this.delay + this.duration) : this.delay;
     return new SlideTransitionDriver(currentValue, target, duration, delay + totalDelay);
@@ -32,7 +32,7 @@ public class SlideTransition implements UiTransition {
     return offset;
   }
 
-  public static class SlideTransitionDriver extends UiTransitionDriver {
+  public static class SlideTransitionDriver extends TransitionDriver {
 
     private final float startValue;
     private final float endValue;

@@ -5,14 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca4212f5-c842-49de-841c-dd77d5fb7af2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/MathConstraint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiTransitionDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiTransitionDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/Color.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiColorSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/ColorSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/Constraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/UiConstraints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/ElementConstraints.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/Animation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiAnimator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/Animator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiTransition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/Transition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiTransitionDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/TransitionDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/UiTransitionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/TransitionType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/transitions/SlideTransition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/transitions/SlideTransition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/CenterConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/CenterConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/MathConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/MathConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/PixelConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/PixelConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RawConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RawConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RelativeConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RelativeConstraint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/Element.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiFunctionalElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/FunctionalElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/UiRenderElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/RenderElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/UiButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/Button.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/UiTextField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/TextField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/container/UiPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/container/Panel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/container/UiScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/container/Screen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/UiBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/Box.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/UiText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/Text.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/UiTextArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/TextArea.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UiRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UserInterfaceRenderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +72,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="com.google.cloudcode.ide_session_index" value="20210308_0004" />
+    <property name="com.google.cloudcode.ide_session_index" value="20210308_0007" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/world" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />

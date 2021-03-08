@@ -1,15 +1,15 @@
-package net.frooastside.engine.userinterface;
+package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.elements.UiElement;
+import net.frooastside.engine.userinterface.elements.Element;
 
-public abstract class UiConstraint {
+public abstract class Constraint {
 
-  private UiConstraints constraints;
+  private ElementConstraints constraints;
   private ConstraintType type;
-  private UiElement current;
-  private UiElement parent;
+  private Element current;
+  private Element parent;
 
-  public void initialize(UiConstraints constraints, UiElement current, UiElement parent) {
+  public void initialize(ElementConstraints constraints, Element current, Element parent) {
     this.constraints = constraints;
     this.current = current;
     this.parent = parent;
@@ -21,15 +21,15 @@ public abstract class UiConstraint {
 
   public abstract boolean relative();
 
-  protected UiConstraint getCounterpart() {
+  protected Constraint getCounterpart() {
     return constraints.getCounterpart(this);
   }
 
-  protected UiConstraint getOpposite() {
+  protected Constraint getOpposite() {
     return constraints.getOpposite(this);
   }
 
-  public UiConstraints constraints() {
+  public ElementConstraints constraints() {
     return constraints;
   }
 
@@ -41,11 +41,11 @@ public abstract class UiConstraint {
     this.type = type;
   }
 
-  public UiElement current() {
+  public Element current() {
     return current;
   }
 
-  public UiElement parent() {
+  public Element parent() {
     return parent;
   }
 

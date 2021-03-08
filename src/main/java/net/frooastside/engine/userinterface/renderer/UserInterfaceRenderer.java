@@ -6,17 +6,15 @@ import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarg
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsage;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.BufferUtils;
-import net.frooastside.engine.userinterface.elements.UiElement;
-import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
-import net.frooastside.engine.userinterface.elements.UiRenderElement;
-import net.frooastside.engine.userinterface.elements.container.UiScreen;
-import net.frooastside.engine.userinterface.elements.render.UiBox;
-import net.frooastside.engine.userinterface.elements.render.UiText;
+import net.frooastside.engine.userinterface.elements.Element;
+import net.frooastside.engine.userinterface.elements.FunctionalElement;
+import net.frooastside.engine.userinterface.elements.RenderElement;
+import net.frooastside.engine.userinterface.elements.container.Screen;
+import net.frooastside.engine.userinterface.elements.render.Box;
+import net.frooastside.engine.userinterface.elements.render.Text;
 import org.lwjgl.opengl.GL11;
 
-import java.util.List;
-
-public class UiRenderer {
+public class UserInterfaceRenderer {
 
   private static final float[] DEFAULT_BOX_POSITIONS = new float[]{-1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1};
   private static final float[] DEFAULT_BOX_TEXTURE_COORDINATES = new float[]{0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1};
@@ -26,9 +24,9 @@ public class UiRenderer {
   private final BasicBoxShader boxShader;
   private final BasicFontShader fontShader;
 
-  private UiRenderElement.RenderType currentRenderType;
+  private RenderElement.RenderType currentRenderType;
 
-  public UiRenderer(BasicBoxShader boxShader, BasicFontShader fontShader) {
+  public UserInterfaceRenderer(BasicBoxShader boxShader, BasicFontShader fontShader) {
     this.boxShader = boxShader;
     this.fontShader = fontShader;
   }
@@ -38,7 +36,7 @@ public class UiRenderer {
     fontShader.initialize();
   }
 
-  public void render(UiScreen screen) {
+  public void render(Screen screen) {
     prepare();
     renderElements(screen, screen.alpha());
     endShader(currentRenderType);
@@ -53,19 +51,21 @@ public class UiRenderer {
     GL11.glDisable(GL11.GL_CULL_FACE);
   }
 
-  private void renderElements(UiElement element, float alpha) {
-    if (element instanceof UiRenderElement) {
-      UiRenderElement renderElement = ((UiRenderElement) element);
-      prepareRendering(renderElement);
-      renderElement(renderElement, alpha);
-    } else if (element instanceof UiFunctionalElement) {
-      UiFunctionalElement functionalElement = ((UiFunctionalElement) element);
+  private void renderElements(Element element, float alpha) {
+    if (element instanceof RenderElement) {
+      RenderElement renderElement = ((RenderElement) element);
+      //if(renderElement.visible()) {
+        prepareRendering(renderElement);
+        renderElement(renderElement, alpha);
+      //}
+    } else if (element instanceof FunctionalElement) {
+      FunctionalElement functionalElement = ((FunctionalElement) element);
       functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
     }
   }
 
-  public void prepareRendering(UiRenderElement renderElement) {
-    UiRenderElement.RenderType renderType = renderElement.renderType();
+  public void prepareRendering(RenderElement renderElement) {
+    RenderElement.RenderType renderType = renderElement.renderType();
     if (currentRenderType != renderType) {
       endShader(currentRenderType);
       prepareShader(renderType);
@@ -73,33 +73,33 @@ public class UiRenderer {
     }
   }
 
-  public void prepareShader(UiRenderElement.RenderType renderType) {
-    if (renderType == UiRenderElement.RenderType.BOX) {
+  public void prepareShader(RenderElement.RenderType renderType) {
+    if (renderType == RenderElement.RenderType.BOX) {
       boxShader.start();
       defaultBox.bind();
       defaultBox.enableVertexAttributes();
       return;
     }
-    if (renderType == UiRenderElement.RenderType.TEXT) {
+    if (renderType == RenderElement.RenderType.TEXT) {
       fontShader.start();
     }
   }
 
-  public void endShader(UiRenderElement.RenderType renderType) {
-    if (renderType == UiRenderElement.RenderType.BOX) {
+  public void endShader(RenderElement.RenderType renderType) {
+    if (renderType == RenderElement.RenderType.BOX) {
       defaultBox.disableVertexAttributes();
       defaultBox.unbind();
       boxShader.stop();
       return;
     }
-    if (renderType == UiRenderElement.RenderType.TEXT) {
+    if (renderType == RenderElement.RenderType.TEXT) {
       fontShader.stop();
     }
   }
 
-  public void renderElement(UiRenderElement renderElement, float alpha) {
-    if (renderElement.renderType() == UiRenderElement.RenderType.BOX) {
-      UiBox box = ((UiBox) renderElement);
+  public void renderElement(RenderElement renderElement, float alpha) {
+    if (renderElement.renderType() == RenderElement.RenderType.BOX) {
+      Box box = ((Box) renderElement);
       boxShader.loadTranslation(box.bounds());
       boxShader.loadAlpha(alpha);
       boxShader.loadUseColor(box.useColor());
@@ -111,8 +111,8 @@ public class UiRenderer {
         boxShader.loadTexture(box.texture());
       }
       defaultBox.draw();
-    } else if (renderElement.renderType() == UiRenderElement.RenderType.TEXT) {
-      UiText text = ((UiText) renderElement);
+    } else if (renderElement.renderType() == RenderElement.RenderType.TEXT) {
+      Text text = ((Text) renderElement);
       fontShader.loadOffset(text.bounds().x, text.bounds().y);
       fontShader.loadTexture(text.font().texture());
       fontShader.loadColor(text.color().rawColor());

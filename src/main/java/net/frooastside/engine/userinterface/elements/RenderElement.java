@@ -1,18 +1,18 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.userinterface.UiColor;
+import net.frooastside.engine.userinterface.Color;
 
-public abstract class UiRenderElement extends UiElement {
+public abstract class RenderElement extends Element {
 
-  private UiColor color;
+  private Color color;
 
   public abstract RenderType renderType();
 
-  public UiColor color() {
+  public Color color() {
     return color;
   }
 
-  public void setColor(UiColor color) {
+  public void setColor(Color color) {
     this.color = color;
   }
 

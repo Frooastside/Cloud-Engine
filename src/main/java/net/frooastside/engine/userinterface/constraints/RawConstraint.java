@@ -1,8 +1,6 @@
 package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.UiConstraint;
-
-public class RawConstraint extends UiConstraint {
+public class RawConstraint extends Constraint {
 
   private float rawValue;
 

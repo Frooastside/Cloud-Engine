@@ -1,10 +1,9 @@
 package net.frooastside.engine.userinterface.constraints;
 
 import net.frooastside.engine.language.I18n;
-import net.frooastside.engine.userinterface.UiConstraint;
 import org.joml.Vector4f;
 
-public class CenterConstraint extends UiConstraint {
+public class CenterConstraint extends Constraint {
 
   @Override
   public float rawValue() {

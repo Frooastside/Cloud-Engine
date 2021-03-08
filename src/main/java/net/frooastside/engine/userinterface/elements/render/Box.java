@@ -1,19 +1,19 @@
 package net.frooastside.engine.userinterface.elements.render;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
-import net.frooastside.engine.userinterface.UiColor;
-import net.frooastside.engine.userinterface.elements.UiRenderElement;
+import net.frooastside.engine.userinterface.Color;
+import net.frooastside.engine.userinterface.elements.RenderElement;
 
-public class UiBox extends UiRenderElement {
+public class Box extends RenderElement {
 
   private boolean useColor;
   private Texture texture;
 
-  public UiBox(UiColor color) {
+  public Box(Color color) {
     setColor(color);
   }
 
-  public UiBox(Texture texture) {
+  public Box(Texture texture) {
     this.texture = texture;
   }
 
@@ -23,17 +23,17 @@ public class UiBox extends UiRenderElement {
   }
 
   @Override
-  public void setColor(UiColor color) {
+  public void setColor(Color color) {
     super.setColor(color);
     useColor = true;
   }
 
-  public boolean useColor() {
-    return useColor;
-  }
-
   public boolean useTexture() {
     return texture != null;
+  }
+
+  public boolean useColor() {
+    return useColor;
   }
 
   public Texture texture() {

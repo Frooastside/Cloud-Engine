@@ -7,10 +7,10 @@ import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsag
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.BufferUtils;
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.UiColor;
-import net.frooastside.engine.userinterface.elements.UiRenderElement;
+import net.frooastside.engine.userinterface.Color;
+import net.frooastside.engine.userinterface.elements.RenderElement;
 
-public class UiText extends UiRenderElement {
+public class Text extends RenderElement {
 
   public static final float LINE_HEIGHT = 0.025f;
 
@@ -22,7 +22,7 @@ public class UiText extends UiRenderElement {
 
   private float aspectRatio;
 
-  public UiText(ResourceFont font, String text, UiColor color, boolean centered) {
+  public Text(ResourceFont font, String text, Color color, boolean centered) {
     super.setColor(color);
     this.font = font;
     this.text = text;

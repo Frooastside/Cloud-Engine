@@ -1,17 +1,17 @@
 package net.frooastside.engine.userinterface.animation;
 
-public enum UiTransitionType {
+public enum TransitionType {
 
-  X(0, UiAnimator::applyX),
-  Y(0, UiAnimator::applyY),
-  WIDTH(1, UiAnimator::applyWidth),
-  HEIGHT(1, UiAnimator::applyHeight),
+  X(0, Animator::applyX),
+  Y(0, Animator::applyY),
+  WIDTH(1, Animator::applyWidth),
+  HEIGHT(1, Animator::applyHeight),
   ALPHA(1, (animator, value, recalculate) -> animator.applyAlpha(value));
 
   private final float standardValue;
   private final ValueSetter valueSetter;
 
-  UiTransitionType(float standardValue, ValueSetter valueSetter) {
+  TransitionType(float standardValue, ValueSetter valueSetter) {
     this.standardValue = standardValue;
     this.valueSetter = valueSetter;
   }
@@ -20,13 +20,13 @@ public enum UiTransitionType {
     return standardValue;
   }
 
-  public void applyValue(UiAnimator animator, float value, boolean recalculate) {
+  public void applyValue(Animator animator, float value, boolean recalculate) {
     valueSetter.applyValue(animator, value, recalculate);
   }
 
   private interface ValueSetter {
 
-    void applyValue(UiAnimator animator, float value, boolean recalculate);
+    void applyValue(Animator animator, float value, boolean recalculate);
 
   }
 

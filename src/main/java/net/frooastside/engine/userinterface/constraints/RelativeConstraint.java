@@ -1,8 +1,6 @@
 package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.UiConstraint;
-
-public class RelativeConstraint extends UiConstraint {
+public class RelativeConstraint extends Constraint {
 
   private float relativeValue;
 

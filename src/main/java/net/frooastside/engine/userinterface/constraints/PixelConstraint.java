@@ -1,8 +1,6 @@
 package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.UiConstraint;
-
-public class PixelConstraint extends UiConstraint {
+public class PixelConstraint extends Constraint {
 
   private int pixels;
 

@@ -3,26 +3,26 @@ package net.frooastside.engine.userinterface.elements.basic;
 import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.UiConstraint;
-import net.frooastside.engine.userinterface.UiConstraints;
-import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
+import net.frooastside.engine.userinterface.constraints.Constraint;
+import net.frooastside.engine.userinterface.constraints.ElementConstraints;
+import net.frooastside.engine.userinterface.elements.FunctionalElement;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
-import net.frooastside.engine.userinterface.UiColorSet;
+import net.frooastside.engine.userinterface.ColorSet;
 import net.frooastside.engine.userinterface.constraints.PixelConstraint;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
-import net.frooastside.engine.userinterface.elements.render.UiBox;
-import net.frooastside.engine.userinterface.elements.render.UiText;
+import net.frooastside.engine.userinterface.elements.render.Box;
+import net.frooastside.engine.userinterface.elements.render.Text;
 import org.lwjgl.glfw.GLFW;
 
-public class UiTextField extends UiFunctionalElement implements SelectionEvent.Listener {
+public class TextField extends FunctionalElement implements SelectionEvent.Listener {
 
-  private final UiColorSet colorSet;
+  private final ColorSet colorSet;
   private final ResourceFont font;
 
-  private UiText uiText;
-  private UiBox selectionBox;
-  private UiBox cursorBox;
+  private Text uiText;
+  private Box selectionBox;
+  private Box cursorBox;
 
   private final float textSize;
   private final boolean constantTextSize;
@@ -37,7 +37,7 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
   private boolean increment;
   private double cursorAlpha;
 
-  public UiTextField(UiColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
+  public TextField(ColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
     this.colorSet = colorSet;
     this.font = font;
     this.text = text;
@@ -58,10 +58,10 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
     uiText.setText(this.text);
     float selectionStartX = (float) uiText.lineLength(0, selectionStart);
     float selectionEndX = (float) uiText.lineLength(0, selectionEnd);
-    selectionBox.constraints().getConstraint(UiConstraint.ConstraintType.X).setValue(selectionStartX);
-    selectionBox.constraints().getConstraint(UiConstraint.ConstraintType.WIDTH).setValue(selectionEndX - selectionStartX);
+    selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setValue(selectionStartX);
+    selectionBox.constraints().getConstraint(Constraint.ConstraintType.WIDTH).setValue(selectionEndX - selectionStartX);
     float cursorX = (float) uiText.lineLength(0, cursor);
-    cursorBox.constraints().getConstraint(UiConstraint.ConstraintType.X).setValue(cursorX - (pixelSize().x * 1));
+    cursorBox.constraints().getConstraint(Constraint.ConstraintType.X).setValue(cursorX - (pixelSize().x * 1));
   }
 
   @Override
@@ -84,33 +84,33 @@ public class UiTextField extends UiFunctionalElement implements SelectionEvent.L
 
   @Override
   public void initialize() {
-    UiConstraints backgroundConstraints = UiConstraints.getDefault();
-    UiBox background = new UiBox(colorSet.element());
+    ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
+    Box background = new Box(colorSet.element());
     addElement(background, backgroundConstraints);
 
-    UiConstraints textConstraints = new UiConstraints(
+    ElementConstraints textConstraints = new ElementConstraints(
       new RelativeConstraint(0),
       new RelativeConstraint(0.5f),
       new RelativeConstraint(1),
       constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
-    uiText = new UiText(font, this.text, colorSet.text(), false);
+    uiText = new Text(font, this.text, colorSet.text(), false);
     addElement(uiText, textConstraints);
 
-    UiConstraints selectionBoxConstraints = new UiConstraints(
+    ElementConstraints selectionBoxConstraints = new ElementConstraints(
       new RawConstraint(0),
       new RelativeConstraint(0.1f),
       new RawConstraint(0),
       new RelativeConstraint(0.8f));
-    selectionBox = new UiBox(colorSet.accent());
+    selectionBox = new Box(colorSet.accent());
     selectionBox.setAlpha(0.2f);
     addElement(selectionBox, selectionBoxConstraints);
 
-    UiConstraints cursorBoxConstraints = new UiConstraints(
+    ElementConstraints cursorBoxConstraints = new ElementConstraints(
       new RawConstraint(0),
       new RelativeConstraint(0.1f),
       new PixelConstraint(2),
       new RelativeConstraint(0.8f));
-    cursorBox = new UiBox(colorSet.accent());
+    cursorBox = new Box(colorSet.accent());
     cursorBox.setAlpha(0.0f);
     addElement(cursorBox, cursorBoxConstraints);
   }

@@ -1,25 +1,25 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.userinterface.UiConstraint;
-import net.frooastside.engine.userinterface.UiConstraints;
-import net.frooastside.engine.userinterface.animation.UiAnimation;
-import net.frooastside.engine.userinterface.animation.UiAnimator;
+import net.frooastside.engine.userinterface.constraints.Constraint;
+import net.frooastside.engine.userinterface.constraints.ElementConstraints;
+import net.frooastside.engine.userinterface.animation.Animation;
+import net.frooastside.engine.userinterface.animation.Animator;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-public abstract class UiElement {
+public abstract class Element {
 
   private final Vector4f bounds = new Vector4f(0, 0, 1, 1);
   private final Vector2f pixelSize = new Vector2f();
 
-  private UiConstraints constraints;
-  private UiAnimator animator;
-  private UiElement parent;
+  private ElementConstraints constraints;
+  private Element parent;
+  private Animator animator;
 
   private float alpha = 1.0f;
   private boolean visible;
 
-  private UiAnimation displayAnimation;
+  private Animation displayAnimation;
   private float displayAnimationDelay;
 
   public void update(double delta) {
@@ -35,33 +35,33 @@ public abstract class UiElement {
 
   public void recalculateBounds() {
     bounds.set(
-      rawValueOf(UiConstraint.ConstraintType.X) + parent.bounds().x,
-      rawValueOf(UiConstraint.ConstraintType.Y) + parent.bounds().y,
-      rawValueOf(UiConstraint.ConstraintType.WIDTH),
-      rawValueOf(UiConstraint.ConstraintType.HEIGHT));
+      rawValueOf(Constraint.ConstraintType.X) + parent.bounds().x,
+      rawValueOf(Constraint.ConstraintType.Y) + parent.bounds().y,
+      rawValueOf(Constraint.ConstraintType.WIDTH),
+      rawValueOf(Constraint.ConstraintType.HEIGHT));
   }
 
-  public float rawValueOf(UiConstraint.ConstraintType constraintType) {
+  public float rawValueOf(Constraint.ConstraintType constraintType) {
     return rawValueOf(constraints.getConstraint(constraintType), constraintType);
   }
 
-  public float rawValueOf(UiConstraint constraint) {
+  public float rawValueOf(Constraint constraint) {
     return rawValueOf(constraint, constraint.type());
   }
 
-  public float rawValueOf(UiConstraint constraint, UiConstraint.ConstraintType constraintType) {
+  public float rawValueOf(Constraint constraint, Constraint.ConstraintType constraintType) {
     float rawValue = constraint.relative() ?
       constraint.rawValue() *
-        (constraintType == UiConstraint.ConstraintType.X || constraintType == UiConstraint.ConstraintType.WIDTH ?
+        (constraintType == Constraint.ConstraintType.X || constraintType == Constraint.ConstraintType.WIDTH ?
           parent().bounds().z
           : parent().bounds().w)
       : constraint.rawValue();
     if(animator != null) {
-      if(constraintType == UiConstraint.ConstraintType.X) {
+      if(constraintType == Constraint.ConstraintType.X) {
         rawValue += animator.offset().x;
-      }else if(constraintType == UiConstraint.ConstraintType.Y) {
+      }else if(constraintType == Constraint.ConstraintType.Y) {
         rawValue += animator.offset().y;
-      }else if(constraintType == UiConstraint.ConstraintType.WIDTH) {
+      }else if(constraintType == Constraint.ConstraintType.WIDTH) {
         rawValue *= animator.offset().z;
       }else {
         rawValue *= animator.offset().w;
@@ -97,35 +97,35 @@ public abstract class UiElement {
     return rawX <= xMax && rawX >= xMin && rawY <= yMax && rawY >= yMin;
   }
 
+  public Vector4f bounds() {
+    return bounds;
+  }
+
   public Vector2f pixelSize() {
     return pixelSize;
   }
 
-  public UiElement parent() {
-    return parent;
-  }
-
-  public void setParent(UiElement parent) {
-    this.parent = parent;
-  }
-
-  public UiConstraints constraints() {
+  public ElementConstraints constraints() {
     return constraints;
   }
 
-  public void setConstraints(UiConstraints constraints) {
+  public void setConstraints(ElementConstraints constraints) {
     this.constraints = constraints;
   }
 
-  public UiAnimator animator() {
-    if (animator == null) {
-      animator = new UiAnimator(this);
-    }
-    return animator;
+  public Element parent() {
+    return parent;
   }
 
-  public Vector4f bounds() {
-    return bounds;
+  public void setParent(Element parent) {
+    this.parent = parent;
+  }
+
+  public Animator animator() {
+    if (animator == null) {
+      animator = new Animator(this);
+    }
+    return animator;
   }
 
   public float alpha() {
@@ -136,7 +136,11 @@ public abstract class UiElement {
     this.alpha = alpha;
   }
 
-  public UiAnimation displayAnimation() {
+  public boolean visible() {
+    return visible;
+  }
+
+  public Animation displayAnimation() {
     return displayAnimation;
   }
 
@@ -144,7 +148,7 @@ public abstract class UiElement {
     return displayAnimationDelay;
   }
 
-  public void setDisplayAnimation(UiAnimation displayAnimation, float displayAnimationDelay) {
+  public void setDisplayAnimation(Animation displayAnimation, float displayAnimationDelay) {
     this.displayAnimation = displayAnimation;
     this.displayAnimationDelay = displayAnimationDelay;
   }

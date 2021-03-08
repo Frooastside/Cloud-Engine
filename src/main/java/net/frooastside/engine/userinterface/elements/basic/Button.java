@@ -1,19 +1,19 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.elements.UiFunctionalElement;
+import net.frooastside.engine.userinterface.elements.FunctionalElement;
 import net.frooastside.engine.userinterface.events.ClickEvent;
-import net.frooastside.engine.userinterface.UiConstraints;
-import net.frooastside.engine.userinterface.UiColorSet;
+import net.frooastside.engine.userinterface.constraints.ElementConstraints;
+import net.frooastside.engine.userinterface.ColorSet;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
 import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
-import net.frooastside.engine.userinterface.elements.render.UiBox;
-import net.frooastside.engine.userinterface.elements.render.UiText;
+import net.frooastside.engine.userinterface.elements.render.Box;
+import net.frooastside.engine.userinterface.elements.render.Text;
 import org.lwjgl.glfw.GLFW;
 
-public class UiButton extends UiFunctionalElement implements ClickEvent.Listener {
+public class Button extends FunctionalElement implements ClickEvent.Listener {
 
-  private final UiColorSet colorSet;
+  private final ColorSet colorSet;
   private final ResourceFont font;
   private final float textSize;
   private final boolean constantTextSize;
@@ -22,7 +22,7 @@ public class UiButton extends UiFunctionalElement implements ClickEvent.Listener
 
   private boolean wasClicked;
 
-  public UiButton(UiColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
+  public Button(ColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
     this.colorSet = colorSet;
     this.font = font;
     this.text = text;
@@ -32,15 +32,15 @@ public class UiButton extends UiFunctionalElement implements ClickEvent.Listener
 
   @Override
   public void initialize() {
-    UiBox background = new UiBox(colorSet.element());
+    Box background = new Box(colorSet.element());
     addElement(background);
 
-    UiConstraints textConstraints = new UiConstraints(
+    ElementConstraints textConstraints = new ElementConstraints(
       new RelativeConstraint(0),
       new RelativeConstraint(0.5f),
       new RelativeConstraint(1),
       constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
-    UiText text = new UiText(font, this.text, colorSet.text(), true);
+    Text text = new Text(font, this.text, colorSet.text(), true);
     addElement(text, textConstraints);
   }
 
