@@ -66,6 +66,7 @@ public class TextField extends FunctionalElement implements SelectionEvent.Liste
 
   @Override
   public void update(double delta) {
+    super.update(delta);
     if (selected) {
       if (increment) {
         if (cursorAlpha >= 1) {
@@ -239,7 +240,7 @@ public class TextField extends FunctionalElement implements SelectionEvent.Liste
   @Override
   public void handleSelection(SelectionEvent event) {
     this.selected = event.selected();
-    cursorAlpha = selected ? 0 : 0;
+    cursorAlpha = 0;
     increment = true;
     cursorBox.setAlpha((float) cursorAlpha);
   }

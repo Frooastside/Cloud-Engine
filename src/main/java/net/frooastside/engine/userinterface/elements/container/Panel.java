@@ -1,20 +1,20 @@
 package net.frooastside.engine.userinterface.elements.container;
 
-import net.frooastside.engine.userinterface.ColorSet;
+import net.frooastside.engine.userinterface.Color;
 import net.frooastside.engine.userinterface.elements.FunctionalElement;
 import net.frooastside.engine.userinterface.elements.render.Box;
 
 public class Panel extends FunctionalElement {
 
-  private final ColorSet colorSet;
+  private final Color color;
 
-  public Panel(ColorSet colorSet) {
-    this.colorSet = colorSet;
+  public Panel(Color color) {
+    this.color = color;
   }
 
   @Override
   public void initialize() {
-    Box background = new Box(colorSet.background());
+    Box background = new Box(color);
     addElement(background);
   }
 

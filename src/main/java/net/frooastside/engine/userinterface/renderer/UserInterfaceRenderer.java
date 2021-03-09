@@ -54,10 +54,10 @@ public class UserInterfaceRenderer {
   private void renderElements(Element element, float alpha) {
     if (element instanceof RenderElement) {
       RenderElement renderElement = ((RenderElement) element);
-      //if(renderElement.visible()) {
+      if (renderElement.visible() || renderElement.doingDisplayAnimation()) {
         prepareRendering(renderElement);
         renderElement(renderElement, alpha);
-      //}
+      }
     } else if (element instanceof FunctionalElement) {
       FunctionalElement functionalElement = ((FunctionalElement) element);
       functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));

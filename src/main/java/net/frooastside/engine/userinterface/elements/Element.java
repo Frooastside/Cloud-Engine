@@ -22,6 +22,9 @@ public abstract class Element {
   private Animation displayAnimation;
   private float displayAnimationDelay;
 
+  public void initialize() {
+  }
+
   public void update(double delta) {
     if (animator != null) {
       animator.update(delta);
@@ -56,14 +59,14 @@ public abstract class Element {
           parent().bounds().z
           : parent().bounds().w)
       : constraint.rawValue();
-    if(animator != null) {
-      if(constraintType == Constraint.ConstraintType.X) {
+    if (animator != null) {
+      if (constraintType == Constraint.ConstraintType.X) {
         rawValue += animator.offset().x;
-      }else if(constraintType == Constraint.ConstraintType.Y) {
+      } else if (constraintType == Constraint.ConstraintType.Y) {
         rawValue += animator.offset().y;
-      }else if(constraintType == Constraint.ConstraintType.WIDTH) {
+      } else if (constraintType == Constraint.ConstraintType.WIDTH) {
         rawValue *= animator.offset().z;
-      }else {
+      } else {
         rawValue *= animator.offset().w;
       }
     }
@@ -79,7 +82,8 @@ public abstract class Element {
     }
   }
 
-  public void initialize() {
+  public boolean doingDisplayAnimation() {
+    return animator != null && animator.doingAnimation(displayAnimation);
   }
 
   public boolean isPixelInside(float x, float y) {

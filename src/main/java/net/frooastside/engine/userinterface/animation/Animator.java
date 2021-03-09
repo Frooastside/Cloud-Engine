@@ -53,6 +53,11 @@ public class Animator {
     recalculateSize = false;
   }
 
+  public boolean doingAnimation(Animation animation) {
+    Animation.Instance animationInstance = animations.get(animation);
+    return animationInstance != null && !animationInstance.transitionFinished();
+  }
+
   public void applyX(float x, boolean recalculate) {
     this.offset.x += x;
     this.recalculatePosition |= recalculate;
@@ -75,12 +80,12 @@ public class Animator {
     this.recalculateSize |= recalculate;
   }
 
-  public Vector4f offset() {
-    return offset;
-  }
-
   public void applyAlpha(float alpha) {
     this.alpha = alpha;
+  }
+
+  public Vector4f offset() {
+    return offset;
   }
 
   public float alpha() {
