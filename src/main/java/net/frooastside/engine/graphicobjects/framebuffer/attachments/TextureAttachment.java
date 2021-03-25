@@ -10,7 +10,7 @@ public class TextureAttachment extends Texture implements FrameBufferAttachment 
   private int attachment;
 
   public TextureAttachment(Texture texture) {
-    copyFrom(texture);
+    set(texture);
   }
 
   @Override

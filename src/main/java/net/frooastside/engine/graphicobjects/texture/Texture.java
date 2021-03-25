@@ -41,7 +41,7 @@ public class Texture extends SizedGraphicObject {
     this.dataType = dataType;
   }
 
-  protected void copyFrom(Texture source) {
+  protected Texture set(Texture source) {
     this.setIdentifier(source.identifier());
     this.setWidth(source.width());
     this.setHeight(source.height());
@@ -50,6 +50,7 @@ public class Texture extends SizedGraphicObject {
     this.dataType = source.dataType;
     this.internalFormat = source.internalFormat;
     this.inputFormat = source.inputFormat;
+    return this;
   }
 
   @Override

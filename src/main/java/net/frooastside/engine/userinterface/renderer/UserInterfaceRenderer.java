@@ -25,6 +25,7 @@ public class UserInterfaceRenderer {
   private final BasicFontShader fontShader;
 
   private RenderElement.RenderType currentRenderType;
+  private FunctionalElement hideOverflowElement;
 
   public UserInterfaceRenderer(BasicBoxShader boxShader, BasicFontShader fontShader) {
     this.boxShader = boxShader;
@@ -46,9 +47,16 @@ public class UserInterfaceRenderer {
 
   private void prepare() {
     GL11.glEnable(GL11.GL_BLEND);
+    GL11.glEnable(GL11.GL_STENCIL_TEST);
+    GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
+    clearStencilBuffer();
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL11.GL_CULL_FACE);
+  }
+
+  private void clearStencilBuffer() {
+    GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
   }
 
   private void renderElements(Element element, float alpha) {
@@ -60,8 +68,40 @@ public class UserInterfaceRenderer {
       }
     } else if (element instanceof FunctionalElement) {
       FunctionalElement functionalElement = ((FunctionalElement) element);
-      functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
+      boolean hideOverflow = functionalElement.hideOverflow();
+      if (!hideOverflow) {
+        functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
+      } else {
+        FunctionalElement initialHideOverflowElement = hideOverflowElement;
+        renderStencil(functionalElement);
+
+        functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
+
+        renderStencil(initialHideOverflowElement);
+      }
     }
+  }
+
+  public void enableStencilRendering() {
+    GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 0xFF);
+    GL11.glStencilMask(0xFF);
+  }
+
+  public void renderStencil(FunctionalElement functionalElement) {
+    hideOverflowElement = functionalElement;
+    if(functionalElement != null) {
+      clearStencilBuffer();
+      enableStencilRendering();
+      functionalElement.children().stream()
+        .filter(element -> element instanceof RenderElement)
+        .forEach(element -> renderElements(element, 1));
+      disableStencilRendering();
+    }
+  }
+
+  public void disableStencilRendering() {
+    GL11.glStencilFunc(GL11.GL_NOTEQUAL, 0, 0xFF);
+    GL11.glStencilMask(0x00);
   }
 
   public void prepareRendering(RenderElement renderElement) {
@@ -131,6 +171,11 @@ public class UserInterfaceRenderer {
   private void end() {
     GL11.glEnable(GL11.GL_CULL_FACE);
     GL11.glEnable(GL11.GL_DEPTH_TEST);
+    //TODO STENCIL
+    //GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_KEEP);
+    //GL11.glStencilFunc(GL11.GL_ALWAYS, 0, 0xFF);
+    //GL11.glStencilMask(0xFF);
+    GL11.glDisable(GL11.GL_STENCIL_TEST);
     GL11.glDisable(GL11.GL_BLEND);
   }
 

@@ -29,10 +29,6 @@ public class ResourceTexture extends Texture implements ResourceItem {
     this.rawFile = rawFile;
   }
 
-  public ResourceTexture(Texture texture) {
-    copyFrom(texture);
-  }
-
   public ResourceTexture() {
   }
 
@@ -148,6 +144,10 @@ public class ResourceTexture extends Texture implements ResourceItem {
   @Override
   public void recalculate() {
 
+  }
+
+  public static ResourceTexture clone(Texture texture) {
+    return (ResourceTexture) new ResourceTexture().set(texture);
   }
 
   private boolean isPixelBufferEmpty() {

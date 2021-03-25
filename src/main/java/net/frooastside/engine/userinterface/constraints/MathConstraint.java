@@ -8,18 +8,26 @@ public class MathConstraint extends Constraint {
   private final Operator mathematicalOperator;
   private final Constraint firstConstraint;
   private final Constraint secondConstraint;
+  private final boolean initializeConstraints;
 
-  public MathConstraint(Operator mathematicalOperator, Constraint firstConstraint, Constraint secondConstraint) {
+  public MathConstraint(Operator mathematicalOperator, Constraint firstConstraint, Constraint secondConstraint, boolean initializeConstraints) {
     this.mathematicalOperator = mathematicalOperator;
     this.firstConstraint = firstConstraint;
     this.secondConstraint = secondConstraint;
+    this.initializeConstraints = initializeConstraints;
   }
 
   @Override
   public void initialize(ElementConstraints constraints, Element current, Element parent) {
     super.initialize(constraints, current, parent);
-    firstConstraint.initialize(constraints, current, parent);
-    secondConstraint.initialize(constraints, current, parent);
+    if(initializeConstraints) {
+      firstConstraint.initialize(constraints, current, parent);
+      secondConstraint.initialize(constraints, current, parent);
+    }
+  }
+
+  public void initializeChild(Constraint constraint) {
+    constraint.initialize(constraints(), current(), parent());
   }
 
   @Override

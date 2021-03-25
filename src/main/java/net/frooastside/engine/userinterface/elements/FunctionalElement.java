@@ -17,6 +17,8 @@ public abstract class FunctionalElement extends Element {
   private ClickEvent.Listener clickListener;
   private SelectionEvent.Listener selectionListener;
 
+  private boolean hideOverflow;
+
   @Override
   public void update(double delta) {
     super.update(delta);
@@ -162,5 +164,13 @@ public abstract class FunctionalElement extends Element {
 
   public void setSelectionListener(SelectionEvent.Listener selectionListener) {
     this.selectionListener = selectionListener;
+  }
+
+  public boolean hideOverflow() {
+    return hideOverflow;
+  }
+
+  public void setHideOverflow(boolean hideOverflow) {
+    this.hideOverflow = hideOverflow;
   }
 }
