@@ -103,8 +103,8 @@ public abstract class Setting {
     return -1;
   }
 
-  public static <T> void setTextFieldInteger(Map<String, Node> settings, String key, int value) {
-    if (settings.containsKey(key) && settings.get(key) instanceof Spinner) {
+  public static void setTextFieldInteger(Map<String, Node> settings, String key, int value) {
+    if (settings.containsKey(key) && settings.get(key) instanceof TextField) {
       TextField textField = (TextField) settings.get(key);
       textField.setText("" + value);
     } else {

@@ -1,12 +1,12 @@
 package net.frooastside.engine.userinterface.elements.render;
 
+import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarget;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsage;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.BufferUtils;
-import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.userinterface.Color;
 import net.frooastside.engine.userinterface.elements.RenderElement;
 
@@ -15,14 +15,14 @@ public class Text extends RenderElement {
   public static final float LINE_HEIGHT = 0.025f;
 
   private final VertexArrayObject model = generateEmptyModel();
-  private final ResourceFont font;
+  private final Font font;
   private final boolean centered;
 
   private String text;
 
   private float aspectRatio;
 
-  public Text(ResourceFont font, String text, Color color, boolean centered) {
+  public Text(Font font, String text, Color color, boolean centered) {
     super.setColor(color);
     this.font = font;
     this.text = text;
@@ -44,9 +44,9 @@ public class Text extends RenderElement {
     double lineLength = 0;
     int characterCount = 0;
     for (char codepoint : text.toCharArray()) {
-      ResourceFont.Character character = font.getCharacter(codepoint);
+      Font.Character character = font.getCharacter(codepoint);
       lineLength += character.xAdvance() * fontWidth;
-      characterCount += codepoint != ResourceFont.SPACE_CODEPOINT ? 1 : 0;
+      characterCount += codepoint != Font.SPACE_CODEPOINT ? 1 : 0;
     }
 
     double cursorX = centered ? (maxLineLength - lineLength) / 2 : 0.0;
@@ -56,8 +56,8 @@ public class Text extends RenderElement {
 
     int index = 0;
     for (char codepoint : text.toCharArray()) {
-      ResourceFont.Character character = font.getCharacter(codepoint);
-      if (codepoint != ResourceFont.SPACE_CODEPOINT) {
+      Font.Character character = font.getCharacter(codepoint);
+      if (codepoint != Font.SPACE_CODEPOINT) {
         addVerticesFor(positions, textureCoordinates, character, index, fontHeight, fontWidth, cursorX, yLineOffset);
         index++;
       }
@@ -71,7 +71,7 @@ public class Text extends RenderElement {
     }
   }
 
-  protected void addVerticesFor(float[] positions, float[] textureCoordinates, ResourceFont.Character character, int characterIndex, double fontHeight, double fontWidth, double cursorX, double cursorY) {
+  protected void addVerticesFor(float[] positions, float[] textureCoordinates, Font.Character character, int characterIndex, double fontHeight, double fontWidth, double cursorX, double cursorY) {
     double x = cursorX + (character.xOffset() * fontWidth);
     double y = cursorY + (character.yOffset() * fontHeight);
     double xMax = x + (character.xSize() * fontWidth);
@@ -146,7 +146,7 @@ public class Text extends RenderElement {
     double lineLength = 0;
     char[] chars = text.toCharArray();
     for (int i = beginIndex; i < endIndex; i++) {
-      ResourceFont.Character character = font.getCharacter(chars[i]);
+      Font.Character character = font.getCharacter(chars[i]);
       lineLength += (character.xAdvance() * fontWidth);
     }
     if (endIndex < text.length()) {
@@ -164,7 +164,7 @@ public class Text extends RenderElement {
     return model;
   }
 
-  public ResourceFont font() {
+  public Font font() {
     return font;
   }
 

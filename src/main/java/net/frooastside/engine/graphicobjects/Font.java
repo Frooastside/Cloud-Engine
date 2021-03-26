@@ -1,21 +1,20 @@
 package net.frooastside.engine.graphicobjects;
 
-import net.frooastside.engine.resource.ResourceFont;
 import net.frooastside.engine.resource.ResourceTexture;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Font implements Externalizable {
+public abstract class Font implements Externalizable {
 
   @Serial
   private static final long serialVersionUID = -1857587127382434365L;
 
-  public static final ResourceFont.Character DEFAULT_CHARACTER = new ResourceFont.Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
+  public static final Character DEFAULT_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
   public static final int SPACE_CODEPOINT = 32;
 
-  private final Map<Integer, ResourceFont.Character> supportedCharacters = new HashMap<>();
+  private final Map<Integer, Character> supportedCharacters = new HashMap<>();
   private int characterHeight;
   private ResourceTexture texture;
 
@@ -29,8 +28,8 @@ public class Font implements Externalizable {
   @Override
   public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
     for (Map.Entry<?, ?> entry : ((Map<?, ?>) in.readObject()).entrySet()) {
-      if (entry.getKey() instanceof Integer && entry.getValue() instanceof ResourceFont.Character) {
-        supportedCharacters.put((Integer) entry.getKey(), (ResourceFont.Character) entry.getValue());
+      if (entry.getKey() instanceof Integer && entry.getValue() instanceof Character) {
+        supportedCharacters.put((Integer) entry.getKey(), (Character) entry.getValue());
       }
     }
     characterHeight = in.readShort();

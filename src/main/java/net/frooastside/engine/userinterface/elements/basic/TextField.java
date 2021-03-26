@@ -2,7 +2,7 @@ package net.frooastside.engine.userinterface.elements.basic;
 
 import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
-import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.elements.FunctionalElement;
@@ -18,7 +18,7 @@ import org.lwjgl.glfw.GLFW;
 public class TextField extends FunctionalElement implements SelectionEvent.Listener {
 
   private final ColorSet colorSet;
-  private final ResourceFont font;
+  private final Font font;
 
   private Text uiText;
   private Box selectionBox;
@@ -37,7 +37,7 @@ public class TextField extends FunctionalElement implements SelectionEvent.Liste
   private boolean increment;
   private double cursorAlpha;
 
-  public TextField(ColorSet colorSet, ResourceFont font, String text, float textSize, boolean constantTextSize) {
+  public TextField(ColorSet colorSet, Font font, String text, float textSize, boolean constantTextSize) {
     this.colorSet = colorSet;
     this.font = font;
     this.text = text;

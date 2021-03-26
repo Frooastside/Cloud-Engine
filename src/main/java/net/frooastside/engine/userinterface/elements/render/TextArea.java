@@ -1,6 +1,6 @@
 package net.frooastside.engine.userinterface.elements.render;
 
-import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.Color;
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TextArea extends Text {
 
-  public TextArea(ResourceFont font, String text, Color color) {
+  public TextArea(Font font, String text, Color color) {
     super(font, text, color, false);
   }
 
@@ -23,7 +23,7 @@ public class TextArea extends Text {
     double fontWidth = horizontalPerPixelSize * rawHeight;
     double fontHeight = verticalPerPixelSize * rawHeight;
 
-    double spaceWidth = font().getCharacter(ResourceFont.SPACE_CODEPOINT).xAdvance() * fontWidth;
+    double spaceWidth = font().getCharacter(Font.SPACE_CODEPOINT).xAdvance() * fontWidth;
 
     List<Line> lines = new ArrayList<>();
     Line currentLine = new Line(spaceWidth, maxLineLength);
@@ -31,8 +31,8 @@ public class TextArea extends Text {
 
     int characterCount = 0;
     for (char codepoint : text().toCharArray()) {
-      if (codepoint != ResourceFont.SPACE_CODEPOINT) {
-        ResourceFont.Character character = font().getCharacter(codepoint);
+      if (codepoint != Font.SPACE_CODEPOINT) {
+        Font.Character character = font().getCharacter(codepoint);
         currentWord.addCharacter(character);
         characterCount++;
       } else {
@@ -59,7 +59,7 @@ public class TextArea extends Text {
     int index = 0;
     for (Line line : lines) {
       for (Word word : line.words()) {
-        for (ResourceFont.Character character : word.characters()) {
+        for (Font.Character character : word.characters()) {
           addVerticesFor(positions, textureCoordinates, character, index, fontHeight, fontWidth, cursorX, yLineOffset);
           cursorX += character.xAdvance() * fontWidth;
           index++;
@@ -110,7 +110,7 @@ public class TextArea extends Text {
 
   public static class Word {
 
-    private final List<ResourceFont.Character> characters = new ArrayList<>();
+    private final List<Font.Character> characters = new ArrayList<>();
     private final double fontWidth;
 
     private double width = 0;
@@ -119,12 +119,12 @@ public class TextArea extends Text {
       this.fontWidth = fontWidth;
     }
 
-    public void addCharacter(ResourceFont.Character character) {
+    public void addCharacter(Font.Character character) {
       characters.add(character);
       width += character.xAdvance() * fontWidth;
     }
 
-    public List<ResourceFont.Character> characters() {
+    public List<Font.Character> characters() {
       return characters;
     }
 

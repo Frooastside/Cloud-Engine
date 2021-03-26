@@ -1,13 +1,8 @@
 package net.frooastside.engine.resource;
 
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.postprocessing.SignedDistanceFieldTask;
-import net.frooastside.engine.resource.settings.*;
 import org.lwjgl.stb.*;
 import org.lwjgl.system.MemoryUtil;
 
@@ -17,19 +12,7 @@ import java.util.concurrent.ExecutorService;
 
 public class ResourceFont extends Font implements ResourceItem {
 
-  public static final SettingsCreator SETTINGS_LAYOUT = SettingsCreator.createLayout(
-    new ComboBoxSetting<>("imageSize", Arrays.asList(256, 512, 1024, 2048, 4096, 8192, 16384, 32768), 16384),
-    new IntegerSpinnerSetting("downscale", 1, 32, 4),
-    new IntegerSpinnerSetting("spread", 1, 128, 32),
-    new ComboBoxSetting<>("padding", Arrays.asList(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512), 64),
-    new ComboBoxSetting<>("firstCharacter", Arrays.asList(0, 32), 32),
-    new ComboBoxSetting<>("characterCount", Arrays.asList(224, 352, 560, 255, 383, 591), 352),
-    new IntegerTextField("characterHeight", 1536));
-
-  private Map<String, Node> settings;
-  private Node settingsBox;
   private SignedDistanceFieldTask signedDistanceFieldTask;
-  private float progress;
 
   private ByteBuffer rawFile;
   private int imageSize;
@@ -101,9 +84,7 @@ public class ResourceFont extends Font implements ResourceItem {
         STBTruetype.stbtt_PackEnd(packContext);
         signedDistanceFieldTask = new SignedDistanceFieldTask(pixelBuffer, imageSize, downscale, spread);
         signedDistanceFieldTask.generate();
-        while(!signedDistanceFieldTask.finished()) {
-          signedDistanceFieldTask.progress();
-        }
+        signedDistanceFieldTask.waitForCompletion();
         int downscaledImageSize = imageSize / downscale;
         setTexture(ResourceTexture.clone(new Texture(signedDistanceFieldTask.distanceFieldBuffer(), Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1)));
         addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
@@ -121,72 +102,55 @@ public class ResourceFont extends Font implements ResourceItem {
   }
 
   @Override
-  public Node settingsBox() {
-    if (settings == null) {
-      settings = SETTINGS_LAYOUT.createSettings();
-      if (imageSize == 0
-        && downscale == 0
-        && spread == 0
-        && padding == 0
-        && firstCharacter == 0
-        && characterCount == 0) {
-        recalculate();
-      } else {
-        setSettings();
-      }
-    }
-    if (settingsBox == null) {
-      settingsBox = SettingsCreator.getBox(settings);
-    }
-    return settingsBox;
+  public float progress() {
+    return signedDistanceFieldTask != null ? signedDistanceFieldTask.progress() : 0;
   }
 
-  @Override
-  public Node informationBox() {
-    VBox informationBox = new VBox();
-    informationBox.setAlignment(Pos.CENTER);
-    informationBox.getChildren().addAll(
-      new Label("ImageSize: " + imageSize),
-      new Label("Downscale: " + downscale),
-      new Label("Spread: " + spread),
-      new Label("Padding: " + padding),
-      new Label("FirstCharacter: " + firstCharacter),
-      new Label("CharacterCount: " + characterCount),
-      new Label("CharacterHeight: " + characterHeight())
-    );
-    return informationBox;
+  public int imageSize() {
+    return imageSize;
   }
 
-  public void setSettings() {
-    Setting.setComboBoxItem(settings, "imageSize", imageSize);
-    Setting.setSpinnerValue(settings, "downscale", downscale);
-    Setting.setSpinnerValue(settings, "spread", (int) spread);
-    Setting.setComboBoxItem(settings, "padding", padding);
-    Setting.setComboBoxItem(settings, "firstCharacter", firstCharacter);
-    Setting.setComboBoxItem(settings, "characterCount", characterCount);
-    Setting.setTextFieldInteger(settings, "characterHeight", characterHeight());
+  public void setImageSize(int imageSize) {
+    this.imageSize = imageSize;
   }
 
-  @Override
-  public void recalculate() {
-    Object imageSize = Setting.getComboBoxItem(settings, "imageSize");
-    if (imageSize != null) {
-      this.imageSize = (int) imageSize;
-    }
-    this.downscale = Setting.getSpinnerInteger(settings, "downscale");
-    this.spread = Setting.getSpinnerInteger(settings, "spread");
-    Object padding = Setting.getComboBoxItem(settings, "padding");
-    if (padding != null) {
-      this.padding = (int) padding;
-    }
-    Object firstCharacter = Setting.getComboBoxItem(settings, "firstCharacter");
-    if (firstCharacter != null) {
-      this.firstCharacter = (int) firstCharacter;
-    }
-    Object characterCount = Setting.getComboBoxItem(settings, "characterCount");
-    if (characterCount != null) {
-      this.characterCount = (int) characterCount;
-    }
-    setCharacterHeight(Setting.getTextFieldInteger(settings, "characterHeight"));
+  public int downscale() {
+    return downscale;
+  }
+
+  public void setDownscale(int downscale) {
+    this.downscale = downscale;
+  }
+
+  public float spread() {
+    return spread;
+  }
+
+  public void setSpread(float spread) {
+    this.spread = spread;
+  }
+
+  public int padding() {
+    return padding;
+  }
+
+  public void setPadding(int padding) {
+    this.padding = padding;
+  }
+
+  public int firstCharacter() {
+    return firstCharacter;
+  }
+
+  public void setFirstCharacter(int firstCharacter) {
+    this.firstCharacter = firstCharacter;
+  }
+
+  public int characterCount() {
+    return characterCount;
+  }
+
+  public void setCharacterCount(int characterCount) {
+    this.characterCount = characterCount;
   }
 }

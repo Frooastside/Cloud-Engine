@@ -1,9 +1,11 @@
 package net.frooastside.engine.resource;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -12,9 +14,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import net.frooastside.engine.resource.settings.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -26,6 +31,20 @@ public class ResourceManager extends Application {
   private static final FileChooser RESOURCE_CONTAINER_FILE_CHOOSER = createResourceContainerFileChooser();
   private static final FileChooser TEXTURE_FILE_CHOOSER = createTextureFileChooser();
   private static final FileChooser FONT_FILE_CHOOSER = createFontFileChooser();
+
+  public static final SettingsCreator FONT_SETTINGS_LAYOUT = SettingsCreator.createLayout(
+    new ComboBoxSetting<>("imageSize", Arrays.asList(256, 512, 1024, 2048, 4096, 8192, 16384, 32768), 16384),
+    new IntegerSpinnerSetting("downscale", 1, 32, 4),
+    new IntegerSpinnerSetting("spread", 1, 128, 32),
+    new ComboBoxSetting<>("padding", Arrays.asList(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512), 64),
+    new ComboBoxSetting<>("firstCharacter", Arrays.asList(0, 32), 32),
+    new ComboBoxSetting<>("characterCount", Arrays.asList(224, 352, 560, 255, 383, 591), 352),
+    new IntegerTextField("characterHeight", 1536));
+
+  public static final SettingsCreator DEFAULT_SETTINGS_LAYOUT = SettingsCreator.createLayout();
+
+  private static final Map<ResourceItem, Node> settingBoxes = new HashMap<>();
+  private static final Map<ResourceItem, Map<String, Node>> settingsMap = new HashMap<>();
 
   private Stage primaryStage;
 
@@ -160,7 +179,8 @@ public class ResourceManager extends Application {
 
   private void resourceContainerItemsClicked(MouseEvent mouseEvent) {
     if (resourceContainerItems.getSelectionModel().getSelectedItem() != null) {
-      mainBorderPane.setCenter(currentResourceContainer.get(resourceContainerItems.getSelectionModel().getSelectedItem()).informationBox());
+      ResourceItem resourceItem = currentResourceContainer.get(resourceContainerItems.getSelectionModel().getSelectedItem());
+      mainBorderPane.setCenter(createInformationBox(resourceItem));
     }
   }
 
@@ -219,23 +239,54 @@ public class ResourceManager extends Application {
     acceptButton.setOnMouseClicked(event -> {
       String nameFieldText = nameField.getText();
       if (!nameFieldText.isEmpty()) {
-        item.recalculate();
+        reloadSettingsBox(item);
         executorService.execute(() -> item.loadUnspecific(executorService));
         currentResourceContainer.remove(key);
         currentResourceContainer.put(nameFieldText, item);
         reload();
         unsavedChanges = true;
         configurationStage.close();
+        if(item.progress() != -1) {
+          createProgressBarStage(item);
+        }
       }
     });
     BorderPane borderPane = new BorderPane();
     borderPane.setPadding(new Insets(10));
     borderPane.setTop(nameField);
-    borderPane.setCenter(item.settingsBox());
+    borderPane.setCenter(settingsBoxFor(item));
     borderPane.setBottom(acceptButton);
     Scene scene = new Scene(borderPane, 320, 480);
     configurationStage.setScene(scene);
     return configurationStage;
+  }
+
+  private void createProgressBarStage(ResourceItem item) {
+    Stage progressStage = new Stage();
+    progressStage.initStyle(StageStyle.DECORATED);
+    progressStage.setResizable(false);
+    progressStage.setTitle("Creating...");
+    BorderPane borderPane = new BorderPane();
+    borderPane.setPadding(new Insets(10));
+    ProgressBar progressBar = new ProgressBar();
+    borderPane.setCenter(progressBar);
+    Scene scene = new Scene(borderPane, 320, 120);
+    progressStage.setScene(scene);
+    progressStage.show();
+    Thread updateThread = new Thread(() -> {
+      while(item.progress() < 1) {
+        if(item.progress() != 0) {
+          Platform.runLater(() -> progressBar.setProgress(item.progress()));
+        }
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException exception) {
+          exception.printStackTrace();
+        }
+      }
+      Platform.runLater(progressStage::close);
+    });
+    updateThread.start();
   }
 
   private void showErrorAlert(String message) {
@@ -330,6 +381,133 @@ public class ResourceManager extends Application {
       }
     }
     return true;
+  }
+
+  private boolean checkValues(ResourceItem resourceItem) {
+    if(resourceItem instanceof ResourceFont) {
+      ResourceFont font = (ResourceFont) resourceItem;
+      return font.imageSize() == 0
+        && font.downscale() == 0
+        && font.spread() == 0
+        && font.padding() == 0
+        && font.firstCharacter() == 0
+        && font.characterCount() == 0;
+    }else if(resourceItem instanceof ResourceTexture) {
+      return false;
+    }else {
+      return false;
+    }
+  }
+
+  private void setValues(ResourceItem resourceItem) {
+    Map<String, Node> settings = settingsFor(resourceItem);
+    if(resourceItem instanceof ResourceFont) {
+      ResourceFont font = (ResourceFont) resourceItem;
+      Object imageSize = Setting.getComboBoxItem(settings, "imageSize");
+      if (imageSize != null) {
+        font.setImageSize((int) imageSize);
+      }
+      font.setDownscale(Setting.getSpinnerInteger(settings, "downscale"));
+      font.setSpread(Setting.getSpinnerInteger(settings, "spread"));
+      Object padding = Setting.getComboBoxItem(settings, "padding");
+      if (padding != null) {
+        font.setPadding((int) padding);
+      }
+      Object firstCharacter = Setting.getComboBoxItem(settings, "firstCharacter");
+      if (firstCharacter != null) {
+        font.setFirstCharacter((int) firstCharacter);
+      }
+      Object characterCount = Setting.getComboBoxItem(settings, "characterCount");
+      if (characterCount != null) {
+        font.setCharacterCount((int) characterCount);
+      }
+      font.setCharacterHeight(Setting.getTextFieldInteger(settings, "characterHeight"));
+    }
+  }
+
+  private SettingsCreator layoutFor(ResourceItem resourceItem) {
+    if(resourceItem instanceof ResourceFont) {
+      return FONT_SETTINGS_LAYOUT;
+    }else {
+      return DEFAULT_SETTINGS_LAYOUT;
+    }
+  }
+
+  private Map<String, Node> settingsFor(ResourceItem resourceItem) {
+    if(!settingsMap.containsKey(resourceItem)) {
+      Map<String, Node> settings = layoutFor(resourceItem).createSettings();
+      settingsMap.put(resourceItem, settings);
+      if (checkValues(resourceItem)) {
+        setValues(resourceItem);
+      } else {
+        reloadSettingsBox(resourceItem);
+      }
+    }
+    return settingsMap.get(resourceItem);
+  }
+
+  private Node settingsBoxFor(ResourceItem resourceItem) {
+    if(!settingBoxes.containsKey(resourceItem)) {
+      Node box = SettingsCreator.getBox(settingsFor(resourceItem));
+      settingBoxes.put(resourceItem, box);
+      return box;
+    }
+    return settingBoxes.get(resourceItem);
+  }
+
+  public Node createInformationBox(ResourceItem resourceItem) {
+    VBox informationBox = new VBox();
+    informationBox.setAlignment(Pos.CENTER);
+    if(resourceItem instanceof ResourceFont) {
+      ResourceFont font = (ResourceFont) resourceItem;
+      informationBox.setAlignment(Pos.CENTER);
+      informationBox.getChildren().addAll(
+        new Label("ImageSize: " + font.imageSize()),
+        new Separator(),
+        new Label("Downscale: " + font.downscale()),
+        new Separator(),
+        new Label("Spread: " + font.spread()),
+        new Separator(),
+        new Label("Padding: " + font.padding()),
+        new Separator(),
+        new Label("FirstCharacter: " + font.firstCharacter()),
+        new Separator(),
+        new Label("CharacterCount: " + font.characterCount()),
+        new Separator(),
+        new Label("CharacterHeight: " + font.characterHeight()));
+    }else if(resourceItem instanceof ResourceTexture) {
+      ResourceTexture texture = (ResourceTexture) resourceItem;
+      informationBox.getChildren().addAll(
+        new Label("Width: " + texture.width()),
+        new Separator(),
+        new Label("Height: " + texture.height()),
+        new Separator(),
+        new Label("Channel: " + texture.channel()),
+        new Separator(),
+        new Label("Filter: " + texture.filter()),
+        new Separator(),
+        new Label("DataType: " + texture.dataType()),
+        new Separator(),
+        new Label("InternalFormat: " + texture.internalFormat()),
+        new Separator(),
+        new Label("InputFormat: " + texture.inputFormat())
+      );
+    }
+    return informationBox;
+  }
+
+  private void reloadSettingsBox(ResourceItem resourceItem) {
+    Map<String, Node> settings = settingsFor(resourceItem);
+    if(resourceItem instanceof ResourceFont) {
+      ResourceFont font = (ResourceFont) resourceItem;
+      Setting.setComboBoxItem(settings, "imageSize", font.imageSize());
+      Setting.setSpinnerValue(settings, "downscale", font.downscale());
+      Setting.setSpinnerValue(settings, "spread", (int) font.spread());
+      Setting.setComboBoxItem(settings, "padding", font.padding());
+      Setting.setComboBoxItem(settings, "firstCharacter", font.firstCharacter());
+      Setting.setComboBoxItem(settings, "characterCount", font.characterCount());
+      Setting.setTextFieldInteger(settings, "characterHeight", font.characterHeight());
+    }
   }
 
   private static FileChooser createResourceContainerFileChooser() {

@@ -4,7 +4,7 @@ import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.glfw.callbacks.CharCallback;
 import net.frooastside.engine.glfw.callbacks.KeyCallback;
 import net.frooastside.engine.glfw.callbacks.MouseButtonCallback;
-import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.events.ClickEvent;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
@@ -17,12 +17,12 @@ public abstract class Screen extends FunctionalElement implements ClickEvent.Lis
   private static final ElementConstraints DEFAULT_ELEMENT_CONSTRAINTS = ElementConstraints.getDefault();
 
   private final Window window;
-  private final ResourceFont font;
+  private final Font font;
   private final ColorSet colorSet;
 
   private FunctionalElement selectedElement;
 
-  public Screen(Window window, ResourceFont font, ColorSet colorSet) {
+  public Screen(Window window, Font font, ColorSet colorSet) {
     this.window = window;
     this.font = font;
     this.colorSet = colorSet;
@@ -108,7 +108,7 @@ public abstract class Screen extends FunctionalElement implements ClickEvent.Lis
     return DEFAULT_ELEMENT_CONSTRAINTS;
   }
 
-  public ResourceFont font() {
+  public Font font() {
     return font;
   }
 

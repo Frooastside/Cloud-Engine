@@ -1,6 +1,6 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
-import net.frooastside.engine.resource.ResourceFont;
+import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.Color;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.constraints.RawConstraint;
@@ -13,13 +13,13 @@ public class SimpleButton extends Button {
 
   private final Color backgroundColor;
   private final Color textColor;
-  private final ResourceFont font;
+  private final Font font;
   private final boolean constantTextSize;
   private final float textSize;
 
   private String text;
 
-  public SimpleButton(Color backgroundColor, ResourceFont font, Color textColor, String text, boolean constantTextSize, float textSize) {
+  public SimpleButton(Color backgroundColor, Font font, Color textColor, String text, boolean constantTextSize, float textSize) {
     this.backgroundColor = backgroundColor;
     this.textColor = textColor;
     this.font = font;

@@ -1,9 +1,5 @@
 package net.frooastside.engine.resource;
 
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import org.lwjgl.stb.STBImage;
@@ -17,10 +13,7 @@ import java.util.concurrent.ExecutorService;
 public class ResourceTexture extends Texture implements ResourceItem {
 
   @Serial
-  private static final long serialVersionUID = 319509656989696754L;
-
-  private Node settingsBox;
-  private Node informationBox;
+  private static final long serialVersionUID = 5195096345989696754L;
 
   private ByteBuffer rawFile;
   private int channel;
@@ -115,35 +108,8 @@ public class ResourceTexture extends Texture implements ResourceItem {
   }
 
   @Override
-  public Node settingsBox() {
-    if (settingsBox == null) {
-      settingsBox = new VBox();
-    }
-    return settingsBox;
-  }
-
-  @Override
-  public Node informationBox() {
-    if (this.informationBox == null) {
-      VBox informationBox = new VBox();
-      informationBox.setAlignment(Pos.CENTER);
-      informationBox.getChildren().addAll(
-        new Label("Width: " + width()),
-        new Label("Height: " + height()),
-        new Label("Channel: " + channel),
-        new Label("Filter: " + filter()),
-        new Label("DataType: " + dataType()),
-        new Label("InternalFormat: " + internalFormat()),
-        new Label("InputFormat: " + inputFormat())
-      );
-      this.informationBox = informationBox;
-    }
-    return this.informationBox;
-  }
-
-  @Override
-  public void recalculate() {
-
+  public float progress() {
+    return -1;
   }
 
   public static ResourceTexture clone(Texture texture) {
