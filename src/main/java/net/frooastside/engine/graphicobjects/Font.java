@@ -8,7 +8,6 @@ import java.util.Map;
 
 public abstract class Font implements Externalizable {
 
-  @Serial
   private static final long serialVersionUID = -1857587127382434365L;
 
   public static final Character DEFAULT_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);

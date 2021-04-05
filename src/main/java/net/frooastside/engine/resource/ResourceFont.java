@@ -86,7 +86,9 @@ public class ResourceFont extends Font implements ResourceItem {
         signedDistanceFieldTask.generate();
         signedDistanceFieldTask.waitForCompletion();
         int downscaledImageSize = imageSize / downscale;
-        setTexture(ResourceTexture.clone(new Texture(signedDistanceFieldTask.distanceFieldBuffer(), Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1)));
+        Texture texture = new Texture(signedDistanceFieldTask.distanceFieldBuffer(), Texture.BILINEAR_FILTER, downscaledImageSize, downscaledImageSize, 1);
+        ResourceTexture resourceTexture = ResourceTexture.clone(texture);
+        setTexture(resourceTexture);
         addCharacters(characterBuffer, characterCount, firstCharacter, imageSize);
         characterBuffer.free();
       }

@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutorService;
 
 public class ResourceTexture extends Texture implements ResourceItem {
 
-  @Serial
   private static final long serialVersionUID = 5195096345989696754L;
 
   private ByteBuffer rawFile;

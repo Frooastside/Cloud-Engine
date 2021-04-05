@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -20,6 +20,8 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:12.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:12.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:12.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:11.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:win:11.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-assimp:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:3.2.3" level="project" />
@@ -27,12 +29,14 @@
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-vulkan:3.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opus:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl:natives-windows:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-assimp:natives-windows:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-glfw:natives-windows:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-openal:natives-windows:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opengl:natives-windows:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-stb:natives-windows:3.2.3" level="project" />
+    <orderEntry type="library" name="Maven: org.lwjgl:lwjgl-opus:natives-windows:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.joml:joml:1.9.25" level="project" />
     <orderEntry type="library" name="Maven: com.code-disaster.steamworks4j:steamworks4j:1.8.0" level="project" />
     <orderEntry type="library" name="Maven: com.code-disaster.steamworks4j:steamworks4j-server:1.8.0" level="project" />

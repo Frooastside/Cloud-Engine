@@ -3,7 +3,6 @@ package net.frooastside.engine.postprocessing;
 import net.frooastside.engine.resource.BufferUtils;
 import org.joml.Vector2f;
 
-import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,16 +34,13 @@ public class SignedDistanceFieldTask {
   public void generate() {
     byte[] pixelArray = BufferUtils.copyToArray(sourceBuffer);
     boolean[][] bitmap = new boolean[imageSize][imageSize];
-    BufferedImage bufferedImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
     for (int y = 0; y < imageSize; y++) {
       for (int x = 0; x < imageSize; x++) {
         byte rgb = pixelArray[y * imageSize + x];
         bitmap[x][y] = rgb < 0;
-        bufferedImage.setRGB(x, y, rgb);
       }
     }
     int downscaledImageSize = imageSize / downscale;
-    final ByteBuffer distanceFieldBuffer = ByteBuffer.allocateDirect(downscaledImageSize * downscaledImageSize);
     for (int y = 0; y < downscaledImageSize; y++) {
       for (int x = 0; x < downscaledImageSize; x++) {
         final int centerX = x * downscale + downscale / 2;
@@ -84,13 +80,12 @@ public class SignedDistanceFieldTask {
     }
   }
 
-  public boolean waitForCompletion() {
+  public void waitForCompletion() {
     try {
       executorService.shutdown();
-      return executorService.awaitTermination(1, TimeUnit.HOURS);
+      executorService.awaitTermination(1, TimeUnit.HOURS);
     } catch (InterruptedException ignored) {
     }
-    return false;
   }
 
   public int length() {

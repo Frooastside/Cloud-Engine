@@ -7,7 +7,13 @@ public class CenterConstraint extends Constraint {
 
   @Override
   public float rawValue() {
-    float oppositeRawValue = current().rawValueOf(getOpposite());
+    ConstraintType oppositeConstraintType = getOpposite().type();
+    float oppositeRawValue = current().rawValueOf(getOpposite())
+      + ((oppositeConstraintType == ConstraintType.X || oppositeConstraintType == ConstraintType.Y)
+        ? (oppositeConstraintType == ConstraintType.X
+          ? parent().bounds().x
+          : parent().bounds().y)
+        : 0);
     Vector4f parentBounds = parent().bounds();
     if (type() == ConstraintType.X || type() == ConstraintType.Y) {
       return (type() == ConstraintType.X ? parentBounds.z - oppositeRawValue : parentBounds.w - oppositeRawValue) / 2;

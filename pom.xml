@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <lwjgl.version>3.2.3</lwjgl.version>
         <joml.version>1.9.25</joml.version>
         <steamworks4j.version>1.8.0</steamworks4j.version>
@@ -141,6 +141,11 @@
             <version>12.0.2</version>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>11.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
         </dependency>
@@ -170,6 +175,10 @@
         </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-opus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
             <classifier>${lwjgl.natives}</classifier>
         </dependency>
@@ -196,6 +205,11 @@
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-stb</artifactId>
+            <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-opus</artifactId>
             <classifier>${lwjgl.natives}</classifier>
         </dependency>
         <dependency>

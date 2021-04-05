@@ -59,6 +59,20 @@ public abstract class FunctionalElement extends Element {
     }
   }
 
+  @Override
+  public boolean doingDisplayAnimation() {
+    if(super.doingDisplayAnimation()) {
+      return true;
+    }else {
+      for(Element element : children()) {
+        if(element.doingDisplayAnimation()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public Element click(ClickEvent event) {
     if (event.inside()) {
       for (Element element : children) {

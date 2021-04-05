@@ -42,7 +42,7 @@ public class Window {
     input.initialize();
     GL.createCapabilities();
     resetVSync();
-    GL11.glClearColor(0.5f, 0.5f, 0.5f, 1);
+    GL11.glClearColor(0.2f, 0.2f, 0.2f, 1);
   }
 
   public static void clearBuffers() {
@@ -102,15 +102,27 @@ public class Window {
     }
   }
 
-  public static Window createWindow(String title, boolean fullscreen) {
-    return createWindow(Monitor.DEFAULT, title, true, fullscreen, 0.5f);
+  public static void initializeWindowSystem() {
+    GLFWErrorCallback.createPrint(System.err).set();
+    GLFW.glfwInit();
   }
 
-  public static Window createWindow(Monitor monitor, String title, boolean visible, boolean fullscreen, float nonFullscreenSize) {
+  public static void shutdownWindowSystem() {
+    GLFW.glfwTerminate();
+  }
+
+  public static Window createWindow(String title, boolean fullscreen, CreationHint... creationHints) {
+    return createWindow(Monitor.DEFAULT, title, true, fullscreen, 0.5f, creationHints);
+  }
+
+  public static Window createWindow(Monitor monitor, String title, boolean visible, boolean fullscreen, float nonFullscreenSize, CreationHint... creationHints) {
     if (monitor == null) {
       monitor = Monitor.DEFAULT;
     }
     GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
+    for(CreationHint creationHint : creationHints) {
+      GLFW.glfwWindowHint(creationHint.hint(), creationHint.value());
+    }
     Vector4i workArea = monitor.workArea();
     int workAreaWidth = workArea.z;
     int workAreaHeight = workArea.w;
@@ -234,6 +246,33 @@ public class Window {
     return delta;
   }
 
+  public static class CreationHint {
+
+    private int hint;
+    private int value;
+
+    public CreationHint(int hint, int value) {
+      this.hint = hint;
+      this.value = value;
+    }
+
+    public int hint() {
+      return hint;
+    }
+
+    public void setHint(int hint) {
+      this.hint = hint;
+    }
+
+    public int value() {
+      return value;
+    }
+
+    public void setValue(int value) {
+      this.value = value;
+    }
+  }
+
   public class Input {
 
     private final boolean[] keyboardButtons = new boolean[GLFW.GLFW_KEY_LAST + 1];
@@ -262,8 +301,12 @@ public class Window {
 
     public void handleMouseButton(long window, int button, int action, int mods) {
       switch (action) {
-        case GLFW.GLFW_PRESS -> mouseButtons[button] = true;
-        case GLFW.GLFW_RELEASE -> mouseButtons[button] = false;
+        case GLFW.GLFW_PRESS:
+          mouseButtons[button] = true;
+          break;
+        case GLFW.GLFW_RELEASE:
+          mouseButtons[button] = false;
+          break;
       }
       if (mouseButtonCallback != null) {
         mouseButtonCallback.invokeMouseButtonCallback(Window.this, button, mouseButtons[button]);
@@ -273,8 +316,12 @@ public class Window {
     public void handleKey(long window, int key, int scancode, int action, int modifiers) {
       if (key != GLFW.GLFW_KEY_UNKNOWN) {
         switch (action) {
-          case GLFW.GLFW_PRESS -> keyboardButtons[key] = true;
-          case GLFW.GLFW_RELEASE -> keyboardButtons[key] = false;
+          case GLFW.GLFW_PRESS:
+            keyboardButtons[key] = true;
+            break;
+          case GLFW.GLFW_RELEASE:
+            keyboardButtons[key] = false;
+            break;
         }
         if (keyCallback != null) {
           KeyCallback.Action keyAction =

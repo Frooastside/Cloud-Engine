@@ -2,12 +2,15 @@ package net.frooastside.engine.resource;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -16,6 +19,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.frooastside.engine.resource.settings.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -239,7 +245,7 @@ public class ResourceManager extends Application {
     acceptButton.setOnMouseClicked(event -> {
       String nameFieldText = nameField.getText();
       if (!nameFieldText.isEmpty()) {
-        reloadSettingsBox(item);
+        setValues(item);
         executorService.execute(() -> item.loadUnspecific(executorService));
         currentResourceContainer.remove(key);
         currentResourceContainer.put(nameFieldText, item);
@@ -474,7 +480,8 @@ public class ResourceManager extends Application {
         new Separator(),
         new Label("CharacterCount: " + font.characterCount()),
         new Separator(),
-        new Label("CharacterHeight: " + font.characterHeight()));
+        new Label("CharacterHeight: " + font.characterHeight()),
+        fontPreview(font));
     }else if(resourceItem instanceof ResourceTexture) {
       ResourceTexture texture = (ResourceTexture) resourceItem;
       informationBox.getChildren().addAll(
@@ -494,6 +501,29 @@ public class ResourceManager extends Application {
       );
     }
     return informationBox;
+  }
+
+  private ImageView fontPreview(ResourceFont resourceFont) {
+    ResourceTexture texture = resourceFont.texture();
+    if(texture != null) {
+      int imageSize = texture.width();
+      byte[] pixelArray = BufferUtils.copyToArray(texture.pixelBuffer());
+      BufferedImage bufferedImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
+      for (int y = 0; y < imageSize; y++) {
+        for (int x = 0; x < imageSize; x++) {
+          byte rgb = pixelArray[y * imageSize + x];
+          bufferedImage.setRGB(x, y, rgb);
+        }
+      }
+      WritableImage writableImage = SwingFXUtils.toFXImage(bufferedImage, null);
+      ImageView imageView = new ImageView(writableImage);
+      imageView.setFitWidth(200);
+      imageView.setPreserveRatio(true);
+      imageView.setSmooth(true);
+      imageView.setCache(true);
+      return imageView;
+    }
+    return null;
   }
 
   private void reloadSettingsBox(ResourceItem resourceItem) {

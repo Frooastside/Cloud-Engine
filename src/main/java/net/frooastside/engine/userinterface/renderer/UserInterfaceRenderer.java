@@ -158,7 +158,7 @@ public class UserInterfaceRenderer {
       fontShader.loadColor(text.color().rawColor());
       fontShader.loadAlpha(alpha);
       //TODO EDGE
-      fontShader.loadEdge(0.15f);
+      fontShader.loadEdge(0.35f);
       VertexArrayObject textMesh = text.model();
       textMesh.bind();
       textMesh.enableVertexAttributes();

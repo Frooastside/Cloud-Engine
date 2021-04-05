@@ -8,7 +8,7 @@ public class ResourceContainer {
 
   private final Map<String, ResourceItem> content = new HashMap<>();
 
-  public void load(File containerFile) throws IOException, ClassNotFoundException {
+  public ResourceContainer load(File containerFile) throws IOException, ClassNotFoundException {
     if (containerFile.exists() && containerFile.isFile()) {
       ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(containerFile));
       Map<?, ?> rawContent = (Map<?, ?>) objectInputStream.readObject();
@@ -23,6 +23,7 @@ public class ResourceContainer {
       }
       objectInputStream.close();
     }
+    return this;
   }
 
   public void save(File containerFile) throws IOException {
