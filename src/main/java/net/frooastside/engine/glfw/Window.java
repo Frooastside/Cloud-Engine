@@ -45,10 +45,6 @@ public class Window {
     GL11.glClearColor(0.2f, 0.2f, 0.2f, 1);
   }
 
-  public static void clearBuffers() {
-    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
-  }
-
   public void updateWindow() {
     GLFW.glfwSwapBuffers(identifier);
     GLFW.glfwPollEvents();
@@ -109,6 +105,14 @@ public class Window {
 
   public static void shutdownWindowSystem() {
     GLFW.glfwTerminate();
+  }
+
+  public static void clearBuffers() {
+    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+  }
+
+  public static void resizeViewport(int x, int y, int width, int height) {
+    GL11.glViewport(x, y, width, height);
   }
 
   public static Window createWindow(String title, boolean fullscreen, CreationHint... creationHints) {

@@ -15,9 +15,9 @@ public class SelectionEvent {
 
     void handleSelection(SelectionEvent event);
 
-    public void handleKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action);
+    void handleKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action);
 
-    public void handleCharEvent(Window window, int codepoint);
+    void handleCharEvent(Window window, int codepoint);
 
   }
 
