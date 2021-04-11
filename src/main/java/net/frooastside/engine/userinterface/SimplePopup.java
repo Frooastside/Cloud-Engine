@@ -61,6 +61,14 @@ public class SimplePopup {
     return thread != null && thread.isAlive();
   }
 
+  public ExecutorService executorService() {
+    return executorService;
+  }
+
+  public Queue<Runnable> threadSpecificQueue() {
+    return threadSpecificQueue;
+  }
+
   private void open() {
     ResourceFont resourceFont = fontCreator.createFont();
     resourceFont.addQueueTasks(executorService, threadSpecificQueue);
