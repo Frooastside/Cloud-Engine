@@ -134,6 +134,8 @@ public abstract class FunctionalElement extends Element {
     element.initialize();
     element.updatePixelSize(pixelSize());
     element.recalculateBounds();
+
+    element.display(visible(), displayAnimationDelay());
   }
 
   public List<Element> children() {

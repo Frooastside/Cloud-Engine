@@ -8,20 +8,24 @@ public class MathConstraint extends Constraint {
   private final Operator mathematicalOperator;
   private final Constraint firstConstraint;
   private final Constraint secondConstraint;
-  private final boolean initializeConstraints;
+  private final boolean initializeFirstConstraint;
+  private final boolean initializeSecondConstraint;
 
-  public MathConstraint(Operator mathematicalOperator, Constraint firstConstraint, Constraint secondConstraint, boolean initializeConstraints) {
+  public MathConstraint(Operator mathematicalOperator, Constraint firstConstraint, Constraint secondConstraint, boolean initializeFirstConstraint, boolean initializeSecondConstraint) {
     this.mathematicalOperator = mathematicalOperator;
     this.firstConstraint = firstConstraint;
     this.secondConstraint = secondConstraint;
-    this.initializeConstraints = initializeConstraints;
+    this.initializeFirstConstraint = initializeFirstConstraint;
+    this.initializeSecondConstraint = initializeSecondConstraint;
   }
 
   @Override
   public void initialize(ElementConstraints constraints, Element current, Element parent) {
     super.initialize(constraints, current, parent);
-    if(initializeConstraints) {
+    if(initializeFirstConstraint) {
       firstConstraint.initialize(constraints, current, parent);
+    }
+    if(initializeSecondConstraint) {
       secondConstraint.initialize(constraints, current, parent);
     }
   }
@@ -50,8 +54,12 @@ public class MathConstraint extends Constraint {
   @Override
   public void setConstraintType(ConstraintType type) {
     super.setConstraintType(type);
-    firstConstraint.setConstraintType(type);
-    secondConstraint.setConstraintType(type);
+    if(initializeFirstConstraint) {
+      firstConstraint.setConstraintType(type);
+    }
+    if(initializeSecondConstraint) {
+      secondConstraint.setConstraintType(type);
+    }
   }
 
   public enum Operator {

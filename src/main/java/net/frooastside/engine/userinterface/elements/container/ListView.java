@@ -28,6 +28,12 @@ public class ListView<T> extends FunctionalElement {
     this.offset = offset;
   }
 
+  public void update(T t) {
+    if(elements.containsKey(t)) {
+      typeAdapter.update(t, elements.get(t));
+    }
+  }
+
   public void add(T t) {
     Panel panel = new Panel(color);
 
@@ -37,7 +43,7 @@ public class ListView<T> extends FunctionalElement {
       verticalOffset.setConstraintType(Constraint.ConstraintType.Y);
       elementConstraints = new ElementConstraints(
         new PixelConstraint(this.offset),
-        new MathConstraint(MathConstraint.Operator.ADD, scrollConstraint, verticalOffset, false),
+        new MathConstraint(MathConstraint.Operator.ADD, scrollConstraint, verticalOffset, false, false),
         new CenterConstraint(),
         typeAdapter.height(t));
       verticalOffset.initialize(elementConstraints, panel, this);
@@ -76,6 +82,11 @@ public class ListView<T> extends FunctionalElement {
 
   public void scroll(float distance) {
     scrollConstraint.setValue(scrollConstraint.rawValue() - distance);
+    recalculateBounds();
+  }
+
+  public List<T> items() {
+    return items;
   }
 
   public static class Item<T> {
@@ -89,7 +100,7 @@ public class ListView<T> extends FunctionalElement {
     }
 
     public void createNextConstraints(ElementConstraints constraints, Constraint offset) {
-      nextPosition = new DoubleMathConstraint(DoubleMathConstraint.Operator.ADD, DoubleMathConstraint.Operator.ADD, constraints.y(), constraints.height(), offset, false);
+      nextPosition = new DoubleMathConstraint(DoubleMathConstraint.Operator.ADD, DoubleMathConstraint.Operator.ADD, constraints.y(), constraints.height(), offset, false, false, false);
     }
 
     public Constraint nextPosition() {
