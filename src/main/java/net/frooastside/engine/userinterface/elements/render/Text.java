@@ -12,34 +12,31 @@ import net.frooastside.engine.userinterface.elements.RenderElement;
 
 public class Text extends RenderElement {
 
-  public static final float LINE_HEIGHT = 0.025f;
-
   private final VertexArrayObject model = generateEmptyModel();
   private final Font font;
-  private final boolean centered;
+  private final boolean verticalCentered;
+  private final boolean horizontalCentered;
 
   private String text;
 
   private float aspectRatio;
 
-  public Text(Font font, String text, Color color, boolean centered) {
+  public Text(Font font, String text, Color color, boolean verticalCentered, boolean horizontalCentered) {
     super.setColor(color);
     this.font = font;
     this.text = text;
-    this.centered = centered;
+    this.verticalCentered = verticalCentered;
+    this.horizontalCentered = horizontalCentered;
   }
 
   @Override
   public void recalculateBounds() {
     super.recalculateBounds();
-    this.aspectRatio = pixelSize().y / pixelSize().x;
+    this.aspectRatio = pixelSize().x / pixelSize().y;
     float maxLineLength = bounds().z;
-    float rawHeight = bounds().w;
+    float fontHeight = bounds().w;
 
-    double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
-    double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
-    double fontWidth = horizontalPerPixelSize * rawHeight;
-    double fontHeight = verticalPerPixelSize * rawHeight;
+    double fontWidth = fontHeight * aspectRatio;
 
     double lineLength = 0;
     int characterCount = 0;
@@ -50,7 +47,7 @@ public class Text extends RenderElement {
     }
 
     double cursorX = centered ? (maxLineLength - lineLength) / 2 : 0.0;
-    double yLineOffset = LINE_HEIGHT * (rawHeight / 4.35f);
+    double yLineOffset = fontHeight / 2;
     float[] positions = new float[characterCount * 12];
     float[] textureCoordinates = new float[characterCount * 12];
 
@@ -138,11 +135,10 @@ public class Text extends RenderElement {
   }
 
   public double lineLength(int beginIndex, int endIndex) {
-    this.aspectRatio = pixelSize().y / pixelSize().x;
-    float rawHeight = bounds().w;
-    double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
-    double horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
-    double fontWidth = horizontalPerPixelSize * rawHeight;
+    this.aspectRatio = pixelSize().x / pixelSize().y;
+    float fontHeight = bounds().w;
+    //double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
+    double fontWidth = fontHeight * aspectRatio;
     double lineLength = 0;
     char[] chars = text.toCharArray();
     for (int i = beginIndex; i < endIndex; i++) {

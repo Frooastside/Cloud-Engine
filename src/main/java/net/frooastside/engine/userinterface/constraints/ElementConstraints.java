@@ -1,7 +1,8 @@
 package net.frooastside.engine.userinterface.constraints;
 
-import net.frooastside.engine.userinterface.elements.Element;
+import net.frooastside.engine.language.I18n;
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 
 public class ElementConstraints {
 
@@ -9,63 +10,77 @@ public class ElementConstraints {
 
   private Constraint x;
   private Constraint y;
-  private Constraint width;
-  private Constraint height;
+  private Constraint z;
+  private Constraint w;
 
-  public ElementConstraints(Constraint x, Constraint y, Constraint width, Constraint height) {
+  public ElementConstraints(Constraint x, Constraint y, Constraint z, Constraint w) {
     setX(x);
     setY(y);
-    setWidth(width);
-    setHeight(height);
+    setZ(z);
+    setW(w);
   }
 
   public ElementConstraints() {
   }
 
-  public void initialize(Element current, Element parent) {
-    x.initialize(this, current, parent);
-    y.initialize(this, current, parent);
-    width.initialize(this, current, parent);
-    height.initialize(this, current, parent);
+  public Constraint constraint(Constraint.ConstraintType constraintType) {
+    switch (constraintType) {
+      case X:
+        return x;
+      case Y:
+        return y;
+      case Z:
+        return z;
+      case W:
+        return w;
+      default:
+        throw new IllegalStateException(I18n.get("error.userinterface.unknownconstrainttype", constraintType));
+    }
   }
 
-  public Constraint getConstraint(Constraint.ConstraintType constraintType) {
-    if (constraintType == Constraint.ConstraintType.X) {
-      return x;
-    } else if (constraintType == Constraint.ConstraintType.Y) {
-      return y;
-    } else if (constraintType == Constraint.ConstraintType.WIDTH) {
-      return width;
-    } else if (constraintType == Constraint.ConstraintType.HEIGHT) {
-      return height;
+  public Constraint.ConstraintType counterpartType(Constraint.ConstraintType constraintType) {
+    switch (constraintType) {
+      case X:
+        return Constraint.ConstraintType.Y;
+      case Y:
+        return Constraint.ConstraintType.X;
+      case Z:
+        return Constraint.ConstraintType.W;
+      case W:
+        return Constraint.ConstraintType.Z;
+      default:
+        throw new IllegalStateException(I18n.get("error.userinterface.unknownconstrainttype", constraintType));
     }
-    return null;
   }
 
-  public Constraint getCounterpart(Constraint constraint) {
-    if (constraint.type() == Constraint.ConstraintType.X) {
-      return y;
-    } else if (constraint.type() == Constraint.ConstraintType.Y) {
-      return x;
-    } else if (constraint.type() == Constraint.ConstraintType.WIDTH) {
-      return height;
-    } else if (constraint.type() == Constraint.ConstraintType.HEIGHT) {
-      return width;
+  public Constraint.ConstraintType oppositeType(Constraint.ConstraintType constraintType) {
+    switch (constraintType) {
+      case X:
+        return Constraint.ConstraintType.Z;
+      case Y:
+        return Constraint.ConstraintType.W;
+      case Z:
+        return Constraint.ConstraintType.X;
+      case W:
+        return Constraint.ConstraintType.Y;
+      default:
+        throw new IllegalStateException(I18n.get("error.userinterface.unknownconstrainttype", constraintType));
     }
-    return null;
   }
 
-  public Constraint getOpposite(Constraint constraint) {
-    if (constraint.type() == Constraint.ConstraintType.X) {
-      return width;
-    } else if (constraint.type() == Constraint.ConstraintType.Y) {
-      return height;
-    } else if (constraint.type() == Constraint.ConstraintType.WIDTH) {
-      return x;
-    } else if (constraint.type() == Constraint.ConstraintType.HEIGHT) {
-      return y;
-    }
-    return null;
+  public boolean containsMaxValueConstraint() {
+    return x instanceof MaxValueConstraint
+      || y instanceof MaxValueConstraint
+      || z instanceof MaxValueConstraint
+      || w instanceof MaxValueConstraint;
+  }
+
+  public float calculateValue(Constraint.ConstraintType constraintType, Vector4f parent) {
+    return constraint(constraintType).calculate(parent);
+  }
+
+  public float calculateValue(Constraint constraint, Vector4f parent) {
+    return constraint.calculate(parent);
   }
 
   public static ElementConstraints getDefault() {
@@ -74,6 +89,10 @@ public class ElementConstraints {
       new RelativeConstraint(0),
       new RelativeConstraint(1),
       new RelativeConstraint(1));
+  }
+
+  public Vector2f pixelSize() {
+    return pixelSize;
   }
 
   public void setPixelSize(Vector2f pixelSize) {
@@ -86,7 +105,8 @@ public class ElementConstraints {
 
   public void setX(Constraint x) {
     this.x = x;
-    this.x.setConstraintType(Constraint.ConstraintType.X);
+    x.setConstraints(this);
+    this.x.setType(Constraint.ConstraintType.X);
   }
 
   public Constraint y() {
@@ -95,28 +115,27 @@ public class ElementConstraints {
 
   public void setY(Constraint y) {
     this.y = y;
-    this.y.setConstraintType(Constraint.ConstraintType.Y);
+    y.setConstraints(this);
+    this.y.setType(Constraint.ConstraintType.Y);
   }
 
-  public Constraint width() {
-    return width;
+  public Constraint z() {
+    return z;
   }
 
-  public void setWidth(Constraint width) {
-    this.width = width;
-    this.width.setConstraintType(Constraint.ConstraintType.WIDTH);
+  public void setZ(Constraint z) {
+    this.z = z;
+    z.setConstraints(this);
+    this.z.setType(Constraint.ConstraintType.Z);
   }
 
-  public Constraint height() {
-    return height;
+  public Constraint w() {
+    return w;
   }
 
-  public void setHeight(Constraint height) {
-    this.height = height;
-    this.height.setConstraintType(Constraint.ConstraintType.HEIGHT);
-  }
-
-  public Vector2f pixelSize() {
-    return pixelSize;
+  public void setW(Constraint w) {
+    this.w = w;
+    w.setConstraints(this);
+    this.w.setType(Constraint.ConstraintType.W);
   }
 }

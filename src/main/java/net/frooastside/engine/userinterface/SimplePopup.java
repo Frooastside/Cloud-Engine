@@ -40,7 +40,7 @@ public class SimplePopup {
   }
 
   public void display() {
-    if(!running()) {
+    if (!running()) {
       thread = new Thread(this::open);
       thread.start();
     }
@@ -90,7 +90,7 @@ public class SimplePopup {
 
     screen.display(true, 0);
 
-    while(!window.shouldWindowClose()) {
+    while (!window.shouldWindowClose()) {
       screen.update();
 
       Runnable runnable = threadSpecificQueue.poll();
@@ -106,7 +106,7 @@ public class SimplePopup {
 
     screen.display(false, 0);
 
-    while(screen.doingDisplayAnimation()) {
+    while (screen.doingDisplayAnimation()) {
       screen.update();
       Window.clearBuffers();
       userInterfaceRenderer.render(screen);

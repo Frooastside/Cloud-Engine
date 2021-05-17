@@ -7,6 +7,7 @@ public enum TransitionType {
   WIDTH(1, Animator::applyWidth),
   HEIGHT(1, Animator::applyHeight),
   ALPHA(1, (animator, value, recalculate) -> animator.applyAlpha(value));
+  //TODO COLOR(1, (animatoe))
 
   private final float standardValue;
   private final ValueSetter valueSetter;

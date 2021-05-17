@@ -2,14 +2,14 @@ package net.frooastside.engine.userinterface.constraints;
 
 import org.joml.Vector4f;
 
-public class RawConstraint extends Constraint {
+public class MaxValueConstraint extends Constraint {
 
-  public RawConstraint(float value) {
-    super(value);
+  public MaxValueConstraint() {
+    super(Float.NaN);
   }
 
   @Override
   public float calculate(Vector4f parent) {
-    return value();
+    return Float.NaN;
   }
 }

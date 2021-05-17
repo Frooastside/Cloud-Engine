@@ -89,7 +89,7 @@ public class UserInterfaceRenderer {
 
   public void renderStencil(FunctionalElement functionalElement) {
     hideOverflowElement = functionalElement;
-    if(functionalElement != null) {
+    if (functionalElement != null) {
       clearStencilBuffer();
       enableStencilRendering();
       functionalElement.children().stream()

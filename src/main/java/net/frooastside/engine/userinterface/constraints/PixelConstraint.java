@@ -1,37 +1,19 @@
 package net.frooastside.engine.userinterface.constraints;
 
+import org.joml.Vector4f;
+
 public class PixelConstraint extends Constraint {
 
-  private int pixels;
-
   public PixelConstraint(int pixels) {
-    this.pixels = pixels;
+    super(pixels);
   }
 
   @Override
-  public float rawValue() {
-    if (type() == ConstraintType.X || type() == ConstraintType.WIDTH) {
-      return pixels * constraints().pixelSize().x;
+  public float calculate(Vector4f parent) {
+    if (type() == ConstraintType.X || type() == ConstraintType.Z) {
+      return value() * constraints().pixelSize().x;
     } else {
-      return pixels * constraints().pixelSize().y;
+      return value() * constraints().pixelSize().y;
     }
-  }
-
-  @Override
-  public void setValue(float value) {
-
-  }
-
-  @Override
-  public boolean relative() {
-    return false;
-  }
-
-  public int pixels() {
-    return pixels;
-  }
-
-  public void setPixels(int pixels) {
-    this.pixels = pixels;
   }
 }

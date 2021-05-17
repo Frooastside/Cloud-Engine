@@ -1,25 +1,18 @@
 package net.frooastside.engine.userinterface.constraints;
 
+import org.joml.Vector4f;
+
 public class RelativeConstraint extends Constraint {
 
-  private float relativeValue;
-
   public RelativeConstraint(float relativeValue) {
-    this.relativeValue = relativeValue;
+    super(relativeValue);
   }
 
   @Override
-  public float rawValue() {
-    return relativeValue;
-  }
-
-  @Override
-  public void setValue(float value) {
-    this.relativeValue = value;
-  }
-
-  @Override
-  public boolean relative() {
-    return true;
+  public float calculate(Vector4f parent) {
+    return value() *
+      (type() == Constraint.ConstraintType.X || type() == Constraint.ConstraintType.Z
+        ? parent.z
+        : parent.w);
   }
 }

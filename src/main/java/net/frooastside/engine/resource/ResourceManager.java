@@ -252,7 +252,7 @@ public class ResourceManager extends Application {
         reload();
         unsavedChanges = true;
         configurationStage.close();
-        if(item.progress() != -1) {
+        if (item.progress() != -1) {
           createProgressBarStage(item);
         }
       }
@@ -280,8 +280,8 @@ public class ResourceManager extends Application {
     progressStage.setScene(scene);
     progressStage.show();
     Thread updateThread = new Thread(() -> {
-      while(item.progress() < 1) {
-        if(item.progress() != 0) {
+      while (item.progress() < 1) {
+        if (item.progress() != 0) {
           Platform.runLater(() -> progressBar.setProgress(item.progress()));
         }
         try {
@@ -390,7 +390,7 @@ public class ResourceManager extends Application {
   }
 
   private boolean checkValues(ResourceItem resourceItem) {
-    if(resourceItem instanceof ResourceFont) {
+    if (resourceItem instanceof ResourceFont) {
       ResourceFont font = (ResourceFont) resourceItem;
       return font.imageSize() == 0
         && font.downscale() == 0
@@ -398,16 +398,16 @@ public class ResourceManager extends Application {
         && font.padding() == 0
         && font.firstCharacter() == 0
         && font.characterCount() == 0;
-    }else if(resourceItem instanceof ResourceTexture) {
+    } else if (resourceItem instanceof ResourceTexture) {
       return false;
-    }else {
+    } else {
       return false;
     }
   }
 
   private void setValues(ResourceItem resourceItem) {
     Map<String, Node> settings = settingsFor(resourceItem);
-    if(resourceItem instanceof ResourceFont) {
+    if (resourceItem instanceof ResourceFont) {
       ResourceFont font = (ResourceFont) resourceItem;
       Object imageSize = Setting.getComboBoxItem(settings, "imageSize");
       if (imageSize != null) {
@@ -432,15 +432,15 @@ public class ResourceManager extends Application {
   }
 
   private SettingsCreator layoutFor(ResourceItem resourceItem) {
-    if(resourceItem instanceof ResourceFont) {
+    if (resourceItem instanceof ResourceFont) {
       return FONT_SETTINGS_LAYOUT;
-    }else {
+    } else {
       return DEFAULT_SETTINGS_LAYOUT;
     }
   }
 
   private Map<String, Node> settingsFor(ResourceItem resourceItem) {
-    if(!settingsMap.containsKey(resourceItem)) {
+    if (!settingsMap.containsKey(resourceItem)) {
       Map<String, Node> settings = layoutFor(resourceItem).createSettings();
       settingsMap.put(resourceItem, settings);
       if (checkValues(resourceItem)) {
@@ -453,7 +453,7 @@ public class ResourceManager extends Application {
   }
 
   private Node settingsBoxFor(ResourceItem resourceItem) {
-    if(!settingBoxes.containsKey(resourceItem)) {
+    if (!settingBoxes.containsKey(resourceItem)) {
       Node box = SettingsCreator.getBox(settingsFor(resourceItem));
       settingBoxes.put(resourceItem, box);
       return box;
@@ -464,7 +464,7 @@ public class ResourceManager extends Application {
   public Node createInformationBox(ResourceItem resourceItem) {
     VBox informationBox = new VBox();
     informationBox.setAlignment(Pos.CENTER);
-    if(resourceItem instanceof ResourceFont) {
+    if (resourceItem instanceof ResourceFont) {
       ResourceFont font = (ResourceFont) resourceItem;
       informationBox.setAlignment(Pos.CENTER);
       informationBox.getChildren().addAll(
@@ -482,7 +482,7 @@ public class ResourceManager extends Application {
         new Separator(),
         new Label("CharacterHeight: " + font.characterHeight()),
         fontPreview(font));
-    }else if(resourceItem instanceof ResourceTexture) {
+    } else if (resourceItem instanceof ResourceTexture) {
       ResourceTexture texture = (ResourceTexture) resourceItem;
       informationBox.getChildren().addAll(
         new Label("Width: " + texture.width()),
@@ -505,7 +505,7 @@ public class ResourceManager extends Application {
 
   private ImageView fontPreview(ResourceFont resourceFont) {
     ResourceTexture texture = resourceFont.texture();
-    if(texture != null) {
+    if (texture != null) {
       int imageSize = texture.width();
       byte[] pixelArray = BufferUtils.copyToArray(texture.pixelBuffer());
       BufferedImage bufferedImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_BYTE_GRAY);
@@ -528,7 +528,7 @@ public class ResourceManager extends Application {
 
   private void reloadSettingsBox(ResourceItem resourceItem) {
     Map<String, Node> settings = settingsFor(resourceItem);
-    if(resourceItem instanceof ResourceFont) {
+    if (resourceItem instanceof ResourceFont) {
       ResourceFont font = (ResourceFont) resourceItem;
       Setting.setComboBoxItem(settings, "imageSize", font.imageSize());
       Setting.setSpinnerValue(settings, "downscale", font.downscale());

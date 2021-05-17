@@ -13,7 +13,7 @@ public class I18n {
   private Language currentLanguage;
 
   public static String get(String key, Object... args) {
-    String result = key;
+    String result = key + Arrays.toString(args);
     if (instance.currentLanguage.contains(key.toLowerCase())) {
       result = String.format(instance.currentLanguage.get(key.toLowerCase()), args);
     }

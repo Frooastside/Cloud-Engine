@@ -124,7 +124,7 @@ public class Window {
       monitor = Monitor.DEFAULT;
     }
     GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
-    for(CreationHint creationHint : creationHints) {
+    for (CreationHint creationHint : creationHints) {
       GLFW.glfwWindowHint(creationHint.hint(), creationHint.value());
     }
     Vector4i workArea = monitor.workArea();

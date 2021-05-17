@@ -1,5 +1,6 @@
 package net.frooastside.engine.userinterface.elements;
 
+import net.frooastside.engine.userinterface.Color;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.animation.Animation;
@@ -10,6 +11,22 @@ import org.joml.Vector4f;
 public abstract class Element {
 
   private final Vector4f bounds = new Vector4f(0, 0, 1, 1);
+
+  private Color color;
+
+  public Vector4f bounds() {
+    return bounds;
+  }
+
+  public Color color() {
+    return color;
+  }
+
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  /*private final Vector4f bounds = new Vector4f(0, 0, 1, 1);
   private final Vector2f pixelSize = new Vector2f();
 
   private ElementConstraints constraints;
@@ -155,5 +172,5 @@ public abstract class Element {
   public void setDisplayAnimation(Animation displayAnimation, float displayAnimationDelay) {
     this.displayAnimation = displayAnimation;
     this.displayAnimationDelay = displayAnimationDelay;
-  }
+  }*/
 }

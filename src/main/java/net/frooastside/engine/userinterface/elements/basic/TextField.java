@@ -59,7 +59,7 @@ public class TextField extends FunctionalElement implements SelectionEvent.Liste
     float selectionStartX = (float) uiText.lineLength(0, selectionStart);
     float selectionEndX = (float) uiText.lineLength(0, selectionEnd);
     selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setValue(selectionStartX);
-    selectionBox.constraints().getConstraint(Constraint.ConstraintType.WIDTH).setValue(selectionEndX - selectionStartX);
+    selectionBox.constraints().getConstraint(Constraint.ConstraintType.Z).setValue(selectionEndX - selectionStartX);
     float cursorX = (float) uiText.lineLength(0, cursor);
     cursorBox.constraints().getConstraint(Constraint.ConstraintType.X).setValue(cursorX - (pixelSize().x * 1));
   }
