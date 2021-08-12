@@ -89,8 +89,8 @@ public class ContainerElement extends FunctionalElement {
           return (innerArea.w - totalSize) / 2;
         }
         throw new IllegalStateException(I18n.get("error.userinterface.unknowndirection", flowDirection));
-      default:
       case DEFAULT:
+      default:
         return 0f;
     }
   }
@@ -108,15 +108,6 @@ public class ContainerElement extends FunctionalElement {
 
   private void handleItemAlignment(FunctionalElement child) {
     switch (itemAlignment) {
-      default:
-      case DEFAULT:
-      case START:
-        if (flowDirection == FlowDirection.HORIZONTAL) {
-          child.bounds().y = innerArea.y + child.spacing().y;
-        } else if (flowDirection == FlowDirection.VERTICAL) {
-          child.bounds().x = innerArea.x + child.spacing().x;
-        }
-        break;
       case END:
         if (flowDirection == FlowDirection.HORIZONTAL) {
           child.bounds().y = (innerArea.y + innerArea.w) - (child.bounds().w + child.spacing().y);
@@ -129,6 +120,15 @@ public class ContainerElement extends FunctionalElement {
           child.bounds().y = innerArea.y + ((innerArea.w - child.bounds().w) / 2);
         } else if (flowDirection == FlowDirection.VERTICAL) {
           child.bounds().x = innerArea.x + ((innerArea.z - child.bounds().z) / 2);
+        }
+        break;
+      case START:
+      case DEFAULT:
+      default:
+        if (flowDirection == FlowDirection.HORIZONTAL) {
+          child.bounds().y = innerArea.y + child.spacing().y;
+        } else if (flowDirection == FlowDirection.VERTICAL) {
+          child.bounds().x = innerArea.x + child.spacing().x;
         }
         break;
     }
