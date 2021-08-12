@@ -5,32 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca4212f5-c842-49de-841c-dd77d5fb7af2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/container/Container.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/events/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/events/EventHandler.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/uitest/FileReadTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/Screen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/Screen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/SimplePopup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/SimplePopup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/Animator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/animation/Animator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/ElementConstraints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/ElementConstraints.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/MaxValueConstraint.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RatioConstraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/constraints/RatioConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/ContainerElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/ContainerElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/Element.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/Element.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/FunctionalElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/FunctionalElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/RenderElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/RenderElement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/Button.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/Button.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/SimpleButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/SimpleButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/SimpleToggleButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/SimpleToggleButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/TextField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/basic/TextField.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/container/Panel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/container/Screen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/Text.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/Text.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/TextArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/elements/render/TextArea.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/events/ClickEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/events/ClickEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/events/SelectionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/events/SelectionEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UserInterfaceRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/userinterface/renderer/UserInterfaceRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/glfw/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/glfw/Window.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/ForestAdventure.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/ForestAdventure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/userinterface/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/userinterface/MainMenu.java" afterDir="false" />
     </list>
@@ -49,7 +26,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../Forest-Adventure" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>

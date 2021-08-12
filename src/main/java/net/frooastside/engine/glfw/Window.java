@@ -311,6 +311,8 @@ public class Window {
         case GLFW.GLFW_RELEASE:
           mouseButtons[button] = false;
           break;
+        default:
+          throw new IllegalStateException();
       }
       if (mouseButtonCallback != null) {
         mouseButtonCallback.invokeMouseButtonCallback(Window.this, button, mouseButtons[button]);
@@ -326,12 +328,16 @@ public class Window {
           case GLFW.GLFW_RELEASE:
             keyboardButtons[key] = false;
             break;
+          case GLFW.GLFW_REPEAT:
+            break;
+          default:
+            throw new IllegalStateException();
         }
         if (keyCallback != null) {
           KeyCallback.Action keyAction =
-            (action == GLFW.GLFW_PRESS ? KeyCallback.Action.PRESS :
-              (action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
-                (action == GLFW.GLFW_REPEAT ? KeyCallback.Action.REPEAT : null)));
+            action == GLFW.GLFW_PRESS ? KeyCallback.Action.PRESS :
+              action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
+                KeyCallback.Action.REPEAT;
           keyCallback.invokeKeyCallback(Window.this, key, scancode, modifiers, keyAction);
         }
       }
