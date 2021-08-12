@@ -41,9 +41,9 @@ public class Animator {
       }
     }
 
-    if (recalculatePosition) {
-      element.recalculateBounds();
-    }
+    //TODO MAYBE RECALCULATE
+    /*if (recalculatePosition) {
+    }*/
   }
 
   private void reset() {

@@ -3,6 +3,7 @@ package net.frooastside.engine.userinterface.elements;
 import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class ContainerElement extends FunctionalElement {
   private final Vector4f clearance = new Vector4f();
   private final Vector4f innerArea = new Vector4f(0, 0, 1, 1);
 
-  private ElementConstraints clearanceConstraints = ElementConstraints.getDefault();
+  private ElementConstraints clearanceConstraints;
 
   private Overflow overflow;
   private FlowDirection flowDirection;
@@ -23,7 +24,14 @@ public class ContainerElement extends FunctionalElement {
 
   private final List<FunctionalElement> temporaryAutoPositionChildren = new ArrayList<>();
 
-  private void calculateChildBounds() {
+  @Override
+  public void updatePixelSize(Vector2f pixelSize) {
+    super.updatePixelSize(pixelSize);
+    clearanceConstraints.setPixelSize(pixelSize);
+  }
+
+  @Override
+  public void calculateChildBounds() {
     calculateInnerArea();
     temporaryAutoPositionChildren.clear();
     for (Element element : children()) {
@@ -46,18 +54,6 @@ public class ContainerElement extends FunctionalElement {
       }
     }
 
-    if (overflow == Overflow.SCROLL) {
-      if (containsMaxValueConstraint(temporaryAutoPositionChildren)) {
-        throw new IllegalStateException(I18n.get("error.userinterface.unallowedmvconstraint"));
-      }
-    } else {
-      if (contentAlignment != ContentAlignment.DEFAULT) {
-        if (containsMaxValueConstraint(temporaryAutoPositionChildren)) {
-          throw new IllegalStateException(I18n.get("error.userinterface.unallowedmvconstraint"));
-        }
-      }
-    }
-
     if(contentAlignment != ContentAlignment.DEFAULT) {
       if (flowDirection == FlowDirection.HORIZONTAL && totalSize > innerArea.z) {
         contentAlignment = ContentAlignment.DEFAULT;
@@ -73,9 +69,7 @@ public class ContainerElement extends FunctionalElement {
     for (FunctionalElement child : temporaryAutoPositionChildren) {
       handleItemAlignment(child);
       handleContentAlignment(child, offset, spacing);
-      if (child instanceof ContainerElement) {
-        ((ContainerElement) child).calculateChildBounds();
-      }
+      child.calculateChildBounds();
     }
   }
 
@@ -140,16 +134,8 @@ public class ContainerElement extends FunctionalElement {
     }
   }
 
-  private boolean containsMaxValueConstraint(List<FunctionalElement> elements) {
-    return elements.stream()
-      .anyMatch(element -> element.spacingConstraints().containsMaxValueConstraint());
-  }
-
   private void calculateInnerArea() {
     if (clearanceConstraints != null) {
-      if (clearanceConstraints.containsMaxValueConstraint()) {
-        throw new IllegalStateException(I18n.get("error.userinterface.unallowedmvconstraint"));
-      }
       clearance.set(
         clearanceConstraints.calculateValue(Constraint.ConstraintType.X, bounds()),
         clearanceConstraints.calculateValue(Constraint.ConstraintType.Y, bounds()),
@@ -163,6 +149,54 @@ public class ContainerElement extends FunctionalElement {
 
   public boolean hideOverflow() {
     return overflow == Overflow.HIDE || overflow == Overflow.SCROLL;
+  }
+
+  public Vector4f clearance() {
+    return clearance;
+  }
+
+  public Vector4f innerArea() {
+    return innerArea;
+  }
+
+  public ElementConstraints clearanceConstraints() {
+    return clearanceConstraints;
+  }
+
+  public void setClearanceConstraints(ElementConstraints clearanceConstraints) {
+    this.clearanceConstraints = clearanceConstraints;
+  }
+
+  public Overflow overflow() {
+    return overflow;
+  }
+
+  public void setOverflow(Overflow overflow) {
+    this.overflow = overflow;
+  }
+
+  public FlowDirection flowDirection() {
+    return flowDirection;
+  }
+
+  public void setFlowDirection(FlowDirection flowDirection) {
+    this.flowDirection = flowDirection;
+  }
+
+  public ContentAlignment contentAlignment() {
+    return contentAlignment;
+  }
+
+  public void setContentAlignment(ContentAlignment contentAlignment) {
+    this.contentAlignment = contentAlignment;
+  }
+
+  public ItemAlignment itemAlignment() {
+    return itemAlignment;
+  }
+
+  public void setItemAlignment(ItemAlignment itemAlignment) {
+    this.itemAlignment = itemAlignment;
   }
 
   public enum Overflow {

@@ -9,9 +9,11 @@ import net.frooastside.engine.userinterface.elements.render.Box;
 import net.frooastside.engine.userinterface.elements.render.Text;
 import net.frooastside.engine.userinterface.events.ClickEvent;
 
-public class SimpleToggleButton extends Button {
+public class SimpleToggleButton {
 
-  private final Color backgroundColor;
+  //TODO SIMPLE TOGGLE BUTTON INTEGRATION INTO NORMAL BUTTON
+
+  /*private final Color backgroundColor;
   private final Color enabledColor;
   private final Color textColor;
   private final Font font;
@@ -59,5 +61,5 @@ public class SimpleToggleButton extends Button {
 
   public boolean enabled() {
     return enabled;
-  }
+  }*/
 }

@@ -1,9 +1,6 @@
 package net.frooastside.engine.userinterface.events;
 
-import net.frooastside.engine.glfw.Window;
-import net.frooastside.engine.glfw.callbacks.KeyCallback;
-
-public class SelectionEvent {
+public class SelectionEvent extends Event {
 
   private final boolean selected;
 
@@ -11,17 +8,18 @@ public class SelectionEvent {
     this.selected = selected;
   }
 
-  public interface Listener {
+  public boolean selected() {
+    return selected;
+  }
+
+  public interface Handler extends EventHandler {
+
+    @Override
+    default void handle(Event event) {
+      handleSelection((SelectionEvent) event);
+    }
 
     void handleSelection(SelectionEvent event);
 
-    void handleKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action);
-
-    void handleCharEvent(Window window, int codepoint);
-
-  }
-
-  public boolean selected() {
-    return selected;
   }
 }

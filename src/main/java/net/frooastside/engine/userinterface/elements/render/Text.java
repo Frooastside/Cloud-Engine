@@ -14,24 +14,21 @@ public class Text extends RenderElement {
 
   private final VertexArrayObject model = generateEmptyModel();
   private final Font font;
-  private final boolean verticalCentered;
-  private final boolean horizontalCentered;
+  private final boolean centered;
 
   private String text;
 
   private float aspectRatio;
 
-  public Text(Font font, String text, Color color, boolean verticalCentered, boolean horizontalCentered) {
+  public Text(Font font, String text, Color color, boolean centered) {
     super.setColor(color);
     this.font = font;
     this.text = text;
-    this.verticalCentered = verticalCentered;
-    this.horizontalCentered = horizontalCentered;
+    this.centered = centered;
   }
 
   @Override
-  public void recalculateBounds() {
-    super.recalculateBounds();
+  public void recalculate() {
     this.aspectRatio = pixelSize().x / pixelSize().y;
     float maxLineLength = bounds().z;
     float fontHeight = bounds().w;
@@ -174,6 +171,6 @@ public class Text extends RenderElement {
 
   public void setText(String text) {
     this.text = text;
-    recalculateBounds();
+    recalculate();
   }
 }

@@ -1,8 +1,6 @@
 package net.frooastside.engine.userinterface.elements;
 
 import net.frooastside.engine.userinterface.Color;
-import net.frooastside.engine.userinterface.constraints.Constraint;
-import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.animation.Animation;
 import net.frooastside.engine.userinterface.animation.Animator;
 import org.joml.Vector2f;
@@ -11,83 +9,25 @@ import org.joml.Vector4f;
 public abstract class Element {
 
   private final Vector4f bounds = new Vector4f(0, 0, 1, 1);
-
-  private Color color;
-
-  public Vector4f bounds() {
-    return bounds;
-  }
-
-  public Color color() {
-    return color;
-  }
-
-  public void setColor(Color color) {
-    this.color = color;
-  }
-
-  /*private final Vector4f bounds = new Vector4f(0, 0, 1, 1);
   private final Vector2f pixelSize = new Vector2f();
 
-  private ElementConstraints constraints;
-  private Element parent;
   private Animator animator;
-
-  private float alpha = 1.0f;
-  private boolean visible;
 
   private Animation displayAnimation;
   private float displayAnimationDelay;
 
-  public void initialize() {
-  }
+  private Color color;
+  private float alpha = 1.0f;
+  private boolean visible;
 
   public void update(double delta) {
-    if (animator != null) {
+    if (hasAnimator()) {
       animator.update(delta);
     }
   }
 
   public void updatePixelSize(Vector2f pixelSize) {
     this.pixelSize.set(pixelSize);
-    constraints.setPixelSize(pixelSize);
-  }
-
-  public void recalculateBounds() {
-    bounds.set(
-      rawValueOf(Constraint.ConstraintType.X) + parent.bounds().x,
-      rawValueOf(Constraint.ConstraintType.Y) + parent.bounds().y,
-      rawValueOf(Constraint.ConstraintType.WIDTH),
-      rawValueOf(Constraint.ConstraintType.HEIGHT));
-  }
-
-  public float rawValueOf(Constraint.ConstraintType constraintType) {
-    return rawValueOf(constraints.getConstraint(constraintType), constraintType);
-  }
-
-  public float rawValueOf(Constraint constraint) {
-    return rawValueOf(constraint, constraint.type());
-  }
-
-  public float rawValueOf(Constraint constraint, Constraint.ConstraintType constraintType) {
-    float rawValue = constraint.relative() ?
-      constraint.rawValue() *
-        (constraintType == Constraint.ConstraintType.X || constraintType == Constraint.ConstraintType.WIDTH ?
-          parent().bounds().z
-          : parent().bounds().w)
-      : constraint.rawValue();
-    if (animator != null) {
-      if (constraintType == Constraint.ConstraintType.X) {
-        rawValue += animator.offset().x;
-      } else if (constraintType == Constraint.ConstraintType.Y) {
-        rawValue += animator.offset().y;
-      } else if (constraintType == Constraint.ConstraintType.WIDTH) {
-        rawValue *= animator.offset().z;
-      } else {
-        rawValue *= animator.offset().w;
-      }
-    }
-    return rawValue;
   }
 
   public void display(boolean show, float parentDelay) {
@@ -97,10 +37,6 @@ public abstract class Element {
         animator().applyAnimation(displayAnimation, show, parentDelay + displayAnimationDelay);
       }
     }
-  }
-
-  public boolean doingDisplayAnimation() {
-    return animator != null && animator.doingAnimation(displayAnimation);
   }
 
   public boolean isPixelInside(float x, float y) {
@@ -118,6 +54,10 @@ public abstract class Element {
     return rawX <= xMax && rawX >= xMin && rawY <= yMax && rawY >= yMin;
   }
 
+  public boolean doingDisplayAnimation() {
+    return animator != null && animator.doingAnimation(displayAnimation);
+  }
+
   public Vector4f bounds() {
     return bounds;
   }
@@ -126,20 +66,8 @@ public abstract class Element {
     return pixelSize;
   }
 
-  public ElementConstraints constraints() {
-    return constraints;
-  }
-
-  public void setConstraints(ElementConstraints constraints) {
-    this.constraints = constraints;
-  }
-
-  public Element parent() {
-    return parent;
-  }
-
-  public void setParent(Element parent) {
-    this.parent = parent;
+  public boolean hasAnimator() {
+    return animator != null;
   }
 
   public Animator animator() {
@@ -147,6 +75,23 @@ public abstract class Element {
       animator = new Animator(this);
     }
     return animator;
+  }
+
+  public Animation displayAnimation() {
+    return displayAnimation;
+  }
+
+  public void setDisplayAnimation(Animation displayAnimation, float displayAnimationDelay) {
+    this.displayAnimation = displayAnimation;
+    this.displayAnimationDelay = displayAnimationDelay;
+  }
+
+  public float displayAnimationDelay() {
+    return displayAnimationDelay;
+  }
+
+  public void setDisplayAnimationDelay(float displayAnimationDelay) {
+    this.displayAnimationDelay = displayAnimationDelay;
   }
 
   public float alpha() {
@@ -161,16 +106,16 @@ public abstract class Element {
     return visible;
   }
 
-  public Animation displayAnimation() {
-    return displayAnimation;
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
-  public float displayAnimationDelay() {
-    return displayAnimationDelay;
+  public Color color() {
+    return color;
   }
 
-  public void setDisplayAnimation(Animation displayAnimation, float displayAnimationDelay) {
-    this.displayAnimation = displayAnimation;
-    this.displayAnimationDelay = displayAnimationDelay;
-  }*/
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
 }

@@ -12,7 +12,7 @@ public class TextArea extends Text {
     super(font, text, color, false);
   }
 
-  @Override
+  /*@Override
   public void recalculateBounds() {
     super.recalculateBounds();
     float maxLineLength = bounds().z;
@@ -132,5 +132,5 @@ public class TextArea extends Text {
       return width;
     }
 
-  }
+  }*/
 }

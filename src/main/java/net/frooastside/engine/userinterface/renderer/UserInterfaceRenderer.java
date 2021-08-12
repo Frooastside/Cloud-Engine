@@ -6,13 +6,17 @@ import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarg
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferUsage;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.resource.BufferUtils;
+import net.frooastside.engine.userinterface.Screen;
+import net.frooastside.engine.userinterface.elements.ContainerElement;
 import net.frooastside.engine.userinterface.elements.Element;
 import net.frooastside.engine.userinterface.elements.FunctionalElement;
 import net.frooastside.engine.userinterface.elements.RenderElement;
-import net.frooastside.engine.userinterface.elements.container.Screen;
 import net.frooastside.engine.userinterface.elements.render.Box;
 import net.frooastside.engine.userinterface.elements.render.Text;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
+
+import java.text.NumberFormat;
 
 public class UserInterfaceRenderer {
 
@@ -25,7 +29,7 @@ public class UserInterfaceRenderer {
   private final BasicFontShader fontShader;
 
   private RenderElement.RenderType currentRenderType;
-  private FunctionalElement hideOverflowElement;
+  private ContainerElement hideOverflowElement;
 
   public UserInterfaceRenderer(BasicBoxShader boxShader, BasicFontShader fontShader) {
     this.boxShader = boxShader;
@@ -39,7 +43,7 @@ public class UserInterfaceRenderer {
 
   public void render(Screen screen) {
     prepare();
-    renderElements(screen, screen.alpha());
+    renderElements(screen);
     endShader(currentRenderType);
     currentRenderType = null;
     end();
@@ -59,21 +63,32 @@ public class UserInterfaceRenderer {
     GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
   }
 
+  private void renderElements(Screen screen) {
+    for(ContainerElement element : screen.children()) {
+      if(element != null) {
+        renderElements(element, 1);
+        System.out.println("render, " + element.getClass().getSimpleName() + " #" + element.hashCode());
+      }
+    }
+  }
+
   private void renderElements(Element element, float alpha) {
     if (element instanceof RenderElement) {
+      System.out.println("renderEl, " + element.getClass().getSimpleName() + " #" + element.hashCode());
       RenderElement renderElement = ((RenderElement) element);
       if (renderElement.visible() || renderElement.doingDisplayAnimation()) {
         prepareRendering(renderElement);
         renderElement(renderElement, alpha);
       }
     } else if (element instanceof FunctionalElement) {
+      System.out.println("renderCh, " + element.getClass().getSimpleName() + " #" + element.hashCode());
       FunctionalElement functionalElement = ((FunctionalElement) element);
-      boolean hideOverflow = functionalElement.hideOverflow();
+      boolean hideOverflow = functionalElement instanceof ContainerElement && ((ContainerElement) functionalElement).hideOverflow();
       if (!hideOverflow) {
         functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
       } else {
-        FunctionalElement initialHideOverflowElement = hideOverflowElement;
-        renderStencil(functionalElement);
+        ContainerElement initialHideOverflowElement = hideOverflowElement;
+        renderStencil((ContainerElement) functionalElement);
 
         functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
 
@@ -87,12 +102,12 @@ public class UserInterfaceRenderer {
     GL11.glStencilMask(0xFF);
   }
 
-  public void renderStencil(FunctionalElement functionalElement) {
-    hideOverflowElement = functionalElement;
-    if (functionalElement != null) {
+  public void renderStencil(ContainerElement containerElement) {
+    hideOverflowElement = containerElement;
+    if (containerElement != null) {
       clearStencilBuffer();
       enableStencilRendering();
-      functionalElement.children().stream()
+      containerElement.children().stream()
         .filter(element -> element instanceof RenderElement)
         .forEach(element -> renderElements(element, 1));
       disableStencilRendering();
@@ -137,10 +152,17 @@ public class UserInterfaceRenderer {
     }
   }
 
+  private static final Vector4f cache = new Vector4f();
+
   public void renderElement(RenderElement renderElement, float alpha) {
     if (renderElement.renderType() == RenderElement.RenderType.BOX) {
       Box box = ((Box) renderElement);
-      boxShader.loadTranslation(box.bounds());
+      if(!box.hasAnimator()) {
+        System.out.println("loadTr, " + box.bounds().toString(NumberFormat.getInstance()));
+        boxShader.loadTranslation(box.bounds());
+      }else {
+        boxShader.loadTranslation(box.bounds().add(box.animator().offset(), cache));
+      }
       boxShader.loadAlpha(alpha);
       boxShader.loadUseColor(box.useColor());
       if (box.useColor()) {
@@ -153,7 +175,11 @@ public class UserInterfaceRenderer {
       defaultBox.draw();
     } else if (renderElement.renderType() == RenderElement.RenderType.TEXT) {
       Text text = ((Text) renderElement);
-      fontShader.loadOffset(text.bounds().x, text.bounds().y);
+      if (!text.hasAnimator()) {
+        fontShader.loadOffset(text.bounds().x, text.bounds().y);
+      }else {
+        fontShader.loadOffset(text.bounds().x + text.animator().offset().x, text.bounds().y + text.animator().offset().y);
+      }
       fontShader.loadTexture(text.font().texture());
       fontShader.loadColor(text.color().rawColor());
       fontShader.loadAlpha(alpha);

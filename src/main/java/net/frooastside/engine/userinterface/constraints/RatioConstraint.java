@@ -13,8 +13,6 @@ public class RatioConstraint extends Constraint {
   public float calculate(Vector4f parent) {
     if (counterpart() instanceof RatioConstraint) {
       throw new IllegalStateException(I18n.get("error.userinterface.ratioofratio"));
-    } else if (counterpart() instanceof MaxValueConstraint) {
-      throw new IllegalStateException(I18n.get("error.userinterface.ratioofNaN"));
     }
     float aspectRatio = ((type() == ConstraintType.X || type() == ConstraintType.Z)
       ? constraints().pixelSize().x / constraints().pixelSize().y

@@ -3,7 +3,6 @@ package net.frooastside.engine.userinterface;
 import net.frooastside.engine.glfw.Window;
 import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.elements.container.Screen;
 import net.frooastside.engine.userinterface.renderer.BasicBoxShader;
 import net.frooastside.engine.userinterface.renderer.BasicFontShader;
 import net.frooastside.engine.userinterface.renderer.UserInterfaceRenderer;
@@ -15,6 +14,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SimplePopup {
+
+  /*
 
   public static final Window.CreationHint UNDECORATED = new Window.CreationHint(GLFW.GLFW_DECORATED, 0);
   public static final Window.CreationHint FLOATING = new Window.CreationHint(GLFW.GLFW_FLOATING, 1);
@@ -126,6 +127,6 @@ public class SimplePopup {
 
     ResourceFont createFont();
 
-  }
+  }*/
 
 }

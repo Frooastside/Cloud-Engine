@@ -1,6 +1,6 @@
 package net.frooastside.engine.userinterface.events;
 
-public class ClickEvent {
+public class ClickEvent extends Event {
 
   private final int key;
   private final boolean inside;
@@ -13,12 +13,6 @@ public class ClickEvent {
     this.pressed = pressed;
     this.x = x;
     this.y = y;
-  }
-
-  public interface Listener {
-
-    boolean handleClick(ClickEvent event);
-
   }
 
   public int key() {
@@ -39,5 +33,16 @@ public class ClickEvent {
 
   public float y() {
     return y;
+  }
+
+  public interface Handler extends EventHandler {
+
+    @Override
+    default void handle(Event event) {
+      handleClick((ClickEvent) event);
+    }
+
+    boolean handleClick(ClickEvent event);
+
   }
 }

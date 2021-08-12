@@ -20,6 +20,16 @@ public class ElementConstraints {
     setW(w);
   }
 
+  public ElementConstraints(Constraint firstValue, Constraint secondValue, boolean setXY) {
+    if(setXY) {
+      setX(firstValue);
+      setY(secondValue);
+    }else {
+      setZ(firstValue);
+      setW(secondValue);
+    }
+  }
+
   public ElementConstraints() {
   }
 
@@ -66,13 +76,6 @@ public class ElementConstraints {
       default:
         throw new IllegalStateException(I18n.get("error.userinterface.unknownconstrainttype", constraintType));
     }
-  }
-
-  public boolean containsMaxValueConstraint() {
-    return x instanceof MaxValueConstraint
-      || y instanceof MaxValueConstraint
-      || z instanceof MaxValueConstraint
-      || w instanceof MaxValueConstraint;
   }
 
   public float calculateValue(Constraint.ConstraintType constraintType, Vector4f parent) {

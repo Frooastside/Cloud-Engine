@@ -9,9 +9,11 @@ import net.frooastside.engine.userinterface.elements.render.Box;
 import net.frooastside.engine.userinterface.elements.render.Text;
 import net.frooastside.engine.userinterface.events.ClickEvent;
 
-public class SimpleButton extends Button {
+public class SimpleButton {
 
-  private final Color backgroundColor;
+  //TODO SIMPLE BUTTON INTEGRATION INTO NORMAL BUTTON
+
+  /*private final Color backgroundColor;
   private final Color textColor;
   private final Font font;
   private final boolean constantTextSize;
@@ -50,5 +52,5 @@ public class SimpleButton extends Button {
   public void setText(String text) {
     this.text = text;
     recalculateBounds();
-  }
+  }*/
 }

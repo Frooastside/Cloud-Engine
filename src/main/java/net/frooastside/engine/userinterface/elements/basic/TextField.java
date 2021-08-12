@@ -15,7 +15,10 @@ import net.frooastside.engine.userinterface.elements.render.Box;
 import net.frooastside.engine.userinterface.elements.render.Text;
 import org.lwjgl.glfw.GLFW;
 
-public class TextField extends FunctionalElement implements SelectionEvent.Listener {
+public class TextField {/* extends FunctionalElement implements SelectionEvent.Handler {
+
+
+  //TODO FIX TEXT FIELD
 
   private final ColorSet colorSet;
   private final Font font;
@@ -282,5 +285,5 @@ public class TextField extends FunctionalElement implements SelectionEvent.Liste
   public void setText(String text) {
     this.text = text;
     recalculateBounds();
-  }
+  }*/
 }

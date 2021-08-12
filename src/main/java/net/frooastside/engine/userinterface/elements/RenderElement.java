@@ -1,8 +1,8 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.userinterface.Color;
-
 public abstract class RenderElement extends Element {
+
+  public void recalculate() {}
 
   public abstract RenderType renderType();
 
