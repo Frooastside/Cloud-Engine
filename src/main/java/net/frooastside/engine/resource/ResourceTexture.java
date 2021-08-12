@@ -1,11 +1,14 @@
 package net.frooastside.engine.resource;
 
-import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.graphicobjects.texture.Texture;
+import net.frooastside.engine.language.I18n;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.stb.STBImageWrite;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.nio.ByteBuffer;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;

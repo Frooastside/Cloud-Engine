@@ -3,7 +3,8 @@ package net.frooastside.engine.graphicobjects.framebuffer;
 import net.frooastside.engine.graphicobjects.SizedGraphicObject;
 import net.frooastside.engine.graphicobjects.framebuffer.attachments.TextureAttachment;
 import net.frooastside.engine.graphicobjects.texture.Texture;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;
 import java.util.List;

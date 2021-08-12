@@ -46,7 +46,7 @@ public class ContainerElement extends FunctionalElement {
     }
 
     float totalSize = 0;
-    for(FunctionalElement child : temporaryAutoPositionChildren) {
+    for (FunctionalElement child : temporaryAutoPositionChildren) {
       if (flowDirection == FlowDirection.HORIZONTAL) {
         totalSize += child.bounds().z + child.spacing().x + child.spacing().z;
       } else if (flowDirection == FlowDirection.VERTICAL) {
@@ -54,7 +54,7 @@ public class ContainerElement extends FunctionalElement {
       }
     }
 
-    if(contentAlignment != ContentAlignment.DEFAULT) {
+    if (contentAlignment != ContentAlignment.DEFAULT) {
       if (flowDirection == FlowDirection.HORIZONTAL && totalSize > innerArea.z) {
         contentAlignment = ContentAlignment.DEFAULT;
       } else if (flowDirection == FlowDirection.VERTICAL && totalSize > innerArea.w) {

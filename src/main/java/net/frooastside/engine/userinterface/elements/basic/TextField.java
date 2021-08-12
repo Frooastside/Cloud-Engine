@@ -1,20 +1,5 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
-import net.frooastside.engine.glfw.Window;
-import net.frooastside.engine.glfw.callbacks.KeyCallback;
-import net.frooastside.engine.graphicobjects.Font;
-import net.frooastside.engine.userinterface.constraints.Constraint;
-import net.frooastside.engine.userinterface.constraints.ElementConstraints;
-import net.frooastside.engine.userinterface.elements.FunctionalElement;
-import net.frooastside.engine.userinterface.events.SelectionEvent;
-import net.frooastside.engine.userinterface.ColorSet;
-import net.frooastside.engine.userinterface.constraints.PixelConstraint;
-import net.frooastside.engine.userinterface.constraints.RawConstraint;
-import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
-import net.frooastside.engine.userinterface.elements.render.Box;
-import net.frooastside.engine.userinterface.elements.render.Text;
-import org.lwjgl.glfw.GLFW;
-
 public class TextField {/* extends FunctionalElement implements SelectionEvent.Handler {
 
 

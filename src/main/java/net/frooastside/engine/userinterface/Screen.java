@@ -82,10 +82,10 @@ public class Screen {
   }
 
   public void emitEvent(Event event, Class<? extends EventHandler> type, String targets) {
-    if(targets != null) {
-      for(String target : targets.split(",")) {
+    if (targets != null) {
+      for (String target : targets.split(",")) {
         EventHandler eventHandler = eventHandlers.get(target);
-        if(type.isInstance(eventHandler)) {
+        if (type.isInstance(eventHandler)) {
           eventHandler.handle(event);
         }
       }
@@ -100,7 +100,7 @@ public class Screen {
   }
 
   public void handleKey(Window window, int key, int scancode, int modifiers, KeyCallback.Action action) {
-    if(window == this.window) {
+    if (window == this.window) {
       for (ContainerElement element : children()) {
         if (element != null) {
           element.handleKey(window, key, scancode, modifiers, action);
@@ -110,7 +110,7 @@ public class Screen {
   }
 
   public void handleChar(Window window, char codepoint) {
-    if(window == this.window) {
+    if (window == this.window) {
       for (ContainerElement element : children()) {
         if (element != null) {
           element.handleChar(window, codepoint);

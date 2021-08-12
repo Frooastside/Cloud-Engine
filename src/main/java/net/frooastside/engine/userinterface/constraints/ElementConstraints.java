@@ -21,10 +21,10 @@ public class ElementConstraints {
   }
 
   public ElementConstraints(Constraint firstValue, Constraint secondValue, boolean setXY) {
-    if(setXY) {
+    if (setXY) {
       setX(firstValue);
       setY(secondValue);
-    }else {
+    } else {
       setZ(firstValue);
       setW(secondValue);
     }

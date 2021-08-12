@@ -14,10 +14,12 @@ public class Container extends ContainerElement {
   }
 
   public void setBackground(Element background) {
-    if(this.background != null) {
+    if (this.background != null) {
       children().remove(background);
     }
-    addElement(background);
+    if (background != null) {
+      addElement(background);
+    }
     this.background = background;
   }
 

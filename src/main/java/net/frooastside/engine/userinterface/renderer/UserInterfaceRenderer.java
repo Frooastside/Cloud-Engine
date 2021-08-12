@@ -64,8 +64,8 @@ public class UserInterfaceRenderer {
   }
 
   private void renderElements(Screen screen) {
-    for(ContainerElement element : screen.children()) {
-      if(element != null) {
+    for (ContainerElement element : screen.children()) {
+      if (element != null) {
         renderElements(element, 1);
         System.out.println("render, " + element.getClass().getSimpleName() + " #" + element.hashCode());
       }
@@ -157,10 +157,10 @@ public class UserInterfaceRenderer {
   public void renderElement(RenderElement renderElement, float alpha) {
     if (renderElement.renderType() == RenderElement.RenderType.BOX) {
       Box box = ((Box) renderElement);
-      if(!box.hasAnimator()) {
+      if (!box.hasAnimator()) {
         System.out.println("loadTr, " + box.bounds().toString(NumberFormat.getInstance()));
         boxShader.loadTranslation(box.bounds());
-      }else {
+      } else {
         boxShader.loadTranslation(box.bounds().add(box.animator().offset(), cache));
       }
       boxShader.loadAlpha(alpha);
@@ -177,7 +177,7 @@ public class UserInterfaceRenderer {
       Text text = ((Text) renderElement);
       if (!text.hasAnimator()) {
         fontShader.loadOffset(text.bounds().x, text.bounds().y);
-      }else {
+      } else {
         fontShader.loadOffset(text.bounds().x + text.animator().offset().x, text.bounds().y + text.animator().offset().y);
       }
       fontShader.loadTexture(text.font().texture());

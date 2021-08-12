@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ca4212f5-c842-49de-841c-dd77d5fb7af2" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/uitest/FileReadTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/glfw/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/frooastside/engine/glfw/Window.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/ForestAdventure.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/ForestAdventure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/userinterface/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Forest-Adventure/src/main/java/net/frooastside/forestadventure/userinterface/MainMenu.java" afterDir="false" />
     </list>

@@ -1,7 +1,7 @@
 package net.frooastside.engine.graphicobjects.vertexarray;
 
-import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import net.frooastside.engine.graphicobjects.GraphicObject;
+import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;

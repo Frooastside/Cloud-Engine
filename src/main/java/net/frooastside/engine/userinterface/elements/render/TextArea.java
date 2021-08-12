@@ -3,9 +3,6 @@ package net.frooastside.engine.userinterface.elements.render;
 import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.Color;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TextArea extends Text {
 
   public TextArea(Font font, String text, Color color) {

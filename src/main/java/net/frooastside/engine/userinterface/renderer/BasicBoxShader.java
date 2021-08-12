@@ -1,8 +1,12 @@
 package net.frooastside.engine.userinterface.renderer;
 
 import net.frooastside.engine.graphicobjects.texture.Texture;
-import net.frooastside.engine.shader.*;
-import net.frooastside.engine.shader.uniforms.*;
+import net.frooastside.engine.shader.Shader;
+import net.frooastside.engine.shader.ShaderProgram;
+import net.frooastside.engine.shader.uniforms.UniformBoolean;
+import net.frooastside.engine.shader.uniforms.UniformFloat;
+import net.frooastside.engine.shader.uniforms.UniformTexture;
+import net.frooastside.engine.shader.uniforms.UniformVector4f;
 import org.joml.Vector4f;
 
 public class BasicBoxShader extends ShaderProgram {

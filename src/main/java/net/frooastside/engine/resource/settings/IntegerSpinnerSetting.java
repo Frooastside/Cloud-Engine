@@ -4,8 +4,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
-import java.util.Map;
-
 public class IntegerSpinnerSetting extends Setting {
 
   private final int minValue;

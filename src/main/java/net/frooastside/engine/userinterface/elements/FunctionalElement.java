@@ -61,7 +61,7 @@ public abstract class FunctionalElement extends Element {
       if (sizeConstraints.x() != null && sizeConstraints.y() != null) {
         x = sizeConstraints.calculateValue(Constraint.ConstraintType.X, parentInnerArea);
         y = sizeConstraints.calculateValue(Constraint.ConstraintType.Y, parentInnerArea);
-      }else if((spacingConstraints.x() != null && spacingConstraints.y() != null)) {
+      } else if ((spacingConstraints.x() != null && spacingConstraints.y() != null)) {
         x = spacing().x;
         y = spacing().y;
       }
@@ -118,7 +118,7 @@ public abstract class FunctionalElement extends Element {
                 if (basicElement.selectable()) {
                   return element;
                 }
-              }else {
+              } else {
                 return basicElement.click(event);
               }
             } else if (basicElement.selectable()) {
@@ -172,11 +172,11 @@ public abstract class FunctionalElement extends Element {
 
   @Override
   public boolean doingDisplayAnimation() {
-    if(super.doingDisplayAnimation()) {
+    if (super.doingDisplayAnimation()) {
       return true;
-    }else {
-      for(Element element : children()) {
-        if(element.doingDisplayAnimation()) {
+    } else {
+      for (Element element : children()) {
+        if (element.doingDisplayAnimation()) {
           return true;
         }
       }

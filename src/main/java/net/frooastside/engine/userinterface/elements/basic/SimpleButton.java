@@ -1,14 +1,5 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
-import net.frooastside.engine.graphicobjects.Font;
-import net.frooastside.engine.userinterface.Color;
-import net.frooastside.engine.userinterface.constraints.ElementConstraints;
-import net.frooastside.engine.userinterface.constraints.RawConstraint;
-import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
-import net.frooastside.engine.userinterface.elements.render.Box;
-import net.frooastside.engine.userinterface.elements.render.Text;
-import net.frooastside.engine.userinterface.events.ClickEvent;
-
 public class SimpleButton {
 
   //TODO SIMPLE BUTTON INTEGRATION INTO NORMAL BUTTON

@@ -1,18 +1,5 @@
 package net.frooastside.engine.userinterface;
 
-import net.frooastside.engine.glfw.Window;
-import net.frooastside.engine.graphicobjects.Font;
-import net.frooastside.engine.resource.ResourceFont;
-import net.frooastside.engine.userinterface.renderer.BasicBoxShader;
-import net.frooastside.engine.userinterface.renderer.BasicFontShader;
-import net.frooastside.engine.userinterface.renderer.UserInterfaceRenderer;
-import org.lwjgl.glfw.GLFW;
-
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class SimplePopup {
 
   /*

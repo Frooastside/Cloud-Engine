@@ -1,6 +1,9 @@
 package net.frooastside.engine.shader;
 
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL32;
+import org.lwjgl.opengl.GL40;
 
 import java.io.*;
 import java.util.Objects;
