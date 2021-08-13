@@ -16,8 +16,6 @@ import net.frooastside.engine.userinterface.elements.render.Text;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-import java.text.NumberFormat;
-
 public class UserInterfaceRenderer {
 
   private static final float[] DEFAULT_BOX_POSITIONS = new float[]{-1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1};
@@ -67,21 +65,18 @@ public class UserInterfaceRenderer {
     for (ContainerElement element : screen.children()) {
       if (element != null) {
         renderElements(element, 1);
-        System.out.println("render, " + element.getClass().getSimpleName() + " #" + element.hashCode());
       }
     }
   }
 
   private void renderElements(Element element, float alpha) {
     if (element instanceof RenderElement) {
-      System.out.println("renderEl, " + element.getClass().getSimpleName() + " #" + element.hashCode());
       RenderElement renderElement = ((RenderElement) element);
       if (renderElement.visible() || renderElement.doingDisplayAnimation()) {
         prepareRendering(renderElement);
         renderElement(renderElement, alpha);
       }
     } else if (element instanceof FunctionalElement) {
-      System.out.println("renderCh, " + element.getClass().getSimpleName() + " #" + element.hashCode());
       FunctionalElement functionalElement = ((FunctionalElement) element);
       boolean hideOverflow = functionalElement instanceof ContainerElement && ((ContainerElement) functionalElement).hideOverflow();
       if (!hideOverflow) {
@@ -158,7 +153,6 @@ public class UserInterfaceRenderer {
     if (renderElement.renderType() == RenderElement.RenderType.BOX) {
       Box box = ((Box) renderElement);
       if (!box.hasAnimator()) {
-        System.out.println("loadTr, " + box.bounds().toString(NumberFormat.getInstance()));
         boxShader.loadTranslation(box.bounds());
       } else {
         boxShader.loadTranslation(box.bounds().add(box.animator().offset(), cache));

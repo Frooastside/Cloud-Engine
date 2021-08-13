@@ -396,8 +396,6 @@ public class ResourceManager extends Application {
         && font.padding() == 0
         && font.firstCharacter() == 0
         && font.characterCount() == 0;
-    } else if (resourceItem instanceof ResourceTexture) {
-      return false;
     } else {
       return false;
     }
