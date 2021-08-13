@@ -10,7 +10,13 @@ public class Container extends ContainerElement {
   @Override
   public void calculateChildBounds() {
     super.calculateChildBounds();
-    background.bounds().set(this.bounds());
+    if(background != null) {
+      background.bounds().set(this.bounds());
+    }
+  }
+
+  public Element background() {
+    return background;
   }
 
   public void setBackground(Element background) {
@@ -21,10 +27,6 @@ public class Container extends ContainerElement {
       addElement(background);
     }
     this.background = background;
-  }
-
-  public Element background() {
-    return background;
   }
 
 }

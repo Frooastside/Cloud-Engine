@@ -6,6 +6,7 @@ import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -63,9 +64,10 @@ public class ContainerElement extends FunctionalElement {
     }
 
     AtomicReference<Float> offset = new AtomicReference<>();
-    float spacing = calculateSpacing(totalSize);
+    float spacing = calculateSpacing(totalSize, true);
     offset.set(spacing);
 
+    spacing = calculateSpacing(totalSize, false);
     for (FunctionalElement child : temporaryAutoPositionChildren) {
       handleItemAlignment(child);
       handleContentAlignment(child, offset, spacing);
@@ -73,20 +75,24 @@ public class ContainerElement extends FunctionalElement {
     }
   }
 
-  private float calculateSpacing(float totalSize) {
+  private float calculateSpacing(float totalSize, boolean firstSpace) {
     switch (contentAlignment) {
       case SPACED_EVENLY:
         if (flowDirection == FlowDirection.HORIZONTAL) {
-          return (innerArea.z - totalSize) / temporaryAutoPositionChildren.size() + 1;
+          return (innerArea.z - totalSize) / (temporaryAutoPositionChildren.size() + 1);
         } else if (flowDirection == FlowDirection.VERTICAL) {
-          return (innerArea.w - totalSize) / temporaryAutoPositionChildren.size() + 1;
+          return (innerArea.w - totalSize) / (temporaryAutoPositionChildren.size() + 1);
         }
         throw new IllegalStateException(I18n.get("error.userinterface.unknowndirection", flowDirection));
       case SPACE_AROUND:
-        if (flowDirection == FlowDirection.HORIZONTAL) {
-          return (innerArea.z - totalSize) / 2;
-        } else if (flowDirection == FlowDirection.VERTICAL) {
-          return (innerArea.w - totalSize) / 2;
+        if(firstSpace) {
+          if (flowDirection == FlowDirection.HORIZONTAL) {
+            return (innerArea.z - totalSize) / 2;
+          } else if (flowDirection == FlowDirection.VERTICAL) {
+            return (innerArea.w - totalSize) / 2;
+          }
+        }else {
+          return 0f;
         }
         throw new IllegalStateException(I18n.get("error.userinterface.unknowndirection", flowDirection));
       case DEFAULT:
@@ -98,10 +104,10 @@ public class ContainerElement extends FunctionalElement {
   private void handleContentAlignment(FunctionalElement child, AtomicReference<Float> offset, float spacing) {
     float currentOffset = offset.get();
     if (flowDirection == FlowDirection.HORIZONTAL) {
-      child.bounds().x = currentOffset + child.spacing().x;
+      child.bounds().x = innerArea.x + currentOffset + child.spacing().x;
       offset.set(currentOffset + child.bounds().z + child.spacing().x + child.spacing().z + spacing);
     } else if (flowDirection == FlowDirection.VERTICAL) {
-      child.bounds().y = currentOffset + child.spacing().y;
+      child.bounds().y = innerArea.y + currentOffset + child.spacing().y;
       offset.set(currentOffset + child.bounds().w + child.spacing().y + child.spacing().w + spacing);
     }
   }
@@ -141,7 +147,15 @@ public class ContainerElement extends FunctionalElement {
         clearanceConstraints.calculateValue(Constraint.ConstraintType.Y, bounds()),
         clearanceConstraints.calculateValue(Constraint.ConstraintType.Z, bounds()),
         clearanceConstraints.calculateValue(Constraint.ConstraintType.W, bounds()));
-      bounds().sub(clearance.add(0, 0, clearance.x, clearance.y, new Vector4f()), innerArea);
+      //bounds().add(clearance.add(0, 0, clearance.x, clearance.y, new Vector4f()), innerArea);
+      innerArea.set(
+        bounds().x + clearance.x,
+        bounds().y + clearance.y,
+        bounds().z - (clearance.x + clearance.z),
+        bounds().w - (clearance.y + clearance.w));
+      /*System.out.println("clearance, " + clearance.toString(NumberFormat.getInstance()));
+      System.out.println("bounds, " + bounds().toString(NumberFormat.getInstance()));
+      System.out.println("inner area, " + innerArea.toString(NumberFormat.getInstance()));*/
     } else {
       clearance.set(0, 0, 0, 0);
     }
@@ -201,7 +215,7 @@ public class ContainerElement extends FunctionalElement {
 
   public enum Overflow {
 
-    SHOW, HIDE, SCROLL
+    DEFAULT, SHOW, HIDE, SCROLL
 
   }
 
@@ -219,7 +233,7 @@ public class ContainerElement extends FunctionalElement {
 
   public enum ItemAlignment {
 
-    DEFAULT, CENTER, START, END
+    DEFAULT, START, CENTER, END
 
   }
 

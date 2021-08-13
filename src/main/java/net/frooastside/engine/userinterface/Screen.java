@@ -192,6 +192,10 @@ public class Screen {
     return eventHandlers;
   }
 
+  public Window window() {
+    return window;
+  }
+
   public Font font() {
     return font;
   }
