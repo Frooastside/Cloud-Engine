@@ -1,9 +1,13 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
-public class TextField {/* extends FunctionalElement implements SelectionEvent.Handler {
+import net.frooastside.engine.graphicobjects.Font;
+import net.frooastside.engine.userinterface.ColorSet;
+import net.frooastside.engine.userinterface.elements.FunctionalElement;
+import net.frooastside.engine.userinterface.elements.render.Box;
+import net.frooastside.engine.userinterface.elements.render.Text;
+import net.frooastside.engine.userinterface.events.SelectionEvent;
 
-
-  //TODO FIX TEXT FIELD
+public class TextField extends FunctionalElement implements SelectionEvent.Handler {
 
   private final ColorSet colorSet;
   private final Font font;
@@ -37,19 +41,13 @@ public class TextField {/* extends FunctionalElement implements SelectionEvent.H
   }
 
   @Override
-  public void recalculateBounds() {
-    updateRenderElements();
-    super.recalculateBounds();
-  }
-
-  public void updateRenderElements() {
+  public void calculateChildBounds() {
     uiText.setText(this.text);
     float selectionStartX = (float) uiText.lineLength(0, selectionStart);
     float selectionEndX = (float) uiText.lineLength(0, selectionEnd);
-    selectionBox.constraints().getConstraint(Constraint.ConstraintType.X).setValue(selectionStartX);
-    selectionBox.constraints().getConstraint(Constraint.ConstraintType.Z).setValue(selectionEndX - selectionStartX);
+    selectionBox.bounds().set(selectionStartX, bounds().y, selectionEndX - selectionStartX, bounds().w);
     float cursorX = (float) uiText.lineLength(0, cursor);
-    cursorBox.constraints().getConstraint(Constraint.ConstraintType.X).setValue(cursorX - (pixelSize().x * 1));
+    cursorBox.bounds().set(cursorX - (pixelSize().x * 1), bounds().y, cursorBox.bounds().z, bounds().w);
   }
 
   @Override
@@ -270,5 +268,5 @@ public class TextField {/* extends FunctionalElement implements SelectionEvent.H
   public void setText(String text) {
     this.text = text;
     recalculateBounds();
-  }*/
+  }
 }
