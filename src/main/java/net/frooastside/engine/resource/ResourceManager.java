@@ -516,7 +516,7 @@ public class ResourceManager extends Application {
       imageView.setFitWidth(200);
       imageView.setPreserveRatio(true);
       imageView.setSmooth(true);
-      imageView.setCache(true);
+      imageView.setCache(false);
       return imageView;
     }
     return null;

@@ -1,8 +1,11 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
 import net.frooastside.engine.userinterface.animation.Animation;
-import net.frooastside.engine.userinterface.elements.Element;
+import net.frooastside.engine.userinterface.constraints.Constraint;
+import net.frooastside.engine.userinterface.constraints.ElementConstraints;
+import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
 import net.frooastside.engine.userinterface.elements.FunctionalElement;
+import net.frooastside.engine.userinterface.elements.RenderElement;
 import net.frooastside.engine.userinterface.elements.render.Text;
 import net.frooastside.engine.userinterface.events.ClickEvent;
 import org.joml.Vector2f;
@@ -10,8 +13,13 @@ import org.lwjgl.glfw.GLFW;
 
 public class Button extends FunctionalElement implements ClickEvent.Handler {
 
-  private Element background;
+  private RenderElement background;
   private Text text;
+  private final ElementConstraints textConstraints = new ElementConstraints(
+    new RelativeConstraint(0f),
+    new RelativeConstraint(0f),
+    new RelativeConstraint(1f),
+    new RelativeConstraint(1f));
   private Animation hoverAnimation;
 
   private boolean wasClicked;
@@ -35,7 +43,13 @@ public class Button extends FunctionalElement implements ClickEvent.Handler {
       background.bounds().set(this.bounds());
     }
     if (text != null) {
-      text.bounds().set(this.bounds().x, this.bounds().y, this.bounds().z, text.bounds().w);
+      textConstraints.setPixelSize(pixelSize());
+      text.bounds().set(
+        textConstraints.x().calculate(bounds()) + bounds().x,
+        textConstraints.y().calculate(bounds()) + bounds().y + (bounds().w / 2 - textConstraints.w().calculate(bounds()) / 4),
+        textConstraints.z().calculate(bounds()),
+        textConstraints.w().calculate(bounds()));
+      text.recalculate();
     }
   }
 
@@ -63,11 +77,11 @@ public class Button extends FunctionalElement implements ClickEvent.Handler {
       clickEventTarget());
   }
 
-  public Element background() {
+  public RenderElement background() {
     return background;
   }
 
-  public void setBackground(Element background) {
+  public void setBackground(RenderElement background) {
     if (this.background != null) {
       children().remove(background);
     }
@@ -81,12 +95,16 @@ public class Button extends FunctionalElement implements ClickEvent.Handler {
     return text;
   }
 
-  public void setText(Text text) {
+  public void setText(Text text, Constraint fontSize) {
     if (this.text != null) {
-      children().remove(text);
+      children().remove(this.text);
     }
     if (text != null) {
       addElement(text);
+    }
+    if (fontSize != null) {
+      fontSize.setConstraints(textConstraints);
+      textConstraints.setW(fontSize);
     }
     this.text = text;
   }

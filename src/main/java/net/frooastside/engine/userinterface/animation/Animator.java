@@ -1,6 +1,5 @@
 package net.frooastside.engine.userinterface.animation;
 
-import net.frooastside.engine.userinterface.elements.Element;
 import org.joml.Vector4f;
 
 import java.util.HashMap;
@@ -14,19 +13,14 @@ public class Animator {
   private final Vector4f offset = new Vector4f(0, 0, 1, 1);
   private float alpha = 1.0f;
 
-  private boolean recalculatePosition;
-  private boolean recalculateSize;
-
-  private final Element element;
-
-  public Animator(Element element) {
-    this.element = element;
-  }
-
   public void applyAnimation(Animation animation, boolean reverse, float delay) {
     Animation.Instance oldInstance = animations.remove(animation);
     Animation.Instance newInstance = animation.createInstance(oldInstance, reverse, delay);
     animations.put(animation, newInstance);
+  }
+
+  public void cancelAnimation(Animation animation) {
+    animations.remove(animation);
   }
 
   public void update(double delta) {
@@ -40,17 +34,11 @@ public class Animator {
         iterator.remove();
       }
     }
-
-    //TODO MAYBE RECALCULATE
-    /*if (recalculatePosition) {
-    }*/
   }
 
   private void reset() {
     offset.set(0, 0, 1, 1);
     alpha = 1.0f;
-    recalculatePosition = false;
-    recalculateSize = false;
   }
 
   public boolean doingAnimation(Animation animation) {
@@ -58,26 +46,20 @@ public class Animator {
     return animationInstance != null && !animationInstance.transitionFinished();
   }
 
-  public void applyX(float x, boolean recalculate) {
+  public void applyX(float x) {
     this.offset.x += x;
-    this.recalculatePosition |= recalculate;
   }
 
-  public void applyY(float y, boolean recalculate) {
+  public void applyY(float y) {
     this.offset.y += y;
-    this.recalculatePosition |= recalculate;
   }
 
-  public void applyWidth(float width, boolean recalculate) {
+  public void applyWidth(float width) {
     this.offset.z *= width;
-    this.recalculatePosition |= recalculate;
-    this.recalculateSize |= recalculate;
   }
 
-  public void applyHeight(float height, boolean recalculate) {
+  public void applyHeight(float height) {
     this.offset.w *= height;
-    this.recalculatePosition |= recalculate;
-    this.recalculateSize |= recalculate;
   }
 
   public void applyAlpha(float alpha) {

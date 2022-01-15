@@ -1,6 +1,6 @@
 package net.frooastside.engine.camera;
 
-import net.frooastside.engine.glfw.Window;
+import net.frooastside.engine.window.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -26,12 +26,6 @@ public class Camera {
 
   private boolean moved = false;
   private boolean projectionMatrixChanged = false;
-
-  private ICameraController oldController;
-  private ICameraController currentController;
-
-  private float progression = 0;
-  private float speed;
 
   public Camera(Window window) {
     this.window = window;
@@ -82,33 +76,6 @@ public class Camera {
   }
 
   public void update() {
-    if (progression < 1) {
-      progression += window.delta() * speed;
-      if (oldController != null) {
-        Vector3f oldControllerPosition = oldController.calculateCameraPosition();
-        Vector3f oldControllerRotation = oldController.calculateCameraRotation();
-        if (currentController != null) {
-          Vector3f currentControllerPosition = currentController.calculateCameraPosition();
-          Vector3f currentControllerRotation = currentController.calculateCameraRotation();
-          oldControllerPosition.lerp(currentControllerPosition, progression, this.position);
-          oldControllerRotation.lerp(currentControllerRotation, progression, this.rotation);
-        } else {
-          this.position.set(oldControllerPosition);
-          this.rotation.set(oldControllerRotation);
-        }
-      }
-    } else {
-      progression = 1;
-      if (currentController != null) {
-        this.position.set(currentController.calculateCameraPosition());
-        this.rotation.set(currentController.calculateCameraRotation());
-      } else {
-        if (oldController != null) {
-          this.position.set(oldController.calculateCameraPosition());
-          this.rotation.set(oldController.calculateCameraRotation());
-        }
-      }
-    }
     if (position.x != oldPosition.x || position.y != oldPosition.y || position.z != oldPosition.z ||
       rotation.x != oldRotation.x || rotation.y != oldRotation.y || rotation.z != oldRotation.z) {
       moved = true;
@@ -118,15 +85,6 @@ public class Camera {
     } else {
       moved = false;
     }
-  }
-
-  public void setController(float speed, ICameraController controller) {
-    this.speed = speed;
-    this.progression = 0;
-    if (currentController != null) {
-      this.oldController = currentController;
-    }
-    this.currentController = controller;
   }
 
   public Matrix4f viewMatrix() {

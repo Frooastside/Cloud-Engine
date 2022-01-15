@@ -1,5 +1,6 @@
 package net.frooastside.engine.postprocessing;
 
+import net.frooastside.engine.graphicobjects.vertexarray.Primitive;
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarget;
@@ -33,7 +34,7 @@ public abstract class PostProcessingEffect {
   public abstract void delete();
 
   private static VertexArrayObject generateFullscreenQuad() {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(FULLSCREEN_QUAD_POSITIONS.length / 2);
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(Primitive.TRIANGLES, FULLSCREEN_QUAD_POSITIONS.length / 2); //TODO USE TRIANGLE_STRIP
     vertexArrayObject.generateIdentifier();
     vertexArrayObject.bind();
 

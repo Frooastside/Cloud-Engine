@@ -11,12 +11,14 @@ import java.util.Objects;
 
 public class VertexArrayObject extends GraphicObject {
 
+  private final Primitive primitive;
   private int length;
 
   private final VertexBufferObject[] vertexBufferObjects = new VertexBufferObject[16];
   private VertexBufferObject indexBufferObject;
 
-  public VertexArrayObject(int length) {
+  public VertexArrayObject(Primitive primitive, int length) {
+    this.primitive = primitive;
     this.length = length;
   }
 
@@ -34,9 +36,9 @@ public class VertexArrayObject extends GraphicObject {
 
   public void draw() {
     if (indexBufferObject != null) {
-      GL11.glDrawElements(GL11.GL_TRIANGLES, length, indexBufferObject.dataType(), 0);
+      GL11.glDrawElements(primitive.value(), length, indexBufferObject.dataType(), 0);
     } else {
-      GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, length);
+      GL11.glDrawArrays(primitive.value(), 0, length);
     }
   }
 
@@ -77,7 +79,7 @@ public class VertexArrayObject extends GraphicObject {
     Arrays.stream(vertexBufferObjects).filter(Objects::nonNull).forEach(VertexBufferObject::delete);
   }
 
-  public VertexBufferObject getVertexBufferObject(int index) {
+  public VertexBufferObject vertexBufferObject(int index) {
     return vertexBufferObjects[index];
   }
 

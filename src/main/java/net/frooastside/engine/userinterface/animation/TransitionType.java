@@ -6,7 +6,7 @@ public enum TransitionType {
   Y(0, Animator::applyY),
   WIDTH(1, Animator::applyWidth),
   HEIGHT(1, Animator::applyHeight),
-  ALPHA(1, (animator, value, recalculate) -> animator.applyAlpha(value));
+  ALPHA(1, Animator::applyAlpha);
   //TODO COLOR(1, (animatoe))
 
   private final float standardValue;
@@ -21,13 +21,13 @@ public enum TransitionType {
     return standardValue;
   }
 
-  public void applyValue(Animator animator, float value, boolean recalculate) {
-    valueSetter.applyValue(animator, value, recalculate);
+  public void applyValue(Animator animator, float value) {
+    valueSetter.applyValue(animator, value);
   }
 
   private interface ValueSetter {
 
-    void applyValue(Animator animator, float value, boolean recalculate);
+    void applyValue(Animator animator, float value);
 
   }
 

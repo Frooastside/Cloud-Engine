@@ -2,14 +2,13 @@ package net.frooastside.engine.graphicobjects.framebuffer.attachments;
 
 import net.frooastside.engine.graphicobjects.framebuffer.FrameBufferAttachment;
 import net.frooastside.engine.graphicobjects.texture.Texture;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
 
 public class TextureAttachment extends Texture implements FrameBufferAttachment {
 
-  private int attachment;
+  private final int attachment;
 
-  public TextureAttachment(Texture texture) {
+  public TextureAttachment(int attachment, Texture texture) {
+    this.attachment = attachment;
     set(texture);
   }
 
@@ -22,21 +21,7 @@ public class TextureAttachment extends Texture implements FrameBufferAttachment 
   }
 
   @Override
-  public void appendToFrameBuffer() {
-    generateIdentifier();
-    bind();
-    store();
-    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment, GL11.GL_TEXTURE_2D, identifier(), 0);
-    unbind();
-  }
-
-  @Override
   public int attachment() {
     return attachment;
-  }
-
-  @Override
-  public void setAttachment(int attachment) {
-    this.attachment = attachment;
   }
 }

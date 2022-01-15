@@ -34,10 +34,14 @@ public class Shader {
     GL20.glDeleteShader(identifier);
   }
 
-  public static Shader createShader(String sourceFilePath, boolean isInClassPath, int shaderType) {
+  public static Shader createShader(String sourceFilePath, boolean isInClassPath, int shaderType, ShaderConstant... shaderConstants) {
     int shaderId = GL20.glCreateShader(shaderType);
     String shaderSource = fileToShaderSource(sourceFilePath, isInClassPath);
     Objects.requireNonNull(shaderSource);
+    for (ShaderConstant shaderConstant : shaderConstants) {
+      shaderSource = shaderSource.replace("0" + shaderConstant.name(), shaderConstant.value());
+      shaderSource = shaderSource.replace(shaderConstant.name(), shaderConstant.value());
+    }
     GL20.glShaderSource(shaderId, shaderSource);
     GL20.glCompileShader(shaderId);
     if (GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)

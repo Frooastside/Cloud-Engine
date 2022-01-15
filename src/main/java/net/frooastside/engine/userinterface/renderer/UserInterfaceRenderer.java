@@ -1,5 +1,6 @@
 package net.frooastside.engine.userinterface.renderer;
 
+import net.frooastside.engine.graphicobjects.vertexarray.Primitive;
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarget;
@@ -27,7 +28,7 @@ public class UserInterfaceRenderer {
   private final BasicFontShader fontShader;
 
   private RenderElement.RenderType currentRenderType;
-  private ContainerElement hideOverflowElement;
+  private FunctionalElement hideOverflowElement;
 
   public UserInterfaceRenderer(BasicBoxShader boxShader, BasicFontShader fontShader) {
     this.boxShader = boxShader;
@@ -78,12 +79,12 @@ public class UserInterfaceRenderer {
       }
     } else if (element instanceof FunctionalElement) {
       FunctionalElement functionalElement = ((FunctionalElement) element);
-      boolean hideOverflow = functionalElement instanceof ContainerElement && ((ContainerElement) functionalElement).hideOverflow();
+      boolean hideOverflow = functionalElement.hideOverflow();
       if (!hideOverflow) {
         functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
       } else {
-        ContainerElement initialHideOverflowElement = hideOverflowElement;
-        renderStencil((ContainerElement) functionalElement);
+        FunctionalElement initialHideOverflowElement = hideOverflowElement;
+        renderStencil(functionalElement);
 
         functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
 
@@ -97,7 +98,7 @@ public class UserInterfaceRenderer {
     GL11.glStencilMask(0xFF);
   }
 
-  public void renderStencil(ContainerElement containerElement) {
+  public void renderStencil(FunctionalElement containerElement) {
     hideOverflowElement = containerElement;
     if (containerElement != null) {
       clearStencilBuffer();
@@ -155,7 +156,12 @@ public class UserInterfaceRenderer {
       if (!box.hasAnimator()) {
         boxShader.loadTranslation(box.bounds());
       } else {
-        boxShader.loadTranslation(box.bounds().add(box.animator().offset(), cache));
+        cache.set(
+          box.bounds().x + box.animator().offset().x,
+          box.bounds().y + box.animator().offset().y,
+          box.bounds().z * box.animator().offset().z,
+          box.bounds().w * box.animator().offset().w);
+        boxShader.loadTranslation(cache);
       }
       boxShader.loadAlpha(alpha);
       boxShader.loadUseColor(box.useColor());
@@ -178,7 +184,7 @@ public class UserInterfaceRenderer {
       fontShader.loadColor(text.color().rawColor());
       fontShader.loadAlpha(alpha);
       //TODO EDGE
-      fontShader.loadEdge(0.35f);
+      fontShader.loadEdge(0.5f);
       VertexArrayObject textMesh = text.model();
       textMesh.bind();
       textMesh.enableVertexAttributes();
@@ -205,7 +211,7 @@ public class UserInterfaceRenderer {
   }
 
   private static VertexArrayObject generateDefaultBox() {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(DEFAULT_BOX_POSITIONS.length / 2);
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(Primitive.TRIANGLES, DEFAULT_BOX_POSITIONS.length / 2);
     vertexArrayObject.generateIdentifier();
     vertexArrayObject.bind();
 

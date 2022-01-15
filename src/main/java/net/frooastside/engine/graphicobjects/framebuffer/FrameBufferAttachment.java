@@ -4,9 +4,9 @@ public interface FrameBufferAttachment {
 
   void resize(int width, int height);
 
-  void appendToFrameBuffer();
+  void bind();
+
+  void unbind();
 
   int attachment();
-
-  void setAttachment(int attachment);
 }

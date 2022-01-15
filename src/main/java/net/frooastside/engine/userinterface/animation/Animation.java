@@ -33,6 +33,9 @@ public class Animation {
     return transition.createDriver(standardValue, currentValue, reverse, delay, duration);
   }
 
+  public float duration() {
+    return duration;
+  }
 
   public static class Instance {
 
@@ -49,11 +52,10 @@ public class Animation {
     }
 
     public void update(Animator animator, double delta) {
-      boolean valueChanging = !transitionFinished();
       time += delta;
       for (Map.Entry<TransitionType, TransitionDriver> driver : drivers.entrySet()) {
         float value = driver.getValue().update(delta);
-        driver.getKey().applyValue(animator, value, valueChanging);
+        driver.getKey().applyValue(animator, value);
       }
     }
 

@@ -1,193 +1,187 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
-import net.frooastside.engine.graphicobjects.Font;
-import net.frooastside.engine.userinterface.ColorSet;
+import net.frooastside.engine.window.Window;
+import net.frooastside.engine.window.callbacks.KeyCallback;
+import net.frooastside.engine.userinterface.animation.Animation;
+import net.frooastside.engine.userinterface.constraints.Constraint;
+import net.frooastside.engine.userinterface.constraints.ElementConstraints;
+import net.frooastside.engine.userinterface.constraints.RawConstraint;
+import net.frooastside.engine.userinterface.constraints.RelativeConstraint;
 import net.frooastside.engine.userinterface.elements.FunctionalElement;
-import net.frooastside.engine.userinterface.elements.render.Box;
+import net.frooastside.engine.userinterface.elements.RenderElement;
 import net.frooastside.engine.userinterface.elements.render.Text;
+import net.frooastside.engine.userinterface.events.ClickEvent;
+import net.frooastside.engine.userinterface.events.Event;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
+import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
 
-public class TextField extends FunctionalElement implements SelectionEvent.Handler {
+public class TextField extends FunctionalElement implements ClickEvent.Handler, SelectionEvent.Handler {
 
-  private final ColorSet colorSet;
-  private final Font font;
+  private RenderElement background;
+  private Text text;
+  private final ElementConstraints textConstraints = new ElementConstraints(
+    new RelativeConstraint(0f),
+    new RelativeConstraint(0f),
+    new RelativeConstraint(1f),
+    new RelativeConstraint(1f));
 
-  private Text uiText;
-  private Box selectionBox;
-  private Box cursorBox;
+  private RenderElement selector;
+  private final ElementConstraints selectorConstraints = new ElementConstraints(
+    new RawConstraint(0f),
+    new RelativeConstraint(0f),
+    new RawConstraint(1f),
+    new RelativeConstraint(1f));
 
-  private final float textSize;
-  private final boolean constantTextSize;
+  private RenderElement cursor;
+  private final ElementConstraints cursorConstraints = new ElementConstraints(
+    new RawConstraint(0f),
+    new RelativeConstraint(0f),
+    new RelativeConstraint(1f),
+    new RelativeConstraint(1f));
+  private Animation cursorOscillation;
+  private boolean cursorOscillationReverse;
 
-  private String text;
-  private int cursor;
+  private int cursorPosition;
   private int selectionStart;
   private int selectionEnd;
-
   private boolean selected;
-
-  private boolean increment;
-  private double cursorAlpha;
-
-  public TextField(ColorSet colorSet, Font font, String text, float textSize, boolean constantTextSize) {
-    this.colorSet = colorSet;
-    this.font = font;
-    this.text = text;
-    this.selectionStart = text.length();
-    this.selectionEnd = text.length();
-    this.cursor = text.length();
-    this.textSize = textSize;
-    this.constantTextSize = constantTextSize;
-  }
 
   @Override
   public void calculateChildBounds() {
-    uiText.setText(this.text);
-    float selectionStartX = (float) uiText.lineLength(0, selectionStart);
-    float selectionEndX = (float) uiText.lineLength(0, selectionEnd);
-    selectionBox.bounds().set(selectionStartX, bounds().y, selectionEndX - selectionStartX, bounds().w);
-    float cursorX = (float) uiText.lineLength(0, cursor);
-    cursorBox.bounds().set(cursorX - (pixelSize().x * 1), bounds().y, cursorBox.bounds().z, bounds().w);
+    if (background != null) {
+      background.bounds().set(this.bounds());
+    }
+    if (text != null) {
+      textConstraints.setPixelSize(pixelSize());
+      text.bounds().set(
+        textConstraints.x().calculate(bounds()) + bounds().x,
+        textConstraints.y().calculate(bounds()) + bounds().y + (bounds().w / 2 - textConstraints.w().calculate(bounds()) / 4),
+        textConstraints.z().calculate(bounds()),
+        textConstraints.w().calculate(bounds()));
+      text.recalculate();
+      if (selector != null) {
+        float selectionStartX = (float) text.lineLength(0, selectionStart);
+        float selectionEndX = (float) text.lineLength(0, selectionEnd);
+        selectorConstraints.setPixelSize(pixelSize());
+        selectorConstraints.x().setValue(selectionStartX);
+        selectorConstraints.z().setValue(selectionEndX - selectionStartX);
+        selector.bounds().set(
+          selectorConstraints.x().calculate(bounds()) + bounds().x,
+          selectorConstraints.y().calculate(bounds()) + bounds().y + (bounds().w - selectorConstraints.w().calculate(bounds())) / 2f,
+          selectorConstraints.z().calculate(bounds()),
+          selectorConstraints.w().calculate(bounds()));
+        selector.recalculate();
+      }
+      if (cursor != null) {
+        float cursorX = (float) text.lineLength(0, cursorPosition);
+        cursorConstraints.setPixelSize(pixelSize());
+        cursorConstraints.x().setValue(cursorX);
+        cursor.bounds().set(
+          cursorConstraints.x().calculate(bounds()) + bounds().x - (cursorConstraints.z().calculate(bounds()) / 2),
+          cursorConstraints.y().calculate(bounds()) + bounds().y + (bounds().w - cursorConstraints.w().calculate(bounds())) / 2f,
+          cursorConstraints.z().calculate(bounds()),
+          cursorConstraints.w().calculate(bounds()));
+        cursor.recalculate();
+      }
+    }
   }
 
   @Override
   public void update(double delta) {
     super.update(delta);
-    if (selected) {
-      if (increment) {
-        if (cursorAlpha >= 1) {
-          increment = false;
-        }
-        cursorAlpha += delta * 3;
-      } else {
-        if (cursorAlpha <= 0) {
-          increment = true;
-        }
-        cursorAlpha -= delta * 3;
-      }
-      cursorBox.setAlpha((float) cursorAlpha);
+    if (selected && cursor != null && cursorOscillation != null && !cursor.animator().doingAnimation(cursorOscillation)) {
+      cursorOscillationReverse = !cursorOscillationReverse;
+      cursor.animator().applyAnimation(cursorOscillation, cursorOscillationReverse, 0);
     }
   }
 
   @Override
-  public void initialize() {
-    ElementConstraints backgroundConstraints = ElementConstraints.getDefault();
-    Box background = new Box(colorSet.element());
-    addElement(background, backgroundConstraints);
-
-    ElementConstraints textConstraints = new ElementConstraints(
-      new RelativeConstraint(0),
-      new RelativeConstraint(0.5f),
-      new RelativeConstraint(1),
-      constantTextSize ? new RawConstraint(textSize) : new RelativeConstraint(textSize));
-    uiText = new Text(font, this.text, colorSet.text(), false);
-    addElement(uiText, textConstraints);
-
-    ElementConstraints selectionBoxConstraints = new ElementConstraints(
-      new RawConstraint(0),
-      new RelativeConstraint(0.1f),
-      new RawConstraint(0),
-      new RelativeConstraint(0.8f));
-    selectionBox = new Box(colorSet.accent());
-    selectionBox.setAlpha(0.2f);
-    addElement(selectionBox, selectionBoxConstraints);
-
-    ElementConstraints cursorBoxConstraints = new ElementConstraints(
-      new RawConstraint(0),
-      new RelativeConstraint(0.1f),
-      new PixelConstraint(2),
-      new RelativeConstraint(0.8f));
-    cursorBox = new Box(colorSet.accent());
-    cursorBox.setAlpha(0.0f);
-    addElement(cursorBox, cursorBoxConstraints);
-  }
-
-  @Override
-  public void handleKeyEvent(Window window, int key, int scancode, int modifiers, KeyCallback.Action action) {
-    if (action != KeyCallback.Action.RELEASE) {
+  public void handleKey(Window window, int key, int scancode, int modifiers, KeyCallback.Action action) {
+    if (action != KeyCallback.Action.RELEASE && selected) {
       if (key == GLFW.GLFW_KEY_BACKSPACE) {
         if (selectionStart == selectionEnd) {
-          if (cursor > 0 && text.length() >= cursor) {
-            text = text.substring(0, cursor - 1) + text.substring(cursor);
-            cursor--;
+          if (cursorPosition > 0 && text.text().length() >= cursorPosition) {
+            text.setText(text.text().substring(0, cursorPosition - 1) + text.text().substring(cursorPosition));
+            cursorPosition--;
             resetSelection();
-            recalculateBounds();
+            calculateChildBounds();
           }
         } else {
           deleteSelection();
           resetSelection();
-          recalculateBounds();
+          calculateChildBounds();
         }
       } else if (key == GLFW.GLFW_KEY_DELETE) {
         if (selectionStart == selectionEnd) {
-          if (cursor < text.length()) {
-            text = text.substring(0, cursor) + text.substring(cursor + 1);
+          if (cursorPosition < text.text().length()) {
+            text.setText(text.text().substring(0, cursorPosition) + text.text().substring(cursorPosition + 1));
             resetSelection();
-            recalculateBounds();
+            calculateChildBounds();
           }
         } else {
           deleteSelection();
           resetSelection();
-          recalculateBounds();
+          calculateChildBounds();
         }
       } else if (key == GLFW.GLFW_KEY_LEFT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
-          if (cursor == selectionStart) {
-            if (cursor > 0 && text.length() >= cursor) {
+          if (cursorPosition == selectionStart) {
+            if (cursorPosition > 0 && text.text().length() >= cursorPosition) {
               selectionStart--;
-              cursor = selectionStart;
-              recalculateBounds();
+              cursorPosition = selectionStart;
+              calculateChildBounds();
             }
-          } else if (cursor == selectionEnd) {
-            if (cursor > selectionStart) {
+          } else if (cursorPosition == selectionEnd) {
+            if (cursorPosition > selectionStart) {
               selectionEnd--;
-              cursor = selectionEnd;
-              recalculateBounds();
+              cursorPosition = selectionEnd;
+              calculateChildBounds();
             }
           }
         } else {
           if (selectionStart == selectionEnd) {
-            if (cursor > 0) {
-              cursor--;
+            if (cursorPosition > 0) {
+              cursorPosition--;
             }
           }
           resetSelection();
-          recalculateBounds();
+          calculateChildBounds();
         }
       } else if (key == GLFW.GLFW_KEY_RIGHT) {
         if (KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.SHIFT)) {
-          if (cursor == selectionEnd) {
-            if (cursor < text.length()) {
+          if (cursorPosition == selectionEnd) {
+            if (cursorPosition < text.text().length()) {
               selectionEnd++;
-              cursor = selectionEnd;
-              recalculateBounds();
+              cursorPosition = selectionEnd;
+              calculateChildBounds();
             }
-          } else if (cursor == selectionStart) {
+          } else if (cursorPosition == selectionStart) {
             if (selectionStart < selectionEnd) {
               selectionStart++;
-              cursor = selectionStart;
-              recalculateBounds();
+              cursorPosition = selectionStart;
+              calculateChildBounds();
             }
           }
         } else {
           if (selectionStart == selectionEnd) {
-            if (cursor < text.length()) {
-              cursor++;
+            if (cursorPosition < text.text().length()) {
+              cursorPosition++;
             }
           }
           resetSelection();
-          recalculateBounds();
+          calculateChildBounds();
         }
       } else if (key == GLFW.GLFW_KEY_A && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
-        if (selectionStart == 0 && selectionEnd == text.length()) {
-          cursor = text.length();
+        if (selectionStart == 0 && selectionEnd == text.text().length()) {
+          cursorPosition = text.text().length();
           resetSelection();
         } else {
           selectionStart = 0;
-          selectionEnd = text.length();
-          cursor = selectionEnd;
+          selectionEnd = text.text().length();
+          cursorPosition = selectionEnd;
         }
-        recalculateBounds();
+        calculateChildBounds();
       } else if (key == GLFW.GLFW_KEY_C && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
@@ -197,76 +191,229 @@ public class TextField extends FunctionalElement implements SelectionEvent.Handl
           deleteSelection();
         }
         String clipboard = window.input().getClipboard();
-        this.text = textBeforeCursor() + clipboard + textAfterCursor();
-        this.cursor += clipboard.length();
+        text.setText(textBeforeCursor() + clipboard + textAfterCursor());
+        cursorPosition += clipboard.length();
         resetSelection();
-        recalculateBounds();
+        calculateChildBounds();
       } else if (key == GLFW.GLFW_KEY_X && KeyCallback.Modifier.checkModifier(modifiers, KeyCallback.Modifier.CONTROL)) {
         if (selectionStart != selectionEnd) {
           window.input().setClipboard(selection());
           deleteSelection();
         }
         resetSelection();
-        recalculateBounds();
+        calculateChildBounds();
       }
     }
   }
 
   @Override
-  public void handleCharEvent(Window window, int codepoint) {
-    if (selectionStart != selectionEnd) {
-      deleteSelection();
+  public void handleChar(Window window, char codepoint) {
+    if (selected) {
+      if (selectionStart != selectionEnd) {
+        deleteSelection();
+      }
+      text.setText(textBeforeCursor() + codepoint + textAfterCursor());
+      cursorPosition++;
+      resetSelection();
+      calculateChildBounds();
     }
-    this.text = textBeforeCursor() + (char) codepoint + textAfterCursor();
-    this.cursor++;
-    resetSelection();
-    recalculateBounds();
+  }
+
+  @Override
+  public void handle(Event event) {
+    if (event instanceof ClickEvent) {
+      ClickEvent.Handler.super.handle(event);
+    } else if (event instanceof SelectionEvent) {
+      SelectionEvent.Handler.super.handle(event);
+    }
+  }
+
+  @Override
+  public boolean handleClick(ClickEvent event) {
+    if (event.key() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+      int textLength = text.text().length();
+      float lineLength = relativeWidth((float) text.lineLength(0, textLength));
+      Vector2f relativeClickPosition = relativePixelPosition(event.x(), event.y());
+      if (relativeClickPosition.x >= lineLength) {
+        cursorPosition = textLength;
+      } else {
+        cursorPosition = nearestNumberBinarySearch(0, textLength, relativeClickPosition.x);
+      }
+      if (event.pressed()) {
+        resetSelection();
+      } else {
+        if (selectionStart > cursorPosition) {
+          selectionEnd = selectionStart;
+          selectionStart = cursorPosition;
+        } else {
+          selectionEnd = cursorPosition;
+        }
+      }
+      calculateChildBounds();
+      return true;
+    }
+    return false;
+  }
+
+  private int nearestNumberBinarySearch(int start, int end, float number) {
+    int middle = (start + end) / 2;
+    float startNumber = relativeWidth((float) text.lineLength(0, start));
+    float middleNumber = relativeWidth((float) text.lineLength(0, middle));
+    float endNumber = relativeWidth((float) text.lineLength(0, end));
+    if (middleNumber == number) {
+      return middle;
+    }
+    if (start == end - 1) {
+      if (Math.abs(endNumber - number) >= Math.abs(startNumber - number)) {
+        return start;
+      } else {
+        return end;
+      }
+    }
+    if (middleNumber > number) {
+      return nearestNumberBinarySearch(start, middle, number);
+    } else {
+      return nearestNumberBinarySearch(middle, end, number);
+    }
+  }
+
+  private float relativeWidth(float width) {
+    return Math.max(Math.min(width / bounds().z, 1), 0);
   }
 
   @Override
   public void handleSelection(SelectionEvent event) {
     this.selected = event.selected();
-    cursorAlpha = 0;
-    increment = true;
-    cursorBox.setAlpha((float) cursorAlpha);
+    if (cursor != null) {
+      cursor.setAlpha(selected ? 1 : 0);
+      if (cursorOscillation != null) {
+        cursor.animator().cancelAnimation(cursorOscillation);
+        cursorOscillationReverse = selected;
+      }
+    }
   }
 
   private void deleteSelection() {
-    text = textWithoutSelection();
-    if (cursor == selectionEnd) {
-      cursor = selectionStart;
+    text.setText(textWithoutSelection());
+    if (cursorPosition == selectionEnd) {
+      cursorPosition = selectionStart;
     }
     resetSelection();
-    recalculateBounds();
+    calculateChildBounds();
   }
 
   private void resetSelection() {
-    selectionStart = cursor;
-    selectionEnd = cursor;
+    selectionStart = cursorPosition;
+    selectionEnd = cursorPosition;
   }
 
   private String textBeforeCursor() {
-    return text.substring(0, cursor);
+    return text.text().substring(0, cursorPosition);
   }
 
   private String textAfterCursor() {
-    return text.substring(cursor);
+    return text.text().substring(cursorPosition);
   }
 
   private String textWithoutSelection() {
-    return text.substring(0, selectionStart) + text.substring(selectionEnd);
+    return text.text().substring(0, selectionStart) + text.text().substring(selectionEnd);
   }
 
   private String selection() {
-    return text.substring(selectionStart, selectionEnd);
+    return text.text().substring(selectionStart, selectionEnd);
   }
 
-  public String text() {
+  public String value() {
+    return text.text();
+  }
+
+  public RenderElement background() {
+    return background;
+  }
+
+  public void setBackground(RenderElement background) {
+    if (this.background != null) {
+      children().remove(background);
+    }
+    if (background != null) {
+      addElement(background);
+    }
+    this.background = background;
+  }
+
+  public RenderElement cursor() {
+    return cursor;
+  }
+
+  public void setCursor(RenderElement cursor, Constraint cursorHeight, Constraint cursorThickness) {
+    if (this.cursor != null) {
+      children().remove(cursor);
+    }
+    if (cursor != null) {
+      addElement(cursor);
+      cursor.setAlpha(0.0f);
+    }
+    if (cursorThickness != null) {
+      cursorThickness.setConstraints(cursorConstraints);
+      cursorConstraints.setZ(cursorThickness);
+    }
+    if (cursorHeight != null) {
+      cursorHeight.setConstraints(cursorConstraints);
+      cursorConstraints.setW(cursorHeight);
+    }
+    this.cursor = cursor;
+  }
+
+  public Animation cursorOscillation() {
+    return cursorOscillation;
+  }
+
+  public void setCursorOscillation(Animation cursorOscillation) {
+    this.cursorOscillation = cursorOscillation;
+  }
+
+  public RenderElement selector() {
+    return selector;
+  }
+
+  public void setSelector(RenderElement selector, Constraint selectorHeight) {
+    if (this.selector != null) {
+      children().remove(selector);
+    }
+    if (selector != null) {
+      addElement(selector);
+    }
+    if (selectorHeight != null) {
+      selectorHeight.setConstraints(selectorConstraints);
+      selectorConstraints.setW(selectorHeight);
+    }
+    this.selector = selector;
+  }
+
+  public Text text() {
     return text;
   }
 
-  public void setText(String text) {
+  public void setText(Text text, Constraint fontSize) {
+    if (this.text != null) {
+      children().remove(this.text);
+    }
+    if (text != null) {
+      addElement(text);
+    }
+    if (fontSize != null) {
+      fontSize.setConstraints(textConstraints);
+      textConstraints.setW(fontSize);
+    }
     this.text = text;
-    recalculateBounds();
+  }
+
+  public void setText(String text) {
+    if (this.text != null) {
+      this.text.setText(text);
+      selectionStart = text.length();
+      selectionEnd = text.length();
+      cursorPosition = text.length();
+    }
   }
 }
