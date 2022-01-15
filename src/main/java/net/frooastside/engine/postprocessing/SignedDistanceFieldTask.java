@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SignedDistanceFieldTask {
@@ -83,8 +84,10 @@ public class SignedDistanceFieldTask {
   public void waitForCompletion() {
     try {
       executorService.shutdown();
-      executorService.awaitTermination(1, TimeUnit.HOURS);
-    } catch (InterruptedException ignored) {
+      if(executorService.awaitTermination(1, TimeUnit.HOURS)) {
+        throw new TimeoutException();
+      }
+    } catch (InterruptedException | TimeoutException ignored) {
     }
   }
 

@@ -1,6 +1,7 @@
 package net.frooastside.engine.userinterface.elements.render;
 
 import net.frooastside.engine.graphicobjects.Font;
+import net.frooastside.engine.graphicobjects.vertexarray.Primitive;
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferTarget;
@@ -38,8 +39,8 @@ public class Text extends RenderElement {
     double lineLength = 0;
     int characterCount = 0;
     for (char codepoint : text.toCharArray()) {
-      Font.Character character = font.getCharacter(codepoint);
-      lineLength += character.xAdvance() * fontWidth;
+      Font.Character character = font.character(codepoint);
+      lineLength += character.xAdvance() * (1f / font.characterHeight()) * fontWidth;
       characterCount += codepoint != Font.SPACE_CODEPOINT ? 1 : 0;
     }
 
@@ -50,12 +51,12 @@ public class Text extends RenderElement {
 
     int index = 0;
     for (char codepoint : text.toCharArray()) {
-      Font.Character character = font.getCharacter(codepoint);
+      Font.Character character = font.character(codepoint);
       if (codepoint != Font.SPACE_CODEPOINT) {
         addVerticesFor(positions, textureCoordinates, character, index, fontHeight, fontWidth, cursorX, yLineOffset);
         index++;
       }
-      cursorX += character.xAdvance() * fontWidth;
+      cursorX += character.xAdvance() * (1f / font.characterHeight()) * fontWidth;
     }
 
     if (positions.length / 2 == model.length()) {
@@ -66,10 +67,10 @@ public class Text extends RenderElement {
   }
 
   protected void addVerticesFor(float[] positions, float[] textureCoordinates, Font.Character character, int characterIndex, double fontHeight, double fontWidth, double cursorX, double cursorY) {
-    double x = cursorX + (character.xOffset() * fontWidth);
-    double y = cursorY + (character.yOffset() * fontHeight);
-    double xMax = x + (character.xSize() * fontWidth);
-    double yMax = y + (character.ySize() * fontHeight);
+    double x = cursorX + (character.xOffset() * (1f / font.characterHeight()) * fontWidth);
+    double y = cursorY + (character.yOffset() * (1f / font.characterHeight()) * fontHeight);
+    double xMax = x + (character.xSize() * (1f / font.characterHeight()) * fontWidth);
+    double yMax = y + (character.ySize() * (1f / font.characterHeight()) * fontHeight);
     addPoints(positions,
       characterIndex,
       x * 2 - 1,
@@ -101,7 +102,7 @@ public class Text extends RenderElement {
   }
 
   private static VertexArrayObject generateEmptyModel() {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(0);
+    VertexArrayObject vertexArrayObject = new VertexArrayObject(Primitive.TRIANGLES, 0);
     vertexArrayObject.generateIdentifier();
     vertexArrayObject.bind();
     VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
@@ -115,18 +116,18 @@ public class Text extends RenderElement {
   public void bufferData(float[] positions, float[] textureCoordinates) {
     model.bind();
     model.setLength(positions.length / 2);
-    VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
+    VertexBufferObject positionBuffer = model.vertexBufferObject(0);
     positionBuffer.storeFloatData(BufferUtils.store(positions));
-    VertexBufferObject textureCoordinateBuffer = model.getVertexBufferObject(1);
+    VertexBufferObject textureCoordinateBuffer = model.vertexBufferObject(1);
     textureCoordinateBuffer.storeFloatData(BufferUtils.store(textureCoordinates));
     model.unbind();
   }
 
   public void bufferSubData(float[] positions, float[] textureCoordinates) {
     model.bind();
-    VertexBufferObject positionBuffer = model.getVertexBufferObject(0);
+    VertexBufferObject positionBuffer = model.vertexBufferObject(0);
     positionBuffer.storeFloatSubData(BufferUtils.store(positions), 0);
-    VertexBufferObject textureCoordinateBuffer = model.getVertexBufferObject(1);
+    VertexBufferObject textureCoordinateBuffer = model.vertexBufferObject(1);
     textureCoordinateBuffer.storeFloatSubData(BufferUtils.store(textureCoordinates), 0);
     model.unbind();
   }
@@ -134,16 +135,15 @@ public class Text extends RenderElement {
   public double lineLength(int beginIndex, int endIndex) {
     this.aspectRatio = pixelSize().x / pixelSize().y;
     float fontHeight = bounds().w;
-    //double verticalPerPixelSize = LINE_HEIGHT / (double) font.characterHeight();
     double fontWidth = fontHeight * aspectRatio;
     double lineLength = 0;
     char[] chars = text.toCharArray();
     for (int i = beginIndex; i < endIndex; i++) {
-      Font.Character character = font.getCharacter(chars[i]);
-      lineLength += (character.xAdvance() * fontWidth);
+      Font.Character character = font.character(chars[i]);
+      lineLength += (character.xAdvance() * (1f / font.characterHeight()) * fontWidth);
     }
     if (endIndex < text.length()) {
-      lineLength += (font.getCharacter(chars[endIndex]).xOffset() * fontWidth) / 2;
+      lineLength += (font.character(chars[endIndex]).xOffset() * (1f / font.characterHeight()) * fontWidth) / 2;
     }
     return lineLength;
   }

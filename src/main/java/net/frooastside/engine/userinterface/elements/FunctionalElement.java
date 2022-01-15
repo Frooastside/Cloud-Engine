@@ -1,14 +1,11 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.glfw.Window;
-import net.frooastside.engine.glfw.callbacks.KeyCallback;
+import net.frooastside.engine.window.Window;
+import net.frooastside.engine.window.callbacks.KeyCallback;
 import net.frooastside.engine.userinterface.Screen;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
-import net.frooastside.engine.userinterface.events.ClickEvent;
-import net.frooastside.engine.userinterface.events.Event;
-import net.frooastside.engine.userinterface.events.EventHandler;
-import net.frooastside.engine.userinterface.events.SelectionEvent;
+import net.frooastside.engine.userinterface.events.*;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -22,9 +19,12 @@ public abstract class FunctionalElement extends Element {
 
   private final Vector4f spacing = new Vector4f();
 
+  private Overflow overflow = Overflow.INITIAL;
+
   private Screen root;
   private FunctionalElement parent;
   private final List<Element> children = new ArrayList<>();
+
 
   private String clickEventTarget;
   private String selectEventTarget;
@@ -105,6 +105,59 @@ public abstract class FunctionalElement extends Element {
         ((FunctionalElement) element).handleChar(window, codepoint);
       }
     }
+  }
+
+  public Element scroll(ScrollEvent event) {
+    if (event.inside()) {
+      for (Element element : children) {
+        if (element.isPixelInside(event.x(), event.y())) {
+          if (element instanceof FunctionalElement) {
+            FunctionalElement basicElement = (FunctionalElement) element;
+            if (basicElement.scrollable()) {
+              if (((ScrollEvent.Handler) basicElement).handleScroll(event)) {
+                if (basicElement.selectable()) {
+                  return element;
+                }
+              } else {
+                return basicElement.scroll(event);
+              }
+            } else if (basicElement.selectable()) {
+              return basicElement;
+            } else {
+              return basicElement.scroll(event);
+            }
+          }
+        } else {
+          if (element instanceof FunctionalElement) {
+            FunctionalElement basicElement = (FunctionalElement) element;
+            ScrollEvent outsideScrollEvent = new ScrollEvent(false, event.x(), event.y(), event.scrollX(), event.scrollY());
+            basicElement.scroll(outsideScrollEvent);
+            if (basicElement.scrollable()) {
+              ((ScrollEvent.Handler) basicElement).handleScroll(outsideScrollEvent);
+            }
+          }
+        }
+      }
+    } else {
+      for (Element element : children) {
+        if (element instanceof FunctionalElement) {
+          FunctionalElement basicElement = (FunctionalElement) element;
+          if (!element.isPixelInside(event.x(), event.y())) {
+            basicElement.scroll(event);
+            if (basicElement.scrollable()) {
+              ((ScrollEvent.Handler) basicElement).handleScroll(event);
+            }
+          } else {
+            ScrollEvent insideScrollEvent = new ScrollEvent(true, event.x(), event.y(), event.scrollX(), event.scrollY());
+            basicElement.scroll(insideScrollEvent);
+            if (basicElement.scrollable()) {
+              ((ScrollEvent.Handler) basicElement).handleScroll(insideScrollEvent);
+            }
+          }
+        }
+      }
+    }
+    return null;
   }
 
   public Element click(ClickEvent event) {
@@ -191,18 +244,28 @@ public abstract class FunctionalElement extends Element {
   public void addElement(Element element) {
     children.add(element);
     element.updatePixelSize(pixelSize());
-    element.setDisplayAnimation(displayAnimation(), displayAnimationDelay());
     if (element instanceof FunctionalElement) {
       FunctionalElement functionalElement = (FunctionalElement) element;
       functionalElement.setRoot(root());
       functionalElement.setParent(this);
-      //TODO MAYBE RECALCULATE
       functionalElement.calculateBounds(bounds());
     }
   }
 
+  public boolean hideOverflow() {
+    return overflow == Overflow.HIDE || overflow == Overflow.SCROLL;
+  }
+
   public Vector4f spacing() {
     return spacing;
+  }
+
+  public Overflow overflow() {
+    return overflow;
+  }
+
+  public void setOverflow(Overflow overflow) {
+    this.overflow = overflow;
   }
 
   public ElementConstraints spacingConstraints() {
@@ -249,6 +312,10 @@ public abstract class FunctionalElement extends Element {
     return this instanceof ClickEvent.Handler;
   }
 
+  public boolean scrollable() {
+    return this instanceof ScrollEvent.Handler;
+  }
+
   public String clickEventTarget() {
     return clickEventTarget;
   }
@@ -265,86 +332,12 @@ public abstract class FunctionalElement extends Element {
     this.selectEventTarget = selectEventTarget;
   }
 
-  /*
+  public enum Overflow {
 
+    SHOW, HIDE, SCROLL;
 
+    public static Overflow INITIAL = SHOW;
 
-  private ClickEvent.Listener clickListener;
-  private SelectionEvent.Listener selectionListener;
-
-  public Element click(ClickEvent event) {
-    if (event.inside()) {
-      for (Element element : children) {
-        if (element.isPixelInside(event.x(), event.y())) {
-          if (element instanceof FunctionalElement) {
-            FunctionalElement basicElement = (FunctionalElement) element;
-            if (basicElement.clickable()) {
-              if (((ClickEvent.Listener) basicElement).handleClick(event)) {
-                if (basicElement.selectable()) {
-                  return element;
-                }
-              }
-            } else if (basicElement.selectable()) {
-              return basicElement;
-            } else {
-              return basicElement.click(event);
-            }
-          }
-        } else {
-          if (element instanceof FunctionalElement) {
-            FunctionalElement basicElement = (FunctionalElement) element;
-            ClickEvent outsideClickEvent = new ClickEvent(event.key(), false, event.pressed(), event.x(), event.y());
-            basicElement.click(outsideClickEvent);
-            if (basicElement.clickable()) {
-              ((ClickEvent.Listener) basicElement).handleClick(outsideClickEvent);
-            }
-          }
-        }
-      }
-    } else {
-      for (Element element : children) {
-        if (element instanceof FunctionalElement) {
-          FunctionalElement basicElement = (FunctionalElement) element;
-          basicElement.click(event);
-          if (basicElement.clickable()) {
-            ((ClickEvent.Listener) basicElement).handleClick(event);
-          }
-        }
-      }
-    }
-    return null;
   }
 
-  public boolean clickable() {
-    return this instanceof ClickEvent.Listener;
-  }
-
-  public boolean selectable() {
-    return this instanceof SelectionEvent.Listener;
-  }
-
-  public boolean hasClickListener() {
-    return clickable() && clickListener != null;
-  }
-
-  public boolean hasSelectionListener() {
-    return selectable() && selectionListener != null;
-  }
-
-  public ClickEvent.Listener clickListener() {
-    return clickListener;
-  }
-
-  public void setClickListener(ClickEvent.Listener clickListener) {
-    this.clickListener = clickListener;
-  }
-
-  public SelectionEvent.Listener selectionListener() {
-    return selectionListener;
-  }
-
-  public void setSelectionListener(SelectionEvent.Listener selectionListener) {
-    this.selectionListener = selectionListener;
-  }
-*/
 }

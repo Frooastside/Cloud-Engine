@@ -14,7 +14,7 @@ public class I18n {
 
   public static String get(String key, Object... args) {
     String result = key + Arrays.toString(args);
-    if (instance.currentLanguage.contains(key.toLowerCase())) {
+    if (instance.currentLanguage != null && instance.currentLanguage.contains(key.toLowerCase())) {
       result = String.format(instance.currentLanguage.get(key.toLowerCase()), args);
     }
     return result;

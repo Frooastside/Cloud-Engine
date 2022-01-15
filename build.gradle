@@ -1,0 +1,77 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+group 'net.frooastside'
+version property('version')
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+project.ext.lwjglVersion = "3.3.0"
+project.ext.jomlVersion = "1.10.3"
+apply from: "$rootDir/natives.gradle"
+
+dependencies {
+    api platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+    api "org.lwjgl:lwjgl"
+    api "org.lwjgl:lwjgl-assimp"
+    api "org.lwjgl:lwjgl-glfw"
+    api "org.lwjgl:lwjgl-nfd"
+    api "org.lwjgl:lwjgl-nuklear"
+    api "org.lwjgl:lwjgl-openal"
+    api "org.lwjgl:lwjgl-opengl"
+    api "org.lwjgl:lwjgl-opus"
+    api "org.lwjgl:lwjgl-stb"
+    api "org.lwjgl:lwjgl-vulkan"
+    api "org.lwjgl:lwjgl-yoga"
+
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-nfd::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-nuklear::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opus::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+    if (lwjglNatives == "natives-macos" || lwjglNatives == "natives-macos-arm64") runtimeOnly "org.lwjgl:lwjgl-vulkan::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-yoga::$lwjglNatives"
+
+    api "org.joml:joml:${jomlVersion}"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+javafx { //REMOVE
+    version = "17"
+    modules = [ 'javafx.controls', 'javafx.swing' ]
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            version property('version')
+            from components.java
+            pom {
+                developers {
+                    developer {
+                        id = 'frooastside'
+                        name = 'Frooastside'
+                        email = 'frooastside@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,17 +1,13 @@
 package net.frooastside.engine.userinterface;
 
-import net.frooastside.engine.glfw.Window;
-import net.frooastside.engine.glfw.callbacks.KeyCallback;
+import net.frooastside.engine.window.Window;
+import net.frooastside.engine.window.callbacks.KeyCallback;
 import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.animation.Animation;
-import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.elements.ContainerElement;
 import net.frooastside.engine.userinterface.elements.Element;
 import net.frooastside.engine.userinterface.elements.FunctionalElement;
-import net.frooastside.engine.userinterface.events.ClickEvent;
-import net.frooastside.engine.userinterface.events.Event;
-import net.frooastside.engine.userinterface.events.EventHandler;
-import net.frooastside.engine.userinterface.events.SelectionEvent;
+import net.frooastside.engine.userinterface.events.*;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -23,7 +19,6 @@ import java.util.Map;
 public class Screen {
 
   private static final Vector4f DEFAULT_ELEMENT_AREA = new Vector4f(0, 0, 1, 1);
-  private static final ElementConstraints DEFAULT_ELEMENT_CONSTRAINTS = ElementConstraints.getDefault();
 
   private final Map<String, Animation> animations = new HashMap<>();
   private final List<ContainerElement> children = new ArrayList<>();
@@ -76,7 +71,6 @@ public class Screen {
     for (ContainerElement element : children) {
       if (element != null) {
         element.display(show, delay);
-        System.out.println("show, " + element);
       }
     }
   }
@@ -119,13 +113,58 @@ public class Screen {
     }
   }
 
+  public void handleScroll(Window window, double scrollX, double scrollY) {
+    if (window == this.window) {
+      Vector2f mousePosition = window.input().mousePosition();
+      handleScroll(new ScrollEvent(true, mousePosition.x, mousePosition.y, (float) scrollX, (float) scrollY));
+    }
+  }
+
+  public void handleScroll(ScrollEvent event) {
+    scrollChildren(event);
+  }
+
+  public Element scrollChildren(ScrollEvent event) {
+    if (event.inside()) {
+      for (ContainerElement element : children) {
+        if (element.isPixelInside(event.x(), event.y())) {
+          if (!element.scrollable() || !((ScrollEvent.Handler) element).handleScroll(event)) {
+            return element.scroll(event);
+          }
+        } else {
+          ScrollEvent outsideScrollEvent = new ScrollEvent(false, event.x(), event.y(), event.scrollX(), event.scrollY());
+          element.scroll(outsideScrollEvent);
+          if (element.scrollable()) {
+            ((ScrollEvent.Handler) element).handleScroll(outsideScrollEvent);
+          }
+        }
+      }
+    } else {
+      for (ContainerElement element : children) {
+        if (!element.isPixelInside(event.x(), event.y())) {
+          element.scroll(event);
+          if (element.scrollable()) {
+            ((ScrollEvent.Handler) element).handleScroll(event);
+          }
+        } else {
+          ScrollEvent insideScrollEvent = new ScrollEvent(true, event.x(), event.y(), event.scrollX(), event.scrollY());
+          element.scroll(insideScrollEvent);
+          if (element.scrollable()) {
+            ((ScrollEvent.Handler) element).handleScroll(insideScrollEvent);
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public void emulateClick(int key, boolean pressed, float x, float y) {
     handleClick(new ClickEvent(key, true, pressed, x, y));
   }
 
   public boolean handleClick(ClickEvent event) {
     Element selectedElement = clickChildren(event);
-    if (this.selectedElement != selectedElement) {
+    if (this.selectedElement != selectedElement && event.pressed()) {
       if (this.selectedElement != null && this.selectedElement.selectable()) {
         ((SelectionEvent.Handler) this.selectedElement).handleSelection(new SelectionEvent(false));
       }
@@ -207,4 +246,5 @@ public class Screen {
   public Vector2f pixelSize() {
     return pixelSize;
   }
+
 }

@@ -6,14 +6,16 @@ import org.lwjgl.opengl.GL30;
 
 public class BufferAttachment extends SizedGraphicObject implements FrameBufferAttachment {
 
-  private int attachment;
+  private final int attachment;
 
   private final int internalFormat;
   private final int samples;
 
-  public BufferAttachment(int samples, int internalFormat) {
+  public BufferAttachment(int attachment, int samples, int internalFormat, int width, int height) {
+    this.attachment = attachment;
     this.samples = samples;
     this.internalFormat = internalFormat;
+    setSize(width, height);
   }
 
   @Override
@@ -53,21 +55,7 @@ public class BufferAttachment extends SizedGraphicObject implements FrameBufferA
   }
 
   @Override
-  public void appendToFrameBuffer() {
-    generateIdentifier();
-    bind();
-    store();
-    GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER, identifier());
-    unbind();
-  }
-
-  @Override
   public int attachment() {
     return attachment;
-  }
-
-  @Override
-  public void setAttachment(int attachment) {
-    this.attachment = attachment;
   }
 }

@@ -3,25 +3,28 @@ package net.frooastside.engine.userinterface.elements;
 import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
+import net.frooastside.engine.userinterface.events.ClickEvent;
+import net.frooastside.engine.userinterface.events.ScrollEvent;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ContainerElement extends FunctionalElement {
+public class ContainerElement extends FunctionalElement implements ScrollEvent.Handler {
 
   private final Vector4f clearance = new Vector4f();
   private final Vector4f innerArea = new Vector4f(0, 0, 1, 1);
 
   private ElementConstraints clearanceConstraints;
 
-  private Overflow overflow;
-  private FlowDirection flowDirection;
-  private ContentAlignment contentAlignment;
-  private ItemAlignment itemAlignment;
+  private FlowDirection flowDirection = FlowDirection.INITIAL;
+  private ContentAlignment contentAlignment = ContentAlignment.INITIAL;
+  private ItemAlignment itemAlignment = ItemAlignment.INITIAL;
+
+  private final Vector2f scroll = new Vector2f();
+  private final Vector2f maxScroll = new Vector2f();
 
   private final List<FunctionalElement> temporaryAutoPositionChildren = new ArrayList<>();
 
@@ -33,7 +36,6 @@ public class ContainerElement extends FunctionalElement {
 
   @Override
   public void calculateChildBounds() {
-    calculateInnerArea();
     temporaryAutoPositionChildren.clear();
     for (Element element : children()) {
       if (element instanceof FunctionalElement) {
@@ -55,6 +57,9 @@ public class ContainerElement extends FunctionalElement {
       }
     }
 
+    calculateMaxScroll(totalSize);
+    calculateInnerArea();
+
     if (contentAlignment != ContentAlignment.DEFAULT) {
       if (flowDirection == FlowDirection.HORIZONTAL && totalSize > innerArea.z) {
         contentAlignment = ContentAlignment.DEFAULT;
@@ -71,8 +76,26 @@ public class ContainerElement extends FunctionalElement {
     for (FunctionalElement child : temporaryAutoPositionChildren) {
       handleItemAlignment(child);
       handleContentAlignment(child, offset, spacing);
-      child.calculateChildBounds();
     }
+    for (Element element : children()) {
+      if (element instanceof FunctionalElement) {
+        FunctionalElement functionalElement = (FunctionalElement) element;
+        functionalElement.calculateChildBounds();
+      }
+    }
+  }
+
+  @Override
+  public boolean handleScroll(ScrollEvent event) {
+    if(event.inside() && overflow() == Overflow.SCROLL) {
+      float newScrollX = (scroll.x - event.scrollX() * 15);
+      float newScrollY = (scroll.y - event.scrollY() * 15);
+      scroll.x = Math.max(Math.min(newScrollX * pixelSize().x, maxScroll.x - innerArea.z), 0) / pixelSize().x;
+      scroll.y = Math.max(Math.min(newScrollY * pixelSize().y, maxScroll.y - innerArea.w), 0) / pixelSize().y;
+      calculateChildBounds();
+      return true;
+    }
+    return false;
   }
 
   private float calculateSpacing(float totalSize, boolean firstSpace) {
@@ -85,13 +108,13 @@ public class ContainerElement extends FunctionalElement {
         }
         throw new IllegalStateException(I18n.get("error.userinterface.unknowndirection", flowDirection));
       case SPACE_AROUND:
-        if(firstSpace) {
+        if (firstSpace) {
           if (flowDirection == FlowDirection.HORIZONTAL) {
             return (innerArea.z - totalSize) / 2;
           } else if (flowDirection == FlowDirection.VERTICAL) {
             return (innerArea.w - totalSize) / 2;
           }
-        }else {
+        } else {
           return 0f;
         }
         throw new IllegalStateException(I18n.get("error.userinterface.unknowndirection", flowDirection));
@@ -129,7 +152,6 @@ public class ContainerElement extends FunctionalElement {
         }
         break;
       case START:
-      case DEFAULT:
       default:
         if (flowDirection == FlowDirection.HORIZONTAL) {
           child.bounds().y = innerArea.y + child.spacing().y;
@@ -140,6 +162,14 @@ public class ContainerElement extends FunctionalElement {
     }
   }
 
+  private void calculateMaxScroll(float totalSize) {
+    if(scrollable()) {
+      maxScroll.set(
+        flowDirection == FlowDirection.HORIZONTAL ? totalSize : 0,
+        flowDirection == FlowDirection.VERTICAL ? totalSize : 0);
+    }
+  }
+
   private void calculateInnerArea() {
     if (clearanceConstraints != null) {
       clearance.set(
@@ -147,22 +177,19 @@ public class ContainerElement extends FunctionalElement {
         clearanceConstraints.calculateValue(Constraint.ConstraintType.Y, bounds()),
         clearanceConstraints.calculateValue(Constraint.ConstraintType.Z, bounds()),
         clearanceConstraints.calculateValue(Constraint.ConstraintType.W, bounds()));
-      //bounds().add(clearance.add(0, 0, clearance.x, clearance.y, new Vector4f()), innerArea);
       innerArea.set(
-        bounds().x + clearance.x,
-        bounds().y + clearance.y,
+        bounds().x + clearance.x + -scroll.x * pixelSize().x,
+        bounds().y + clearance.y + -scroll.y * pixelSize().y,
         bounds().z - (clearance.x + clearance.z),
         bounds().w - (clearance.y + clearance.w));
-      /*System.out.println("clearance, " + clearance.toString(NumberFormat.getInstance()));
-      System.out.println("bounds, " + bounds().toString(NumberFormat.getInstance()));
-      System.out.println("inner area, " + innerArea.toString(NumberFormat.getInstance()));*/
     } else {
       clearance.set(0, 0, 0, 0);
     }
   }
 
-  public boolean hideOverflow() {
-    return overflow == Overflow.HIDE || overflow == Overflow.SCROLL;
+  @Override
+  public boolean scrollable() {
+    return super.scrollable() && overflow() == Overflow.SCROLL;
   }
 
   public Vector4f clearance() {
@@ -179,14 +206,6 @@ public class ContainerElement extends FunctionalElement {
 
   public void setClearanceConstraints(ElementConstraints clearanceConstraints) {
     this.clearanceConstraints = clearanceConstraints;
-  }
-
-  public Overflow overflow() {
-    return overflow;
-  }
-
-  public void setOverflow(Overflow overflow) {
-    this.overflow = overflow;
   }
 
   public FlowDirection flowDirection() {
@@ -213,27 +232,27 @@ public class ContainerElement extends FunctionalElement {
     this.itemAlignment = itemAlignment;
   }
 
-  public enum Overflow {
-
-    DEFAULT, SHOW, HIDE, SCROLL
-
-  }
-
   public enum FlowDirection {
 
-    HORIZONTAL, VERTICAL
+    HORIZONTAL, VERTICAL;
+
+    public static FlowDirection INITIAL = HORIZONTAL;
 
   }
 
   public enum ContentAlignment {
 
-    DEFAULT, SPACE_AROUND, /*SPACE_BETWEEN,*/ SPACED_EVENLY
+    DEFAULT, SPACE_AROUND, /*SPACE_BETWEEN,*/ SPACED_EVENLY;
+
+    public static ContentAlignment INITIAL = DEFAULT;
 
   }
 
   public enum ItemAlignment {
 
-    DEFAULT, START, CENTER, END
+    START, CENTER, END;
+
+    public static ItemAlignment INITIAL = START;
 
   }
 

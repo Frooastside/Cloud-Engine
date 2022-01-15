@@ -1,6 +1,7 @@
 package net.frooastside.engine.graphicobjects.framebuffer;
 
 import net.frooastside.engine.graphicobjects.SizedGraphicObject;
+import net.frooastside.engine.graphicobjects.framebuffer.attachments.BufferAttachment;
 import net.frooastside.engine.graphicobjects.framebuffer.attachments.TextureAttachment;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import org.lwjgl.opengl.GL11;
@@ -15,6 +16,24 @@ public class FrameBufferObject extends SizedGraphicObject {
 
   public FrameBufferObject(int width, int height) {
     setSize(width, height);
+  }
+
+  public void appendTextureAttachment(TextureAttachment attachment) {
+    attachments.add(attachment);
+    attachment.generateIdentifier();
+    attachment.bind();
+    attachment.store();
+    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL11.GL_TEXTURE_2D, identifier(), 0);
+    attachment.unbind();
+  }
+
+  public void appendRenderBufferAttachment(BufferAttachment attachment) {
+    attachments.add(attachment);
+    attachment.generateIdentifier();
+    attachment.bind();
+    attachment.store();
+    GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL30.GL_RENDERBUFFER, identifier());
+    attachment.unbind();
   }
 
   public void resize(int width, int height) {
@@ -80,10 +99,8 @@ public class FrameBufferObject extends SizedGraphicObject {
     FrameBufferObject frameBufferObject = new FrameBufferObject(width, height);
     frameBufferObject.generateIdentifier();
     frameBufferObject.bind();
-    TextureAttachment colorTexture = new TextureAttachment(new Texture(null, Texture.BILINEAR_FILTER, width, height, GL11.GL_RGBA, GL11.GL_RGBA));
-    colorTexture.setAttachment(GL30.GL_COLOR_ATTACHMENT0);
-    colorTexture.appendToFrameBuffer();
-    frameBufferObject.attachments.add(colorTexture);
+    TextureAttachment colorTexture = new TextureAttachment(GL30.GL_COLOR_ATTACHMENT0, new Texture(null, Texture.BILINEAR_FILTER, width, height, GL11.GL_RGBA, GL11.GL_RGBA));
+    frameBufferObject.appendTextureAttachment(colorTexture);
     frameBufferObject.selectDrawOutput(GL30.GL_COLOR_ATTACHMENT0);
     frameBufferObject.unbind();
     return frameBufferObject;

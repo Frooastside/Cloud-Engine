@@ -35,7 +35,7 @@ public abstract class Font implements Externalizable {
     texture = (ResourceTexture) in.readObject();
   }
 
-  public Character getCharacter(int codepoint) {
+  public Character character(int codepoint) {
     return supportedCharacters.getOrDefault(codepoint, DEFAULT_CHARACTER);
   }
 

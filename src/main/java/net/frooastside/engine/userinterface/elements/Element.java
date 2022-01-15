@@ -39,6 +39,15 @@ public abstract class Element {
     }
   }
 
+  public Vector2f relativePixelPosition(float x, float y) {
+    float rawX = x * pixelSize.x;
+    float rawY = y * pixelSize.y;
+    Vector4f bounds = bounds();
+    return new Vector2f(
+      Math.max(Math.min((rawX - bounds.x) / bounds.z, 1), 0),
+      Math.max(Math.min((rawY - bounds.y) / bounds.w, 1), 0));
+  }
+
   public boolean isPixelInside(float x, float y) {
     float rawX = x * pixelSize.x;
     float rawY = y * pixelSize.y;
@@ -72,7 +81,7 @@ public abstract class Element {
 
   public Animator animator() {
     if (animator == null) {
-      animator = new Animator(this);
+      animator = new Animator();
     }
     return animator;
   }
