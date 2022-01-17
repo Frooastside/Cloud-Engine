@@ -34,14 +34,24 @@ public class Shader {
     GL20.glDeleteShader(identifier);
   }
 
+  public static Shader createShader(InputStream source, int shaderType, ShaderConstant... shaderConstants) {
+    String shaderSource = streamToShaderSource(source);
+    Objects.requireNonNull(shaderSource);
+    return createShader(shaderSource, shaderType, shaderConstants);
+  }
+
   public static Shader createShader(String sourceFilePath, boolean isInClassPath, int shaderType, ShaderConstant... shaderConstants) {
-    int shaderId = GL20.glCreateShader(shaderType);
     String shaderSource = fileToShaderSource(sourceFilePath, isInClassPath);
     Objects.requireNonNull(shaderSource);
+    return createShader(shaderSource, shaderType, shaderConstants);
+  }
+
+  public static Shader createShader(String shaderSource, int shaderType, ShaderConstant... shaderConstants) {
     for (ShaderConstant shaderConstant : shaderConstants) {
       shaderSource = shaderSource.replace("0" + shaderConstant.name(), shaderConstant.value());
       shaderSource = shaderSource.replace(shaderConstant.name(), shaderConstant.value());
     }
+    int shaderId = GL20.glCreateShader(shaderType);
     GL20.glShaderSource(shaderId, shaderSource);
     GL20.glCompileShader(shaderId);
     if (GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
@@ -60,8 +70,12 @@ public class Shader {
         throw new IllegalStateException(exception);
       }
     }
-    if (fileAsInputStream != null) {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(fileAsInputStream));
+    return streamToShaderSource(fileAsInputStream);
+  }
+
+  private static String streamToShaderSource(InputStream inputStream) {
+    if (inputStream != null) {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
       StringBuilder shaderSource = new StringBuilder();
       try {
         while (reader.ready()) {
