@@ -83,6 +83,10 @@ public class VertexArrayObject extends GraphicObject {
     return vertexBufferObjects[index];
   }
 
+  public VertexBufferObject indexBufferObject() {
+    return indexBufferObject;
+  }
+
   public int length() {
     return length;
   }
@@ -90,50 +94,4 @@ public class VertexArrayObject extends GraphicObject {
   public void setLength(int length) {
     this.length = length;
   }
-
-  /*public static VertexArrayObject create2DFor(float[] positions) {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(positions.length / 2);
-    vertexArrayObject.bind();
-    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
-    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-    vertexArrayObject.unbind();
-    return vertexArrayObject;
-  }
-
-  public static VertexArrayObject create2DIFor(float[] positions, short[] indices) {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(generateIdentifier(), indices.length);
-    vertexArrayObject.bind();
-
-    VertexBufferObject indexBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.UNSIGNED_SHORT, BufferTarget.ELEMENT_ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    indexBuffer.storeShortData(VertexBufferUtils.store(indices));
-    vertexArrayObject.appendIndices(indexBuffer);
-
-    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
-    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-
-    vertexArrayObject.unbind();
-    return vertexArrayObject;
-  }
-
-  public static VertexArrayObject create2DCIFor(float[] positions, float[] colors, short[] indices) {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(generateIdentifier(), indices.length);
-    vertexArrayObject.bind();
-
-    VertexBufferObject indexBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.UNSIGNED_SHORT, BufferTarget.ELEMENT_ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    indexBuffer.storeShortData(VertexBufferUtils.store(indices));
-    vertexArrayObject.appendIndices(indexBuffer);
-
-    VertexBufferObject positionBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    positionBuffer.storeFloatData(VertexBufferUtils.store(positions));
-    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-
-    VertexBufferObject colorBuffer = VertexBufferObject.createVertexBufferObject(BufferDataType.UNSIGNED_BYTE, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
-    colorBuffer.storeIntData(VertexBufferUtils.store4fAs1i(colors));
-    vertexArrayObject.appendVertexBufferObject(colorBuffer, 1, 4, true, 0, 0);
-
-    vertexArrayObject.unbind();
-    return vertexArrayObject;
-  }*/
 }
