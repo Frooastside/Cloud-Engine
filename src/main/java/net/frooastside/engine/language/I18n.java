@@ -7,21 +7,21 @@ import java.util.List;
 
 public class I18n {
 
-  private static final I18n instance = new I18n();
+  private static final I18n INSTANCE = new I18n();
 
   private final List<Language> languages = new ArrayList<>();
   private Language currentLanguage;
 
   public static String get(String key, Object... args) {
     String result = key + Arrays.toString(args);
-    if (instance.currentLanguage != null && instance.currentLanguage.contains(key.toLowerCase())) {
-      result = String.format(instance.currentLanguage.get(key.toLowerCase()), args);
+    if (INSTANCE.currentLanguage != null && INSTANCE.currentLanguage.contains(key.toLowerCase())) {
+      result = String.format(INSTANCE.currentLanguage.get(key.toLowerCase()), args);
     }
     return result;
   }
 
   public static void addLanguages(Language... languages) {
-    instance.languages.addAll(Arrays.asList(languages));
+    INSTANCE.languages.addAll(Arrays.asList(languages));
   }
 
   public static void loadFromDirectory(File directory) {
@@ -36,22 +36,26 @@ public class I18n {
   }
 
   public static void selectByCode(String languageCode) {
-    instance.languages.stream()
+    INSTANCE.languages.stream()
       .filter(language -> language.languageCode().equals(languageCode))
-      .forEach(language -> instance.currentLanguage = language);
+      .forEach(language -> INSTANCE.currentLanguage = language);
   }
 
   public static void selectByName(String languageName) {
-    instance.languages.stream()
+    INSTANCE.languages.stream()
       .filter(language -> language.languageName().equalsIgnoreCase(languageName))
-      .forEach(language -> instance.currentLanguage = language);
+      .forEach(language -> INSTANCE.currentLanguage = language);
   }
 
   public static List<Language> languages() {
-    return instance.languages;
+    return INSTANCE.languages;
   }
 
-  public Language currentLanguage() {
-    return currentLanguage;
+  public static Language currentLanguage() {
+    return INSTANCE.currentLanguage;
+  }
+
+  public static void setCurrentLanguage(Language currentLanguage) {
+    INSTANCE.currentLanguage = currentLanguage;
   }
 }
