@@ -1,6 +1,7 @@
 package net.frooastside.engine.language;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class Language {
     Map<String, String> translatedStrings = new HashMap<>();
     String languageCode = "[]_[]";
     String languageName = "Invalid Language";
-    try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+    try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
       while (bufferedReader.ready()) {
         String line = bufferedReader.readLine();
         if (line.contains("=")) {
@@ -44,7 +45,7 @@ public class Language {
     Map<String, String> translatedStrings = new HashMap<>();
     String languageCode = "[]_[]";
     String languageName = "Invalid Language";
-    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
       while (bufferedReader.ready()) {
         String line = bufferedReader.readLine();
         if (line.contains("=")) {
