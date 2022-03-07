@@ -16,10 +16,9 @@ repositories {
     mavenCentral()
 }
 
-project.ext.lwjglVersion = "3.3.0"
-project.ext.jomlVersion = "1.10.3"
+project.ext.lwjglVersion = property('lwjglVersion')
+project.ext.jomlVersion = property('jomlVersion')
 apply from: "$rootDir/natives.gradle"
-
 
 dependencies {
     api platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
