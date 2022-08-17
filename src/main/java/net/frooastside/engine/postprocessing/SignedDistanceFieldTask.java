@@ -84,7 +84,7 @@ public class SignedDistanceFieldTask {
   public void waitForCompletion() {
     try {
       executorService.shutdown();
-      if(executorService.awaitTermination(1, TimeUnit.HOURS)) {
+      if (executorService.awaitTermination(1, TimeUnit.HOURS)) {
         throw new TimeoutException();
       }
     } catch (InterruptedException | TimeoutException ignored) {

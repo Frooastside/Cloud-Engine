@@ -28,8 +28,6 @@ module net.frooastside.engine {
   exports net.frooastside.engine.userinterface.renderer;
 
   requires java.desktop;
-  requires javafx.swing; //TODO REMOVE
-  requires javafx.controls;
 
   requires transitive org.lwjgl;
 

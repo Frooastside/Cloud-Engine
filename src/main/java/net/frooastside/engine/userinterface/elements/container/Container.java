@@ -2,7 +2,6 @@ package net.frooastside.engine.userinterface.elements.container;
 
 import net.frooastside.engine.userinterface.elements.ContainerElement;
 import net.frooastside.engine.userinterface.elements.Element;
-import net.frooastside.engine.userinterface.events.ScrollEvent;
 
 public class Container extends ContainerElement {
 

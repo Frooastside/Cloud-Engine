@@ -5,9 +5,11 @@ import java.util.concurrent.ExecutorService;
 
 public interface Loadable {
 
-  default void loadContextSpecific() {}
+  default void loadContextSpecific() {
+  }
 
-  default void loadUnspecific(ExecutorService executorService) {}
+  default void loadUnspecific(ExecutorService executorService) {
+  }
 
   default void addQueueTasks(ExecutorService executorService, Queue<Runnable> contextSpecificQueue) {
     executorService.submit(() -> {

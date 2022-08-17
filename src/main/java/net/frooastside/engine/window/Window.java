@@ -173,7 +173,7 @@ public class Window {
     visible = false;
     GLFW.glfwHideWindow(identifier);
   }
-  
+
   public void iconify() {
     GLFW.glfwIconifyWindow(identifier);
   }
@@ -304,7 +304,6 @@ public class Window {
   public double delta() {
     return delta;
   }
-
 
 
   public static class CreationHint {

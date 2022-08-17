@@ -1,11 +1,11 @@
 package net.frooastside.engine.userinterface.elements;
 
-import net.frooastside.engine.window.Window;
-import net.frooastside.engine.window.callbacks.KeyCallback;
 import net.frooastside.engine.userinterface.Screen;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.events.*;
+import net.frooastside.engine.window.Window;
+import net.frooastside.engine.window.callbacks.KeyCallback;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 

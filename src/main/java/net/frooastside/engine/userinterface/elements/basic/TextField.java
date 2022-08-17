@@ -1,7 +1,5 @@
 package net.frooastside.engine.userinterface.elements.basic;
 
-import net.frooastside.engine.window.Window;
-import net.frooastside.engine.window.callbacks.KeyCallback;
 import net.frooastside.engine.userinterface.animation.Animation;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
@@ -13,6 +11,8 @@ import net.frooastside.engine.userinterface.elements.render.Text;
 import net.frooastside.engine.userinterface.events.ClickEvent;
 import net.frooastside.engine.userinterface.events.Event;
 import net.frooastside.engine.userinterface.events.SelectionEvent;
+import net.frooastside.engine.window.Window;
+import net.frooastside.engine.window.callbacks.KeyCallback;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 

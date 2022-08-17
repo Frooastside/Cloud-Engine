@@ -3,7 +3,6 @@ package net.frooastside.engine.userinterface.elements;
 import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
-import net.frooastside.engine.userinterface.events.ClickEvent;
 import net.frooastside.engine.userinterface.events.ScrollEvent;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -87,7 +86,7 @@ public class ContainerElement extends FunctionalElement implements ScrollEvent.H
 
   @Override
   public boolean handleScroll(ScrollEvent event) {
-    if(event.inside() && overflow() == Overflow.SCROLL) {
+    if (event.inside() && overflow() == Overflow.SCROLL) {
       float newScrollX = (scroll.x - event.scrollX() * 15);
       float newScrollY = (scroll.y - event.scrollY() * 15);
       scroll.x = Math.max(Math.min(newScrollX * pixelSize().x, maxScroll.x - innerArea.z), 0) / pixelSize().x;
@@ -163,7 +162,7 @@ public class ContainerElement extends FunctionalElement implements ScrollEvent.H
   }
 
   private void calculateMaxScroll(float totalSize) {
-    if(scrollable()) {
+    if (scrollable()) {
       maxScroll.set(
         flowDirection == FlowDirection.HORIZONTAL ? totalSize : 0,
         flowDirection == FlowDirection.VERTICAL ? totalSize : 0);

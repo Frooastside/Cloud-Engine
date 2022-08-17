@@ -3,10 +3,7 @@ package net.frooastside.engine.shader;
 import net.frooastside.engine.graphicobjects.RenderObject;
 import net.frooastside.engine.shader.uniforms.Uniform;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.system.MemoryUtil;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -9,7 +9,7 @@ public class Query extends GraphicObject {
 
   private boolean inUse = false;
 
-  public Query(int type){
+  public Query(int type) {
     this.type = type;
   }
 
