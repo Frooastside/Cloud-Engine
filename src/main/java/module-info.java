@@ -1,5 +1,7 @@
 module net.frooastside.engine {
 
+  exports love.polardivision.engine.glwrapper;
+
   exports net.frooastside.engine.animation;
   exports net.frooastside.engine.camera;
   exports net.frooastside.engine.window;

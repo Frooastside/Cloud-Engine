@@ -1,0 +1,13 @@
+package love.polardivision.engine.shader.uniforms;
+
+public class UniformBoolean extends UniformFloat {
+
+  public UniformBoolean(String name) {
+    super(name);
+  }
+
+  public void loadBoolean(boolean value) {
+    loadFloat(value ? 1.0f : 0.0f);
+  }
+
+}
