@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/linux,windows,macos,java,intellij+iml,gradle
-# Edit at https://www.toptal.com/developers/gitignore?templates=linux,windows,macos,java,intellij+iml,gradle
+# Created by https://www.toptal.com/developers/gitignore/api/linux,windows,macos,java,gradle
+# Edit at https://www.toptal.com/developers/gitignore?templates=linux,windows,macos,java,gradle
 
 ### Java ###
 # Compiled class file
@@ -128,6 +128,6 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-# End of https://www.toptal.com/developers/gitignore/api/linux,windows,macos,java,intellij+iml,gradle
+# End of https://www.toptal.com/developers/gitignore/api/linux,windows,macos,java,gradle
 
 .idea/**/*
