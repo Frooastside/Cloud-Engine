@@ -1,13 +1,12 @@
 package net.frooastside.engine.graphicobjects.vertexarray;
 
+import java.util.Arrays;
+import java.util.Objects;
 import net.frooastside.engine.graphicobjects.GraphicObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.VertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 public class VertexArrayObject extends GraphicObject {
 

@@ -1,16 +1,19 @@
 package net.frooastside.engine.userinterface.elements;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.frooastside.engine.userinterface.Screen;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
-import net.frooastside.engine.userinterface.events.*;
+import net.frooastside.engine.userinterface.events.ClickEvent;
+import net.frooastside.engine.userinterface.events.Event;
+import net.frooastside.engine.userinterface.events.EventHandler;
+import net.frooastside.engine.userinterface.events.ScrollEvent;
+import net.frooastside.engine.userinterface.events.SelectionEvent;
 import net.frooastside.engine.window.Window;
 import net.frooastside.engine.window.callbacks.KeyCallback;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class FunctionalElement extends Element {
 

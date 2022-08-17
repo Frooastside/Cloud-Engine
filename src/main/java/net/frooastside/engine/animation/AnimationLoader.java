@@ -1,13 +1,37 @@
 package net.frooastside.engine.animation;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import javax.swing.JOptionPane;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.lwjgl.assimp.*;
-
-import javax.swing.*;
-import java.io.*;
-import java.util.*;
+import org.lwjgl.assimp.AIAnimation;
+import org.lwjgl.assimp.AIBone;
+import org.lwjgl.assimp.AIFace;
+import org.lwjgl.assimp.AIMatrix4x4;
+import org.lwjgl.assimp.AIMesh;
+import org.lwjgl.assimp.AINode;
+import org.lwjgl.assimp.AINodeAnim;
+import org.lwjgl.assimp.AIQuatKey;
+import org.lwjgl.assimp.AIQuaternion;
+import org.lwjgl.assimp.AIScene;
+import org.lwjgl.assimp.AIVector3D;
+import org.lwjgl.assimp.AIVectorKey;
+import org.lwjgl.assimp.AIVertexWeight;
+import org.lwjgl.assimp.Assimp;
 
 public class AnimationLoader {
 

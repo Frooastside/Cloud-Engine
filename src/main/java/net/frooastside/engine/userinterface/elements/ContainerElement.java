@@ -1,15 +1,14 @@
 package net.frooastside.engine.userinterface.elements;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import net.frooastside.engine.language.I18n;
 import net.frooastside.engine.userinterface.constraints.Constraint;
 import net.frooastside.engine.userinterface.constraints.ElementConstraints;
 import net.frooastside.engine.userinterface.events.ScrollEvent;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ContainerElement extends FunctionalElement implements ScrollEvent.Handler {
 

@@ -1,11 +1,10 @@
 package net.frooastside.engine.resource.settings;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SettingsCreator {
 

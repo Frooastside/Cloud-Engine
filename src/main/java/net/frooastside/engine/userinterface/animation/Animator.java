@@ -1,10 +1,9 @@
 package net.frooastside.engine.userinterface.animation;
 
-import org.joml.Vector4f;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.joml.Vector4f;
 
 public class Animator {
 

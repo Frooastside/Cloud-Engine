@@ -1,9 +1,8 @@
 package net.frooastside.engine.animation;
 
-import org.joml.Matrix4f;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.joml.Matrix4f;
 
 public class Joint {
 

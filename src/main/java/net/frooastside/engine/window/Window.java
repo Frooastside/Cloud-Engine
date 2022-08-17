@@ -1,18 +1,54 @@
 package net.frooastside.engine.window;
 
-import net.frooastside.engine.window.callbacks.*;
-import org.joml.Vector2f;
-import org.joml.Vector2i;
-import org.joml.Vector4i;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import net.frooastside.engine.window.callbacks.CharCallback;
+import net.frooastside.engine.window.callbacks.CharModifiersCallback;
+import net.frooastside.engine.window.callbacks.CursorEnterCallback;
+import net.frooastside.engine.window.callbacks.CursorPositionCallback;
+import net.frooastside.engine.window.callbacks.FileDropCallback;
+import net.frooastside.engine.window.callbacks.FramebufferSizeCallback;
+import net.frooastside.engine.window.callbacks.KeyCallback;
+import net.frooastside.engine.window.callbacks.MouseButtonCallback;
+import net.frooastside.engine.window.callbacks.ScrollCallback;
+import net.frooastside.engine.window.callbacks.WindowCloseCallback;
+import net.frooastside.engine.window.callbacks.WindowContentScaleCallback;
+import net.frooastside.engine.window.callbacks.WindowFocusCallback;
+import net.frooastside.engine.window.callbacks.WindowIconifyCallback;
+import net.frooastside.engine.window.callbacks.WindowMaximizeCallback;
+import net.frooastside.engine.window.callbacks.WindowPositionCallback;
+import net.frooastside.engine.window.callbacks.WindowRefreshCallback;
+import net.frooastside.engine.window.callbacks.WindowSizeCallback;
+import org.joml.Vector2f;
+import org.joml.Vector2i;
+import org.joml.Vector4i;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCharCallbackI;
+import org.lwjgl.glfw.GLFWCharModsCallbackI;
+import org.lwjgl.glfw.GLFWCursorEnterCallbackI;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+import org.lwjgl.glfw.GLFWDropCallback;
+import org.lwjgl.glfw.GLFWDropCallbackI;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallbackI;
+import org.lwjgl.glfw.GLFWJoystickCallbackI;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+import org.lwjgl.glfw.GLFWMonitorCallbackI;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+import org.lwjgl.glfw.GLFWScrollCallbackI;
+import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
+import org.lwjgl.glfw.GLFWWindowContentScaleCallbackI;
+import org.lwjgl.glfw.GLFWWindowFocusCallbackI;
+import org.lwjgl.glfw.GLFWWindowIconifyCallbackI;
+import org.lwjgl.glfw.GLFWWindowMaximizeCallbackI;
+import org.lwjgl.glfw.GLFWWindowPosCallbackI;
+import org.lwjgl.glfw.GLFWWindowRefreshCallbackI;
+import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 public class Window {
 

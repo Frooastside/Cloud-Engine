@@ -1,14 +1,13 @@
 package net.frooastside.engine.postprocessing;
 
-import net.frooastside.engine.resource.BufferUtils;
-import org.joml.Vector2f;
-
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+import net.frooastside.engine.resource.BufferUtils;
+import org.joml.Vector2f;
 
 public class SignedDistanceFieldTask {
 

@@ -1,5 +1,15 @@
 package net.frooastside.engine.resource;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -17,18 +27,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import net.frooastside.engine.resource.settings.*;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
+import net.frooastside.engine.resource.settings.ComboBoxSetting;
+import net.frooastside.engine.resource.settings.IntegerSpinnerSetting;
+import net.frooastside.engine.resource.settings.IntegerTextField;
+import net.frooastside.engine.resource.settings.Setting;
+import net.frooastside.engine.resource.settings.SettingsCreator;
 
 public class ResourceManager extends Application {
 

@@ -1,10 +1,13 @@
 package net.frooastside.engine.graphicobjects;
 
-import net.frooastside.engine.resource.ResourceTexture;
-
-import java.io.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import net.frooastside.engine.resource.ResourceTexture;
 
 public abstract class Font implements Externalizable {
 

@@ -1,9 +1,8 @@
 package net.frooastside.engine.resource.settings;
 
+import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
-
-import java.util.List;
 
 public class ComboBoxSetting<T> extends Setting {
 

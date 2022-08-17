@@ -1,5 +1,8 @@
 package net.frooastside.engine.resource;
 
+import java.nio.ByteBuffer;
+import java.util.Queue;
+import java.util.concurrent.ExecutorService;
 import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.postprocessing.SignedDistanceFieldTask;
@@ -8,10 +11,6 @@ import org.lwjgl.stb.STBTTPackContext;
 import org.lwjgl.stb.STBTTPackedchar;
 import org.lwjgl.stb.STBTruetype;
 import org.lwjgl.system.MemoryUtil;
-
-import java.nio.ByteBuffer;
-import java.util.Queue;
-import java.util.concurrent.ExecutorService;
 
 public class ResourceFont extends Font implements ResourceItem {
 

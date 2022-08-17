@@ -1,20 +1,23 @@
 package net.frooastside.engine.userinterface;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.animation.Animation;
 import net.frooastside.engine.userinterface.elements.ContainerElement;
 import net.frooastside.engine.userinterface.elements.Element;
 import net.frooastside.engine.userinterface.elements.FunctionalElement;
-import net.frooastside.engine.userinterface.events.*;
+import net.frooastside.engine.userinterface.events.ClickEvent;
+import net.frooastside.engine.userinterface.events.Event;
+import net.frooastside.engine.userinterface.events.EventHandler;
+import net.frooastside.engine.userinterface.events.ScrollEvent;
+import net.frooastside.engine.userinterface.events.SelectionEvent;
 import net.frooastside.engine.window.Window;
 import net.frooastside.engine.window.callbacks.KeyCallback;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Screen {
 

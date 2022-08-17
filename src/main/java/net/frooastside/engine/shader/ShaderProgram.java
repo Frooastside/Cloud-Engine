@@ -1,11 +1,10 @@
 package net.frooastside.engine.shader;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.frooastside.engine.graphicobjects.RenderObject;
 import net.frooastside.engine.shader.uniforms.Uniform;
 import org.lwjgl.opengl.GL20;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class ShaderProgram extends RenderObject {
 

@@ -1,9 +1,8 @@
 package net.frooastside.engine.animation;
 
-import net.frooastside.engine.window.Window;
-
 import java.util.HashMap;
 import java.util.Map;
+import net.frooastside.engine.window.Window;
 
 public class Animator {
 

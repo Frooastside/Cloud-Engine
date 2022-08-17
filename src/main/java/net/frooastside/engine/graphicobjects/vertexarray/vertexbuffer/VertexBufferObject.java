@@ -1,12 +1,11 @@
 package net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer;
 
-import net.frooastside.engine.graphicobjects.GraphicObject;
-import org.lwjgl.opengl.GL15;
-
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
+import net.frooastside.engine.graphicobjects.GraphicObject;
+import org.lwjgl.opengl.GL15;
 
 public class VertexBufferObject extends GraphicObject {
 

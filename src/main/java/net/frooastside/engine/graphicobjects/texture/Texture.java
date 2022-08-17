@@ -1,10 +1,17 @@
 package net.frooastside.engine.graphicobjects.texture;
 
+import java.nio.ByteBuffer;
 import net.frooastside.engine.graphicobjects.SizedGraphicObject;
 import net.frooastside.engine.language.I18n;
-import org.lwjgl.opengl.*;
-
-import java.nio.ByteBuffer;
+import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL21;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
+import org.lwjgl.opengl.GL33;
+import org.lwjgl.opengl.GL42;
 
 public class Texture extends SizedGraphicObject {
 

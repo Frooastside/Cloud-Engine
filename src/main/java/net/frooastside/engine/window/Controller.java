@@ -1,15 +1,14 @@
 package net.frooastside.engine.window;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.frooastside.engine.window.callbacks.JoystickButtonCallback;
 import net.frooastside.engine.window.callbacks.JoystickConnectionCallback;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWGamepadState;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Controller {
 
