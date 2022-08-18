@@ -1,6 +1,5 @@
 package net.frooastside.engine.userinterface.elements.render;
 
-import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.Color;
 
 public class TextArea extends Text {

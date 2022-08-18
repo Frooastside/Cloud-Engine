@@ -1,6 +1,5 @@
 package net.frooastside.engine.userinterface.elements.render;
 
-import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.graphicobjects.vertexarray.Primitive;
 import net.frooastside.engine.graphicobjects.vertexarray.VertexArrayObject;
 import net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer.BufferDataType;

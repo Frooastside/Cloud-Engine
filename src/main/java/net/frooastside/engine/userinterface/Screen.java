@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.userinterface.animation.Animation;
 import net.frooastside.engine.userinterface.elements.ContainerElement;
 import net.frooastside.engine.userinterface.elements.Element;

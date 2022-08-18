@@ -3,7 +3,6 @@ package net.frooastside.engine.resource;
 import java.nio.ByteBuffer;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
-import net.frooastside.engine.graphicobjects.Font;
 import net.frooastside.engine.graphicobjects.texture.Texture;
 import net.frooastside.engine.postprocessing.SignedDistanceFieldTask;
 import org.lwjgl.stb.STBTTFontinfo;
