@@ -1,10 +1,43 @@
+/*
+ * Copyright 2022 @Frooastside
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package love.polardivision.engine.window;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import love.polardivision.engine.window.callbacks.*;
+import love.polardivision.engine.window.callbacks.CharCallback;
+import love.polardivision.engine.window.callbacks.CharModifiersCallback;
+import love.polardivision.engine.window.callbacks.CursorEnterCallback;
+import love.polardivision.engine.window.callbacks.CursorPositionCallback;
+import love.polardivision.engine.window.callbacks.FileDropCallback;
+import love.polardivision.engine.window.callbacks.FramebufferSizeCallback;
+import love.polardivision.engine.window.callbacks.KeyCallback;
+import love.polardivision.engine.window.callbacks.MouseButtonCallback;
+import love.polardivision.engine.window.callbacks.ScrollCallback;
+import love.polardivision.engine.window.callbacks.WindowCloseCallback;
+import love.polardivision.engine.window.callbacks.WindowContentScaleCallback;
+import love.polardivision.engine.window.callbacks.WindowFocusCallback;
+import love.polardivision.engine.window.callbacks.WindowIconifyCallback;
+import love.polardivision.engine.window.callbacks.WindowMaximizeCallback;
+import love.polardivision.engine.window.callbacks.WindowPositionCallback;
+import love.polardivision.engine.window.callbacks.WindowRefreshCallback;
+import love.polardivision.engine.window.callbacks.WindowSizeCallback;
 import love.polardivision.engine.window.cursor.Cursor;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;

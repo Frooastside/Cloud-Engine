@@ -1,5 +1,24 @@
+/*
+ * Copyright 2022 @Frooastside
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package love.polardivision.engine.window;
 
+import love.polardivision.engine.utils.NativeObject;
+import love.polardivision.engine.utils.SizedObject;
 import love.polardivision.engine.window.hints.CreationHint;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
@@ -8,7 +27,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
-public class Window {
+public class Window implements SizedObject, NativeObject {
 
   private static final CreationHint.Visible VISIBLE_HINT = new CreationHint.Visible(false);
 
@@ -48,11 +67,17 @@ public class Window {
     GLFW.glfwInit();
   }
 
+  @Override
   public void initialize() {
     GLFW.glfwMakeContextCurrent(identifier);
     input.initialize();
     GL.createCapabilities();
     resetVSync();
+  }
+
+  @Override
+  public void delete() {
+    GLFW.glfwDestroyWindow(identifier);
   }
 
   public void updateWindow() {
@@ -183,10 +208,6 @@ public class Window {
     }
   }
 
-  public void close() {
-    GLFW.glfwDestroyWindow(identifier);
-  }
-
   public void showWindow() {
     visible = true;
     GLFW.glfwShowWindow(identifier);
@@ -283,6 +304,16 @@ public class Window {
     return resolution;
   }
 
+  @Override
+  public int width() {
+    return resolution().x;
+  }
+
+  @Override
+  public int height() {
+    return resolution().y;
+  }
+
   public Vector2i currentSize() {
     return fullscreen ? fullscreenSize : windowedSize;
   }
@@ -326,5 +357,4 @@ public class Window {
   public double delta() {
     return delta;
   }
-
 }
