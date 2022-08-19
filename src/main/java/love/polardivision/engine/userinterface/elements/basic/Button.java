@@ -25,6 +25,10 @@ public class Button extends FunctionalElement implements ClickEvent.Handler {
 
   private boolean wasClicked;
 
+  public Button() {
+    super(nodeType);
+  }
+
   @Override
   public void update(double delta) {
     super.update(delta);

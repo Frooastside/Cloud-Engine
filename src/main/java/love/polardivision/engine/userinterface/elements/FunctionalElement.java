@@ -29,6 +29,14 @@ import love.polardivision.engine.utils.NativeObject;
 import love.polardivision.engine.window.Key;
 import love.polardivision.engine.window.Window;
 import love.polardivision.engine.window.callbacks.KeyCallback;
+import love.polardivision.engine.ygwrapper.Alignment;
+import love.polardivision.engine.ygwrapper.Direction;
+import love.polardivision.engine.ygwrapper.Display;
+import love.polardivision.engine.ygwrapper.Justify;
+import love.polardivision.engine.ygwrapper.NodeType;
+import love.polardivision.engine.ygwrapper.Overflow;
+import love.polardivision.engine.ygwrapper.PositionType;
+import love.polardivision.engine.ygwrapper.Wrap;
 import org.joml.Vector2f;
 import org.lwjgl.util.yoga.YGLayout;
 import org.lwjgl.util.yoga.YGNode;
@@ -36,9 +44,18 @@ import org.lwjgl.util.yoga.Yoga;
 
 public abstract class FunctionalElement extends Element implements NativeObject {
 
+  private final NodeType nodeType;
   private YGNode node;
 
-  private Overflow overflow = Overflow.INITIAL;
+  private Alignment alignSelf = Alignment.AUTO;
+  private Alignment alignItems = Alignment.AUTO;
+  private Alignment alignContent = Alignment.AUTO;
+  private Direction direction = Direction.COLUMN;
+  private Display display = Display.FLEX;
+  private Justify justifyContent = Justify.START;
+  private Overflow overflow = Overflow.VISIBLE;
+  private PositionType positionType = PositionType.STATIC;
+  private Wrap wrap = Wrap.NO_WRAP;
 
   private RenderElement background;
 
@@ -50,9 +67,15 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   private String clickEventTarget;
   private String selectEventTarget;
 
+  protected FunctionalElement(NodeType nodeType) {
+    this.nodeType = nodeType;
+  }
+
+
   @Override
   public void initialize() {
     node = YGNode.create(Yoga.YGNodeNew());
+    node.nodeType(nodeType.value());
   }
 
   @Override
@@ -265,8 +288,74 @@ public abstract class FunctionalElement extends Element implements NativeObject 
     return node;
   }
 
-  public boolean hideOverflow() {
-    return overflow == Overflow.HIDE || overflow == Overflow.SCROLL;
+  public NodeType nodeType() {
+    return nodeType;
+  }
+
+  public Alignment alignSelf() {
+    return alignSelf;
+  }
+
+  public void alignSelf(Alignment alignment) {
+    if(this.alignSelf != alignment) {
+      this.alignSelf = alignment;
+      Yoga.YGNodeStyleSetAlignSelf(node.address(), alignment.value());
+    }
+  }
+
+  public Alignment alignItems() {
+    return alignItems;
+  }
+
+  public void alignItems(Alignment alignment) {
+    if(this.alignItems != alignment) {
+      this.alignItems = alignment;
+      Yoga.YGNodeStyleSetAlignItems(node.address(), alignment.value());
+    }
+  }
+
+  public Alignment alignContent() {
+    return alignContent;
+  }
+
+  public void alignContent(Alignment alignment) {
+    if(this.alignContent != alignment) {
+      this.alignContent = alignment;
+      Yoga.YGNodeStyleSetAlignContent(node.address(), alignment.value());
+    }
+  }
+
+  public Direction direction() {
+    return direction;
+  }
+
+  public void setDirection(Direction direction) {
+    if(this.direction != direction) {
+      this.direction = direction;
+      Yoga.YGNodeStyleSetFlexDirection(node.address(), direction.value());
+    }
+  }
+
+  public Display display() {
+    return display;
+  }
+
+  public void setDisplay(Display display) {
+    if(this.display != display) {
+      this.display = display;
+      Yoga.YGNodeStyleSetDisplay(node.address(), display.value());
+    }
+  }
+
+  public Justify justifyContent() {
+    return justifyContent;
+  }
+
+  public void justifyContent(Justify justify) {
+    if(this.justifyContent != justify) {
+      this.justifyContent = justify;
+      Yoga.YGNodeStyleSetJustifyContent(node.address(), justify.value());
+    }
   }
 
   public Overflow overflow() {
@@ -274,7 +363,32 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setOverflow(Overflow overflow) {
-    this.overflow = overflow;
+    if(this.overflow != overflow) {
+      this.overflow = overflow;
+      Yoga.YGNodeStyleSetOverflow(node.address(), overflow.value());
+    }
+  }
+
+  public PositionType positionType() {
+    return positionType;
+  }
+
+  public void setPositionType(PositionType positionType) {
+    if(this.positionType != positionType) {
+      this.positionType = positionType;
+      Yoga.YGNodeStyleSetPositionType(node.address(), positionType.value());
+    }
+  }
+
+  public Wrap wrap() {
+    return wrap;
+  }
+
+  public void setWrap(Wrap wrap) {
+    if(this.wrap != wrap) {
+      this.wrap = wrap;
+      Yoga.nYGNodeStyleSetFlexWrap(node.address(), wrap.value());
+    }
   }
 
   public Screen root() {
@@ -323,14 +437,6 @@ public abstract class FunctionalElement extends Element implements NativeObject 
 
   public void setSelectEventTarget(String selectEventTarget) {
     this.selectEventTarget = selectEventTarget;
-  }
-
-  public enum Overflow {
-
-    SHOW, HIDE, SCROLL;
-
-    public static final Overflow INITIAL = SHOW;
-
   }
 
 }

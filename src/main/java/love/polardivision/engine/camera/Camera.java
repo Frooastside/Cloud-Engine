@@ -49,20 +49,10 @@ public abstract class Camera {
     recalculateViewMatrix();
   }
 
-  public abstract void recalculateProjectionMatrix();
-
-  private void recalculateViewMatrix() {
-    viewMatrix.identity();
-    viewMatrix.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0));
-    viewMatrix.rotate((float) Math.toRadians(rotation.y - 180), new Vector3f(0, 1, 0));
-    viewMatrix.rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1));
-    position.negate(negativePosition);
-    viewMatrix.translate(negativePosition);
-  }
-
   public void update() {
+    setProjectionMatrixChanged(false);
     if (position.x != oldPosition.x || position.y != oldPosition.y || position.z != oldPosition.z ||
-      rotation.x != oldRotation.x || rotation.y != oldRotation.y || rotation.z != oldRotation.z) {
+        rotation.x != oldRotation.x || rotation.y != oldRotation.y || rotation.z != oldRotation.z) {
       moved = true;
       recalculateViewMatrix();
       oldPosition.set(position);
@@ -70,6 +60,15 @@ public abstract class Camera {
     } else {
       moved = false;
     }
+  }
+
+  public abstract void recalculateProjectionMatrix();
+
+  private void recalculateViewMatrix() {
+    viewMatrix.identity();
+    viewMatrix.rotateYXZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y - 180), (float) Math.toRadians(rotation.z));
+    position.negate(negativePosition);
+    viewMatrix.translate(negativePosition);
   }
 
   public SizedObject frame() {
