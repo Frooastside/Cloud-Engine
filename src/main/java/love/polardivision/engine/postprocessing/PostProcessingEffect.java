@@ -23,7 +23,7 @@ import love.polardivision.engine.glwrapper.vertexarray.VertexArrayObject;
 import love.polardivision.engine.glwrapper.vertexarray.vertexbuffer.BufferTarget;
 import love.polardivision.engine.glwrapper.vertexarray.vertexbuffer.BufferUsage;
 import love.polardivision.engine.glwrapper.vertexarray.vertexbuffer.VertexBufferObject;
-import net.frooastside.engine.resource.BufferUtils;
+import love.polardivision.engine.utils.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 public abstract class PostProcessingEffect {
