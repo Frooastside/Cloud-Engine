@@ -1,4 +1,4 @@
-module net.frooastside.engine {
+module love.polardivision.engine {
 
   exports love.polardivision.engine.camera;
 
