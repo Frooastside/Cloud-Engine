@@ -44,7 +44,7 @@ public abstract class Camera {
     this.frame = frame;
   }
 
-  {
+  public void initialize() {
     recalculateProjectionMatrix();
     recalculateViewMatrix();
   }

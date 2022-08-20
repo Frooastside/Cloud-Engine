@@ -48,4 +48,8 @@ public class PerspectiveCamera extends Camera {
   public float zFar() {
     return zFar;
   }
+
+  public float hFov() {
+    return hFov;
+  }
 }
