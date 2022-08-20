@@ -19,7 +19,6 @@ package love.polardivision.engine.userinterface.renderer;
 
 import love.polardivision.engine.glwrapper.texture.Texture;
 import love.polardivision.engine.shader.Shader;
-import love.polardivision.engine.shader.ShaderProgram;
 import love.polardivision.engine.shader.ShaderType;
 import love.polardivision.engine.shader.uniforms.UniformFloat;
 import love.polardivision.engine.shader.uniforms.UniformTexture;
@@ -28,7 +27,7 @@ import love.polardivision.engine.shader.uniforms.UniformVector4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-public class BasicFontShader extends ShaderProgram {
+public class BasicFontShader extends FontShader {
 
   private final UniformVector2f uniformOffset = new UniformVector2f("offset");
   private final UniformTexture uniformTexture = new UniformTexture("fontAtlas");
@@ -63,7 +62,7 @@ public class BasicFontShader extends ShaderProgram {
   protected void loadTextureUnits() {
     uniformTexture.loadTextureUnit(0);
     loadWidth(0.5f);
-    loadEdge(0.15f);
+    loadEdge(0.5f);
   }
 
   public void loadOffset(Vector2f offset) {

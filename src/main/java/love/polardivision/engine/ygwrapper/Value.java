@@ -15,14 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package love.polardivision.engine.userinterface.elements.basic;
+package love.polardivision.engine.ygwrapper;
 
-import love.polardivision.engine.userinterface.elements.FunctionalElement;
-import love.polardivision.engine.ygwrapper.NodeType;
+public record Value(Unit unit, float value) {
 
-public class Container extends FunctionalElement {
-
-  public Container() {
-    super(NodeType.DEFAULT);
-  }
 }

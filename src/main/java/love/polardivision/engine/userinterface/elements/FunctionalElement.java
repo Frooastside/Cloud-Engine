@@ -32,14 +32,19 @@ import love.polardivision.engine.window.callbacks.KeyCallback;
 import love.polardivision.engine.ygwrapper.Alignment;
 import love.polardivision.engine.ygwrapper.Direction;
 import love.polardivision.engine.ygwrapper.Display;
+import love.polardivision.engine.ygwrapper.Edge;
 import love.polardivision.engine.ygwrapper.Justify;
 import love.polardivision.engine.ygwrapper.NodeType;
 import love.polardivision.engine.ygwrapper.Overflow;
 import love.polardivision.engine.ygwrapper.PositionType;
+import love.polardivision.engine.ygwrapper.Unit;
+import love.polardivision.engine.ygwrapper.Value;
 import love.polardivision.engine.ygwrapper.Wrap;
 import org.joml.Vector2f;
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.yoga.YGLayout;
 import org.lwjgl.util.yoga.YGNode;
+import org.lwjgl.util.yoga.YGValue;
 import org.lwjgl.util.yoga.Yoga;
 
 public abstract class FunctionalElement extends Element implements NativeObject {
@@ -71,17 +76,22 @@ public abstract class FunctionalElement extends Element implements NativeObject 
     this.nodeType = nodeType;
   }
 
-
   @Override
   public void initialize() {
     node = YGNode.create(Yoga.YGNodeNew());
     node.nodeType(nodeType.value());
+    if(background != null && background instanceof NativeObject nativeBackground) {
+      nativeBackground.initialize();
+    }
   }
 
   @Override
   public void delete() {
     Yoga.YGNodeFree(node.address());
     node.free();
+    if(background != null && background instanceof NativeObject nativeBackground) {
+      nativeBackground.delete();
+    }
     for (Element element : children) {
       if (element instanceof FunctionalElement functionalElement) {
         functionalElement.delete();
@@ -91,6 +101,9 @@ public abstract class FunctionalElement extends Element implements NativeObject 
 
   @Override
   public void update(double delta) {
+    if(background != null) {
+      background.update(delta);
+    }
     for (Element element : children) {
       if (element != null) {
         element.update(delta);
@@ -101,6 +114,9 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   @Override
   public void updatePixelSize(Vector2f pixelSize) {
     super.updatePixelSize(pixelSize);
+    if(background != null) {
+      background.updatePixelSize(pixelSize);
+    }
     for (Element element : children) {
       if (element != null) {
         element.updatePixelSize(pixelSize);
@@ -252,6 +268,9 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   @Override
   public void display(boolean show, float parentDelay) {
     super.display(show, parentDelay);
+    if(background != null) {
+      background.display(show, parentDelay);
+    }
     for (Element element : children) {
       if (element != null) {
         element.display(show, parentDelay);
@@ -278,9 +297,12 @@ public abstract class FunctionalElement extends Element implements NativeObject 
     }
   }
 
-  public void removeElement(FunctionalElement functionalElement) {
-    if (children.contains(functionalElement)) {
-      Yoga.YGNodeRemoveChild(node.address(), functionalElement.node().address());
+  public void removeElement(Element element) {
+    if (children.contains(element)) {
+      children.remove(element);
+      if(element instanceof FunctionalElement functionalElement) {
+        Yoga.YGNodeRemoveChild(node.address(), functionalElement.node().address());
+      }
     }
   }
 
@@ -387,7 +409,245 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   public void setWrap(Wrap wrap) {
     if(this.wrap != wrap) {
       this.wrap = wrap;
-      Yoga.nYGNodeStyleSetFlexWrap(node.address(), wrap.value());
+      Yoga.YGNodeStyleSetFlexWrap(node.address(), wrap.value());
+    }
+  }
+
+  public Value position(Edge edge) {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetPosition(node.address(), edge.value(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void setPosition(Edge edge, float position) {
+    this.setPosition(edge, position, false);
+  }
+
+  public void setPosition(Edge edge, float position, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetPosition(node.address(), edge.value(), position);
+    }else {
+      Yoga.YGNodeStyleSetPositionPercent(node.address(), edge.value(), position);
+    }
+  }
+
+  public float aspectRatio() {
+    return Yoga.YGNodeStyleGetAspectRatio(node.address());
+  }
+
+  public void setAspectRatio(float aspectRatio) {
+    Yoga.YGNodeStyleSetAspectRatio(node.address(), aspectRatio);
+  }
+
+  public float border(Edge edge) {
+    return Yoga.YGNodeStyleGetBorder(node.address(), edge.value());
+  }
+
+  public void setBorder(Edge edge, float border) {
+    Yoga.YGNodeStyleSetBorder(node.address(), edge.value(), border);
+  }
+
+  public Value flexBasis() {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetFlexBasis(node.address(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void resetFlexBasis() {
+    Yoga.YGNodeStyleSetFlexBasisAuto(node.address());
+  }
+
+  public void setFlexBasis(float flexBasis) {
+    this.setFlexBasis(flexBasis, false);
+  }
+
+  public void setFlexBasis(float flexBasis, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetFlexBasis(node.address(), flexBasis);
+    }else {
+      Yoga.YGNodeStyleSetFlexBasisPercent(node.address(), flexBasis);
+    }
+  }
+
+  public float flexGrow() {
+    return Yoga.YGNodeStyleGetFlexGrow(node.address());
+  }
+
+  public void setFlexGrow(float flexGrow) {
+    Yoga.YGNodeStyleSetFlexGrow(node.address(), flexGrow);
+  }
+
+  public float flexShrink() {
+    return Yoga.YGNodeStyleGetFlexShrink(node.address());
+  }
+
+  public void setFlexShrink(float flexShrink) {
+    Yoga.YGNodeStyleSetFlexShrink(node.address(), flexShrink);
+  }
+
+  public Value padding(Edge edge) {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetPadding(node.address(), edge.value(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void setPadding(Edge edge, float padding) {
+    this.setPadding(edge, padding, false);
+  }
+
+  public void setPadding(Edge edge, float padding, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetPadding(node.address(), edge.value(), padding);
+    }else {
+      Yoga.YGNodeStyleSetPaddingPercent(node.address(), edge.value(), padding);
+    }
+  }
+
+  public Value margin(Edge edge) {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetMargin(node.address(), edge.value(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void resetMargin(Edge edge) {
+    Yoga.YGNodeStyleSetMarginAuto(node.address(), edge.value());
+  }
+
+  public void setMargin(Edge edge, float margin) {
+    this.setMargin(edge, margin, false);
+  }
+
+  public void setMargin(Edge edge, float margin, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetMargin(node.address(), edge.value(), margin);
+    }else {
+      Yoga.YGNodeStyleSetMarginPercent(node.address(), edge.value(), margin);
+    }
+  }
+
+  public Value width() {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetWidth(node.address(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void resetWidth() {
+    Yoga.YGNodeStyleSetWidthAuto(node.address());
+  }
+
+  public void setWidth(float width) {
+    this.setWidth(width, false);
+  }
+
+  public void setWidth(float width, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetWidth(node.address(), width);
+    }else {
+      Yoga.YGNodeStyleSetWidthPercent(node.address(), width);
+    }
+  }
+
+  public Value minWidth() {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetMinWidth(node.address(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void setMinWidth(float minWidth) {
+    this.setMinWidth(minWidth, false);
+  }
+
+  public void setMinWidth(float minWidth, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetMinWidth(node.address(), minWidth);
+    }else {
+      Yoga.YGNodeStyleSetMinWidthPercent(node.address(), minWidth);
+    }
+  }
+
+  public Value maxWidth() {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetMaxWidth(node.address(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void setMaxWidth(float maxWidth) {
+    this.setMaxWidth(maxWidth, false);
+  }
+
+  public void setMaxWidth(float maxWidth, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetMaxWidth(node.address(), maxWidth);
+    }else {
+      Yoga.YGNodeStyleSetMaxWidthPercent(node.address(), maxWidth);
+    }
+  }
+
+  public Value height() {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetHeight(node.address(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void resetHeight() {
+    Yoga.YGNodeStyleSetHeightAuto(node.address());
+  }
+
+  public void setHeight(float height) {
+    this.setHeight(height, false);
+  }
+
+  public void setHeight(float height, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetHeight(node.address(), height);
+    }else {
+      Yoga.YGNodeStyleSetHeightPercent(node.address(), height);
+    }
+  }
+
+  public Value minHeight() {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetMinHeight(node.address(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void setMinHeight(float minHeight) {
+    this.setMinHeight(minHeight, false);
+  }
+
+  public void setMinHeight(float minHeight, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetMinHeight(node.address(), minHeight);
+    }else {
+      Yoga.YGNodeStyleSetMinHeightPercent(node.address(), minHeight);
+    }
+  }
+
+  public Value maxHeight() {
+    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue =  Yoga.YGNodeStyleGetMaxHeight(node.address(), YGValue.malloc(memoryStack));
+      return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
+    }
+  }
+
+  public void setMaxHeight(float maxHeight) {
+    this.setMaxHeight(maxHeight, false);
+  }
+
+  public void setMaxHeight(float maxHeight, boolean percent) {
+    if(!percent) {
+      Yoga.YGNodeStyleSetMaxHeight(node.address(), maxHeight);
+    }else {
+      Yoga.YGNodeStyleSetMaxHeightPercent(node.address(), maxHeight);
     }
   }
 

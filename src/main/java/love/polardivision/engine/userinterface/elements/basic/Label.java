@@ -17,12 +17,20 @@
 
 package love.polardivision.engine.userinterface.elements.basic;
 
+import love.polardivision.engine.userinterface.Color;
+import love.polardivision.engine.userinterface.Font;
 import love.polardivision.engine.userinterface.elements.FunctionalElement;
+import love.polardivision.engine.userinterface.elements.render.Text;
 import love.polardivision.engine.ygwrapper.NodeType;
 
-public class Container extends FunctionalElement {
+public class Label extends FunctionalElement {
 
-  public Container() {
-    super(NodeType.DEFAULT);
+  protected Label(Font font, String text, Color color, boolean centered) {
+    super(NodeType.TEXT);
+    setBackground(new Text(font, text, color, centered));
+  }
+
+  public Text textElement() {
+    return (Text) background();
   }
 }

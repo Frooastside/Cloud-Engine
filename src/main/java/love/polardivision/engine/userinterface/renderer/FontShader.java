@@ -15,38 +15,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package love.polardivision.engine.ygwrapper;
+package love.polardivision.engine.userinterface.renderer;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import org.lwjgl.util.yoga.Yoga;
+import love.polardivision.engine.glwrapper.texture.Texture;
+import love.polardivision.engine.shader.ShaderProgram;
+import org.joml.Vector2f;
+import org.joml.Vector4f;
 
-public enum Unit {
+public abstract class FontShader extends ShaderProgram {
 
-  UNDEFINED(Yoga.YGUnitUndefined),
-  POINT(Yoga.YGUnitPoint),
-  PERCENT(Yoga.YGUnitPercent),
-  AUTO(Yoga.YGUnitAuto);
+  public abstract void loadOffset(Vector2f offset);
 
-  private static final Map<Integer, Unit> UNITS = new HashMap<>();
+  public abstract void loadOffset(float x, float y);
 
-  static {
-    Arrays.stream(values()).forEach(unit -> UNITS.put(unit.value(), unit));
-  }
+  public abstract void loadTexture(Texture texture);
 
-  private final int value;
+  public abstract void loadColor(Vector4f color);
 
-  Unit(int value) {
-    this.value = value;
-  }
+  public abstract void loadColor(float r, float g, float b, float a);
 
-  public static Unit unitOf(int unit) {
-    return UNITS.get(unit);
-  }
+  public abstract void loadAlpha(float alpha);
 
-  public int value() {
-    return value;
-  }
+  public abstract void loadWidth(float width);
 
+  public abstract void loadEdge(float edge);
 }

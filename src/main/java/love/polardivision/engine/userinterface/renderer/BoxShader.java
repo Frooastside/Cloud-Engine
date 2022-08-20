@@ -17,16 +17,26 @@
 
 package love.polardivision.engine.userinterface.renderer;
 
-import love.polardivision.engine.userinterface.Screen;
-import love.polardivision.engine.utils.NativeObject;
-import org.lwjgl.opengl.GL11;
+import love.polardivision.engine.glwrapper.texture.Texture;
+import love.polardivision.engine.shader.ShaderProgram;
+import org.joml.Vector4f;
 
-public abstract class UserInterfaceRenderer implements NativeObject {
+public abstract class BoxShader extends ShaderProgram {
 
-  protected void clearStencilBuffer() {
-    GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
-  }
+  public abstract void loadTranslation(Vector4f translation);
 
-  public abstract void render(Screen screen);
+  public abstract void loadTranslation(float x, float y, float z, float w);
+
+  public abstract void loadAlpha(float alpha);
+
+  public abstract void loadUseColor(boolean useColor);
+
+  public abstract void loadColor(Vector4f color);
+
+  public abstract void loadColor(float r, float g, float b, float a);
+
+  public abstract void loadUseTexture(boolean useTexture);
+
+  public abstract void loadTexture(Texture texture);
 
 }

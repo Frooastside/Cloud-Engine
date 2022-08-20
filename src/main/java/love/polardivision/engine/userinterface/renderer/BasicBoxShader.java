@@ -19,7 +19,6 @@ package love.polardivision.engine.userinterface.renderer;
 
 import love.polardivision.engine.glwrapper.texture.Texture;
 import love.polardivision.engine.shader.Shader;
-import love.polardivision.engine.shader.ShaderProgram;
 import love.polardivision.engine.shader.ShaderType;
 import love.polardivision.engine.shader.uniforms.UniformBoolean;
 import love.polardivision.engine.shader.uniforms.UniformFloat;
@@ -27,7 +26,7 @@ import love.polardivision.engine.shader.uniforms.UniformTexture;
 import love.polardivision.engine.shader.uniforms.UniformVector4f;
 import org.joml.Vector4f;
 
-public class BasicBoxShader extends ShaderProgram {
+public class BasicBoxShader extends BoxShader {
 
   private final UniformVector4f uniformTranslation = new UniformVector4f("translation");
   private final UniformFloat uniformAlpha = new UniformFloat("alpha");
@@ -63,34 +62,42 @@ public class BasicBoxShader extends ShaderProgram {
     uniformTexture.loadTextureUnit(0);
   }
 
+  @Override
   public void loadTranslation(Vector4f translation) {
     loadTranslation(translation.x, translation.y, translation.z, translation.w);
   }
 
+  @Override
   public void loadTranslation(float x, float y, float z, float w) {
     uniformTranslation.loadVector4f(x, y, z, w);
   }
 
+  @Override
   public void loadAlpha(float alpha) {
     uniformAlpha.loadFloat(alpha);
   }
 
+  @Override
   public void loadUseColor(boolean useColor) {
     uniformUseColor.loadBoolean(useColor);
   }
 
+  @Override
   public void loadColor(Vector4f color) {
     loadColor(color.x, color.y, color.z, color.w);
   }
 
+  @Override
   public void loadColor(float r, float g, float b, float a) {
     uniformColor.loadVector4f(r, g, b, a);
   }
 
+  @Override
   public void loadUseTexture(boolean useTexture) {
     uniformUseTexture.loadBoolean(useTexture);
   }
 
+  @Override
   public void loadTexture(Texture texture) {
     uniformTexture.activeTextureUnit();
     texture.bind();

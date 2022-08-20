@@ -28,10 +28,12 @@ import love.polardivision.engine.userinterface.Color;
 import love.polardivision.engine.userinterface.Font;
 import love.polardivision.engine.userinterface.elements.RenderElement;
 import love.polardivision.engine.utils.BufferUtils;
+import love.polardivision.engine.utils.NativeObject;
 
-public class Text extends RenderElement {
+public class Text extends RenderElement implements NativeObject {
 
-  private final VertexArrayObject model = generateEmptyModel();
+  private final VertexArrayObject model = new VertexArrayObject(Primitive.TRIANGLES, 0);
+
   private final Font font;
   private final boolean centered;
 
@@ -44,6 +46,24 @@ public class Text extends RenderElement {
     this.font = font;
     this.text = text;
     this.centered = centered;
+  }
+
+  @Override
+  public void initialize() {
+    model.initialize();
+    model.bind();
+    VertexBufferObject positionBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
+    positionBuffer.initialize();
+    model.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
+    VertexBufferObject textureCoordinateBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
+    textureCoordinateBuffer.initialize();
+    model.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
+    model.unbind();
+  }
+
+  @Override
+  public void delete() {
+    model().delete();
   }
 
   @Override
@@ -119,21 +139,7 @@ public class Text extends RenderElement {
     array[characterIndex * 12 + 11] = (float) y;
   }
 
-  private static VertexArrayObject generateEmptyModel() {
-    VertexArrayObject vertexArrayObject = new VertexArrayObject(Primitive.TRIANGLES, 0);
-    vertexArrayObject.initialize();
-    vertexArrayObject.bind();
-    VertexBufferObject positionBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
-    positionBuffer.initialize();
-    vertexArrayObject.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-    VertexBufferObject textureCoordinateBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
-    textureCoordinateBuffer.initialize();
-    vertexArrayObject.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
-    vertexArrayObject.unbind();
-    return vertexArrayObject;
-  }
-
-  public void bufferData(float[] positions, float[] textureCoordinates) {
+  private void bufferData(float[] positions, float[] textureCoordinates) {
     model.bind();
     model.setLength(positions.length / 2);
     VertexBufferObject positionBuffer = model.vertexBufferObject(0);
@@ -143,7 +149,7 @@ public class Text extends RenderElement {
     model.unbind();
   }
 
-  public void bufferSubData(float[] positions, float[] textureCoordinates) {
+  private void bufferSubData(float[] positions, float[] textureCoordinates) {
     model.bind();
     VertexBufferObject positionBuffer = model.vertexBufferObject(0);
     positionBuffer.storeFloatSubData(BufferUtils.store(positions), 0);
@@ -166,6 +172,11 @@ public class Text extends RenderElement {
       lineLength += (font.character(chars[endIndex]).xOffset() * (1f / font.characterHeight()) * fontWidth) / 2;
     }
     return lineLength;
+  }
+
+  public void updateText(String text) {
+    setText(text);
+    recalculate();
   }
 
   @Override
@@ -191,6 +202,5 @@ public class Text extends RenderElement {
 
   public void setText(String text) {
     this.text = text;
-    recalculate();
   }
 }

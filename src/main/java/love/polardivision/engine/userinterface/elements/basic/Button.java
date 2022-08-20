@@ -20,13 +20,14 @@ package love.polardivision.engine.userinterface.elements.basic;
 import love.polardivision.engine.userinterface.elements.FunctionalElement;
 import love.polardivision.engine.userinterface.events.ClickEvent;
 import love.polardivision.engine.window.MouseButton;
+import love.polardivision.engine.ygwrapper.NodeType;
 
 public class Button extends FunctionalElement implements ClickEvent.Handler {
 
   private boolean wasClicked;
 
   public Button() {
-    super(nodeType);
+    super(NodeType.DEFAULT);
   }
 
   @Override
@@ -53,7 +54,7 @@ public class Button extends FunctionalElement implements ClickEvent.Handler {
 
   public void handleInternalClick(ClickEvent event) {
     emitEvent(
-      new ClickEvent(event.key(), event.inside(), event.pressed(), event.x(), event.y()).caller(this),
+      new ClickEvent(event.key(), event.inside(), event.pressed(), event.x(), event.y()).emitter(this),
       ClickEvent.Handler.class,
       clickEventTarget());
   }

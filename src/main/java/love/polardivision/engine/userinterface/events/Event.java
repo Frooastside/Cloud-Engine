@@ -21,14 +21,14 @@ import love.polardivision.engine.userinterface.elements.Element;
 
 public class Event {
 
-  private Element caller;
+  private Element emitter;
 
-  public Element caller() {
-    return caller;
+  public Element emitter() {
+    return emitter;
   }
 
-  public Event caller(Element caller) {
-    this.caller = caller;
+  public Event emitter(Element emitter) {
+    this.emitter = emitter;
     return this;
   }
 }
