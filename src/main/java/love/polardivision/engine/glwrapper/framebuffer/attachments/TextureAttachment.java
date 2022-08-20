@@ -17,16 +17,31 @@
 
 package love.polardivision.engine.glwrapper.framebuffer.attachments;
 
+import love.polardivision.engine.glwrapper.DataType;
 import love.polardivision.engine.glwrapper.framebuffer.FrameBufferAttachment;
+import love.polardivision.engine.glwrapper.texture.ColorFormat;
 import love.polardivision.engine.glwrapper.texture.Texture;
 
 public class TextureAttachment extends Texture implements FrameBufferAttachment {
 
   private final int attachment;
 
-  public TextureAttachment(int attachment, Texture texture) {
+  public TextureAttachment(int attachment, int filter, int width, int height, int channels) {
+    this(attachment, filter, width, height, ColorFormat.formatFromChannelCount(channels), ColorFormat.formatFromChannelCount(channels));
+  }
+
+  public TextureAttachment(int attachment, int filter, int width, int height, ColorFormat internalFormat, ColorFormat inputFormat) {
+    this(attachment, filter, width, height, internalFormat, inputFormat, DataType.UNSIGNED_BYTE);
+  }
+
+  public TextureAttachment(int attachment, int filter, int width, int height, ColorFormat internalFormat, ColorFormat inputFormat, DataType dataType) {
     this.attachment = attachment;
-    set(texture);
+    this.setWidth(width);
+    this.setHeight(height);
+    this.setFilter(filter);
+    this.setInternalFormat(internalFormat);
+    this.setInputFormat(inputFormat);
+    this.setDataType(dataType);
   }
 
   @Override

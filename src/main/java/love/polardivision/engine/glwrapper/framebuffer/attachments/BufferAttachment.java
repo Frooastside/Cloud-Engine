@@ -36,7 +36,7 @@ public class BufferAttachment extends SizedGraphicalObject implements FrameBuffe
     this.attachment = attachment;
     this.samples = samples;
     this.internalFormat = internalFormat;
-    setSize(width, height);
+    super.setSize(width, height);
   }
 
   @Override

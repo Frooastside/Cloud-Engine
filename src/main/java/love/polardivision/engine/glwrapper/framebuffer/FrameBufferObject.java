@@ -63,20 +63,14 @@ public class FrameBufferObject extends SizedGraphicalObject {
 
   public void appendTextureAttachment(TextureAttachment attachment) {
     attachments.add(attachment);
-    attachment.initialize();
-    attachment.bind();
-    attachment.store();
-    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL11.GL_TEXTURE_2D, identifier(), 0);
-    attachment.unbind();
+    attachment.setSize(width(), height());
+    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL11.GL_TEXTURE_2D, attachment.identifier(), 0);
   }
 
   public void appendRenderBufferAttachment(BufferAttachment attachment) {
     attachments.add(attachment);
-    attachment.initialize();
-    attachment.bind();
-    attachment.store();
-    GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL30.GL_RENDERBUFFER, identifier());
-    attachment.unbind();
+    attachment.setSize(width(), height());
+    GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL30.GL_RENDERBUFFER, attachment.identifier());
   }
 
   public void resize(int width, int height) {
