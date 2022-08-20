@@ -1,31 +1,37 @@
 module net.frooastside.engine {
 
-  exports net.frooastside.engine.animation;
-  exports net.frooastside.engine.camera;
-  exports net.frooastside.engine.window;
-  exports net.frooastside.engine.window.callbacks;
-  exports net.frooastside.engine.graphicobjects;
-  exports net.frooastside.engine.graphicobjects.framebuffer;
-  exports net.frooastside.engine.graphicobjects.framebuffer.attachments;
-  exports net.frooastside.engine.graphicobjects.texture;
-  exports net.frooastside.engine.graphicobjects.vertexarray;
-  exports net.frooastside.engine.graphicobjects.vertexarray.vertexbuffer;
-  exports net.frooastside.engine.language;
-  exports net.frooastside.engine.postprocessing;
-  exports net.frooastside.engine.resource;
-  exports net.frooastside.engine.resource.settings;
-  exports net.frooastside.engine.shader;
-  exports net.frooastside.engine.shader.uniforms;
-  exports net.frooastside.engine.userinterface;
-  exports net.frooastside.engine.userinterface.animation;
-  exports net.frooastside.engine.userinterface.animation.transitions;
-  exports net.frooastside.engine.userinterface.constraints;
-  exports net.frooastside.engine.userinterface.elements;
-  exports net.frooastside.engine.userinterface.elements.basic;
-  exports net.frooastside.engine.userinterface.elements.container;
-  exports net.frooastside.engine.userinterface.elements.render;
-  exports net.frooastside.engine.userinterface.events;
-  exports net.frooastside.engine.userinterface.renderer;
+  exports love.polardivision.engine.camera;
+
+  exports love.polardivision.engine.glwrapper;
+  exports love.polardivision.engine.glwrapper.framebuffer;
+  exports love.polardivision.engine.glwrapper.framebuffer.attachments;
+  exports love.polardivision.engine.glwrapper.query;
+  exports love.polardivision.engine.glwrapper.texture;
+  exports love.polardivision.engine.glwrapper.vertexarray;
+  exports love.polardivision.engine.glwrapper.vertexarray.vertexbuffer;
+
+  exports love.polardivision.engine.language;
+
+  exports love.polardivision.engine.postprocessing;
+
+  exports love.polardivision.engine.shader;
+  exports love.polardivision.engine.shader.uniforms;
+
+  exports love.polardivision.engine.userinterface;
+  exports love.polardivision.engine.userinterface.elements;
+  exports love.polardivision.engine.userinterface.elements.basic;
+  exports love.polardivision.engine.userinterface.elements.render;
+  exports love.polardivision.engine.userinterface.events;
+  exports love.polardivision.engine.userinterface.renderer;
+
+  exports love.polardivision.engine.utils;
+
+  exports love.polardivision.engine.window;
+  exports love.polardivision.engine.window.callbacks;
+  exports love.polardivision.engine.window.cursor;
+  exports love.polardivision.engine.window.hints;
+
+  exports love.polardivision.engine.ygwrapper;
 
   requires java.desktop;
 
