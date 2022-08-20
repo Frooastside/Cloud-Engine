@@ -66,7 +66,7 @@ public abstract class Camera {
 
   private void recalculateViewMatrix() {
     viewMatrix.identity();
-    viewMatrix.rotateYXZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y - 180), (float) Math.toRadians(rotation.z));
+    viewMatrix.rotateXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y - 180), (float) Math.toRadians(rotation.z));
     position.negate(negativePosition);
     viewMatrix.translate(negativePosition);
   }
