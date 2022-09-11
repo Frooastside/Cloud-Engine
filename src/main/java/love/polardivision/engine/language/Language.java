@@ -35,7 +35,7 @@ public record Language(String languageCode, String languageName,
     try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
       while (bufferedReader.ready()) {
         String line = bufferedReader.readLine();
-        if (line.contains("=")) {
+        if (line.contains("=") && !line.strip().startsWith("#")) {
           String key = line.substring(0, line.indexOf("="));
           String value = line.substring(line.indexOf("=") + 1);
           if (key.equals("language.code")) {
