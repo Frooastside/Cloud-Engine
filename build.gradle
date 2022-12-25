@@ -1,3 +1,5 @@
+import tool.UpVersion
+
 plugins {
     id 'java-library'
 }
@@ -24,6 +26,8 @@ project.ext.jomlVersion = property('jomlVersion')
 apply from: "$rootDir/natives.gradle"
 
 dependencies {
+    annotationProcessor "love.polardivision:annotation-processor"
+
     api platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
     api "org.lwjgl:lwjgl"
@@ -59,3 +63,5 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+tasks.register('upVersion', UpVersion)
