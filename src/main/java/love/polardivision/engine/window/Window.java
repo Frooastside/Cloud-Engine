@@ -238,6 +238,10 @@ public class Window implements SizedObject, NativeObject {
     GLFW.glfwRequestWindowAttention(identifier);
   }
 
+  public void setShouldWindowClose(boolean shouldClose) {
+    GLFW.glfwSetWindowShouldClose(identifier, shouldClose);
+  }
+
   public boolean shouldWindowClose() {
     return GLFW.glfwWindowShouldClose(identifier);
   }
