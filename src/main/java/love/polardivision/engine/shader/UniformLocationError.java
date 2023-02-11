@@ -10,9 +10,7 @@
 
 package love.polardivision.engine.shader;
 
-import love.polardivision.engine.language.UntranslatedException;
-
-public class UniformLocationError extends Error implements UntranslatedException {
+public class UniformLocationError extends Error {
 
   private final String uniform;
   private final int programId;
@@ -38,11 +36,6 @@ public class UniformLocationError extends Error implements UntranslatedException
     super(cause);
     this.uniform = uniform;
     this.programId = programId;
-  }
-
-  @Override
-  public String translationCode() {
-    return "error.shader.uniformLocation";
   }
 
   public String getUniform() {
