@@ -1,66 +1,24 @@
 /*
- * Copyright 2022 @Frooastside
+ * Copyright © 2022-2023 @Frooastside
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package love.polardivision.engine.window;
+
+import love.polardivision.engine.window.callbacks.*;
+import love.polardivision.engine.window.cursor.Cursor;
+import org.joml.Vector2f;
+import org.lwjgl.glfw.*;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import love.polardivision.engine.window.callbacks.CharCallback;
-import love.polardivision.engine.window.callbacks.CharModifiersCallback;
-import love.polardivision.engine.window.callbacks.CursorEnterCallback;
-import love.polardivision.engine.window.callbacks.CursorPositionCallback;
-import love.polardivision.engine.window.callbacks.FileDropCallback;
-import love.polardivision.engine.window.callbacks.FramebufferSizeCallback;
-import love.polardivision.engine.window.callbacks.KeyCallback;
-import love.polardivision.engine.window.callbacks.MouseButtonCallback;
-import love.polardivision.engine.window.callbacks.ScrollCallback;
-import love.polardivision.engine.window.callbacks.WindowCloseCallback;
-import love.polardivision.engine.window.callbacks.WindowContentScaleCallback;
-import love.polardivision.engine.window.callbacks.WindowFocusCallback;
-import love.polardivision.engine.window.callbacks.WindowIconifyCallback;
-import love.polardivision.engine.window.callbacks.WindowMaximizeCallback;
-import love.polardivision.engine.window.callbacks.WindowPositionCallback;
-import love.polardivision.engine.window.callbacks.WindowRefreshCallback;
-import love.polardivision.engine.window.callbacks.WindowSizeCallback;
-import love.polardivision.engine.window.cursor.Cursor;
-import org.joml.Vector2f;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCharCallbackI;
-import org.lwjgl.glfw.GLFWCharModsCallbackI;
-import org.lwjgl.glfw.GLFWCursorEnterCallbackI;
-import org.lwjgl.glfw.GLFWCursorPosCallbackI;
-import org.lwjgl.glfw.GLFWDropCallback;
-import org.lwjgl.glfw.GLFWDropCallbackI;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallbackI;
-import org.lwjgl.glfw.GLFWJoystickCallbackI;
-import org.lwjgl.glfw.GLFWKeyCallbackI;
-import org.lwjgl.glfw.GLFWMonitorCallbackI;
-import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
-import org.lwjgl.glfw.GLFWScrollCallbackI;
-import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
-import org.lwjgl.glfw.GLFWWindowContentScaleCallbackI;
-import org.lwjgl.glfw.GLFWWindowFocusCallbackI;
-import org.lwjgl.glfw.GLFWWindowIconifyCallbackI;
-import org.lwjgl.glfw.GLFWWindowMaximizeCallbackI;
-import org.lwjgl.glfw.GLFWWindowPosCallbackI;
-import org.lwjgl.glfw.GLFWWindowRefreshCallbackI;
-import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 
 public class Input {
 

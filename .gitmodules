@@ -1,3 +1,0 @@
-[submodule "include/annotation-processor"]
-	path = include/annotation-processor
-	url = https://github.com/PolarDivision/annotation-processor

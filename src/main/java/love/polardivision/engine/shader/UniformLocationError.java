@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023 @Frooastside
+ * Copyright © 2023 @Frooastside
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -10,12 +10,46 @@
 
 package love.polardivision.engine.shader;
 
-public record ShaderConstant(String name, String value) {
+import love.polardivision.engine.language.UntranslatedException;
 
-  private static final String PLACEHOLDER = "/*--%s--*/";
+public class UniformLocationError extends Error implements UntranslatedException {
+
+  private final String uniform;
+  private final int programId;
+
+  public UniformLocationError(String uniform, int programId) {
+    this.uniform = uniform;
+    this.programId = programId;
+  }
+
+  public UniformLocationError(String message, String uniform, int programId) {
+    super(message);
+    this.uniform = uniform;
+    this.programId = programId;
+  }
+
+  public UniformLocationError(String message, Throwable cause, String uniform, int programId) {
+    super(message, cause);
+    this.uniform = uniform;
+    this.programId = programId;
+  }
+
+  public UniformLocationError(Throwable cause, String uniform, int programId) {
+    super(cause);
+    this.uniform = uniform;
+    this.programId = programId;
+  }
 
   @Override
-  public String name() {
-    return String.format(PLACEHOLDER, name);
+  public String translationCode() {
+    return "error.shader.uniformLocation";
+  }
+
+  public String getUniform() {
+    return uniform;
+  }
+
+  public int getProgramId() {
+    return programId;
   }
 }

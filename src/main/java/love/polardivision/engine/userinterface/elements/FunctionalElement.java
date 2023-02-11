@@ -1,51 +1,31 @@
 /*
- * Copyright 2022 @Frooastside
+ * Copyright © 2022-2023 @Frooastside
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package love.polardivision.engine.userinterface.elements;
 
-import java.util.ArrayList;
-import java.util.List;
 import love.polardivision.engine.userinterface.Screen;
-import love.polardivision.engine.userinterface.events.ClickEvent;
-import love.polardivision.engine.userinterface.events.Event;
-import love.polardivision.engine.userinterface.events.EventHandler;
-import love.polardivision.engine.userinterface.events.ScrollEvent;
-import love.polardivision.engine.userinterface.events.SelectionEvent;
+import love.polardivision.engine.userinterface.events.*;
 import love.polardivision.engine.utils.NativeObject;
 import love.polardivision.engine.window.Key;
 import love.polardivision.engine.window.Window;
 import love.polardivision.engine.window.callbacks.KeyCallback;
-import love.polardivision.engine.ygwrapper.Alignment;
-import love.polardivision.engine.ygwrapper.Direction;
-import love.polardivision.engine.ygwrapper.Display;
-import love.polardivision.engine.ygwrapper.Edge;
-import love.polardivision.engine.ygwrapper.Justify;
-import love.polardivision.engine.ygwrapper.NodeType;
-import love.polardivision.engine.ygwrapper.Overflow;
-import love.polardivision.engine.ygwrapper.PositionType;
-import love.polardivision.engine.ygwrapper.Unit;
-import love.polardivision.engine.ygwrapper.Value;
-import love.polardivision.engine.ygwrapper.Wrap;
+import love.polardivision.engine.ygwrapper.*;
 import org.joml.Vector2f;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.yoga.YGLayout;
 import org.lwjgl.util.yoga.YGNode;
 import org.lwjgl.util.yoga.YGValue;
 import org.lwjgl.util.yoga.Yoga;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class FunctionalElement extends Element implements NativeObject {
 
@@ -80,7 +60,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   public void initialize() {
     node = YGNode.create(Yoga.YGNodeNew());
     node.nodeType(nodeType.value());
-    if(background != null && background instanceof NativeObject nativeBackground) {
+    if (background != null && background instanceof NativeObject nativeBackground) {
       nativeBackground.initialize();
     }
   }
@@ -89,7 +69,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   public void delete() {
     Yoga.YGNodeFree(node.address());
     node.free();
-    if(background != null && background instanceof NativeObject nativeBackground) {
+    if (background != null && background instanceof NativeObject nativeBackground) {
       nativeBackground.delete();
     }
     for (Element element : children) {
@@ -101,7 +81,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
 
   @Override
   public void update(double delta) {
-    if(background != null) {
+    if (background != null) {
       background.update(delta);
     }
     for (Element element : children) {
@@ -114,7 +94,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   @Override
   public void updatePixelSize(Vector2f pixelSize) {
     super.updatePixelSize(pixelSize);
-    if(background != null) {
+    if (background != null) {
       background.updatePixelSize(pixelSize);
     }
     for (Element element : children) {
@@ -268,7 +248,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   @Override
   public void display(boolean show, float parentDelay) {
     super.display(show, parentDelay);
-    if(background != null) {
+    if (background != null) {
       background.display(show, parentDelay);
     }
     for (Element element : children) {
@@ -300,7 +280,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   public void removeElement(Element element) {
     if (children.contains(element)) {
       children.remove(element);
-      if(element instanceof FunctionalElement functionalElement) {
+      if (element instanceof FunctionalElement functionalElement) {
         Yoga.YGNodeRemoveChild(node.address(), functionalElement.node().address());
       }
     }
@@ -319,7 +299,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void alignSelf(Alignment alignment) {
-    if(this.alignSelf != alignment) {
+    if (this.alignSelf != alignment) {
       this.alignSelf = alignment;
       Yoga.YGNodeStyleSetAlignSelf(node.address(), alignment.value());
     }
@@ -330,7 +310,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void alignItems(Alignment alignment) {
-    if(this.alignItems != alignment) {
+    if (this.alignItems != alignment) {
       this.alignItems = alignment;
       Yoga.YGNodeStyleSetAlignItems(node.address(), alignment.value());
     }
@@ -341,7 +321,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void alignContent(Alignment alignment) {
-    if(this.alignContent != alignment) {
+    if (this.alignContent != alignment) {
       this.alignContent = alignment;
       Yoga.YGNodeStyleSetAlignContent(node.address(), alignment.value());
     }
@@ -352,7 +332,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setDirection(Direction direction) {
-    if(this.direction != direction) {
+    if (this.direction != direction) {
       this.direction = direction;
       Yoga.YGNodeStyleSetFlexDirection(node.address(), direction.value());
     }
@@ -363,7 +343,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setDisplay(Display display) {
-    if(this.display != display) {
+    if (this.display != display) {
       this.display = display;
       Yoga.YGNodeStyleSetDisplay(node.address(), display.value());
     }
@@ -374,7 +354,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void justifyContent(Justify justify) {
-    if(this.justifyContent != justify) {
+    if (this.justifyContent != justify) {
       this.justifyContent = justify;
       Yoga.YGNodeStyleSetJustifyContent(node.address(), justify.value());
     }
@@ -385,7 +365,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setOverflow(Overflow overflow) {
-    if(this.overflow != overflow) {
+    if (this.overflow != overflow) {
       this.overflow = overflow;
       Yoga.YGNodeStyleSetOverflow(node.address(), overflow.value());
     }
@@ -396,7 +376,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setPositionType(PositionType positionType) {
-    if(this.positionType != positionType) {
+    if (this.positionType != positionType) {
       this.positionType = positionType;
       Yoga.YGNodeStyleSetPositionType(node.address(), positionType.value());
     }
@@ -407,15 +387,15 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setWrap(Wrap wrap) {
-    if(this.wrap != wrap) {
+    if (this.wrap != wrap) {
       this.wrap = wrap;
       Yoga.YGNodeStyleSetFlexWrap(node.address(), wrap.value());
     }
   }
 
   public Value position(Edge edge) {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetPosition(node.address(), edge.value(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetPosition(node.address(), edge.value(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -425,9 +405,9 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setPosition(Edge edge, float position, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetPosition(node.address(), edge.value(), position);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetPositionPercent(node.address(), edge.value(), position);
     }
   }
@@ -449,8 +429,8 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public Value flexBasis() {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetFlexBasis(node.address(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetFlexBasis(node.address(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -464,9 +444,9 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setFlexBasis(float flexBasis, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetFlexBasis(node.address(), flexBasis);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetFlexBasisPercent(node.address(), flexBasis);
     }
   }
@@ -488,8 +468,8 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public Value padding(Edge edge) {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetPadding(node.address(), edge.value(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetPadding(node.address(), edge.value(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -499,16 +479,16 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setPadding(Edge edge, float padding, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetPadding(node.address(), edge.value(), padding);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetPaddingPercent(node.address(), edge.value(), padding);
     }
   }
 
   public Value margin(Edge edge) {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetMargin(node.address(), edge.value(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetMargin(node.address(), edge.value(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -522,16 +502,16 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setMargin(Edge edge, float margin, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetMargin(node.address(), edge.value(), margin);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetMarginPercent(node.address(), edge.value(), margin);
     }
   }
 
   public Value width() {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetWidth(node.address(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetWidth(node.address(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -545,16 +525,16 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setWidth(float width, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetWidth(node.address(), width);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetWidthPercent(node.address(), width);
     }
   }
 
   public Value minWidth() {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetMinWidth(node.address(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetMinWidth(node.address(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -564,16 +544,16 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setMinWidth(float minWidth, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetMinWidth(node.address(), minWidth);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetMinWidthPercent(node.address(), minWidth);
     }
   }
 
   public Value maxWidth() {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetMaxWidth(node.address(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetMaxWidth(node.address(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -583,16 +563,16 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setMaxWidth(float maxWidth, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetMaxWidth(node.address(), maxWidth);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetMaxWidthPercent(node.address(), maxWidth);
     }
   }
 
   public Value height() {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetHeight(node.address(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetHeight(node.address(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -606,16 +586,16 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setHeight(float height, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetHeight(node.address(), height);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetHeightPercent(node.address(), height);
     }
   }
 
   public Value minHeight() {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetMinHeight(node.address(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetMinHeight(node.address(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -625,16 +605,16 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setMinHeight(float minHeight, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetMinHeight(node.address(), minHeight);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetMinHeightPercent(node.address(), minHeight);
     }
   }
 
   public Value maxHeight() {
-    try(MemoryStack memoryStack = MemoryStack.stackPush()) {
-      YGValue ygValue =  Yoga.YGNodeStyleGetMaxHeight(node.address(), YGValue.malloc(memoryStack));
+    try (MemoryStack memoryStack = MemoryStack.stackPush()) {
+      YGValue ygValue = Yoga.YGNodeStyleGetMaxHeight(node.address(), YGValue.malloc(memoryStack));
       return new Value(Unit.unitOf(ygValue.unit()), ygValue.value());
     }
   }
@@ -644,9 +624,9 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   }
 
   public void setMaxHeight(float maxHeight, boolean percent) {
-    if(!percent) {
+    if (!percent) {
       Yoga.YGNodeStyleSetMaxHeight(node.address(), maxHeight);
-    }else {
+    } else {
       Yoga.YGNodeStyleSetMaxHeightPercent(node.address(), maxHeight);
     }
   }
