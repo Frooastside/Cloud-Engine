@@ -36,7 +36,7 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   private Alignment alignItems = Alignment.AUTO;
   private Alignment alignContent = Alignment.AUTO;
   private Direction direction = Direction.COLUMN;
-  private Display display = Display.FLEX;
+  private DisplayMode displayMode = DisplayMode.FLEX;
   private Justify justifyContent = Justify.START;
   private Overflow overflow = Overflow.VISIBLE;
   private PositionType positionType = PositionType.STATIC;
@@ -338,14 +338,14 @@ public abstract class FunctionalElement extends Element implements NativeObject 
     }
   }
 
-  public Display display() {
-    return display;
+  public DisplayMode displayMode() {
+    return displayMode;
   }
 
-  public void setDisplay(Display display) {
-    if (this.display != display) {
-      this.display = display;
-      Yoga.YGNodeStyleSetDisplay(node.address(), display.value());
+  public void setDisplayMode(DisplayMode displayMode) {
+    if (this.displayMode != displayMode) {
+      this.displayMode = displayMode;
+      Yoga.YGNodeStyleSetDisplay(node.address(), displayMode.value());
     }
   }
 

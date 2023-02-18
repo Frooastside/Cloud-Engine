@@ -12,14 +12,14 @@ package love.polardivision.engine.wrappers.yoga;
 
 import org.lwjgl.util.yoga.Yoga;
 
-public enum Display {
+public enum DisplayMode {
 
   FLEX(Yoga.YGDisplayFlex),
   NONE(Yoga.YGDisplayNone);
 
   private final int value;
 
-  Display(int value) {
+  DisplayMode(int value) {
     this.value = value;
   }
 

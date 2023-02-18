@@ -18,6 +18,7 @@ import love.polardivision.engine.window.MouseButton;
 import love.polardivision.engine.window.Window;
 import love.polardivision.engine.window.callbacks.KeyCallback;
 import love.polardivision.engine.wrappers.NativeObject;
+import love.polardivision.engine.wrappers.yoga.TextDirection;
 import org.joml.Vector2f;
 import org.lwjgl.util.yoga.YGNode;
 import org.lwjgl.util.yoga.Yoga;
@@ -33,6 +34,7 @@ public class Screen implements NativeObject {
   private final Map<String, EventHandler> eventHandlers = new HashMap<>();
 
   private YGNode node;
+  private TextDirection textDirection = TextDirection.LTR;
   private final Window window;
   private final Font font;
   private final ColorSet colorSet;
@@ -61,7 +63,7 @@ public class Screen implements NativeObject {
 
   public void recalculateScreen() {
     updatePixelSize(pixelSize().set(1f / window.resolution().x, 1f / window.resolution().y));
-    Yoga.YGNodeCalculateLayout(node.address(), window.resolution().x, window.resolution().y, Yoga.YGDirectionLTR/*TODO*/);
+    Yoga.YGNodeCalculateLayout(node.address(), window.resolution().x, window.resolution().y, textDirection.value());
     recalculateBounds();
   }
 
@@ -259,6 +261,14 @@ public class Screen implements NativeObject {
 
   public Map<String, EventHandler> eventHandler() {
     return eventHandlers;
+  }
+
+  public TextDirection getTextDirection() {
+    return textDirection;
+  }
+
+  public void setTextDirection(TextDirection textDirection) {
+    this.textDirection = textDirection;
   }
 
   public Window window() {
