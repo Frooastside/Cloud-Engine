@@ -10,8 +10,8 @@
 
 package love.polardivision.engine.shader;
 
-import love.polardivision.engine.wrappers.gl.GraphicalObject;
 import love.polardivision.engine.shader.uniforms.Uniform;
+import love.polardivision.engine.wrappers.gl.GraphicalObject;
 import org.lwjgl.opengl.GL20;
 
 import java.util.ArrayList;

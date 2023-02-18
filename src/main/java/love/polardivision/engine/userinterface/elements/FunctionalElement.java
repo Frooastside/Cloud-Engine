@@ -17,7 +17,6 @@ import love.polardivision.engine.window.Key;
 import love.polardivision.engine.window.Window;
 import love.polardivision.engine.window.callbacks.KeyCallback;
 import love.polardivision.engine.wrappers.yoga.*;
-import love.polardivision.engine.ygwrapper.*;
 import org.joml.Vector2f;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.yoga.YGLayout;

@@ -10,13 +10,13 @@
 
 package love.polardivision.engine.postprocessing;
 
+import love.polardivision.engine.utils.BufferUtils;
 import love.polardivision.engine.wrappers.gl.DataType;
 import love.polardivision.engine.wrappers.gl.vertexarray.Primitive;
 import love.polardivision.engine.wrappers.gl.vertexarray.VertexArrayObject;
 import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.BufferTarget;
 import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.BufferUsage;
 import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.VertexBufferObject;
-import love.polardivision.engine.utils.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 public abstract class PostProcessingEffect {

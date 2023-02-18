@@ -10,13 +10,13 @@
 
 package love.polardivision.engine.userinterface.renderer;
 
-import love.polardivision.engine.wrappers.gl.texture.Texture;
 import love.polardivision.engine.shader.Shader;
 import love.polardivision.engine.shader.ShaderType;
 import love.polardivision.engine.shader.uniforms.UniformBoolean;
 import love.polardivision.engine.shader.uniforms.UniformFloat;
 import love.polardivision.engine.shader.uniforms.UniformTexture;
 import love.polardivision.engine.shader.uniforms.UniformVector4f;
+import love.polardivision.engine.wrappers.gl.texture.Texture;
 import org.joml.Vector4f;
 
 public class BasicBoxShader extends BoxShader {

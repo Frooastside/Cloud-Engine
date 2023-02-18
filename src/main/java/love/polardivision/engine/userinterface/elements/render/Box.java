@@ -10,9 +10,9 @@
 
 package love.polardivision.engine.userinterface.elements.render;
 
-import love.polardivision.engine.wrappers.gl.texture.Texture;
 import love.polardivision.engine.userinterface.Color;
 import love.polardivision.engine.userinterface.elements.RenderElement;
+import love.polardivision.engine.wrappers.gl.texture.Texture;
 
 public class Box extends RenderElement {
 
