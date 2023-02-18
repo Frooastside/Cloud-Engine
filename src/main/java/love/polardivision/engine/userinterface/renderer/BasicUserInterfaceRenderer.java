@@ -10,12 +10,12 @@
 
 package love.polardivision.engine.userinterface.renderer;
 
-import love.polardivision.engine.glwrapper.DataType;
-import love.polardivision.engine.glwrapper.vertexarray.Primitive;
-import love.polardivision.engine.glwrapper.vertexarray.VertexArrayObject;
-import love.polardivision.engine.glwrapper.vertexarray.vertexbuffer.BufferTarget;
-import love.polardivision.engine.glwrapper.vertexarray.vertexbuffer.BufferUsage;
-import love.polardivision.engine.glwrapper.vertexarray.vertexbuffer.VertexBufferObject;
+import love.polardivision.engine.wrappers.gl.DataType;
+import love.polardivision.engine.wrappers.gl.vertexarray.Primitive;
+import love.polardivision.engine.wrappers.gl.vertexarray.VertexArrayObject;
+import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.BufferTarget;
+import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.BufferUsage;
+import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.VertexBufferObject;
 import love.polardivision.engine.userinterface.Screen;
 import love.polardivision.engine.userinterface.elements.Element;
 import love.polardivision.engine.userinterface.elements.FunctionalElement;
@@ -23,7 +23,7 @@ import love.polardivision.engine.userinterface.elements.RenderElement;
 import love.polardivision.engine.userinterface.elements.render.Box;
 import love.polardivision.engine.userinterface.elements.render.Text;
 import love.polardivision.engine.utils.BufferUtils;
-import love.polardivision.engine.ygwrapper.Overflow;
+import love.polardivision.engine.wrappers.yoga.Overflow;
 import org.lwjgl.opengl.GL11;
 
 public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {

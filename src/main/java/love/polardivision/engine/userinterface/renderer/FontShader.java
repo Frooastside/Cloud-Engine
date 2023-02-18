@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.userinterface.renderer;
 
-import love.polardivision.engine.glwrapper.texture.Texture;
+import love.polardivision.engine.wrappers.gl.texture.Texture;
 import love.polardivision.engine.shader.ShaderProgram;
 import org.joml.Vector2f;
 import org.joml.Vector4f;

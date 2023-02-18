@@ -13,7 +13,7 @@ package love.polardivision.engine.userinterface.elements.basic;
 import love.polardivision.engine.userinterface.elements.FunctionalElement;
 import love.polardivision.engine.userinterface.events.ClickEvent;
 import love.polardivision.engine.window.MouseButton;
-import love.polardivision.engine.ygwrapper.NodeType;
+import love.polardivision.engine.wrappers.yoga.NodeType;
 
 public class Button extends FunctionalElement implements ClickEvent.Handler {
 

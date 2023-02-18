@@ -14,7 +14,7 @@ import love.polardivision.engine.userinterface.Color;
 import love.polardivision.engine.userinterface.Font;
 import love.polardivision.engine.userinterface.elements.FunctionalElement;
 import love.polardivision.engine.userinterface.elements.render.Text;
-import love.polardivision.engine.ygwrapper.NodeType;
+import love.polardivision.engine.wrappers.yoga.NodeType;
 
 public class Label extends FunctionalElement {
 

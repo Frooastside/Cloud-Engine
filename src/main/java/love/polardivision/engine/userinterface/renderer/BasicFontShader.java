@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.userinterface.renderer;
 
-import love.polardivision.engine.glwrapper.texture.Texture;
+import love.polardivision.engine.wrappers.gl.texture.Texture;
 import love.polardivision.engine.shader.Shader;
 import love.polardivision.engine.shader.ShaderType;
 import love.polardivision.engine.shader.uniforms.UniformFloat;

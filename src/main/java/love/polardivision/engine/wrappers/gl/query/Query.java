@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022-2023 @Frooastside
+ * Copyright © 2023 @Frooastside
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -8,45 +8,61 @@
  * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package love.polardivision.engine.userinterface.elements.render;
+package love.polardivision.engine.wrappers.gl.query;
 
-import love.polardivision.engine.wrappers.gl.texture.Texture;
-import love.polardivision.engine.userinterface.Color;
-import love.polardivision.engine.userinterface.elements.RenderElement;
+import love.polardivision.engine.wrappers.gl.GraphicalObject;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 
-public class Box extends RenderElement {
+public class Query extends GraphicalObject {
 
-  private boolean useColor;
-  private Texture texture;
+  private final int type;
 
-  public Box(Color color) {
-    setColor(color);
+  private boolean inUse = false;
+
+  public Query(QueryType type) {
+    this(type.value());
   }
 
-  public Box(Texture texture) {
-    this.texture = texture;
-  }
-
-  @Override
-  public RenderType renderType() {
-    return RenderType.BOX;
+  public Query(int type) {
+    this.type = type;
   }
 
   @Override
-  public void setColor(Color color) {
-    super.setColor(color);
-    useColor = true;
+  public void initialize() {
+    setIdentifier(GL15.glGenQueries());
   }
 
-  public boolean useTexture() {
-    return texture != null;
+  @Override
+  public void bind() {
+    GL15.glBeginQuery(type, identifier());
+    inUse = true;
   }
 
-  public boolean useColor() {
-    return useColor;
+  @Override
+  public void unbind() {
+    GL15.glEndQuery(type);
   }
 
-  public Texture texture() {
-    return texture;
+  @Override
+  public void delete() {
+    GL15.glDeleteQueries(identifier());
+  }
+
+  public boolean ready() {
+    return GL15.glGetQueryObjecti(identifier(), GL15.GL_QUERY_RESULT_AVAILABLE) == GL11.GL_TRUE;
+  }
+
+  public int result() {
+    inUse = false;
+    return GL15.glGetQueryObjecti(identifier(), GL15.GL_QUERY_RESULT);
+  }
+
+  public int type() {
+    return type;
+  }
+
+  public boolean isInUse() {
+    return inUse;
   }
 }

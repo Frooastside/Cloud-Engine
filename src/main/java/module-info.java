@@ -2,13 +2,13 @@ module love.polardivision.engine {
 
   exports love.polardivision.engine.camera;
 
-  exports love.polardivision.engine.glwrapper;
-  exports love.polardivision.engine.glwrapper.framebuffer;
-  exports love.polardivision.engine.glwrapper.framebuffer.attachments;
-  exports love.polardivision.engine.glwrapper.query;
-  exports love.polardivision.engine.glwrapper.texture;
-  exports love.polardivision.engine.glwrapper.vertexarray;
-  exports love.polardivision.engine.glwrapper.vertexarray.vertexbuffer;
+  exports love.polardivision.engine.wrappers.gl;
+  exports love.polardivision.engine.wrappers.gl.framebuffer;
+  exports love.polardivision.engine.wrappers.gl.framebuffer.attachments;
+  exports love.polardivision.engine.wrappers.gl.query;
+  exports love.polardivision.engine.wrappers.gl.texture;
+  exports love.polardivision.engine.wrappers.gl.vertexarray;
+  exports love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer;
 
   exports love.polardivision.engine.language;
 
@@ -31,7 +31,7 @@ module love.polardivision.engine {
   exports love.polardivision.engine.window.cursor;
   exports love.polardivision.engine.window.hints;
 
-  exports love.polardivision.engine.ygwrapper;
+  exports love.polardivision.engine.wrappers.yoga;
 
   requires java.desktop;
 

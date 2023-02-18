@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.shader;
 
-import love.polardivision.engine.glwrapper.GraphicalObject;
+import love.polardivision.engine.wrappers.gl.GraphicalObject;
 import love.polardivision.engine.shader.uniforms.Uniform;
 import org.lwjgl.opengl.GL20;
 

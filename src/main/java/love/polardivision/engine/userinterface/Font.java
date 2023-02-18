@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.userinterface;
 
-import love.polardivision.engine.glwrapper.texture.Texture;
+import love.polardivision.engine.wrappers.gl.texture.Texture;
 
 import java.io.*;
 import java.util.HashMap;
