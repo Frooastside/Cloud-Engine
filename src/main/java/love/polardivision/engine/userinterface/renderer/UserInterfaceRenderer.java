@@ -16,10 +16,6 @@ import org.lwjgl.opengl.GL11;
 
 public abstract class UserInterfaceRenderer implements NativeObject {
 
-  protected void clearStencilBuffer() {
-    GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
-  }
-
   public abstract void render(Screen screen);
 
 }

@@ -18,6 +18,7 @@ import love.polardivision.engine.userinterface.elements.render.Box;
 import love.polardivision.engine.userinterface.elements.render.Text;
 import love.polardivision.engine.utils.BufferUtils;
 import love.polardivision.engine.wrappers.gl.DataType;
+import love.polardivision.engine.wrappers.gl.framebuffer.FrameBufferObject;
 import love.polardivision.engine.wrappers.gl.vertexarray.Primitive;
 import love.polardivision.engine.wrappers.gl.vertexarray.VertexArrayObject;
 import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.BufferTarget;
@@ -81,7 +82,7 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glEnable(GL11.GL_STENCIL_TEST);
     GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
-    clearStencilBuffer();
+    FrameBufferObject.clearStencilBuffer();
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL11.GL_CULL_FACE);
@@ -128,7 +129,7 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
   private void renderStencil(FunctionalElement containerElement) {
     hideOverflowElement = containerElement;
     if (containerElement != null) {
-      clearStencilBuffer();
+      FrameBufferObject.clearStencilBuffer();
       enableStencilRendering();
       containerElement.children().stream()
         .filter(element -> element instanceof RenderElement)
