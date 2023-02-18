@@ -2,6 +2,8 @@ module love.polardivision.engine {
 
   exports love.polardivision.engine.camera;
 
+  exports love.polardivision.engine.wrappers;
+  exports love.polardivision.engine.wrappers.yoga;
   exports love.polardivision.engine.wrappers.gl;
   exports love.polardivision.engine.wrappers.gl.framebuffer;
   exports love.polardivision.engine.wrappers.gl.framebuffer.attachments;
@@ -30,10 +32,6 @@ module love.polardivision.engine {
   exports love.polardivision.engine.window.callbacks;
   exports love.polardivision.engine.window.cursor;
   exports love.polardivision.engine.window.hints;
-
-  exports love.polardivision.engine.wrappers.yoga;
-
-  requires java.desktop;
 
   requires transitive org.lwjgl;
 

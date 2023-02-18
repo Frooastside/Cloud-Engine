@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.camera;
 
-import love.polardivision.engine.utils.SizedObject;
+import love.polardivision.engine.wrappers.SizedObject;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

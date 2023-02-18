@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.wrappers.gl;
 
-import love.polardivision.engine.utils.NativeObject;
+import love.polardivision.engine.wrappers.NativeObject;
 
 public abstract class GraphicalObject implements NativeObject {
 

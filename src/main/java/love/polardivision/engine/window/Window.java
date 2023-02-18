@@ -10,9 +10,9 @@
 
 package love.polardivision.engine.window;
 
-import love.polardivision.engine.utils.NativeObject;
-import love.polardivision.engine.utils.SizedObject;
 import love.polardivision.engine.window.hints.CreationHint;
+import love.polardivision.engine.wrappers.NativeObject;
+import love.polardivision.engine.wrappers.SizedObject;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector4i;

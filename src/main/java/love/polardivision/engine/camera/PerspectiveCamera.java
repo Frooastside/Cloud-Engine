@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.camera;
 
-import love.polardivision.engine.utils.SizedObject;
+import love.polardivision.engine.wrappers.SizedObject;
 
 public class PerspectiveCamera extends Camera {
 

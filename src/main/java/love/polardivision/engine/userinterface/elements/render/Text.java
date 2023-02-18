@@ -15,7 +15,7 @@ import love.polardivision.engine.userinterface.Color;
 import love.polardivision.engine.userinterface.Font;
 import love.polardivision.engine.userinterface.elements.RenderElement;
 import love.polardivision.engine.utils.BufferUtils;
-import love.polardivision.engine.utils.NativeObject;
+import love.polardivision.engine.wrappers.NativeObject;
 import love.polardivision.engine.wrappers.gl.DataType;
 import love.polardivision.engine.wrappers.gl.vertexarray.Primitive;
 import love.polardivision.engine.wrappers.gl.vertexarray.VertexArrayObject;

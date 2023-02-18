@@ -10,6 +10,7 @@
 
 package love.polardivision.engine.wrappers.gl.framebuffer;
 
+import love.polardivision.engine.wrappers.SizedObject;
 import love.polardivision.engine.wrappers.gl.SizedGraphicalObject;
 import love.polardivision.engine.wrappers.gl.framebuffer.attachments.BufferAttachment;
 import love.polardivision.engine.wrappers.gl.framebuffer.attachments.TextureAttachment;
@@ -92,6 +93,33 @@ public class FrameBufferObject extends SizedGraphicalObject {
 
   public void blitFrameBuffer(int x, int y, int width, int height, int outputX, int outputY, int outputWidth, int outputHeight, int mask, int filter) {
     GL30.glBlitFramebuffer(x, y, width, height, outputX, outputY, outputWidth, outputHeight, mask, filter);
+  }
+
+  public static void adjustViewport(SizedObject sizedObject) {
+    GL11.glViewport(0, 0, sizedObject.width(), sizedObject.height());
+  }
+
+  public static void clearDefault() {
+    clearColorBuffer();
+    clearDepthBuffer();
+  }
+
+  public static void clearAll() {
+    clearColorBuffer();
+    clearDepthBuffer();
+    clearStencilBuffer();
+  }
+
+  public static void clearColorBuffer() {
+    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+  }
+
+  public static void clearDepthBuffer() {
+    GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+  }
+
+  public static void clearStencilBuffer() {
+    GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
   }
 
   public List<FrameBufferAttachment> attachments() {

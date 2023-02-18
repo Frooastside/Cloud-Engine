@@ -10,7 +10,7 @@
 
 package love.polardivision.engine.wrappers.gl;
 
-import love.polardivision.engine.utils.SizedObject;
+import love.polardivision.engine.wrappers.SizedObject;
 
 public abstract class SizedGraphicalObject extends GraphicalObject implements SizedObject {
 

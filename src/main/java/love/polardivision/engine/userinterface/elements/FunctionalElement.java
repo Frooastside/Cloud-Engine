@@ -12,10 +12,10 @@ package love.polardivision.engine.userinterface.elements;
 
 import love.polardivision.engine.userinterface.Screen;
 import love.polardivision.engine.userinterface.events.*;
-import love.polardivision.engine.utils.NativeObject;
 import love.polardivision.engine.window.Key;
 import love.polardivision.engine.window.Window;
 import love.polardivision.engine.window.callbacks.KeyCallback;
+import love.polardivision.engine.wrappers.NativeObject;
 import love.polardivision.engine.wrappers.yoga.*;
 import org.joml.Vector2f;
 import org.lwjgl.system.MemoryStack;
