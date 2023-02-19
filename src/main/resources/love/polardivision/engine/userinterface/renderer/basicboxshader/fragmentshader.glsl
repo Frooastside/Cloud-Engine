@@ -13,13 +13,7 @@ uniform float useTexture;
 uniform sampler2D guiTexture;
 
 void main() {
-    finalColor = vec4(1.0);
-
-    if (useTexture > 0.5) {
-        finalColor = texture(guiTexture, _textureCoordinates);
-    }
-
+    finalColor = mix(vec4(1.0), texture(guiTexture, _textureCoordinates), useTexture);
     finalColor = mix(finalColor, finalColor * color, useColor);
-
     finalColor.a *= alpha;
 }

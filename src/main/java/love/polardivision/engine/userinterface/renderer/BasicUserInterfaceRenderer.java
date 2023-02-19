@@ -96,16 +96,16 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
   private void renderElements(Screen screen) {
     for (FunctionalElement element : screen.children()) {
       if (element != null) {
-        renderElements(element, 1);
+        renderElement(element, 1);
       }
     }
   }
 
-  private void renderElements(Element element, float alpha) {
+  private void renderElement(Element element, float alpha) {
     if (element instanceof RenderElement renderElement) {
       if (renderElement.visible()) {
         prepareRendering(renderElement);
-        renderElement(renderElement, alpha);
+        drawElement(renderElement, alpha);
       }
     } else if (element instanceof FunctionalElement functionalElement) {
       boolean hideOverflow =
@@ -116,12 +116,12 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
         renderElement(background, alpha * background.alpha());
       }
       if (!hideOverflow) {
-        functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
+        functionalElement.children().forEach(child -> renderElement(child, alpha * child.alpha()));
       } else {
         FunctionalElement initialHideOverflowElement = hideOverflowElement;
         renderStencil(functionalElement);
 
-        functionalElement.children().forEach(child -> renderElements(child, alpha * child.alpha()));
+        functionalElement.children().forEach(child -> renderElement(child, alpha * child.alpha()));
 
         renderStencil(initialHideOverflowElement);
       }
@@ -140,7 +140,7 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
       enableStencilRendering();
       containerElement.children().stream()
           .filter(element -> element instanceof RenderElement)
-          .forEach(element -> renderElements(element, 1));
+          .forEach(element -> renderElement(element, 1));
       disableStencilRendering();
     }
   }
@@ -183,7 +183,7 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
     }
   }
 
-  private void renderElement(RenderElement renderElement, float alpha) {
+  private void drawElement(RenderElement renderElement, float alpha) {
     if (renderElement.renderType() == RenderElement.RenderType.BOX) {
       Box box = ((Box) renderElement);
       boxShader.loadTranslation(box.bounds());
