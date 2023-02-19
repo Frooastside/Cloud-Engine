@@ -15,7 +15,6 @@ import java.util.List;
 import love.polardivision.engine.userinterface.Screen;
 import love.polardivision.engine.userinterface.events.ClickEvent;
 import love.polardivision.engine.userinterface.events.Event;
-import love.polardivision.engine.userinterface.events.EventHandler;
 import love.polardivision.engine.userinterface.events.ScrollEvent;
 import love.polardivision.engine.userinterface.events.SelectionEvent;
 import love.polardivision.engine.window.Key;
@@ -248,8 +247,8 @@ public abstract class FunctionalElement extends Element implements NativeObject 
     }
   }
 
-  public void emitEvent(Event event, Class<? extends EventHandler> type, String targets) {
-    root().emitEvent(event, type, targets);
+  public void emitEvent(Event event) {
+    root().emitEvent(event);
   }
 
   public void addElement(Element element) {

@@ -20,7 +20,7 @@ public class Printer {
       StringJoiner joiner = new StringJoiner(", ");
       Arrays.stream(objects)
           .forEach(object -> joiner.add(object != null ? object.toString() : "NULL"));
-      System.out.println(title + ":" + joiner);
+      System.out.println(title + ": " + joiner);
     } else {
       System.out.println(title);
     }

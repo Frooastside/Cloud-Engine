@@ -46,10 +46,6 @@ public class Button extends FunctionalElement implements ClickEvent.Handler {
   }
 
   public void handleInternalClick(ClickEvent event) {
-    emitEvent(
-        new ClickEvent(event.key(), event.inside(), event.pressed(), event.x(), event.y())
-            .emitter(this),
-        ClickEvent.Handler.class,
-        clickEventTarget());
+    emitEvent(event.emitter(this).target(clickEventTarget()));
   }
 }

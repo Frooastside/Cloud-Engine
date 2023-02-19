@@ -11,14 +11,11 @@
 package love.polardivision.engine.userinterface;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import love.polardivision.engine.userinterface.elements.Element;
 import love.polardivision.engine.userinterface.elements.FunctionalElement;
 import love.polardivision.engine.userinterface.events.ClickEvent;
 import love.polardivision.engine.userinterface.events.Event;
-import love.polardivision.engine.userinterface.events.EventHandler;
 import love.polardivision.engine.userinterface.events.ScrollEvent;
 import love.polardivision.engine.userinterface.events.SelectionEvent;
 import love.polardivision.engine.window.Key;
@@ -30,10 +27,9 @@ import love.polardivision.engine.wrappers.yoga.LayoutNode;
 import love.polardivision.engine.wrappers.yoga.TextDirection;
 import org.joml.Vector2f;
 
-public class Screen implements NativeObject {
+public abstract class Screen implements NativeObject {
 
   private final List<FunctionalElement> children = new ArrayList<>();
-  private final Map<String, EventHandler> eventHandlers = new HashMap<>();
 
   private final LayoutNode layoutNode = new LayoutNode();
   private TextDirection textDirection = TextDirection.LTR;
@@ -99,16 +95,13 @@ public class Screen implements NativeObject {
     }
   }
 
-  public void emitEvent(Event event, Class<? extends EventHandler> type, String targets) {
-    if (targets != null) {
-      for (String target : targets.split(" ")) {
-        EventHandler eventHandler = eventHandlers.get(target);
-        if (type.isInstance(eventHandler)) {
-          eventHandler.handle(event);
-        }
-      }
+  public void emitEvent(Event event) {
+    if (event.target() != null) {
+      handleEvent(event);
     }
   }
+
+  protected abstract void handleEvent(Event event);
 
   public void handleMouseButton(Window window, MouseButton button, boolean pressed) {
     if (window == this.window) {
@@ -263,10 +256,6 @@ public class Screen implements NativeObject {
 
   public List<FunctionalElement> children() {
     return children;
-  }
-
-  public Map<String, EventHandler> eventHandler() {
-    return eventHandlers;
   }
 
   public TextDirection getTextDirection() {

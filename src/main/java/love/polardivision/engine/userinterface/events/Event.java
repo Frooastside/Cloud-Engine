@@ -10,18 +10,28 @@
 
 package love.polardivision.engine.userinterface.events;
 
-import love.polardivision.engine.userinterface.elements.Element;
+import love.polardivision.engine.userinterface.elements.FunctionalElement;
 
 public class Event {
 
-  private Element emitter;
+  private FunctionalElement emitter;
+  private String target;
 
-  public Element emitter() {
+  public FunctionalElement emitter() {
     return emitter;
   }
 
-  public Event emitter(Element emitter) {
+  public Event emitter(FunctionalElement emitter) {
     this.emitter = emitter;
+    return this;
+  }
+
+  public String target() {
+    return target;
+  }
+
+  public Event target(String target) {
+    this.target = target;
     return this;
   }
 }
