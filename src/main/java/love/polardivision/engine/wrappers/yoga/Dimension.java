@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum Dimension {
-
   WIDTH(Yoga.YGDimensionWidth),
   HEIGHT(Yoga.YGDimensionHeight);
 
@@ -26,5 +25,4 @@ public enum Dimension {
   public int value() {
     return value;
   }
-
 }

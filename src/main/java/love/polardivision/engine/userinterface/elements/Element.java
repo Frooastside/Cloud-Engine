@@ -40,8 +40,8 @@ public abstract class Element {
     float rawY = y * pixelSize.y;
     Vector4f bounds = bounds();
     return new Vector2f(
-      Math.max(Math.min((rawX - bounds.x) / bounds.z, 1), 0),
-      Math.max(Math.min((rawY - bounds.y) / bounds.w, 1), 0));
+        Math.max(Math.min((rawX - bounds.x) / bounds.z, 1), 0),
+        Math.max(Math.min((rawY - bounds.y) / bounds.w, 1), 0));
   }
 
   public boolean isPixelInside(float x, float y) {
@@ -90,5 +90,4 @@ public abstract class Element {
   public void setColor(Color color) {
     this.color = color;
   }
-
 }

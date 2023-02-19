@@ -18,7 +18,6 @@ public interface CharModifiersCallback {
   void invokeCharModifiersCallback(Window window, char codepoint, int modifiers);
 
   enum Modifier {
-
     SHIFT(GLFW.GLFW_MOD_SHIFT),
     CONTROL(GLFW.GLFW_MOD_CONTROL),
     ALT(GLFW.GLFW_MOD_ALT),
@@ -35,7 +34,5 @@ public interface CharModifiersCallback {
     public static boolean checkModifier(int modifiers, Modifier modifier) {
       return (modifiers & modifier.flag) == modifier.flag;
     }
-
   }
-
 }

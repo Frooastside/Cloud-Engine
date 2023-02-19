@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum MeasureMode {
-
   UNDEFINED(Yoga.YGMeasureModeUndefined),
   EXACTLY(Yoga.YGMeasureModeExactly),
   AT_MOST(Yoga.YGMeasureModeAtMost);
@@ -27,5 +26,4 @@ public enum MeasureMode {
   public int value() {
     return value;
   }
-
 }

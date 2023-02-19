@@ -15,7 +15,6 @@ import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;
 
 public enum Primitive {
-
   POINTS(GL11.GL_POINTS),
   LINE_STRIP(GL11.GL_LINE_STRIP),
   LINE_LOOP(GL11.GL_LINE_LOOP),

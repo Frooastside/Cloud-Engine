@@ -27,5 +27,4 @@ public record Cursor(long address) {
   public void destroy() {
     GLFW.glfwDestroyCursor(address());
   }
-
 }

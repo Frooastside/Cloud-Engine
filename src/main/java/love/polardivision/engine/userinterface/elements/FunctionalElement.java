@@ -10,18 +10,22 @@
 
 package love.polardivision.engine.userinterface.elements;
 
+import java.util.ArrayList;
+import java.util.List;
 import love.polardivision.engine.userinterface.Screen;
-import love.polardivision.engine.userinterface.events.*;
+import love.polardivision.engine.userinterface.events.ClickEvent;
+import love.polardivision.engine.userinterface.events.Event;
+import love.polardivision.engine.userinterface.events.EventHandler;
+import love.polardivision.engine.userinterface.events.ScrollEvent;
+import love.polardivision.engine.userinterface.events.SelectionEvent;
 import love.polardivision.engine.window.Key;
 import love.polardivision.engine.window.Window;
 import love.polardivision.engine.window.callbacks.KeyCallback;
 import love.polardivision.engine.wrappers.NativeObject;
-import love.polardivision.engine.wrappers.yoga.*;
+import love.polardivision.engine.wrappers.yoga.LayoutNode;
 import love.polardivision.engine.wrappers.yoga.LayoutNode.Layout;
+import love.polardivision.engine.wrappers.yoga.NodeType;
 import org.joml.Vector2f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class FunctionalElement extends Element implements NativeObject {
 
@@ -106,10 +110,12 @@ public abstract class FunctionalElement extends Element implements NativeObject 
     float y = layout.position().y;
     float width = layout.dimensions().x;
     float height = layout.dimensions().y;
-    bounds().set(x * pixelSize().x, y * pixelSize().y, width * pixelSize().x, height * pixelSize().y);
+    bounds()
+        .set(x * pixelSize().x, y * pixelSize().y, width * pixelSize().x, height * pixelSize().y);
   }
 
-  public void handleKey(Window window, Key key, int scancode, int modifiers, KeyCallback.Action action) {
+  public void handleKey(
+      Window window, Key key, int scancode, int modifiers, KeyCallback.Action action) {
     for (Element element : children()) {
       if (element instanceof FunctionalElement) {
         ((FunctionalElement) element).handleKey(window, key, scancode, modifiers, action);
@@ -146,7 +152,8 @@ public abstract class FunctionalElement extends Element implements NativeObject 
           }
         } else {
           if (element instanceof FunctionalElement basicElement) {
-            ScrollEvent outsideScrollEvent = new ScrollEvent(false, event.x(), event.y(), event.scrollX(), event.scrollY());
+            ScrollEvent outsideScrollEvent =
+                new ScrollEvent(false, event.x(), event.y(), event.scrollX(), event.scrollY());
             basicElement.scroll(outsideScrollEvent);
             if (basicElement.scrollable()) {
               ((ScrollEvent.Handler) basicElement).handleScroll(outsideScrollEvent);
@@ -163,7 +170,8 @@ public abstract class FunctionalElement extends Element implements NativeObject 
               ((ScrollEvent.Handler) basicElement).handleScroll(event);
             }
           } else {
-            ScrollEvent insideScrollEvent = new ScrollEvent(true, event.x(), event.y(), event.scrollX(), event.scrollY());
+            ScrollEvent insideScrollEvent =
+                new ScrollEvent(true, event.x(), event.y(), event.scrollX(), event.scrollY());
             basicElement.scroll(insideScrollEvent);
             if (basicElement.scrollable()) {
               ((ScrollEvent.Handler) basicElement).handleScroll(insideScrollEvent);
@@ -196,7 +204,8 @@ public abstract class FunctionalElement extends Element implements NativeObject 
           }
         } else {
           if (element instanceof FunctionalElement basicElement) {
-            ClickEvent outsideClickEvent = new ClickEvent(event.key(), false, event.pressed(), event.x(), event.y());
+            ClickEvent outsideClickEvent =
+                new ClickEvent(event.key(), false, event.pressed(), event.x(), event.y());
             basicElement.click(outsideClickEvent);
             if (basicElement.clickable()) {
               ((ClickEvent.Handler) basicElement).handleClick(outsideClickEvent);
@@ -213,7 +222,8 @@ public abstract class FunctionalElement extends Element implements NativeObject 
               ((ClickEvent.Handler) basicElement).handleClick(event);
             }
           } else {
-            ClickEvent insideClickEvent = new ClickEvent(event.key(), true, event.pressed(), event.x(), event.y());
+            ClickEvent insideClickEvent =
+                new ClickEvent(event.key(), true, event.pressed(), event.x(), event.y());
             basicElement.click(insideClickEvent);
             if (basicElement.clickable()) {
               ((ClickEvent.Handler) basicElement).handleClick(insideClickEvent);
@@ -317,5 +327,4 @@ public abstract class FunctionalElement extends Element implements NativeObject 
   public void setSelectEventTarget(String selectEventTarget) {
     this.selectEventTarget = selectEventTarget;
   }
-
 }

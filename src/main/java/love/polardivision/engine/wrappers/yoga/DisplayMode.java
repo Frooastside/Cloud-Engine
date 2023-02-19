@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum DisplayMode {
-
   FLEX(Yoga.YGDisplayFlex),
   NONE(Yoga.YGDisplayNone);
 
@@ -26,5 +25,4 @@ public enum DisplayMode {
   public int value() {
     return value;
   }
-
 }

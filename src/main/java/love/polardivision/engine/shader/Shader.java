@@ -10,13 +10,12 @@
 
 package love.polardivision.engine.shader;
 
+import java.io.InputStream;
+import java.util.Objects;
 import love.polardivision.engine.utils.BufferUtils;
 import love.polardivision.engine.wrappers.NativeObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-
-import java.io.InputStream;
-import java.util.Objects;
 
 public class Shader implements NativeObject {
 
@@ -60,13 +59,15 @@ public class Shader implements NativeObject {
     }
   }
 
-  public static Shader createShader(InputStream source, ShaderType shaderType, ShaderConstant... shaderConstants) {
+  public static Shader createShader(
+      InputStream source, ShaderType shaderType, ShaderConstant... shaderConstants) {
     String shaderSource = BufferUtils.streamToString(source);
     Objects.requireNonNull(shaderSource);
     return createShader(shaderSource, shaderType, shaderConstants);
   }
 
-  public static Shader createShader(String shaderSource, ShaderType shaderType, ShaderConstant... shaderConstants) {
+  public static Shader createShader(
+      String shaderSource, ShaderType shaderType, ShaderConstant... shaderConstants) {
     for (ShaderConstant shaderConstant : shaderConstants) {
       shaderSource = shaderSource.replace("0" + shaderConstant.name(), shaderConstant.value());
       shaderSource = shaderSource.replace(shaderConstant.name(), shaderConstant.value());
@@ -78,5 +79,4 @@ public class Shader implements NativeObject {
     shader.checkErrorLog();
     return shader;
   }
-
 }

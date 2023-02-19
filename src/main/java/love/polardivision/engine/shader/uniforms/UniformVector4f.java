@@ -34,5 +34,4 @@ public class UniformVector4f extends Uniform {
       GL20.glUniform4f(location(), x, y, z, w);
     }
   }
-
 }

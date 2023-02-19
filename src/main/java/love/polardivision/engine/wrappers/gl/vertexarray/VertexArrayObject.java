@@ -10,14 +10,13 @@
 
 package love.polardivision.engine.wrappers.gl.vertexarray;
 
+import java.util.Arrays;
+import java.util.Objects;
 import love.polardivision.engine.wrappers.gl.GraphicalObject;
 import love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer.VertexBufferObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 public class VertexArrayObject extends GraphicalObject {
 
@@ -53,9 +52,16 @@ public class VertexArrayObject extends GraphicalObject {
     Arrays.stream(vertexBufferObjects).filter(Objects::nonNull).forEach(VertexBufferObject::delete);
   }
 
-  public void appendVertexBufferObject(VertexBufferObject vertexBufferObject, int index, int valuesPerVertex, boolean shouldNormalize, int stride, int offset) {
+  public void appendVertexBufferObject(
+      VertexBufferObject vertexBufferObject,
+      int index,
+      int valuesPerVertex,
+      boolean shouldNormalize,
+      int stride,
+      int offset) {
     vertexBufferObject.bind();
-    GL20.glVertexAttribPointer(index, valuesPerVertex, vertexBufferObject.dataType(), shouldNormalize, stride, offset);
+    GL20.glVertexAttribPointer(
+        index, valuesPerVertex, vertexBufferObject.dataType(), shouldNormalize, stride, offset);
     vertexBufferObject.unbind();
     vertexBufferObjects[index] = vertexBufferObject;
   }

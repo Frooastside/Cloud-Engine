@@ -10,12 +10,11 @@
 
 package love.polardivision.engine.shader;
 
+import java.util.ArrayList;
+import java.util.List;
 import love.polardivision.engine.shader.uniforms.Uniform;
 import love.polardivision.engine.wrappers.gl.GraphicalObject;
 import org.lwjgl.opengl.GL20;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class ShaderProgram extends GraphicalObject {
 
@@ -47,10 +46,11 @@ public abstract class ShaderProgram extends GraphicalObject {
   }
 
   protected void deleteShaders() {
-    shaders.forEach(shader -> {
-      shader.detach(identifier);
-      shader.delete();
-    });
+    shaders.forEach(
+        shader -> {
+          shader.detach(identifier);
+          shader.delete();
+        });
   }
 
   protected void validate() {
@@ -90,6 +90,5 @@ public abstract class ShaderProgram extends GraphicalObject {
     uniform.storeUniformLocation(identifier);
   }
 
-  protected void loadTextureUnits() {
-  }
+  protected void loadTextureUnits() {}
 }

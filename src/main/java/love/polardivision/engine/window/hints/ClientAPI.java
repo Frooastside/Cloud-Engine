@@ -13,7 +13,6 @@ package love.polardivision.engine.window.hints;
 import org.lwjgl.glfw.GLFW;
 
 public enum ClientAPI {
-
   NO_API(GLFW.GLFW_NO_API),
   OPENGL(GLFW.GLFW_OPENGL_API),
   OPENGL_ES(GLFW.GLFW_OPENGL_ES_API);
@@ -27,5 +26,4 @@ public enum ClientAPI {
   public int value() {
     return value;
   }
-
 }

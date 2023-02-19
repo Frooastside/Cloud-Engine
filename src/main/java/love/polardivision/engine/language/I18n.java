@@ -10,13 +10,12 @@
 
 package love.polardivision.engine.language;
 
-import love.polardivision.engine.utils.BufferUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import love.polardivision.engine.utils.BufferUtils;
 
 public class I18n {
 
@@ -41,7 +40,9 @@ public class I18n {
   }
 
   public static void loadFromDirectory(File directory) {
-    File[] languageFiles = directory.listFiles(file -> file.exists() && file.isFile() && file.getName().endsWith(".lang"));
+    File[] languageFiles =
+        directory.listFiles(
+            file -> file.exists() && file.isFile() && file.getName().endsWith(".lang"));
     if (languageFiles != null) {
       Language[] languages = new Language[languageFiles.length];
       for (int i = 0, languageFilesLength = languageFiles.length; i < languageFilesLength; i++) {
@@ -56,14 +57,14 @@ public class I18n {
 
   public static void selectByCode(String languageCode) {
     INSTANCE.languages.stream()
-      .filter(language -> language.languageCode().equals(languageCode))
-      .forEach(language -> INSTANCE.currentLanguage = language);
+        .filter(language -> language.languageCode().equals(languageCode))
+        .forEach(language -> INSTANCE.currentLanguage = language);
   }
 
   public static void selectByName(String languageName) {
     INSTANCE.languages.stream()
-      .filter(language -> language.languageName().equalsIgnoreCase(languageName))
-      .forEach(language -> INSTANCE.currentLanguage = language);
+        .filter(language -> language.languageName().equalsIgnoreCase(languageName))
+        .forEach(language -> INSTANCE.currentLanguage = language);
   }
 
   public static List<Language> languages() {

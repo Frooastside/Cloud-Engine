@@ -19,7 +19,6 @@ public interface KeyCallback {
   void invokeKeyCallback(Window window, Key key, int scancode, int modifiers, Action action);
 
   enum Modifier {
-
     SHIFT(GLFW.GLFW_MOD_SHIFT),
     CONTROL(GLFW.GLFW_MOD_CONTROL),
     ALT(GLFW.GLFW_MOD_ALT),
@@ -36,13 +35,11 @@ public interface KeyCallback {
     public static boolean checkModifier(int modifiers, Modifier modifier) {
       return (modifiers & modifier.flag) == modifier.flag;
     }
-
   }
 
   enum Action {
-
-    PRESS, RELEASE, REPEAT
-
+    PRESS,
+    RELEASE,
+    REPEAT
   }
-
 }

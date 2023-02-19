@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.gl;
 import org.lwjgl.opengl.GL11;
 
 public enum DataType {
-
   UNSIGNED_BYTE(GL11.GL_UNSIGNED_BYTE),
   UNSIGNED_SHORT(GL11.GL_UNSIGNED_SHORT),
   UNSIGNED_INT(GL11.GL_UNSIGNED_INT),
@@ -29,5 +28,4 @@ public enum DataType {
   public int value() {
     return value;
   }
-
 }

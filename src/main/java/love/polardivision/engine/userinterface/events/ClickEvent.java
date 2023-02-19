@@ -55,6 +55,5 @@ public class ClickEvent extends Event {
     }
 
     boolean handleClick(ClickEvent event);
-
   }
 }

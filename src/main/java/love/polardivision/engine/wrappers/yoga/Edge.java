@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum Edge {
-
   LEFT(Yoga.YGEdgeLeft),
   TOP(Yoga.YGEdgeTop),
   RIGHT(Yoga.YGEdgeRight),
@@ -33,5 +32,4 @@ public enum Edge {
   public int value() {
     return value;
   }
-
 }

@@ -32,7 +32,6 @@ public abstract class Camera {
 
   private final Vector3f negativePosition = new Vector3f();
 
-
   public Camera(SizedObject frame) {
     this.frame = frame;
   }
@@ -44,8 +43,12 @@ public abstract class Camera {
 
   public void update() {
     setProjectionMatrixChanged(false);
-    if (position.x != oldPosition.x || position.y != oldPosition.y || position.z != oldPosition.z ||
-      rotation.x != oldRotation.x || rotation.y != oldRotation.y || rotation.z != oldRotation.z) {
+    if (position.x != oldPosition.x
+        || position.y != oldPosition.y
+        || position.z != oldPosition.z
+        || rotation.x != oldRotation.x
+        || rotation.y != oldRotation.y
+        || rotation.z != oldRotation.z) {
       moved = true;
       recalculateViewMatrix();
       oldPosition.set(position);
@@ -59,7 +62,10 @@ public abstract class Camera {
 
   private void recalculateViewMatrix() {
     viewMatrix.identity();
-    viewMatrix.rotateXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y - 180), (float) Math.toRadians(rotation.z));
+    viewMatrix.rotateXYZ(
+        (float) Math.toRadians(rotation.x),
+        (float) Math.toRadians(rotation.y - 180),
+        (float) Math.toRadians(rotation.z));
     position.negate(negativePosition);
     viewMatrix.translate(negativePosition);
   }

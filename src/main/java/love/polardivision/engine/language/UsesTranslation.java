@@ -20,5 +20,4 @@ import java.lang.annotation.Target;
 public @interface UsesTranslation {
 
   String value();
-
 }

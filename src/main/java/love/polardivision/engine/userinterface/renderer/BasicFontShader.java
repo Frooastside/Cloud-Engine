@@ -31,8 +31,14 @@ public class BasicFontShader extends FontShader {
 
   @Override
   protected void addShaders() {
-    addShader(Shader.createShader(BasicFontShader.class.getResourceAsStream("basicfontshader/vertexshader.glsl"), ShaderType.VERTEX_SHADER));
-    addShader(Shader.createShader(BasicFontShader.class.getResourceAsStream("basicfontshader/fragmentshader.glsl"), ShaderType.FRAGMENT_SHADER));
+    addShader(
+        Shader.createShader(
+            BasicFontShader.class.getResourceAsStream("basicfontshader/vertexshader.glsl"),
+            ShaderType.VERTEX_SHADER));
+    addShader(
+        Shader.createShader(
+            BasicFontShader.class.getResourceAsStream("basicfontshader/fragmentshader.glsl"),
+            ShaderType.FRAGMENT_SHADER));
   }
 
   @Override

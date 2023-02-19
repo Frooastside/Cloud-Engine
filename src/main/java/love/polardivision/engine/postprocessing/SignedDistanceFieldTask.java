@@ -10,19 +10,19 @@
 
 package love.polardivision.engine.postprocessing;
 
-import love.polardivision.engine.utils.BufferUtils;
-import org.joml.Vector2f;
-
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+import love.polardivision.engine.utils.BufferUtils;
+import org.joml.Vector2f;
 
 public class SignedDistanceFieldTask {
 
-  private static final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+  private static final ExecutorService executorService =
+      Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
   private final ByteBuffer sourceBuffer;
   private final int imageSize;
@@ -33,7 +33,8 @@ public class SignedDistanceFieldTask {
   private final AtomicInteger progress = new AtomicInteger();
   private final ByteBuffer distanceFieldBuffer;
 
-  public SignedDistanceFieldTask(ByteBuffer sourceBuffer, int imageSize, int downscale, float spread) {
+  public SignedDistanceFieldTask(
+      ByteBuffer sourceBuffer, int imageSize, int downscale, float spread) {
     this.sourceBuffer = sourceBuffer;
     this.imageSize = imageSize;
     this.downscale = downscale;
@@ -64,29 +65,30 @@ public class SignedDistanceFieldTask {
         final int endY = Math.min(imageSize - 1, centerY + delta);
         int finalY = y;
         int finalX = x;
-        executorService.submit(() -> {
-          int closestSquareDistance = delta * delta;
-          for (int j = startY; j < endY; j++) {
-            for (int i = startX; i < endX; i++) {
-              if (base != bitmap[i][j]) {
-                int squareDistance = (int) Vector2f.distanceSquared(centerX, centerY, i, j);
-                if (squareDistance < closestSquareDistance) {
-                  closestSquareDistance = squareDistance;
+        executorService.submit(
+            () -> {
+              int closestSquareDistance = delta * delta;
+              for (int j = startY; j < endY; j++) {
+                for (int i = startX; i < endX; i++) {
+                  if (base != bitmap[i][j]) {
+                    int squareDistance = (int) Vector2f.distanceSquared(centerX, centerY, i, j);
+                    if (squareDistance < closestSquareDistance) {
+                      closestSquareDistance = squareDistance;
+                    }
+                  }
                 }
               }
-            }
-          }
-          float closestDistance = (float) Math.sqrt(closestSquareDistance);
-          float distance = (base ? 1 : -1) * Math.min(closestDistance, spread);
-          float alpha = 0.5f + 0.5f * distance / spread;
-          int alphaByte = (int) (Math.min(1.0f, Math.max(0.0f, alpha)) * 255.0f);
-          synchronized (distanceFieldBuffer) {
-            distanceFieldBuffer.put(finalY * downscaledImageSize + finalX, (byte) alphaByte);
-          }
-          synchronized (progress) {
-            progress.incrementAndGet();
-          }
-        });
+              float closestDistance = (float) Math.sqrt(closestSquareDistance);
+              float distance = (base ? 1 : -1) * Math.min(closestDistance, spread);
+              float alpha = 0.5f + 0.5f * distance / spread;
+              int alphaByte = (int) (Math.min(1.0f, Math.max(0.0f, alpha)) * 255.0f);
+              synchronized (distanceFieldBuffer) {
+                distanceFieldBuffer.put(finalY * downscaledImageSize + finalX, (byte) alphaByte);
+              }
+              synchronized (progress) {
+                progress.incrementAndGet();
+              }
+            });
       }
     }
   }

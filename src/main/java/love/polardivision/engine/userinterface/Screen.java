@@ -10,9 +10,17 @@
 
 package love.polardivision.engine.userinterface;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import love.polardivision.engine.userinterface.elements.Element;
 import love.polardivision.engine.userinterface.elements.FunctionalElement;
-import love.polardivision.engine.userinterface.events.*;
+import love.polardivision.engine.userinterface.events.ClickEvent;
+import love.polardivision.engine.userinterface.events.Event;
+import love.polardivision.engine.userinterface.events.EventHandler;
+import love.polardivision.engine.userinterface.events.ScrollEvent;
+import love.polardivision.engine.userinterface.events.SelectionEvent;
 import love.polardivision.engine.window.Key;
 import love.polardivision.engine.window.MouseButton;
 import love.polardivision.engine.window.Window;
@@ -21,11 +29,6 @@ import love.polardivision.engine.wrappers.NativeObject;
 import love.polardivision.engine.wrappers.yoga.LayoutNode;
 import love.polardivision.engine.wrappers.yoga.TextDirection;
 import org.joml.Vector2f;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Screen implements NativeObject {
 
@@ -114,7 +117,8 @@ public class Screen implements NativeObject {
     }
   }
 
-  public void handleKey(Window window, Key key, int scancode, int modifiers, KeyCallback.Action action) {
+  public void handleKey(
+      Window window, Key key, int scancode, int modifiers, KeyCallback.Action action) {
     if (window == this.window) {
       for (FunctionalElement element : children()) {
         if (element != null) {
@@ -137,7 +141,9 @@ public class Screen implements NativeObject {
   public void handleScroll(Window window, double scrollX, double scrollY) {
     if (window == this.window) {
       Vector2f mousePosition = window.input().mousePosition();
-      handleScroll(new ScrollEvent(true, mousePosition.x, mousePosition.y, (float) scrollX, (float) scrollY));
+      handleScroll(
+          new ScrollEvent(
+              true, mousePosition.x, mousePosition.y, (float) scrollX, (float) scrollY));
     }
   }
 
@@ -153,7 +159,8 @@ public class Screen implements NativeObject {
             return element.scroll(event);
           }
         } else {
-          ScrollEvent outsideScrollEvent = new ScrollEvent(false, event.x(), event.y(), event.scrollX(), event.scrollY());
+          ScrollEvent outsideScrollEvent =
+              new ScrollEvent(false, event.x(), event.y(), event.scrollX(), event.scrollY());
           element.scroll(outsideScrollEvent);
           if (element.scrollable()) {
             ((ScrollEvent.Handler) element).handleScroll(outsideScrollEvent);
@@ -168,7 +175,8 @@ public class Screen implements NativeObject {
             ((ScrollEvent.Handler) element).handleScroll(event);
           }
         } else {
-          ScrollEvent insideScrollEvent = new ScrollEvent(true, event.x(), event.y(), event.scrollX(), event.scrollY());
+          ScrollEvent insideScrollEvent =
+              new ScrollEvent(true, event.x(), event.y(), event.scrollX(), event.scrollY());
           element.scroll(insideScrollEvent);
           if (element.scrollable()) {
             ((ScrollEvent.Handler) element).handleScroll(insideScrollEvent);
@@ -209,7 +217,8 @@ public class Screen implements NativeObject {
             return element.click(event);
           }
         } else {
-          ClickEvent outsideClickEvent = new ClickEvent(event.key(), false, event.pressed(), event.x(), event.y());
+          ClickEvent outsideClickEvent =
+              new ClickEvent(event.key(), false, event.pressed(), event.x(), event.y());
           element.click(outsideClickEvent);
           if (element.clickable()) {
             ((ClickEvent.Handler) element).handleClick(outsideClickEvent);
@@ -224,7 +233,8 @@ public class Screen implements NativeObject {
             ((ClickEvent.Handler) element).handleClick(event);
           }
         } else {
-          ClickEvent insideClickEvent = new ClickEvent(event.key(), true, event.pressed(), event.x(), event.y());
+          ClickEvent insideClickEvent =
+              new ClickEvent(event.key(), true, event.pressed(), event.x(), event.y());
           element.click(insideClickEvent);
           if (element.clickable()) {
             ((ClickEvent.Handler) element).handleClick(insideClickEvent);

@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum NodeType {
-
   DEFAULT(Yoga.YGNodeTypeDefault),
   TEXT(Yoga.YGNodeTypeText);
 
@@ -26,5 +25,4 @@ public enum NodeType {
   public int value() {
     return value;
   }
-
 }

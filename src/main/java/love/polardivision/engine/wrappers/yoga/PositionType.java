@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum PositionType {
-
   STATIC(Yoga.YGPositionTypeStatic),
   RELATIVE(Yoga.YGPositionTypeRelative),
   ABSOLUTE(Yoga.YGPositionTypeAbsolute);
@@ -27,5 +26,4 @@ public enum PositionType {
   public int value() {
     return value;
   }
-
 }

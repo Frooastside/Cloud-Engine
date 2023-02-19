@@ -10,10 +10,15 @@
 
 package love.polardivision.engine.wrappers.gl.texture;
 
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL21;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
+import org.lwjgl.opengl.GL33;
+import org.lwjgl.opengl.GL42;
 
 public enum ColorFormat {
-
   RGBA(GL11.GL_RGBA, 4),
   RGB5_A1(GL11.GL_RGB5_A1, 4),
   RGBA8(GL11.GL_RGBA8, 4),

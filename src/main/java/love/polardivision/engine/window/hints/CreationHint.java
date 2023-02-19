@@ -100,7 +100,10 @@ public abstract class CreationHint {
 
   public static class TransparentFramebuffer extends CreationHint {
     public TransparentFramebuffer(boolean value) {
-      super(GLFW.GLFW_TRANSPARENT_FRAMEBUFFER, GLFW.GLFW_FALSE, value ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+      super(
+          GLFW.GLFW_TRANSPARENT_FRAMEBUFFER,
+          GLFW.GLFW_FALSE,
+          value ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
     }
   }
 
@@ -190,13 +193,19 @@ public abstract class CreationHint {
 
   public static class ClientAPI extends CreationHint {
     public ClientAPI(love.polardivision.engine.window.hints.ClientAPI value) {
-      super(GLFW.GLFW_CLIENT_API, love.polardivision.engine.window.hints.ClientAPI.OPENGL.value(), value.value());
+      super(
+          GLFW.GLFW_CLIENT_API,
+          love.polardivision.engine.window.hints.ClientAPI.OPENGL.value(),
+          value.value());
     }
   }
 
   public static class ContextCreationAPI extends CreationHint {
     public ContextCreationAPI(love.polardivision.engine.window.hints.ContextCreationAPI value) {
-      super(GLFW.GLFW_CONTEXT_CREATION_API, love.polardivision.engine.window.hints.ContextCreationAPI.NATIVE_CONTEXT_API.value(), value.value());
+      super(
+          GLFW.GLFW_CONTEXT_CREATION_API,
+          love.polardivision.engine.window.hints.ContextCreationAPI.NATIVE_CONTEXT_API.value(),
+          value.value());
     }
   }
 
@@ -214,32 +223,47 @@ public abstract class CreationHint {
 
   public static class ContextRobustness extends CreationHint {
     public ContextRobustness(love.polardivision.engine.window.hints.ContextCreationAPI value) {
-      super(GLFW.GLFW_CONTEXT_ROBUSTNESS, love.polardivision.engine.window.hints.ContextRobustness.NO_ROBUSTNESS.value(), value.value());
+      super(
+          GLFW.GLFW_CONTEXT_ROBUSTNESS,
+          love.polardivision.engine.window.hints.ContextRobustness.NO_ROBUSTNESS.value(),
+          value.value());
     }
   }
 
   public static class ContextReleaseBehavior extends CreationHint {
     public ContextReleaseBehavior(love.polardivision.engine.window.hints.ContextCreationAPI value) {
-      super(GLFW.GLFW_CONTEXT_RELEASE_BEHAVIOR, love.polardivision.engine.window.hints.ContextReleaseBehavior.ANY_RELEASE_BEHAVIOR.value(), value.value());
+      super(
+          GLFW.GLFW_CONTEXT_RELEASE_BEHAVIOR,
+          love.polardivision.engine.window.hints.ContextReleaseBehavior.ANY_RELEASE_BEHAVIOR
+              .value(),
+          value.value());
     }
   }
 
   public static class OpenGLForwardCompatibility extends CreationHint {
     public OpenGLForwardCompatibility(boolean value) {
-      super(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_FALSE, value ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+      super(
+          GLFW.GLFW_OPENGL_FORWARD_COMPAT,
+          GLFW.GLFW_FALSE,
+          value ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
     }
   }
 
   public static class OpenGLDebugContext extends CreationHint {
     public OpenGLDebugContext(boolean value) {
-      super(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_FALSE, value ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+      super(
+          GLFW.GLFW_OPENGL_DEBUG_CONTEXT,
+          GLFW.GLFW_FALSE,
+          value ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
     }
   }
 
   public static class OpenGLProfile extends CreationHint {
     public OpenGLProfile(love.polardivision.engine.window.hints.ContextCreationAPI value) {
-      super(GLFW.GLFW_OPENGL_PROFILE, love.polardivision.engine.window.hints.OpenGLProfile.OPENGL_ANY_PROFILE.value(), value.value());
+      super(
+          GLFW.GLFW_OPENGL_PROFILE,
+          love.polardivision.engine.window.hints.OpenGLProfile.OPENGL_ANY_PROFILE.value(),
+          value.value());
     }
   }
-
 }

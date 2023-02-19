@@ -21,20 +21,24 @@ import org.lwjgl.opengl.GL11;
 
 public abstract class PostProcessingEffect {
 
-  private static final float[] FULLSCREEN_QUAD_POSITIONS = new float[]{
-    -1, 1,
-    -1, -1,
-    1, 1,
-    1, -1};
+  private static final float[] FULLSCREEN_QUAD_POSITIONS =
+      new float[] {
+        -1, 1,
+        -1, -1,
+        1, 1,
+        1, -1
+      };
 
   private final VertexArrayObject fullscreenQuad;
 
   {
-    fullscreenQuad = new VertexArrayObject(Primitive.TRIANGLE_STRIP, FULLSCREEN_QUAD_POSITIONS.length / 2);
+    fullscreenQuad =
+        new VertexArrayObject(Primitive.TRIANGLE_STRIP, FULLSCREEN_QUAD_POSITIONS.length / 2);
     fullscreenQuad.initialize();
     fullscreenQuad.bind();
 
-    VertexBufferObject positionBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+    VertexBufferObject positionBuffer =
+        new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
     positionBuffer.initialize();
     positionBuffer.storeFloatData(BufferUtils.store(FULLSCREEN_QUAD_POSITIONS));
     fullscreenQuad.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);

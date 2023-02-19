@@ -16,5 +16,4 @@ import love.polardivision.engine.window.Window;
 public interface MouseButtonCallback {
 
   void invokeMouseButtonCallback(Window window, MouseButton key, boolean pressed);
-
 }

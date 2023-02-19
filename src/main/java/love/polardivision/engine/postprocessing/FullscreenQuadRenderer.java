@@ -45,8 +45,15 @@ public class FullscreenQuadRenderer extends PostProcessingEffect {
 
     @Override
     protected void addShaders() {
-      addShader(Shader.createShader(FullscreenQuadRenderer.class.getResourceAsStream("fullscreenquad/vertexshader.glsl"), ShaderType.VERTEX_SHADER));
-      addShader(Shader.createShader(FullscreenQuadRenderer.class.getResourceAsStream("fullscreenquad/fragmentshader.glsl"), ShaderType.FRAGMENT_SHADER));
+      addShader(
+          Shader.createShader(
+              FullscreenQuadRenderer.class.getResourceAsStream("fullscreenquad/vertexshader.glsl"),
+              ShaderType.VERTEX_SHADER));
+      addShader(
+          Shader.createShader(
+              FullscreenQuadRenderer.class.getResourceAsStream(
+                  "fullscreenquad/fragmentshader.glsl"),
+              ShaderType.FRAGMENT_SHADER));
     }
 
     @Override
@@ -55,8 +62,7 @@ public class FullscreenQuadRenderer extends PostProcessingEffect {
     }
 
     @Override
-    protected void storeUniformLocations() {
-    }
+    protected void storeUniformLocations() {}
 
     @Override
     protected void loadTextureUnits() {
@@ -68,5 +74,4 @@ public class FullscreenQuadRenderer extends PostProcessingEffect {
       texture.bind();
     }
   }
-
 }

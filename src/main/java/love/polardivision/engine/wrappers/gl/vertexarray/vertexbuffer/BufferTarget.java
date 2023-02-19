@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL21;
 
 public enum BufferTarget {
-
   ARRAY_BUFFER(GL15.GL_ARRAY_BUFFER),
   ELEMENT_ARRAY_BUFFER(GL15.GL_ELEMENT_ARRAY_BUFFER),
   PIXEL_PACK_BUFFER(GL21.GL_PIXEL_PACK_BUFFER),

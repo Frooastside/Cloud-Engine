@@ -10,7 +10,6 @@
 
 package love.polardivision.engine.userinterface.elements.render;
 
-
 import love.polardivision.engine.userinterface.Color;
 import love.polardivision.engine.userinterface.Font;
 import love.polardivision.engine.userinterface.elements.RenderElement;
@@ -45,10 +44,12 @@ public class Text extends RenderElement implements NativeObject {
   public void initialize() {
     model.initialize();
     model.bind();
-    VertexBufferObject positionBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
+    VertexBufferObject positionBuffer =
+        new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
     positionBuffer.initialize();
     model.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-    VertexBufferObject textureCoordinateBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
+    VertexBufferObject textureCoordinateBuffer =
+        new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.DYNAMIC_DRAW);
     textureCoordinateBuffer.initialize();
     model.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
     model.unbind();
@@ -84,7 +85,15 @@ public class Text extends RenderElement implements NativeObject {
     for (char codepoint : text.toCharArray()) {
       Font.Character character = font.character(codepoint);
       if (codepoint != Font.SPACE_CODEPOINT) {
-        addVerticesFor(positions, textureCoordinates, character, index, fontHeight, fontWidth, cursorX, yLineOffset);
+        addVerticesFor(
+            positions,
+            textureCoordinates,
+            character,
+            index,
+            fontHeight,
+            fontWidth,
+            cursorX,
+            yLineOffset);
         index++;
       }
       cursorX += character.xAdvance() * (1f / font.characterHeight()) * fontWidth;
@@ -97,26 +106,31 @@ public class Text extends RenderElement implements NativeObject {
     }
   }
 
-  protected void addVerticesFor(float[] positions, float[] textureCoordinates, Font.Character character, int characterIndex, double fontHeight, double fontWidth, double cursorX, double cursorY) {
+  protected void addVerticesFor(
+      float[] positions,
+      float[] textureCoordinates,
+      Font.Character character,
+      int characterIndex,
+      double fontHeight,
+      double fontWidth,
+      double cursorX,
+      double cursorY) {
     double x = cursorX + (character.xOffset() * (1f / font.characterHeight()) * fontWidth);
     double y = cursorY + (character.yOffset() * (1f / font.characterHeight()) * fontHeight);
     double xMax = x + (character.xSize() * (1f / font.characterHeight()) * fontWidth);
     double yMax = y + (character.ySize() * (1f / font.characterHeight()) * fontHeight);
-    addPoints(positions,
-      characterIndex,
-      x * 2 - 1,
-      y * -2 + 1,
-      xMax * 2 - 1,
-      yMax * -2 + 1);
-    addPoints(textureCoordinates,
-      characterIndex,
-      character.xTextureCoordinate(),
-      character.yTextureCoordinate(),
-      character.xMaxTextureCoordinate(),
-      character.yMaxTextureCoordinate());
+    addPoints(positions, characterIndex, x * 2 - 1, y * -2 + 1, xMax * 2 - 1, yMax * -2 + 1);
+    addPoints(
+        textureCoordinates,
+        characterIndex,
+        character.xTextureCoordinate(),
+        character.yTextureCoordinate(),
+        character.xMaxTextureCoordinate(),
+        character.yMaxTextureCoordinate());
   }
 
-  private void addPoints(float[] array, int characterIndex, double x, double y, double xMax, double yMax) {
+  private void addPoints(
+      float[] array, int characterIndex, double x, double y, double xMax, double yMax) {
     array[characterIndex * 12] = (float) x;
     array[characterIndex * 12 + 1] = (float) y;
     array[characterIndex * 12 + 2] = (float) x;
@@ -162,7 +176,9 @@ public class Text extends RenderElement implements NativeObject {
       lineLength += (character.xAdvance() * (1f / font.characterHeight()) * fontWidth);
     }
     if (endIndex < text.length()) {
-      lineLength += (font.character(chars[endIndex]).xOffset() * (1f / font.characterHeight()) * fontWidth) / 2;
+      lineLength +=
+          (font.character(chars[endIndex]).xOffset() * (1f / font.characterHeight()) * fontWidth)
+              / 2;
     }
     return lineLength;
   }

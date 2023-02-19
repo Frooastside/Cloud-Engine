@@ -10,11 +10,14 @@
 
 package love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer;
 
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 import love.polardivision.engine.wrappers.gl.DataType;
 import love.polardivision.engine.wrappers.gl.GraphicalObject;
 import org.lwjgl.opengl.GL15;
-
-import java.nio.*;
 
 public class VertexBufferObject extends GraphicalObject {
 

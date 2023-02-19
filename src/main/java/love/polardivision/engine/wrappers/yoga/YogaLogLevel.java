@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum YogaLogLevel {
-
   ERROR(Yoga.YGLogLevelError),
   WARN(Yoga.YGLogLevelWarn),
   INFO(Yoga.YGLogLevelInfo),
@@ -30,5 +29,4 @@ public enum YogaLogLevel {
   public int value() {
     return value;
   }
-
 }

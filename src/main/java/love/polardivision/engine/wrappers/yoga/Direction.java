@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum Direction {
-
   COLUMN(Yoga.YGFlexDirectionColumn),
   COLUMN_REVERSE(Yoga.YGFlexDirectionColumnReverse),
   ROW(Yoga.YGFlexDirectionRow),
@@ -28,5 +27,4 @@ public enum Direction {
   public int value() {
     return value;
   }
-
 }

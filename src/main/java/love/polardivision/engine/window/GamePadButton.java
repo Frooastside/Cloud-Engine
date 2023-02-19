@@ -10,14 +10,12 @@
 
 package love.polardivision.engine.window;
 
-import org.lwjgl.glfw.GLFW;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.lwjgl.glfw.GLFW;
 
 public enum GamePadButton {
-
   BUTTON_CROSS(GLFW.GLFW_GAMEPAD_BUTTON_A),
   BUTTON_CIRCLE(GLFW.GLFW_GAMEPAD_BUTTON_B),
   BUTTON_SQUARE(GLFW.GLFW_GAMEPAD_BUTTON_X),

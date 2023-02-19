@@ -30,6 +30,5 @@ public class SelectionEvent extends Event {
     }
 
     void handleSelection(SelectionEvent event);
-
   }
 }

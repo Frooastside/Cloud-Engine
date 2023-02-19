@@ -29,10 +29,13 @@ import org.lwjgl.opengl.GL11;
 
 public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
 
-  private static final float[] DEFAULT_BOX_POSITIONS = new float[]{-1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1};
-  private static final float[] DEFAULT_BOX_TEXTURE_COORDINATES = new float[]{0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1};
+  private static final float[] DEFAULT_BOX_POSITIONS =
+      new float[] {-1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1};
+  private static final float[] DEFAULT_BOX_TEXTURE_COORDINATES =
+      new float[] {0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1};
 
-  private final VertexArrayObject defaultBox = new VertexArrayObject(Primitive.TRIANGLES, DEFAULT_BOX_POSITIONS.length / 2);
+  private final VertexArrayObject defaultBox =
+      new VertexArrayObject(Primitive.TRIANGLES, DEFAULT_BOX_POSITIONS.length / 2);
 
   private final BoxShader boxShader;
   private final FontShader fontShader;
@@ -49,11 +52,13 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
   public void initialize() {
     defaultBox.initialize();
     defaultBox.bind();
-    VertexBufferObject positionBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+    VertexBufferObject positionBuffer =
+        new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
     positionBuffer.initialize();
     positionBuffer.storeFloatData(BufferUtils.store(DEFAULT_BOX_POSITIONS));
     defaultBox.appendVertexBufferObject(positionBuffer, 0, 2, false, 0, 0);
-    VertexBufferObject textureCoordinateBuffer = new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
+    VertexBufferObject textureCoordinateBuffer =
+        new VertexBufferObject(DataType.FLOAT, BufferTarget.ARRAY_BUFFER, BufferUsage.STATIC_DRAW);
     textureCoordinateBuffer.initialize();
     textureCoordinateBuffer.storeFloatData(BufferUtils.store(DEFAULT_BOX_TEXTURE_COORDINATES));
     defaultBox.appendVertexBufferObject(textureCoordinateBuffer, 1, 2, false, 0, 0);
@@ -103,7 +108,9 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
         renderElement(renderElement, alpha);
       }
     } else if (element instanceof FunctionalElement functionalElement) {
-      boolean hideOverflow = functionalElement.layoutNode().overflow() == Overflow.HIDDEN || functionalElement.layoutNode().overflow() == Overflow.SCROLL;
+      boolean hideOverflow =
+          functionalElement.layoutNode().overflow() == Overflow.HIDDEN
+              || functionalElement.layoutNode().overflow() == Overflow.SCROLL;
       RenderElement background = functionalElement.background();
       if (background != null) {
         renderElement(background, alpha * background.alpha());
@@ -132,8 +139,8 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
       FrameBufferObject.clearStencilBuffer();
       enableStencilRendering();
       containerElement.children().stream()
-        .filter(element -> element instanceof RenderElement)
-        .forEach(element -> renderElements(element, 1));
+          .filter(element -> element instanceof RenderElement)
+          .forEach(element -> renderElements(element, 1));
       disableStencilRendering();
     }
   }
@@ -214,5 +221,4 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
     GL11.glDisable(GL11.GL_STENCIL_TEST);
     GL11.glDisable(GL11.GL_BLEND);
   }
-
 }

@@ -16,5 +16,4 @@ import love.polardivision.engine.window.GamePadButton;
 public interface JoystickButtonCallback {
 
   void invokeButtonCallback(Controller controller, GamePadButton button, boolean pressed);
-
 }

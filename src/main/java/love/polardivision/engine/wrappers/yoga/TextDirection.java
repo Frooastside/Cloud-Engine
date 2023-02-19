@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum TextDirection {
-
   INHERIT(Yoga.YGDirectionInherit),
   LTR(Yoga.YGDirectionLTR),
   RTL(Yoga.YGDirectionRTL);
@@ -27,5 +26,4 @@ public enum TextDirection {
   public int value() {
     return value;
   }
-
 }

@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.gl.vertexarray.vertexbuffer;
 import org.lwjgl.opengl.GL15;
 
 public enum BufferUsage {
-
   STREAM_DRAW(GL15.GL_STREAM_DRAW),
   STREAM_READ(GL15.GL_STREAM_READ),
   STREAM_COPY(GL15.GL_STREAM_COPY),

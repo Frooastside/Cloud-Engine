@@ -89,14 +89,22 @@ public class Window implements SizedObject, NativeObject {
 
   private void resetWindowMode() {
     if (fullscreen) {
-      GLFW.glfwSetWindowMonitor(identifier, monitor.address(), 0, 0, fullscreenSize.x, fullscreenSize.y, refreshRate);
+      GLFW.glfwSetWindowMonitor(
+          identifier, monitor.address(), 0, 0, fullscreenSize.x, fullscreenSize.y, refreshRate);
     } else {
       Vector4i workArea = monitor.workArea();
       if (position.x > workArea.z || position.y > workArea.w) {
         position.set(0, 0);
       }
       Vector2i monitorPosition = monitor.virtualPosition();
-      GLFW.glfwSetWindowMonitor(identifier, 0, monitorPosition.x + position.x, monitorPosition.y + position.y, windowedSize.x, windowedSize.y, refreshRate);
+      GLFW.glfwSetWindowMonitor(
+          identifier,
+          0,
+          monitorPosition.x + position.x,
+          monitorPosition.y + position.y,
+          windowedSize.x,
+          windowedSize.y,
+          refreshRate);
     }
   }
 
@@ -111,8 +119,7 @@ public class Window implements SizedObject, NativeObject {
   private void calculateDelta() {
     long currentTime = System.nanoTime();
     delta = (currentTime - lastUpdateTime) * 0.000000001;
-    if (delta >= 0.25f)
-      delta = 0;
+    if (delta >= 0.25f) delta = 0;
     lastUpdateTime = currentTime;
   }
 
@@ -129,7 +136,8 @@ public class Window implements SizedObject, NativeObject {
     }
     if (!fullscreen) {
       Vector2i monitorPosition = monitor.virtualPosition();
-      GLFW.glfwSetWindowPos(identifier, monitorPosition.x + position.x, monitorPosition.y + position.y);
+      GLFW.glfwSetWindowPos(
+          identifier, monitorPosition.x + position.x, monitorPosition.y + position.y);
     }
   }
 
@@ -247,11 +255,18 @@ public class Window implements SizedObject, NativeObject {
     GLFW.glfwTerminate();
   }
 
-  public static Window createWindow(String title, boolean fullscreen, CreationHint... creationHints) {
+  public static Window createWindow(
+      String title, boolean fullscreen, CreationHint... creationHints) {
     return createWindow(Monitor.DEFAULT, title, true, fullscreen, 0.5f, creationHints);
   }
 
-  public static Window createWindow(Monitor monitor, String title, boolean visible, boolean fullscreen, float nonFullscreenSize, CreationHint... creationHints) {
+  public static Window createWindow(
+      Monitor monitor,
+      String title,
+      boolean visible,
+      boolean fullscreen,
+      float nonFullscreenSize,
+      CreationHint... creationHints) {
     if (monitor == null) {
       monitor = Monitor.DEFAULT;
     }
@@ -267,7 +282,9 @@ public class Window implements SizedObject, NativeObject {
     int height = (int) (workAreaHeight * nonFullscreenSize);
     Window window;
     if (fullscreen) {
-      window = new Window(GLFW.glfwCreateWindow(workAreaWidth, workAreaHeight, title, monitor.address(), 0));
+      window =
+          new Window(
+              GLFW.glfwCreateWindow(workAreaWidth, workAreaHeight, title, monitor.address(), 0));
       window.resolution.set(workAreaWidth, workAreaHeight);
     } else {
       window = new Window(GLFW.glfwCreateWindow(width, height, title, 0, 0));

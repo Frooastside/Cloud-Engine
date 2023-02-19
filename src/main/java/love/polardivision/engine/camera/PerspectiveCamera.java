@@ -29,8 +29,14 @@ public class PerspectiveCamera extends Camera {
   public void recalculateProjectionMatrix() {
     int width = frame().width();
     int height = frame().height();
-    float verticalFOV = (float) (2f * Math.atan(Math.tan(Math.toRadians(hFov) / 2f) * ((float) height / (float) width)));
-    projectionMatrix().identity().perspective(verticalFOV, (float) width / (float) height, zNear, zFar);
+    float verticalFOV =
+        (float)
+            (2f
+                * Math.atan(
+                    Math.tan(Math.toRadians(hFov) / 2f) * ((float) height / (float) width)));
+    projectionMatrix()
+        .identity()
+        .perspective(verticalFOV, (float) width / (float) height, zNear, zFar);
     setProjectionMatrixChanged(true);
   }
 

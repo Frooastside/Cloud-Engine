@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum Justify {
-
   START(Yoga.YGJustifyFlexStart),
   CENTER(Yoga.YGJustifyCenter),
   END(Yoga.YGJustifyFlexEnd),
@@ -30,5 +29,4 @@ public enum Justify {
   public int value() {
     return value;
   }
-
 }

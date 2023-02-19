@@ -10,14 +10,12 @@
 
 package love.polardivision.engine.window;
 
-import org.lwjgl.glfw.GLFW;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.lwjgl.glfw.GLFW;
 
 public enum MouseButton {
-
   MOUSE_BUTTON_LEFT(GLFW.GLFW_MOUSE_BUTTON_1),
   MOUSE_BUTTON_RIGHT(GLFW.GLFW_MOUSE_BUTTON_2),
   MOUSE_BUTTON_MIDDLE(GLFW.GLFW_MOUSE_BUTTON_3),

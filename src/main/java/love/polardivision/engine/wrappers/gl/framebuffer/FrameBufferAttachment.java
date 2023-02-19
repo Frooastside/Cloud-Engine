@@ -15,5 +15,4 @@ public interface FrameBufferAttachment {
   int attachment();
 
   void setSize(int width, int height);
-
 }

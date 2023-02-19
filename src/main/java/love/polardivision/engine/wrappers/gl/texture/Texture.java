@@ -10,14 +10,13 @@
 
 package love.polardivision.engine.wrappers.gl.texture;
 
+import java.nio.ByteBuffer;
 import love.polardivision.engine.wrappers.gl.DataType;
 import love.polardivision.engine.wrappers.gl.SizedGraphicalObject;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
-
-import java.nio.ByteBuffer;
 
 public class Texture extends SizedGraphicalObject {
 
@@ -33,18 +32,36 @@ public class Texture extends SizedGraphicalObject {
   private ColorFormat internalFormat;
   private ColorFormat inputFormat;
 
-  public Texture() {
-  }
+  public Texture() {}
 
   public Texture(ByteBuffer pixelBuffer, int filter, int width, int height, int channels) {
-    this(pixelBuffer, filter, width, height, ColorFormat.formatFromChannelCount(channels), ColorFormat.formatFromChannelCount(channels));
+    this(
+        pixelBuffer,
+        filter,
+        width,
+        height,
+        ColorFormat.formatFromChannelCount(channels),
+        ColorFormat.formatFromChannelCount(channels));
   }
 
-  public Texture(ByteBuffer pixelBuffer, int filter, int width, int height, ColorFormat internalFormat, ColorFormat inputFormat) {
+  public Texture(
+      ByteBuffer pixelBuffer,
+      int filter,
+      int width,
+      int height,
+      ColorFormat internalFormat,
+      ColorFormat inputFormat) {
     this(pixelBuffer, filter, width, height, internalFormat, inputFormat, DataType.UNSIGNED_BYTE);
   }
 
-  public Texture(ByteBuffer pixelBuffer, int filter, int width, int height, ColorFormat internalFormat, ColorFormat inputFormat, DataType dataType) {
+  public Texture(
+      ByteBuffer pixelBuffer,
+      int filter,
+      int width,
+      int height,
+      ColorFormat internalFormat,
+      ColorFormat inputFormat,
+      DataType dataType) {
     this.setWidth(width);
     this.setHeight(height);
     this.pixelBuffer = pixelBuffer;
@@ -87,7 +104,16 @@ public class Texture extends SizedGraphicalObject {
   }
 
   public void store() {
-    GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, internalFormat.value(), width(), height(), 0, inputFormat.value(), dataType.value(), pixelBuffer);
+    GL11.glTexImage2D(
+        GL11.GL_TEXTURE_2D,
+        0,
+        internalFormat.value(),
+        width(),
+        height(),
+        0,
+        inputFormat.value(),
+        dataType.value(),
+        pixelBuffer);
     applyFilters();
   }
 
@@ -123,13 +149,18 @@ public class Texture extends SizedGraphicalObject {
   private void trilinearFilter() {
     GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
     GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+    GL11.glTexParameteri(
+        GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
   }
 
   private void anisotropicFilter() throws UnsupportedOperationException {
     if (GL.getCapabilities().GL_EXT_texture_filter_anisotropic) {
-      float maxFilterLevel = GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-      GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, maxFilterLevel);
+      float maxFilterLevel =
+          GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+      GL11.glTexParameterf(
+          GL11.GL_TEXTURE_2D,
+          EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+          maxFilterLevel);
     } else {
       throw new UnsupportedOperationException();
     }
@@ -174,5 +205,4 @@ public class Texture extends SizedGraphicalObject {
   public void setInputFormat(ColorFormat inputFormat) {
     this.inputFormat = inputFormat;
   }
-
 }

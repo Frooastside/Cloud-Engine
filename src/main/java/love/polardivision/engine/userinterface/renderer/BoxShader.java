@@ -31,5 +31,4 @@ public abstract class BoxShader extends ShaderProgram {
   public abstract void loadUseTexture(boolean useTexture);
 
   public abstract void loadTexture(Texture texture);
-
 }

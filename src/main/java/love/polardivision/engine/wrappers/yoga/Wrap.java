@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum Wrap {
-
   NO_WRAP(Yoga.YGWrapNoWrap),
   WRAP(Yoga.YGWrapWrap),
   WRAP_REVERSE(Yoga.YGWrapReverse);
@@ -27,5 +26,4 @@ public enum Wrap {
   public int value() {
     return value;
   }
-
 }

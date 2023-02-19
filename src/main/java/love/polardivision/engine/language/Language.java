@@ -18,14 +18,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public record Language(String languageCode, String languageName,
-                       Map<String, String> translatedStrings) {
+public record Language(
+    String languageCode, String languageName, Map<String, String> translatedStrings) {
 
   public static Language createFromStream(InputStream inputStream) {
     Map<String, String> translatedStrings = new HashMap<>();
     String languageCode = "[]_[]";
     String languageName = "Invalid Language";
-    try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+    try (BufferedReader bufferedReader =
+        new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
       while (bufferedReader.ready()) {
         String line = bufferedReader.readLine();
         if (line.contains("=") && !line.strip().startsWith("#")) {

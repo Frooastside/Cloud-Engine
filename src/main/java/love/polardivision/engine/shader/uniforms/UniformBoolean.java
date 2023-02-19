@@ -19,5 +19,4 @@ public class UniformBoolean extends UniformFloat {
   public void loadBoolean(boolean value) {
     loadFloat(value ? 1.0f : 0.0f);
   }
-
 }

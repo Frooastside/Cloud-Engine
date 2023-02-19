@@ -26,5 +26,4 @@ public class UniformFloat extends Uniform {
       currentValue = value;
     }
   }
-
 }

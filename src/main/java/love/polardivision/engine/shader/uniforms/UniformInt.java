@@ -26,5 +26,4 @@ public class UniformInt extends Uniform {
       currentValue = value;
     }
   }
-
 }

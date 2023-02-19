@@ -52,6 +52,5 @@ public class ScrollEvent extends Event {
     }
 
     boolean handleScroll(ScrollEvent event);
-
   }
 }

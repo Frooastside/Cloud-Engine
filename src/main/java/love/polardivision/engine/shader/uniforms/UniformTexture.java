@@ -29,5 +29,4 @@ public class UniformTexture extends Uniform {
   public void activeTextureUnit() {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + textureUnit);
   }
-
 }

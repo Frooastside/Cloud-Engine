@@ -32,5 +32,4 @@ public class UniformVector2f extends Uniform {
       GL20.glUniform2f(location(), x, y);
     }
   }
-
 }

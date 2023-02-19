@@ -13,7 +13,6 @@ package love.polardivision.engine.window.cursor;
 import org.lwjgl.glfw.GLFW;
 
 public enum CursorShape {
-
   ARROW(GLFW.GLFW_ARROW_CURSOR),
   I_BEAM(GLFW.GLFW_IBEAM_CURSOR),
   CROSS_HAIR(GLFW.GLFW_CROSSHAIR_CURSOR),

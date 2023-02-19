@@ -10,14 +10,12 @@
 
 package love.polardivision.engine.wrappers.yoga;
 
-import org.lwjgl.util.yoga.Yoga;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.lwjgl.util.yoga.Yoga;
 
 public enum Unit {
-
   UNDEFINED(Yoga.YGUnitUndefined),
   POINT(Yoga.YGUnitPoint),
   PERCENT(Yoga.YGUnitPercent),
@@ -42,5 +40,4 @@ public enum Unit {
   public int value() {
     return value;
   }
-
 }

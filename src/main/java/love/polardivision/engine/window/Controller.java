@@ -10,16 +10,15 @@
 
 package love.polardivision.engine.window;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import love.polardivision.engine.window.callbacks.JoystickButtonCallback;
 import love.polardivision.engine.window.callbacks.JoystickConnectionCallback;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWGamepadState;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Controller {
 
@@ -48,23 +47,25 @@ public class Controller {
   }
 
   static {
-    Input.setControllerModuleCallback((jid, event) -> {
-      if (event == GLFW.GLFW_CONNECTED) {
-        if (!AVAILABLE_CONTROLLERS.containsKey(jid)) {
-          Controller controller = new Controller(jid);
-          if (controller.isGamePad()) {
-            AVAILABLE_GAME_PADS.put(jid, controller);
+    Input.setControllerModuleCallback(
+        (jid, event) -> {
+          if (event == GLFW.GLFW_CONNECTED) {
+            if (!AVAILABLE_CONTROLLERS.containsKey(jid)) {
+              Controller controller = new Controller(jid);
+              if (controller.isGamePad()) {
+                AVAILABLE_GAME_PADS.put(jid, controller);
+              }
+              AVAILABLE_CONTROLLERS.put(jid, controller);
+              CONNECTION_CALLBACKS.forEach(
+                  callback -> callback.invokeConnectionCallback(controller, true));
+            }
+          } else {
+            Controller controller = AVAILABLE_CONTROLLERS.remove(jid);
+            AVAILABLE_GAME_PADS.remove(jid);
+            CONNECTION_CALLBACKS.forEach(
+                callback -> callback.invokeConnectionCallback(controller, false));
           }
-          AVAILABLE_CONTROLLERS.put(jid, controller);
-          CONNECTION_CALLBACKS.forEach(callback -> callback.invokeConnectionCallback(controller, true));
-        }
-      } else {
-        Controller controller = AVAILABLE_CONTROLLERS.remove(jid);
-        AVAILABLE_GAME_PADS.remove(jid);
-        CONNECTION_CALLBACKS.forEach(callback -> callback.invokeConnectionCallback(controller, false));
-      }
-
-    });
+        });
     for (int i = 0; i <= GLFW.GLFW_JOYSTICK_LAST; i++) {
       if (GLFW.glfwJoystickPresent(i)) {
         Controller controller = new Controller(i);
@@ -203,5 +204,4 @@ public class Controller {
   public float rightTrigger() {
     return rightTrigger;
   }
-
 }

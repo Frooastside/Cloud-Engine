@@ -10,15 +10,50 @@
 
 package love.polardivision.engine.window;
 
-import love.polardivision.engine.window.callbacks.*;
-import love.polardivision.engine.window.cursor.Cursor;
-import org.joml.Vector2f;
-import org.lwjgl.glfw.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import love.polardivision.engine.window.callbacks.CharCallback;
+import love.polardivision.engine.window.callbacks.CharModifiersCallback;
+import love.polardivision.engine.window.callbacks.CursorEnterCallback;
+import love.polardivision.engine.window.callbacks.CursorPositionCallback;
+import love.polardivision.engine.window.callbacks.FileDropCallback;
+import love.polardivision.engine.window.callbacks.FramebufferSizeCallback;
+import love.polardivision.engine.window.callbacks.KeyCallback;
+import love.polardivision.engine.window.callbacks.MouseButtonCallback;
+import love.polardivision.engine.window.callbacks.ScrollCallback;
+import love.polardivision.engine.window.callbacks.WindowCloseCallback;
+import love.polardivision.engine.window.callbacks.WindowContentScaleCallback;
+import love.polardivision.engine.window.callbacks.WindowFocusCallback;
+import love.polardivision.engine.window.callbacks.WindowIconifyCallback;
+import love.polardivision.engine.window.callbacks.WindowMaximizeCallback;
+import love.polardivision.engine.window.callbacks.WindowPositionCallback;
+import love.polardivision.engine.window.callbacks.WindowRefreshCallback;
+import love.polardivision.engine.window.callbacks.WindowSizeCallback;
+import love.polardivision.engine.window.cursor.Cursor;
+import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCharCallbackI;
+import org.lwjgl.glfw.GLFWCharModsCallbackI;
+import org.lwjgl.glfw.GLFWCursorEnterCallbackI;
+import org.lwjgl.glfw.GLFWCursorPosCallbackI;
+import org.lwjgl.glfw.GLFWDropCallback;
+import org.lwjgl.glfw.GLFWDropCallbackI;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallbackI;
+import org.lwjgl.glfw.GLFWJoystickCallbackI;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+import org.lwjgl.glfw.GLFWMonitorCallbackI;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+import org.lwjgl.glfw.GLFWScrollCallbackI;
+import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
+import org.lwjgl.glfw.GLFWWindowContentScaleCallbackI;
+import org.lwjgl.glfw.GLFWWindowFocusCallbackI;
+import org.lwjgl.glfw.GLFWWindowIconifyCallbackI;
+import org.lwjgl.glfw.GLFWWindowMaximizeCallbackI;
+import org.lwjgl.glfw.GLFWWindowPosCallbackI;
+import org.lwjgl.glfw.GLFWWindowRefreshCallbackI;
+import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 
 public class Input {
 
@@ -98,7 +133,10 @@ public class Input {
     GLFW.glfwSetWindowRefreshCallback(window.identifier(), this::handleWindowRefresh);
     GLFW.glfwSetWindowSizeCallback(window.identifier(), this::handleWindowSize);
 
-    GLFW.glfwSetInputMode(window.identifier(), GLFW.GLFW_RAW_MOUSE_MOTION, rawMouseMotion ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+    GLFW.glfwSetInputMode(
+        window.identifier(),
+        GLFW.GLFW_RAW_MOUSE_MOTION,
+        rawMouseMotion ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
   }
 
   private void handleChar(long window, int codepoint) {
@@ -134,7 +172,8 @@ public class Input {
     }
     mousePosition.set((float) xPosition, (float) yPosition);
     if (cursorPositionCallback != null) {
-      cursorPositionCallback.invokeCursorPositionCallback(this.window, (float) xPosition, (float) yPosition);
+      cursorPositionCallback.invokeCursorPositionCallback(
+          this.window, (float) xPosition, (float) yPosition);
     }
   }
 
@@ -186,9 +225,11 @@ public class Input {
       }
       if (keyCallback != null) {
         KeyCallback.Action keyAction =
-          action == GLFW.GLFW_PRESS ? KeyCallback.Action.PRESS :
-            action == GLFW.GLFW_RELEASE ? KeyCallback.Action.RELEASE :
-              KeyCallback.Action.REPEAT;
+            action == GLFW.GLFW_PRESS
+                ? KeyCallback.Action.PRESS
+                : action == GLFW.GLFW_RELEASE
+                    ? KeyCallback.Action.RELEASE
+                    : KeyCallback.Action.REPEAT;
         keyCallback.invokeKeyCallback(this.window, Key.of(key), scancode, modifiers, keyAction);
       }
     }
@@ -204,7 +245,8 @@ public class Input {
       default -> throw new IllegalStateException();
     }
     if (mouseButtonCallback != null) {
-      mouseButtonCallback.invokeMouseButtonCallback(this.window, MouseButton.of(button), keys[button]);
+      mouseButtonCallback.invokeMouseButtonCallback(
+          this.window, MouseButton.of(button), keys[button]);
     }
   }
 
@@ -289,7 +331,8 @@ public class Input {
     if (rawWindowSizeCallback != null) {
       rawWindowSizeCallback.invoke(window, width, height);
     }
-    (this.window.fullscreen() ? this.window.fullscreenSize() : this.window.windowedSize()).set(width, height);
+    (this.window.fullscreen() ? this.window.fullscreenSize() : this.window.windowedSize())
+        .set(width, height);
     if (windowSizeCallback != null) {
       windowSizeCallback.invokeWindowSizeCallback(this.window, width, height);
     }
@@ -314,7 +357,8 @@ public class Input {
   public void enableRawMouseMotion() {
     if (GLFW.glfwRawMouseMotionSupported() && !rawMouseMotion) {
       this.rawMouseMotion = true;
-      if (GLFW.glfwGetInputMode(window.identifier(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
+      if (GLFW.glfwGetInputMode(window.identifier(), GLFW.GLFW_CURSOR)
+          == GLFW.GLFW_CURSOR_DISABLED) {
         GLFW.glfwSetInputMode(window.identifier(), GLFW.GLFW_RAW_MOUSE_MOTION, GLFW.GLFW_TRUE);
       }
     }
@@ -323,7 +367,8 @@ public class Input {
   public void disableRawMouseMotion() {
     if (rawMouseMotion) {
       this.rawMouseMotion = false;
-      if (GLFW.glfwGetInputMode(window.identifier(), GLFW.GLFW_CURSOR) == GLFW.GLFW_CURSOR_DISABLED) {
+      if (GLFW.glfwGetInputMode(window.identifier(), GLFW.GLFW_CURSOR)
+          == GLFW.GLFW_CURSOR_DISABLED) {
         GLFW.glfwSetInputMode(window.identifier(), GLFW.GLFW_RAW_MOUSE_MOTION, GLFW.GLFW_FALSE);
       }
     }
@@ -339,7 +384,8 @@ public class Input {
 
   public void showCursor() {
     GLFW.glfwSetInputMode(window.identifier(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-    GLFW.glfwSetCursorPos(window.identifier(), this.window.windowedSize().x / 2f, this.window.windowedSize().y / 2f);
+    GLFW.glfwSetCursorPos(
+        window.identifier(), this.window.windowedSize().x / 2f, this.window.windowedSize().y / 2f);
   }
 
   public void setCursor(Cursor cursor) {
@@ -443,7 +489,8 @@ public class Input {
     this.rawFileDropCallback = rawFileDropCallback;
   }
 
-  public void setRawFramebufferSizeCallback(GLFWFramebufferSizeCallbackI rawFramebufferSizeCallback) {
+  public void setRawFramebufferSizeCallback(
+      GLFWFramebufferSizeCallbackI rawFramebufferSizeCallback) {
     this.rawFramebufferSizeCallback = rawFramebufferSizeCallback;
   }
 
@@ -463,7 +510,8 @@ public class Input {
     this.rawWindowCloseCallback = rawWindowCloseCallback;
   }
 
-  public void setRawWindowContentScaleCallback(GLFWWindowContentScaleCallbackI rawWindowContentScaleCallback) {
+  public void setRawWindowContentScaleCallback(
+      GLFWWindowContentScaleCallbackI rawWindowContentScaleCallback) {
     this.rawWindowContentScaleCallback = rawWindowContentScaleCallback;
   }
 
@@ -499,7 +547,8 @@ public class Input {
     Input.rawMonitorCallback = rawMonitorCallback;
   }
 
-  protected static void setControllerModuleCallback(GLFWJoystickCallbackI controllerModuleCallback) {
+  protected static void setControllerModuleCallback(
+      GLFWJoystickCallbackI controllerModuleCallback) {
     Input.controllerModuleCallback = controllerModuleCallback;
   }
 

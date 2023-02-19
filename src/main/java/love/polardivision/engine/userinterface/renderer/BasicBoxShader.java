@@ -30,8 +30,14 @@ public class BasicBoxShader extends BoxShader {
 
   @Override
   protected void addShaders() {
-    addShader(Shader.createShader(BasicBoxShader.class.getResourceAsStream("basicboxshader/vertexshader.glsl"), ShaderType.VERTEX_SHADER));
-    addShader(Shader.createShader(BasicBoxShader.class.getResourceAsStream("basicboxshader/fragmentshader.glsl"), ShaderType.FRAGMENT_SHADER));
+    addShader(
+        Shader.createShader(
+            BasicBoxShader.class.getResourceAsStream("basicboxshader/vertexshader.glsl"),
+            ShaderType.VERTEX_SHADER));
+    addShader(
+        Shader.createShader(
+            BasicBoxShader.class.getResourceAsStream("basicboxshader/fragmentshader.glsl"),
+            ShaderType.FRAGMENT_SHADER));
   }
 
   @Override
@@ -95,5 +101,4 @@ public class BasicBoxShader extends BoxShader {
     uniformTexture.activeTextureUnit();
     texture.bind();
   }
-
 }

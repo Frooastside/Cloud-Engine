@@ -10,6 +10,4 @@
 
 package love.polardivision.engine.wrappers.yoga;
 
-public record Value(Unit unit, float value) {
-
-}
+public record Value(Unit unit, float value) {}

@@ -10,15 +10,14 @@
 
 package love.polardivision.engine.wrappers.gl.framebuffer;
 
+import java.util.ArrayList;
+import java.util.List;
 import love.polardivision.engine.wrappers.SizedObject;
 import love.polardivision.engine.wrappers.gl.SizedGraphicalObject;
 import love.polardivision.engine.wrappers.gl.framebuffer.attachments.BufferAttachment;
 import love.polardivision.engine.wrappers.gl.framebuffer.attachments.TextureAttachment;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FrameBufferObject extends SizedGraphicalObject {
 
@@ -59,13 +58,22 @@ public class FrameBufferObject extends SizedGraphicalObject {
   public void appendTextureAttachment(TextureAttachment attachment) {
     attachments.add(attachment);
     attachment.setSize(width(), height());
-    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL11.GL_TEXTURE_2D, attachment.identifier(), 0);
+    GL30.glFramebufferTexture2D(
+        GL30.GL_FRAMEBUFFER,
+        attachment.attachment(),
+        GL11.GL_TEXTURE_2D,
+        attachment.identifier(),
+        0);
   }
 
   public void appendRenderBufferAttachment(BufferAttachment attachment) {
     attachments.add(attachment);
     attachment.setSize(width(), height());
-    GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment.attachment(), GL30.GL_RENDERBUFFER, attachment.identifier());
+    GL30.glFramebufferRenderbuffer(
+        GL30.GL_FRAMEBUFFER,
+        attachment.attachment(),
+        GL30.GL_RENDERBUFFER,
+        attachment.identifier());
   }
 
   public void resize(int width, int height) {
@@ -84,15 +92,34 @@ public class FrameBufferObject extends SizedGraphicalObject {
   public void copyFrameBuffer(FrameBufferObject output) {
     output.bind(GL30.GL_DRAW_FRAMEBUFFER);
     bind(GL30.GL_READ_FRAMEBUFFER);
-    blitFrameBuffer(0, 0, output.width(), output.height(), GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
+    blitFrameBuffer(
+        0,
+        0,
+        output.width(),
+        output.height(),
+        GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT,
+        GL11.GL_NEAREST);
   }
 
-  public void blitFrameBuffer(int outputX, int outputY, int outputWidth, int outputHeight, int mask, int filter) {
-    blitFrameBuffer(0, 0, width(), height(), outputX, outputY, outputWidth, outputHeight, mask, filter);
+  public void blitFrameBuffer(
+      int outputX, int outputY, int outputWidth, int outputHeight, int mask, int filter) {
+    blitFrameBuffer(
+        0, 0, width(), height(), outputX, outputY, outputWidth, outputHeight, mask, filter);
   }
 
-  public void blitFrameBuffer(int x, int y, int width, int height, int outputX, int outputY, int outputWidth, int outputHeight, int mask, int filter) {
-    GL30.glBlitFramebuffer(x, y, width, height, outputX, outputY, outputWidth, outputHeight, mask, filter);
+  public void blitFrameBuffer(
+      int x,
+      int y,
+      int width,
+      int height,
+      int outputX,
+      int outputY,
+      int outputWidth,
+      int outputHeight,
+      int mask,
+      int filter) {
+    GL30.glBlitFramebuffer(
+        x, y, width, height, outputX, outputY, outputWidth, outputHeight, mask, filter);
   }
 
   public static void adjustViewport(SizedObject sizedObject) {

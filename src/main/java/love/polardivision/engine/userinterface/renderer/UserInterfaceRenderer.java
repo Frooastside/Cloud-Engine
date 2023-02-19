@@ -12,10 +12,8 @@ package love.polardivision.engine.userinterface.renderer;
 
 import love.polardivision.engine.userinterface.Screen;
 import love.polardivision.engine.wrappers.NativeObject;
-import org.lwjgl.opengl.GL11;
 
 public abstract class UserInterfaceRenderer implements NativeObject {
 
   public abstract void render(Screen screen);
-
 }

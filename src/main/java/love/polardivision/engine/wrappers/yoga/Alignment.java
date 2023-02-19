@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum Alignment {
-
   AUTO(Yoga.YGAlignAuto),
   START(Yoga.YGAlignFlexStart),
   CENTER(Yoga.YGAlignCenter),
@@ -32,5 +31,4 @@ public enum Alignment {
   public int value() {
     return value;
   }
-
 }

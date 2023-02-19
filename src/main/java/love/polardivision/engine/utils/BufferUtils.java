@@ -10,8 +10,18 @@
 
 package love.polardivision.engine.utils;
 
-import java.io.*;
-import java.nio.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,7 +52,8 @@ public class BufferUtils {
     Path path = file.toPath();
     if (Files.isReadable(path)) {
       try (SeekableByteChannel seekableByteChannel = Files.newByteChannel(path)) {
-        ByteBuffer buffer = org.lwjgl.BufferUtils.createByteBuffer((int) seekableByteChannel.size());
+        ByteBuffer buffer =
+            org.lwjgl.BufferUtils.createByteBuffer((int) seekableByteChannel.size());
         while (true) {
           int bytesRead = seekableByteChannel.read(buffer);
           if (bytesRead == -1 || bytesRead == 0) break;
@@ -89,7 +100,8 @@ public class BufferUtils {
   public static IntBuffer store4fAs1i(float[] floats) {
     IntBuffer intBuffer = org.lwjgl.BufferUtils.createIntBuffer(floats.length / 4);
     for (int i = 0; i < floats.length / 4; i++) {
-      intBuffer.put(convert4fTo1i(floats[i * 4], floats[i * 4 + 1], floats[i * 4 + 2], floats[i * 4 + 3]));
+      intBuffer.put(
+          convert4fTo1i(floats[i * 4], floats[i * 4 + 1], floats[i * 4 + 2], floats[i * 4 + 3]));
     }
     intBuffer.flip();
     return intBuffer;
@@ -154,5 +166,4 @@ public class BufferUtils {
     doubleBuffer.flip();
     return doubleBuffer;
   }
-
 }

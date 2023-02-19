@@ -10,16 +10,19 @@
 
 package love.polardivision.engine.userinterface;
 
-import love.polardivision.engine.wrappers.gl.texture.Texture;
-
-import java.io.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import love.polardivision.engine.wrappers.gl.texture.Texture;
 
 public abstract class Font implements Externalizable {
 
-  @Serial
-  private static final long serialVersionUID = -1857587127382434365L;
+  @Serial private static final long serialVersionUID = -1857587127382434365L;
 
   public static final Character DEFAULT_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
   public static final int SPACE_CODEPOINT = 32;
@@ -70,9 +73,15 @@ public abstract class Font implements Externalizable {
     this.texture = texture;
   }
 
-  public record Character(double xTextureCoordinate, double yTextureCoordinate, double xMaxTextureCoordinate,
-                          double yMaxTextureCoordinate, double xOffset, double yOffset, double xSize, double ySize,
-                          double xAdvance) implements Serializable {
-
-  }
+  public record Character(
+      double xTextureCoordinate,
+      double yTextureCoordinate,
+      double xMaxTextureCoordinate,
+      double yMaxTextureCoordinate,
+      double xOffset,
+      double yOffset,
+      double xSize,
+      double ySize,
+      double xAdvance)
+      implements Serializable {}
 }

@@ -13,7 +13,6 @@ package love.polardivision.engine.wrappers.yoga;
 import org.lwjgl.util.yoga.Yoga;
 
 public enum Overflow {
-
   VISIBLE(Yoga.YGOverflowVisible),
   HIDDEN(Yoga.YGOverflowHidden),
   SCROLL(Yoga.YGOverflowScroll);
@@ -27,5 +26,4 @@ public enum Overflow {
   public int value() {
     return value;
   }
-
 }

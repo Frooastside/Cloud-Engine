@@ -21,7 +21,8 @@ public class BufferAttachment extends SizedGraphicalObject implements FrameBuffe
   private final int internalFormat;
   private final int samples;
 
-  public BufferAttachment(int attachment, int samples, ColorFormat internalFormat, int width, int height) {
+  public BufferAttachment(
+      int attachment, int samples, ColorFormat internalFormat, int width, int height) {
     this(attachment, samples, internalFormat.value(), width, height);
   }
 
@@ -56,7 +57,8 @@ public class BufferAttachment extends SizedGraphicalObject implements FrameBuffe
     if (samples == 0) {
       GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, internalFormat, width(), height());
     } else {
-      GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, samples, internalFormat, width(), height());
+      GL30.glRenderbufferStorageMultisample(
+          GL30.GL_RENDERBUFFER, samples, internalFormat, width(), height());
     }
   }
 
