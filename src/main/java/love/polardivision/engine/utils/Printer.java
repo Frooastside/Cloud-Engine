@@ -11,17 +11,18 @@
 package love.polardivision.engine.utils;
 
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.StringJoiner;
 
 public class Printer {
 
   public static void log(String title, Object... objects) {
-    StringBuilder builder = new StringBuilder(title);
-    Optional<Object> first = Arrays.stream(objects).findFirst();
-    Arrays.stream(objects)
-        .forEach(
-            object ->
-                builder.append(object != first.get() ? ", " : ": ").append(object.toString()));
-    System.out.println(builder);
+    if (objects != null && objects.length > 0) {
+      StringJoiner joiner = new StringJoiner(", ");
+      Arrays.stream(objects)
+          .forEach(object -> joiner.add(object != null ? object.toString() : "NULL"));
+      System.out.println(title + ":" + joiner);
+    } else {
+      System.out.println(title);
+    }
   }
 }
