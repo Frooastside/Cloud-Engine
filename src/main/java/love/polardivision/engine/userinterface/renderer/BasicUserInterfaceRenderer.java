@@ -103,7 +103,7 @@ public class BasicUserInterfaceRenderer extends UserInterfaceRenderer {
         renderElement(renderElement, alpha);
       }
     } else if (element instanceof FunctionalElement functionalElement) {
-      boolean hideOverflow = functionalElement.overflow() == Overflow.HIDDEN || functionalElement.overflow() == Overflow.SCROLL;
+      boolean hideOverflow = functionalElement.layoutNode().overflow() == Overflow.HIDDEN || functionalElement.layoutNode().overflow() == Overflow.SCROLL;
       RenderElement background = functionalElement.background();
       if (background != null) {
         renderElement(background, alpha * background.alpha());

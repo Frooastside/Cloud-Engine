@@ -18,10 +18,9 @@ import love.polardivision.engine.window.MouseButton;
 import love.polardivision.engine.window.Window;
 import love.polardivision.engine.window.callbacks.KeyCallback;
 import love.polardivision.engine.wrappers.NativeObject;
+import love.polardivision.engine.wrappers.yoga.LayoutNode;
 import love.polardivision.engine.wrappers.yoga.TextDirection;
 import org.joml.Vector2f;
-import org.lwjgl.util.yoga.YGNode;
-import org.lwjgl.util.yoga.Yoga;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class Screen implements NativeObject {
   private final List<FunctionalElement> children = new ArrayList<>();
   private final Map<String, EventHandler> eventHandlers = new HashMap<>();
 
-  private YGNode node;
+  private final LayoutNode layoutNode = new LayoutNode();
   private TextDirection textDirection = TextDirection.LTR;
   private final Window window;
   private final Font font;
@@ -50,20 +49,17 @@ public class Screen implements NativeObject {
 
   @Override
   public void initialize() {
-    long config = Yoga.YGConfigGetDefault();
-    node = YGNode.create(Yoga.YGNodeNewWithConfig(config));
-    Yoga.YGConfigFree(config);
+    layoutNode.initialize();
   }
 
   @Override
   public void delete() {
-    Yoga.YGNodeFree(node.address());
-    node.free();
+    layoutNode.delete();
   }
 
   public void recalculateScreen() {
     updatePixelSize(pixelSize().set(1f / window.resolution().x, 1f / window.resolution().y));
-    Yoga.YGNodeCalculateLayout(node.address(), window.resolution().x, window.resolution().y, textDirection.value());
+    layoutNode.layout().calculate(window.resolution(), textDirection);
     recalculateBounds();
   }
 
@@ -240,18 +236,18 @@ public class Screen implements NativeObject {
   }
 
   public void addElement(FunctionalElement functionalElement) {
-    this.addElement(functionalElement, Yoga.YGNodeGetChildCount(node.address()));
+    this.addElement(functionalElement, layoutNode.childCount());
   }
 
   public void addElement(FunctionalElement functionalElement, int index) {
     children().add(functionalElement);
-    Yoga.YGNodeInsertChild(node.address(), functionalElement.node().address(), index);
+    layoutNode.insertChild(functionalElement.layoutNode(), index);
     functionalElement.setRoot(this);
   }
 
   public void removeElement(FunctionalElement functionalElement) {
     if (children.contains(functionalElement)) {
-      Yoga.YGNodeRemoveChild(node.address(), functionalElement.node().address());
+      layoutNode.removeChild(functionalElement.layoutNode());
     }
   }
 
