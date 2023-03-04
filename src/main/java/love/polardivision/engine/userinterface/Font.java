@@ -20,9 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import love.polardivision.engine.wrappers.gl.texture.Texture;
 
-public abstract class Font implements Externalizable {
-
-  @Serial private static final long serialVersionUID = -1857587127382434365L;
+public abstract class Font {
 
   public static final Character DEFAULT_CHARACTER = new Character(0, 0, 0, 0, 0, 0, 0, 0, 0);
   public static final int SPACE_CODEPOINT = 32;
@@ -30,24 +28,6 @@ public abstract class Font implements Externalizable {
   private final Map<Integer, Character> supportedCharacters = new HashMap<>();
   private int characterHeight;
   private Texture texture;
-
-  @Override
-  public void writeExternal(ObjectOutput out) throws IOException {
-    out.writeObject(supportedCharacters);
-    out.writeShort(characterHeight);
-    out.writeObject(texture);
-  }
-
-  @Override
-  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-    for (Map.Entry<?, ?> entry : ((Map<?, ?>) in.readObject()).entrySet()) {
-      if (entry.getKey() instanceof Integer key && entry.getValue() instanceof Character value) {
-        supportedCharacters.put(key, value);
-      }
-    }
-    characterHeight = in.readShort();
-    texture = (Texture) in.readObject();
-  }
 
   public Character character(int codepoint) {
     return supportedCharacters.getOrDefault(codepoint, DEFAULT_CHARACTER);
