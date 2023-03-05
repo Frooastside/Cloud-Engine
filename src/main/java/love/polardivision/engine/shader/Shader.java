@@ -60,21 +60,23 @@ public class Shader implements NativeObject {
   }
 
   public static Shader createShader(
-      InputStream source, ShaderType shaderType, ShaderConstant... shaderConstants) {
+      InputStream source, ShaderType shaderType, int version, ShaderConstant... shaderConstants) {
     String shaderSource = BufferUtils.streamToString(source);
     Objects.requireNonNull(shaderSource);
-    return createShader(shaderSource, shaderType, shaderConstants);
+    return createShader(shaderSource, shaderType, version, shaderConstants);
   }
 
   public static Shader createShader(
-      String shaderSource, ShaderType shaderType, ShaderConstant... shaderConstants) {
+      String shaderSource, ShaderType shaderType, int version, ShaderConstant... shaderConstants) {
+    StringBuilder builder = new StringBuilder(String.format("#version %d%n", version));
     for (ShaderConstant shaderConstant : shaderConstants) {
-      shaderSource = shaderSource.replace("0" + shaderConstant.name(), shaderConstant.value());
-      shaderSource = shaderSource.replace(shaderConstant.name(), shaderConstant.value());
+      builder.append(
+          String.format("#define %s %s%n", shaderConstant.name(), shaderConstant.value()));
     }
+    builder.append(shaderSource);
     Shader shader = new Shader(shaderType);
     shader.initialize();
-    shader.shaderSource(shaderSource);
+    shader.shaderSource(builder.toString());
     shader.compile();
     shader.checkErrorLog();
     return shader;

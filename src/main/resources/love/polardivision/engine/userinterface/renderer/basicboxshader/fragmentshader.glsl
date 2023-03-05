@@ -1,5 +1,3 @@
-#version 130
-
 in vec2 _textureCoordinates;
 
 out vec4 finalColor;

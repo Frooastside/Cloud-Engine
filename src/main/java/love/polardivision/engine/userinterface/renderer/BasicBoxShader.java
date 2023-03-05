@@ -33,11 +33,13 @@ public class BasicBoxShader extends BoxShader {
     addShader(
         Shader.createShader(
             BasicBoxShader.class.getResourceAsStream("basicboxshader/vertexshader.glsl"),
-            ShaderType.VERTEX_SHADER));
+            ShaderType.VERTEX_SHADER,
+            130));
     addShader(
         Shader.createShader(
             BasicBoxShader.class.getResourceAsStream("basicboxshader/fragmentshader.glsl"),
-            ShaderType.FRAGMENT_SHADER));
+            ShaderType.FRAGMENT_SHADER,
+            130));
   }
 
   @Override

@@ -10,27 +10,27 @@
 
 package love.polardivision.engine.language;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import love.polardivision.engine.utils.BufferUtils;
+import java.util.Optional;
 
 public class I18n {
 
   private static final I18n INSTANCE = new I18n();
 
   private final List<Language> languages = new ArrayList<>();
-  private Language currentLanguage;
+  private Language language;
 
   public static String get(String key, Object... arguments) {
-    String result = key + Arrays.toString(arguments);
-    if (INSTANCE.currentLanguage == null && !languages().isEmpty()) {
+    if (INSTANCE.language == null && !languages().isEmpty()) {
       setCurrentLanguage(languages().get(0));
     }
-    if (INSTANCE.currentLanguage != null && INSTANCE.currentLanguage.contains(key.toLowerCase())) {
-      result = String.format(INSTANCE.currentLanguage.get(key.toLowerCase()), arguments);
+    String result;
+    if (INSTANCE.language != null && INSTANCE.language.contains(key.toLowerCase())) {
+      result = String.format(INSTANCE.language.get(key.toLowerCase()), arguments);
+    } else {
+      result = key + Arrays.toString(arguments);
     }
     return result;
   }
@@ -39,32 +39,20 @@ public class I18n {
     INSTANCE.languages.addAll(Arrays.asList(languages));
   }
 
-  public static void loadFromDirectory(File directory) {
-    File[] languageFiles =
-        directory.listFiles(
-            file -> file.exists() && file.isFile() && file.getName().endsWith(".lang"));
-    if (languageFiles != null) {
-      Language[] languages = new Language[languageFiles.length];
-      for (int i = 0, languageFilesLength = languageFiles.length; i < languageFilesLength; i++) {
-        try {
-          languages[i] = Language.createFromStream(BufferUtils.fileToStream(languageFiles[i]));
-        } catch (FileNotFoundException ignored) {
-        }
-      }
-      addLanguages(languages);
-    }
-  }
-
   public static void selectByCode(String languageCode) {
-    INSTANCE.languages.stream()
-        .filter(language -> language.languageCode().equals(languageCode))
-        .forEach(language -> INSTANCE.currentLanguage = language);
+    Optional<Language> selectedLanguage =
+        INSTANCE.languages.stream()
+            .filter(language -> language.languageCode().equals(languageCode))
+            .findFirst();
+    selectedLanguage.ifPresent(I18n::setCurrentLanguage);
   }
 
   public static void selectByName(String languageName) {
-    INSTANCE.languages.stream()
-        .filter(language -> language.languageName().equalsIgnoreCase(languageName))
-        .forEach(language -> INSTANCE.currentLanguage = language);
+    Optional<Language> selectedLanguage =
+        INSTANCE.languages.stream()
+            .filter(language -> language.languageName().equalsIgnoreCase(languageName))
+            .findFirst();
+    selectedLanguage.ifPresent(I18n::setCurrentLanguage);
   }
 
   public static List<Language> languages() {
@@ -72,10 +60,13 @@ public class I18n {
   }
 
   public static Language currentLanguage() {
-    return INSTANCE.currentLanguage;
+    return INSTANCE.language;
   }
 
-  public static void setCurrentLanguage(Language currentLanguage) {
-    INSTANCE.currentLanguage = currentLanguage;
+  public static void setCurrentLanguage(Language language) {
+    if (!languages().contains(language)) {
+      languages().add(language);
+    }
+    INSTANCE.language = language;
   }
 }

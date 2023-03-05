@@ -48,12 +48,14 @@ public class FullscreenQuadRenderer extends PostProcessingEffect {
       addShader(
           Shader.createShader(
               FullscreenQuadRenderer.class.getResourceAsStream("fullscreenquad/vertexshader.glsl"),
-              ShaderType.VERTEX_SHADER));
+              ShaderType.VERTEX_SHADER,
+              130));
       addShader(
           Shader.createShader(
               FullscreenQuadRenderer.class.getResourceAsStream(
                   "fullscreenquad/fragmentshader.glsl"),
-              ShaderType.FRAGMENT_SHADER));
+              ShaderType.FRAGMENT_SHADER,
+              130));
     }
 
     @Override
