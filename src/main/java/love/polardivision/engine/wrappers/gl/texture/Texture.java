@@ -17,6 +17,7 @@ import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL46;
 
 public class Texture extends SizedGraphicalObject {
 
@@ -156,10 +157,10 @@ public class Texture extends SizedGraphicalObject {
   private void anisotropicFilter() throws UnsupportedOperationException {
     if (GL.getCapabilities().GL_EXT_texture_filter_anisotropic) {
       float maxFilterLevel =
-          GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+          GL11.glGetFloat(GL46.GL_MAX_TEXTURE_MAX_ANISOTROPY);
       GL11.glTexParameterf(
           GL11.GL_TEXTURE_2D,
-          EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+          GL46.GL_TEXTURE_MAX_ANISOTROPY,
           maxFilterLevel);
     } else {
       throw new UnsupportedOperationException();
