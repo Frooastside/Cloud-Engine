@@ -5,10 +5,6 @@ plugins {
 project.group = "love.polardivision"
 project.version = property("version")!!
 
-repositories {
-    mavenCentral()
-}
-
 tasks {
     compileJava {
         options.encoding = "UTF-8"
@@ -50,6 +46,10 @@ val lwjglNatives = Pair(
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     api(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
 
@@ -83,5 +83,3 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 }
-
-//tasks.register("upVersion", UpVersion)
